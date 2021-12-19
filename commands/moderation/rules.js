@@ -8,13 +8,13 @@ module.exports = {
     type: `CHAT_INPUT`,
     options: [{
         name: `number`,
-        description: `The number of the rule you wish to reference`,
+        description: `The number of the rule you want to reference`,
         type: `NUMBER`,
         required: true
     },
     {
         name: `username`,
-        description: `The user you wish to direct the reminder to`,
+        description: `The user you want to direct the reminder to`,
         type: `USER`,
         required: true
     }],
