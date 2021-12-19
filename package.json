@@ -1,32 +1,36 @@
 {
-  "name": "creatorbot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/builders": "^0.9.0",
-    "@discordjs/opus": "^0.5.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "@mapbox/node-pre-gyp": "^1.0.5",
-    "ascii-table": "^0.0.9",
-    "cron": "^1.8.2",
-    "discord-api-types": "^0.25.2",
-    "discord.js": "^13.3.1",
-    "dotenv": "^9.0.2",
-    "express": "^4.17.1",
-    "ffmpeg-static": "^4.3.0",
-    "glob": "^7.2.0",
-    "mongoose": "^5.12.10",
-    "node-gyp": "^8.0.0",
-    "node-opus": "^0.3.3",
-    "request": "^2.88.2",
-    "yt-search": "^2.10.1",
-    "ytdl-core": "^4.8.2"
-  }
+	"name": "creatorbot",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint --ignore-path .gitignore .",
+		"start": "node index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@discordjs/builders": "^0.9.0",
+		"@discordjs/opus": "^0.5.0",
+		"@discordjs/rest": "^0.1.0-canary.0",
+		"@mapbox/node-pre-gyp": "^1.0.5",
+		"ascii-table": "^0.0.9",
+		"cron": "^1.8.2",
+		"discord-api-types": "^0.25.2",
+		"discord.js": "^13.3.1",
+		"dotenv": "^9.0.2",
+		"express": "^4.17.1",
+		"ffmpeg-static": "^4.3.0",
+		"glob": "^7.2.0",
+		"mongoose": "^5.12.10",
+		"node-gyp": "^8.0.0",
+		"node-opus": "^0.3.3",
+		"request": "^2.88.2",
+		"yt-search": "^2.10.1",
+		"ytdl-core": "^4.8.2"
+	},
+	"devDependencies": {
+		"eslint": "^8.4.1"
+	}
 }
