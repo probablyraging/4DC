@@ -16,7 +16,7 @@ module.exports = async (client) => {
         if (!command.name)
             return table.addRow(file.split('/')[7], `FAILED!`, `Missing command name`);
 
-        if (command.type !== 'USER' && !command.description)
+        if (command.type !== 'CHAT_INPUT' && command.type !== 'USER' && command.type !== 'MESSAGE' && !command.description)
             return table.addRow(command.name, `FAILED!`, `Missing command description`);
 
         if (command.permission) {
