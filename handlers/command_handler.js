@@ -14,22 +14,22 @@ module.exports = async (client) => {
         const command = require(file);
 
         if (!command.name)
-            return table.addRow(file.split('/')[7], `Failed!`, `Missing command name!`)
+            return table.addRow(file.split('/')[7], `FAILED!`, `Missing command name`)
 
         if (!command.description)
-            return table.addRow(command.name, `Failed!`, `Missing command description!`)
+            return table.addRow(command.name, `FAILED!`, `Missing command description`)
 
         if (command.permission) {
             if (perms.includes(command.permission))
                 command.defaultPermission = false;
             else
-                return table.addRow(command.name, `Failed!`, `Invalid permissions!`)
+                return table.addRow(command.name, `FAILED!`, `Invalid permission`)
         }
 
         client.commands.set(command.name, command);
         commandsArr.push(command);
 
-        await table.addRow(command.name, `Command loaded successfully!`);
+        await table.addRow(command.name, `SUCCESSFULLY LOADED!`);
     });
     // console.log(table.toString()); // use to check if commands loaded without error
 
@@ -39,10 +39,10 @@ module.exports = async (client) => {
 
         mainGuild.commands.set(commandsArr).then(async (command) => {
             const Roles = (commandName) => {
-                const cmdPerms = commandsArr.find((c) => c.name === commandName).permission;
+                const cmdPerms = commandsArr.find(c => c.name === commandName).permission;
                 if (!cmdPerms) return null;
 
-                return mainGuild.roles.cache.filter((r) => r.permissions.has(cmdPerms));
+                return mainGuild.roles.cache.filter(r => r.permissions.has(cmdPerms));
             }
 
             const fullPermissions = command.reduce((accumulator, r) => {
