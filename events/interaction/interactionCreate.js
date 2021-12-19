@@ -8,7 +8,7 @@ module.exports = {
      * @param {client} client 
      */
     async execute(interaction, client) {
-        if (interaction.isCommand()) {
+        if (interaction.isCommand() || interaction.isContextMenu()) {
             const command = client.commands.get(interaction.commandName);
             if (!command) return interaction.reply({ 
                 content: `${process.env.BOT_INFO} Could not run this command`, 

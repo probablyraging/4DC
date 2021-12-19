@@ -14,16 +14,16 @@ module.exports = async (client) => {
         const command = require(file);
 
         if (!command.name)
-            return table.addRow(file.split('/')[7], `FAILED!`, `Missing command name`)
+            return table.addRow(file.split('/')[7], `FAILED!`, `Missing command name`);
 
-        if (!command.description)
-            return table.addRow(command.name, `FAILED!`, `Missing command description`)
+        if (command.type !== 'USER' && !command.description)
+            return table.addRow(command.name, `FAILED!`, `Missing command description`);
 
         if (command.permission) {
             if (perms.includes(command.permission))
                 command.defaultPermission = false;
             else
-                return table.addRow(command.name, `FAILED!`, `Invalid permission`)
+                return table.addRow(command.name, `FAILED!`, `Invalid or missing permission`);
         }
 
         client.commands.set(command.name, command);
@@ -31,7 +31,7 @@ module.exports = async (client) => {
 
         await table.addRow(command.name, `SUCCESSFULLY LOADED!`);
     });
-    // console.log(table.toString()); // use to check if commands loaded without error
+    console.log(table.toString()); // use to check if commands loaded without error
 
     // permissions check
     client.on('ready', async () => {
