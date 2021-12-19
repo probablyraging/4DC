@@ -1,18 +1,28 @@
-const fs = require('fs');
+const { events } = require('../validation/eventNames');
+const { promisify } = require('util');
+const { glob } = require('glob');
+const PG = promisify(glob);
+const ascii = require('ascii-table');
 
-module.exports = (client, Discord, commands) => {
-    const load_dir = (dirs) => {
-        const eventFiles = fs.readdirSync(`./events/${dirs}`).filter(file => file.endsWith('.js'));
+module.exports = async (client) => {
+    const table = new ascii('Events loaded');
 
-        for (const file of eventFiles) {
-            const event = require(`../events/${dirs}/${file}`);
+    (await PG(`${process.cwd()}/events/*/*.js`)).map(async (file) => {
+        const event = require(file);
 
-            if (event.once) {
-                client.once(event.name, (...args) => event.execute(...args, commands));
-            } else {
-                client.on(event.name, (...args) => event.execute(...args, commands));
-            }
+        if (!events.includes(event.name) || !event.name) {
+            const l = file.split('/');
+            await table.addRow(`${event.name || 'missing'}`, `Event name invalid or missing: ${l[6] + `/` + l[7]}`);
+            return;
         }
-    }
-    ['client'].forEach(e => load_dir(e));
+
+        if (event.once) {
+            client.once(event.name, (...args) => event.execute(...args, client));
+        } else {
+            client.on(event.name, (...args) => event.execute(...args, client));
+        }
+
+        await table.addRow(event.name, `Event loaded successfully!`);
+    })
+    // console.log(table.toString()); // use to check if events loaded without error
 }
