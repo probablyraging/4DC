@@ -1,23 +1,21 @@
 const { CommandInteraction } = require('discord.js');
 
 module.exports = {
-    name: 'clear',
-    description: 'Deletes a specified number of messages from a channel or user',
-    permission: 'MANAGE_MESSAGES',
-    options: [
-        {
-            name: 'amount',
-            description: 'Number of messages to delete',
-            type: 'NUMBER',
-            required: true
-        },
-        {
-            name: 'username',
-            description: 'Include a username to delete their messages only',
-            type: 'USER',
-            required: false
-        }
-    ],
+    name: `clear`,
+    description: `Deletes a specified number of messages from a channel or user`,
+    permission: `MANAGE_MESSAGES`,
+    options: [{
+        name: `amount`,
+        description: `Number of messages to delete`,
+        type: `NUMBER`,
+        required: true
+    },
+    {
+        name: `username`,
+        description: `Include a username to delete their messages only`,
+        type: `USER`,
+        required: false
+    }],
     /**
      * 
      * @param {CommandInteraction} interaction
@@ -28,12 +26,12 @@ module.exports = {
         const amount = options.getNumber('amount');
         const target = options.getMember('username');
 
-        const messages = await channel.messages.fetch();
+        const fetchMsg = await channel.messages.fetch();
 
         if (target) {
             let i = 0;
             const filtered = [];
-            (await messages).filter(msg => {
+            (await fetchMsg).filter(msg => {
                 if (msg.author.id === target.id && amount > i) {
                     filtered.push(msg);
                     i++
