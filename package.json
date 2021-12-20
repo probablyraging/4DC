@@ -23,6 +23,7 @@
 		"express": "^4.17.1",
 		"ffmpeg-static": "^4.3.0",
 		"glob": "^7.2.0",
+		"lint": "^0.7.0",
 		"mongoose": "^5.12.10",
 		"node-gyp": "^8.0.0",
 		"node-opus": "^0.3.3",

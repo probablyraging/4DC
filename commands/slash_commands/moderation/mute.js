@@ -2,13 +2,12 @@ const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
     // TODO : server wide mute and unmute - waiting to see what native timeout is first
-    //      : context menu for channelmute
     name: `mute`,
     description: `Mute a specified user, server wide or in a single channel`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
     options: [{
-        name: `channelmute`,
+        name: `channel`,
         description: `Mutes a specified user from a channel`,
         permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
@@ -54,7 +53,7 @@ module.exports = {
 
         try {
             switch (options.getSubcommand()) {
-                case 'channelmute': {
+                case 'channel': {
                     const choice = options.getString('choice');
                     const target = options.getMember('username');
                     const targetChan = options.getChannel('channel');
