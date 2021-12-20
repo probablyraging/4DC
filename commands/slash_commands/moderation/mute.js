@@ -1,7 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
-    // TODO : server wide mute and unmute
+    // TODO : server wide mute and unmute - waiting to see what native timeout is first
     //      : context menu for channelmute
     name: `mute`,
     description: `Mute a specified user, server wide or in a single channel`,
