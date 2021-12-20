@@ -48,7 +48,7 @@ module.exports = {
             ephemeral: true
         })));
 
-        interaction.reply({
+        await interaction.reply({
             content: `${process.env.BOT_CONF} ${target} has been unmuted in ${channel}`,
             ephemeral: true
         })

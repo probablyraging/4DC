@@ -1,17 +1,25 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
-const e = require('express');
 
 module.exports = {
-    name: `Whois`,
-    description: ``,
+    name: `whois`,
+    description: `Get detailed information about a user`,
     permission: ``,
-    type: `USER`,
+    type: `CHAT_INPUT`,
+    options: [{
+        name: `username`,
+        description: `The user whos information you want`,
+        type: `USER`,
+    }],
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const target = await interaction.guild.members.fetch(interaction.targetId);
+        const { options } = interaction;
+
+        const target = options.getMember(`username`);
+
+        console.log(target)
 
         acknowledgements = null
         permissions = [];

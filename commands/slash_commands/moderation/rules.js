@@ -28,7 +28,7 @@ module.exports = {
         const ruleNum = options.getNumber('number');
         const target = options.getMember('username');
 
-        interaction.reply({
+        await interaction.reply({
             content: `${target}
 **Rule ${ruleNum}** - ${rules[ruleNum - 1]}`
         });

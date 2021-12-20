@@ -100,7 +100,7 @@ module.exports = {
             });
         }
 
-        interaction.reply({
+        await interaction.reply({
             content: `${msgAuthor} your post was moved to ${toChannel}`
         });
     }
