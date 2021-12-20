@@ -9,6 +9,10 @@ module.exports = {
         "ecmaVersion": 13
     },
     "rules": {
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
         "indent": [
             "error",
             4

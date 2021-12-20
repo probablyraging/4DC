@@ -5,8 +5,7 @@ module.exports = async (client) => {
 
     setInterval(() => {
         guild.members.fetch().then(async fetchedMembers => {
-            // TODO : Check why discord is reporting the user number incorrectly - off by roughly 130
-            let totalOnline = fetchedMembers.filter(member => !member.presence?.status).size;
+            let totalOnline = fetchedMembers.filter(member => member.presence && member.presence?.status !== 'offline').size;
             let memberCount = guild.memberCount;
 
             function kFormatter(num) {
@@ -16,11 +15,10 @@ module.exports = async (client) => {
             let onlineReal = kFormatter(totalOnline);
             let totalReal = kFormatter(memberCount);
 
-            const channelOnline = guild.channels.cache.get(process.env.VC_ONLINE);
-            const channelTotal = guild.channels.cache.get(process.env.VC_TOTAL);
+            const channelOnline = guild.channels?.cache.get(process.env.VC_ONLINE);
+            const channelTotal = guild.channels?.cache.get(process.env.VC_TOTAL);
             channelOnline.setName(`Online Members: ${onlineReal}`);
             channelTotal.setName(`Total Members: ${totalReal}`);
-
         })
     }, 600000);
 };
