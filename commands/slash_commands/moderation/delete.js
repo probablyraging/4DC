@@ -28,7 +28,15 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch();
 
-        if (amount > 5 && member.id !== process.env.OWNER_ID) {
+        if (amount < 1 && member.id === process.env.OWNER_ID || amount > 100 && member.id === process.env.OWNER_ID ) {
+            await interaction.reply({
+                content: `${process.env.BOT_INFO} \`Amount must be between 1 and 100\``,
+                ephemeral: true
+            })
+            return;
+        }
+
+        if (amount < 1 || amount > 5 && member.id !== process.env.OWNER_ID) {
             await interaction.reply({
                 content: `${process.env.BOT_INFO} \`Amount must be between 1 and 5\``,
                 ephemeral: true
@@ -45,7 +53,7 @@ module.exports = {
                 if (target) {
                     let i = 0;
                     const filtered = [];
-    
+
                     (await fetchMsg).filter(msg => {
                         if (msg.author.id === target.id && amount > i) {
                             filtered.push(msg);

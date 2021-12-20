@@ -60,6 +60,7 @@ module.exports = {
 
         const fetchMsg = channel.messages.fetch();
 
+
         for (let i = 0; i < messagesArr.length; i++) {
             (await fetchMsg).filter(msg => {
                 if (msg.id === messagesArr[i]) {
@@ -100,8 +101,15 @@ module.exports = {
             });
         }
 
-        await interaction.reply({
-            content: `${msgAuthor} your post was moved to ${toChannel}`
-        });
+        try {
+            await interaction.reply({
+                content: `${msgAuthor} your post was moved to ${toChannel}`
+            });
+        } catch {
+            await interaction.reply({
+                content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
+                ephemeral: true
+            });
+        }
     }
 }
