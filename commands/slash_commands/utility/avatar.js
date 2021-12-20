@@ -8,16 +8,17 @@ module.exports = {
     options: [{
         name: `username`,
         description: `The user whos avatar you want to fetch`,
-        type: `USER`
+        type: `USER`,
+        required: false,
     }],
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { options } = interaction;
+        const { member, options } = interaction;
 
-        const target = options.getMember(`username`);
+        const target = options.getMember(`username`) || member;
 
         const response = new MessageEmbed()
             .setColor('#32BEA6') // GREEN

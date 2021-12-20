@@ -9,17 +9,16 @@ module.exports = {
         name: `username`,
         description: `The user whos information you want`,
         type: `USER`,
+        required: false,
     }],
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { options } = interaction;
+        const { member, options } = interaction;
 
-        const target = options.getMember(`username`);
-
-        console.log(target)
+        const target = options.getMember(`username`) || member
 
         acknowledgements = null
         permissions = [];
