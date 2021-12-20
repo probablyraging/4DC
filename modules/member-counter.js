@@ -6,7 +6,7 @@ module.exports = async (client) => {
     setInterval(() => {
         guild.members.fetch().then(async fetchedMembers => {
             // TODO : Check why discord is reporting the user number incorrectly - off by roughly 130
-            let totalOnline = fetchedMembers.filter(member => member.presence.status !== 'offline').size + 130;
+            let totalOnline = fetchedMembers.filter(member => member.presence?.status !== 'offline').size + 130;
             let memberCount = guild.memberCount;
 
             function kFormatter(num) {
