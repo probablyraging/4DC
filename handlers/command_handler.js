@@ -1,4 +1,4 @@
-const { perms } = require('../validation/permissions');
+const { perms } = require('../lists/permissions');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
