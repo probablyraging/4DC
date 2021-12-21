@@ -76,7 +76,7 @@ module.exports = {
                             imageArr.push(image.url);
                         })
 
-                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.avatarURL() }).then(webhook => {
+                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`,
                                 files: imageArr
@@ -87,7 +87,7 @@ module.exports = {
 
                         msg.delete();
                     } else {
-                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.avatarURL() }).then(webhook => {
+                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`
                             }).then(() => {

@@ -73,9 +73,9 @@ module.exports = {
         if (!target.presence?.status) targetStatus = 'Offline';
 
         const response = new MessageEmbed()
-            .setAuthor(`${target.user.tag}`, `${target.user.avatarURL({ dynamic: true })}`)
+            .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setColor('RANDOM')
-            .setThumbnail(`${target.user.avatarURL({ dynamic: true })}`)
+            .setThumbnail(`${target.user.displayAvatarURL({ dynamic: true })}`)
             .addField('Registered:', `<t:${parseInt(target.user.createdTimestamp / 1000)}:R>`, true)
             .addField('Joined:', `<t:${parseInt(target.joinedTimestamp / 1000)}:R>`, true)
             .addField('Status:', `${targetStatus}`, true)

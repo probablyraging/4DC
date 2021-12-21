@@ -112,7 +112,7 @@ module.exports = {
 > Warning threshold reached`
                                     }).catch(() => dmFail = true);
 
-                                    let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added, but I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
+                                    let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
 
                                     await target.ban({
                                         days: 0,
@@ -136,7 +136,7 @@ ${banMsg}`,
 > ${reason}`
                                     }).catch(() => dmFail = true);
 
-                                    let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added, but I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
+                                    let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
 
                                     interaction.reply({
                                         content: `${replyMsg}`,

@@ -15,7 +15,7 @@ module.exports = {
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = await fetchMsg.author;
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
-        const reason = null;
+        const reason = `None - command ran via context menu`;
 
         channel.permissionOverwrites.edit(target, {
             SEND_MESSAGES: false,
@@ -30,29 +30,24 @@ module.exports = {
             .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
             .setTimestamp()
 
-        const response2 = new MessageEmbed()
-            .setColor('#E04F5F')
-            .setAuthor(`${target.tag}`, `${target.displayAvatarURL({ dynamic: true })}`)
-            .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-            .setDescription(`You have been muted in ${channel} on ${guild.name}
-
-**Reason:**
-\`\`\`${reason}\`\`\``)
-            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
-            .setTimestamp()
-
         mutesChan.send({
             embeds: [response]
-        }).then(target.send({
-            embeds: [response2]
-        }).catch(() => channel.send({
-            content: `${process.env.BOT_DENY} \`I could not send ${target} a DM\``,
-            ephemeral: true
-        })));
+        });
 
-        await interaction.reply({
-            content: `${process.env.BOT_CONF} ${target} has been muted in ${channel}`,
-            ephemeral: true
-        })
+        let dmFail = false;
+
+        target.send({
+            content: `${process.env.BOT_DENY} \`You have been muted in #${channel.name} on ${guild.name}\`
+                                                                                
+**Reason**
+> None`
+        }).catch(() => dmFail = true).then(() => {
+            let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.tag} was muted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.tag} was muted in #${channel.name}\``;
+
+            interaction.reply({
+                content: `${replyMsg}`,
+                ephemeral: true
+            });
+        });
     }
 }

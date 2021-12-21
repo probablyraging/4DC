@@ -2,6 +2,7 @@ const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
     // TODO : server wide mute and unmute - waiting to see what native timeout is first
+    //      : Use plain message replies/notifications like used in warn.js
     name: `mute`,
     description: `Mute a specified user, server wide or in a single channel`,
     permission: `MANAGE_MESSAGES`,
@@ -90,7 +91,7 @@ module.exports = {
                             embeds: [response]
                         }).then(target.send({
                             embeds: [response2]
-                        }).catch(() => channel.send({
+                        }).catch(() => interaction.reply({
                             content: `${process.env.BOT_DENY} \`I could not send ${target} a DM\``,
                             ephemeral: true
                         })));
