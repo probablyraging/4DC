@@ -5,7 +5,7 @@
   </p>
   <br />
   <p>
-    <a href="https://discord.gg/creatorhub"><img src="https://img.shields.io/discord/222078108977594368?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+    <a href="https://discord.gg/creatorhub"><img src="https://img.shields.io/discord/820889004055855144?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
   </p>
 </div>
 
