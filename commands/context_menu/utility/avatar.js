@@ -16,7 +16,7 @@ module.exports = {
             .setColor('#32BEA6') // GREEN
             .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setTitle(`AVATAR`)
-            .setImage(`${target.user.avatarURL({ dynamic: true })}?size=256`)
+            .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 
         await interaction.reply({
             embeds: [response],
