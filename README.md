@@ -6,6 +6,9 @@
   <br />
   <p>
     <a href="https://discord.gg/creatorhub"><img src="https://img.shields.io/discord/820889004055855144?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+    <a href="https://www.npmjs.com/package/discord.js"><img src="https://img.shields.io/npm/v/discord.js.svg?maxAge=3600" alt="npm version" /></a>
+    <a href="https://youtube.com/channel/UCIjouN_iuJswbC6MJltMl_A"><img src="https://img.shields.io/youtube/channel/subscribers/UCIjouN_iuJswbC6MJltMl_A?style=flat-plastic&logo=youtube&logoColor=white" alt="Discord server" /></a>
+    
   </p>
 </div>
 
