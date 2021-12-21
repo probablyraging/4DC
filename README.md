@@ -1,6 +1,15 @@
-# CreatorBot-2.0
-![CreatorBot](https://i.imgur.com/1AwfUZJ.png)
+<div align="center">
+  <br />
+  <p>
+    <a href="https://discord.gg/creatorhub"><img src="https://i.imgur.com/1AwfUZJ.png" alt="CreatorBot for CreatorHub" /></a>
+  </p>
+  <br />
+  <p>
+    <a href="https://discord.gg/creatorhub"><img src="https://img.shields.io/discord/222078108977594368?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+  </p>
+</div>
 
+# CreatorBot-2.0
 This is a discord.js bot for [CreatorHub](https://discord.gg/creatorhub)
 
 # CreatorHub Discord Server
