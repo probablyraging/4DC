@@ -14,7 +14,7 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = await fetchMsg.author;
-        const mutesChan = client.channels.cache.find(channel => channel.id === process.env.MUTES_CHAN);
+        const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
         const reason = null;
 
         channel.permissionOverwrites.edit(target, {

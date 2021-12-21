@@ -1,5 +1,5 @@
 const { ContextMenuInteraction } = require('discord.js');
-const { rules } = require('../../../validation/ruleList');
+const { rules } = require('../../../validation/rule-list');
 
 module.exports = {
     name: `rules`,
@@ -25,12 +25,14 @@ module.exports = {
     async execute(interaction) {
         const { options } = interaction;
 
-        const ruleNum = options.getNumber('number');
+        const number = options.getNumber('number');
         const target = options.getMember('username');
 
+        const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
+
         await interaction.reply({
-            content: `${target}
-**Rule ${ruleNum}** - ${rules[ruleNum - 1]}`
+            content: `*Please read the rules ${target}:*
+> [${process.env.BOT_DOC} **Rule ${number}**](<${url}>) - ${rules[number - 1]}`
         });
     }
 }

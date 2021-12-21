@@ -59,7 +59,7 @@ module.exports = {
                     const targetChan = options.getChannel('channel');
                     const reason = options.getString('reason');
 
-                    const mutesChan = client.channels.cache.find(channel => channel.id === process.env.MUTES_CHAN);
+                    const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
                     if (choice === 'add') {
                         targetChan.permissionOverwrites.edit(target.id, {

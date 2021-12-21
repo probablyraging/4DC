@@ -6,27 +6,28 @@ const cooldown = new Set();
  */
 
 module.exports = (message, client, Discord) => {
-    const target = message.member;
+    const author = message.author;
     const content = message.content.toLocaleLowerCase();
     const conditions = ['https://', 'http://', 'www.'];
     const check = conditions.some(el => content.includes(el));
 
-    if (!target) {
+    if (!author) {
         return;
     } else {
         if (check === true && !message.member.permissions.has("MANAGE_MESSAGES")) {
             if (cooldown.has(message.author.id)) {
+                const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
                 let userMsg = message;
 
-                target.send({
-                    content: `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``,
+                author.send({
+                    content: `${response}`,
                 }).catch(() => {
                     message.reply({
-                        content: `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``,
+                        content: `${response}`,
                         deleteallowedMentions: { repliedUser: true }
                     }).catch(() => {
                         message.reply({
-                            content: `${process.env.BOT_DENY} ${message.author} \`You're sending links too fast. Please wait 30 seconds\``,
+                            content: `${response}`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => setTimeout(() => {

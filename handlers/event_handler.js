@@ -1,4 +1,4 @@
-const { events } = require('../validation/eventNames');
+const { events } = require('../validation/event-names');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
