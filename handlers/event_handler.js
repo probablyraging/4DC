@@ -4,7 +4,7 @@ const { glob } = require('glob');
 const PG = promisify(glob);
 const ascii = require('ascii-table');
 
-module.exports = async (client) => {
+module.exports = async (client, Discord) => {
     const table = new ascii('Events loaded');
 
     (await PG(`${process.cwd()}/events/*/*.js`)).map(async (file) => {
@@ -17,9 +17,9 @@ module.exports = async (client) => {
         }
 
         if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args, client));
+            client.once(event.name, (...args) => event.execute(...args, client, Discord));
         } else {
-            client.on(event.name, (...args) => event.execute(...args, client));
+            client.on(event.name, (...args) => event.execute(...args, client, Discord));
         }
 
         await table.addRow(event.name, `SUCCESSFULLY LOADED!`);

@@ -4,7 +4,7 @@ const { glob } = require('glob');
 const PG = promisify(glob);
 const ascii = require('ascii-table')
 
-module.exports = async (client) => {
+module.exports = async (client, Discord) => {
     const table = new ascii('Commands loaded!');
 
     commandsArr = [];

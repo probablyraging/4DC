@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-module.exports = async (client) => {
+module.exports = async (client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     setInterval(() => {

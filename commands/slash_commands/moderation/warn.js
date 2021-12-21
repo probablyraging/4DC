@@ -1,7 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const warnSchema = require('../../../schemas/warn-schema')
-const makeId = require('../../../modules/makeId');
+const makeId = require('../../../modules/make-id');
 const moment = require('moment');
 
 module.exports = {
