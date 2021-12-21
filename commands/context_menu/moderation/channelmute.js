@@ -1,7 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: `channelmute`,
+    name: `Channel Mute`,
     description: ``,
     permission: `MANAGE_MESSAGES`,
     type: `MESSAGE`,
