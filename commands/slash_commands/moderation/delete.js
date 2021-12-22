@@ -28,11 +28,19 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch();
 
+        if (fetchMsg.size < 1) {
+            await interaction.reply({
+                content: `${process.env.BOT_INFO} \`I could not find any messages from ${target.user.tag} in #${channel.name}\``,
+                ephemeral: true
+            });
+            return;
+        }
+
         if (amount < 1 && member.id === process.env.OWNER_ID || amount > 100 && member.id === process.env.OWNER_ID ) {
             await interaction.reply({
                 content: `${process.env.BOT_INFO} \`Amount must be between 1 and 100\``,
                 ephemeral: true
-            })
+            });
             return;
         }
 
@@ -40,7 +48,7 @@ module.exports = {
             await interaction.reply({
                 content: `${process.env.BOT_INFO} \`Amount must be between 1 and 5\``,
                 ephemeral: true
-            })
+            });
             return;
         } else {
             if (!target && member.id !== process.env.OWNER_ID) {
@@ -64,15 +72,15 @@ module.exports = {
                         interaction.reply({
                             content: `${process.env.BOT_CONF} \`${deleted.size} messages from ${target.user.tag} deleted in #${channel.name}\``,
                             ephemeral: true
-                        })
-                    })
+                        });
+                    });
                 } else {
                     await channel.bulkDelete(amount, true).then(deleted => {
                         interaction.reply({
                             content: `${process.env.BOT_CONF} \`${deleted.size} messages deleted in #${channel.name}\``,
                             ephemeral: true
-                        })
-                    })
+                        });
+                    });
                 }
             }
         }
