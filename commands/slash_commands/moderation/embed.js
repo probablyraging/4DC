@@ -107,6 +107,34 @@ module.exports = {
                     const image = options.getString('image');
                     const author = options.getString('author');
 
+                    if (title + description + author > 6000) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`The sum of all characters from all embed structures in a message must not exceed 6000 characters\``,
+                            ephemeral: true
+                        });
+                    }
+
+                    if (title && title.length > 256) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Embed titles are limited to 256 characters\``,
+                            ephemeral: true
+                        });
+                    }
+
+                    if (description && description.length > 4096) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Embed descriptions are limited to 4096 characters\``,
+                            ephemeral: true
+                        });
+                    }
+
+                    if (image && !image.toLowerCase().startsWith('https://') && !image.toLowerCase().startsWith('http://')) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Embed image and thumbnail urls must start with one of ('https://', 'http://')\``,
+                            ephemeral: true
+                        });
+                    }
+
                     const hexRegex = /^#[0-9A-F]{6}$/i;
                     const isHex = hexRegex.test(color);
 
