@@ -45,7 +45,7 @@ module.exports = {
             await reactionMessage.react('⛔').catch(err => console.error(`Could not react to message '${reportId}': `, err));
 
             const filter = (reaction, user) => {
-                return guild.members.cache.find((member) => member.id === user.id).permissions.has("MANAGE_MESSAGES");
+                return guild.members.cache.find((member) => member.id === user.id)?.permissions.has("MANAGE_MESSAGES");
             };
 
             const collector = reactionMessage.createReactionCollector({filter, dispose: true});

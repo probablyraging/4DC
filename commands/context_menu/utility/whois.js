@@ -18,41 +18,41 @@ module.exports = {
         let acknowledgements = 'None'
         permissions = [];
 
-        if (target.permissions.has("ADMINISTRATOR")) {
+        if (target?.permissions.has("ADMINISTRATOR")) {
             permissions.push("Administrator");
             acknowledgements = 'Administrator';
         }
-        if (target.permissions.has("BAN_MEMBERS")) {
+        if (target?.permissions.has("BAN_MEMBERS")) {
             permissions.push("Ban Members");
         }
-        if (target.permissions.has("KICK_MEMBERS")) {
+        if (target?.permissions.has("KICK_MEMBERS")) {
             permissions.push("Kick Members");
         }
-        if (target.permissions.has("MANAGE_MESSAGES")) {
+        if (target?.permissions.has("MANAGE_MESSAGES")) {
             permissions.push("Manage Messages");
             acknowledgements = 'Moderator';
         }
-        if (target.permissions.has("MANAGE_CHANNELS")) {
+        if (target?.permissions.has("MANAGE_CHANNELS")) {
             permissions.push("Manage Channels");
         }
-        if (target.permissions.has("MENTION_EVERYONE")) {
+        if (target?.permissions.has("MENTION_EVERYONE")) {
             permissions.push("Mention Everyone");
         }
-        if (target.permissions.has("MANAGE_NICKNAMES")) {
+        if (target?.permissions.has("MANAGE_NICKNAMES")) {
             permissions.push("Manage Nicknames");
         }
-        if (target.permissions.has("MANAGE_ROLES")) {
+        if (target?.permissions.has("MANAGE_ROLES")) {
             permissions.push("Manage Roles");
             acknowledgements = 'Administrator';
         }
-        if (target.permissions.has("DEAFEN_MEMBERS")) {
+        if (target?.permissions.has("DEAFEN_MEMBERS")) {
             permissions.push("Deafen Members");
             acknowledgements = 'Administrator';
         }
-        if (target.permissions.has("MANAGE_WEBHOOKS")) {
+        if (target?.permissions.has("MANAGE_WEBHOOKS")) {
             permissions.push("Manage Webhooks");
         }
-        if (target.permissions.has("MANAGE_EMOJIS_AND_STICKERS")) {
+        if (target?.permissions.has("MANAGE_EMOJIS_AND_STICKERS")) {
             permissions.push("Manage Emojis and Stickers");
         }
         if (permissions.length == 0) {

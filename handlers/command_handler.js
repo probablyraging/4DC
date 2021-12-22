@@ -41,7 +41,7 @@ module.exports = async (client, Discord) => {
                 const cmdPerms = commandsArr.find(c => c.name === commandName).permission;
                 if (!cmdPerms) return null;
 
-                return mainGuild.roles.cache.filter(r => r.permissions.has(cmdPerms));
+                return mainGuild.roles.cache.filter(r => r?.permissions.has(cmdPerms));
             }
 
             const fullPermissions = command.reduce((accumulator, r) => {

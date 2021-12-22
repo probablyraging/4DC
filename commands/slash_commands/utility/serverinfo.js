@@ -17,7 +17,10 @@ module.exports = {
         activityArr = [];
 
         guild.members.fetch().then(async fetchedMembers => {
-            let online = fetchedMembers.filter(member => member.presence && member.presence?.status !== 'offline').size + 130;
+            const response = await fetch(`https://discord.com/api/v6/guilds/${process.env.GUILD_ID}/widget.json`);
+            const data = await response.json();
+            let online = data.presence_count;
+
             let idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;
             let dnd = fetchedMembers.filter(member => member.presence?.status === 'dnd').size;
 
