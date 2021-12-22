@@ -2,7 +2,7 @@ const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: `channelmute`,
-    description: `Mute a specified user, server wide or in a single channel`,
+    description: `Mute a user in a specific channel`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
     options: [{

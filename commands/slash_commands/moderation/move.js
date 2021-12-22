@@ -2,7 +2,7 @@ const { ContextMenuInteraction } = require('discord.js');
 
 module.exports = {
     name: `move`,
-    description: `Move a message to a specified channel. Move up to 5 messages at a time`,
+    description: `Move a message to a specific channel. Move up to 5 messages at a time`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
     options: [{

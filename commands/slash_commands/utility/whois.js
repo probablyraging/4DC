@@ -90,6 +90,9 @@ module.exports = {
         await interaction.reply({
             embeds: [response],
             ephemeral: true
-        })
+        });
+
+
+        
     }
 }

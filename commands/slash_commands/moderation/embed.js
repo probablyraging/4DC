@@ -3,12 +3,12 @@ const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 module.exports = {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
-    permission: `ADMINISTRATOR`,
+    permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
     options: [{
         name: `create`,
         description: `Create a new embed`,
-        permission: `ADMINISTRATOR`,
+        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
         options: [{
             name: `description`,
@@ -51,7 +51,7 @@ module.exports = {
     {
         name: `edit`,
         description: `Edit an existing embed`,
-        permission: `ADMINISTRATOR`,
+        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
         options: [{
             name: `id`,
@@ -95,7 +95,14 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { user, channel, options } = interaction;
+        const { member, user, channel, options } = interaction;
+
+        if (!member.id === process.env.BOT_OWNER) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
+                ephemeral: true
+            });
+        }
 
         try {
             switch (options.getSubcommand()) {

@@ -2,8 +2,8 @@ const { CommandInteraction } = require('discord.js');
 
 module.exports = {
     name: `delete`,
-    description: `Deletes a specified number of messages from a channel or user`,
-    permission: `ADMINISTRATOR`,
+    description: `Delete a specific number of messages from a channel or user`,
+    permission: `MANAGE_MESSAGE`,
     options: [{
         name: `amount`,
         description: `Number of messages to delete`,

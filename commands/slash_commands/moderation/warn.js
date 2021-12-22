@@ -12,7 +12,7 @@ module.exports = {
     type: `CHAT_INPUT`,
     options: [{
         name: `add`,
-        description: `Add a warning to a specified user`,
+        description: `Add a warning to a specific user`,
         permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
         options: [{
@@ -30,7 +30,7 @@ module.exports = {
     },
     {
         name: `remove`,
-        description: `Remove a warning from a specified user`,
+        description: `Remove a warning from a specific user`,
         permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
         options: [{
@@ -42,7 +42,7 @@ module.exports = {
     },
     {
         name: `list`,
-        description: `List warnings for a specified user`,
+        description: `List warnings warning IDs for a specific user`,
         permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
         options: [{
