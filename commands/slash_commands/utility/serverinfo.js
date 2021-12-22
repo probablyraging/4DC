@@ -47,6 +47,16 @@ module.exports = {
                 if (activity === 'CUSTOM') custom++;
             });
 
+            const description = guild.description || 'None';
+
+            if (guild.premiumTier === 'NONE') premiumTier = '0';
+
+            if (!guild.vanityURLCode) {
+                vanityURL = 'None';
+            } else {
+                vanityURL = `https://discord.gg/${guild.vanityURLCode}`;
+            }
+
             var createdAt = new Date(guild.createdTimestamp).toUTCString()
 
             const response = new MessageEmbed()
@@ -57,11 +67,11 @@ module.exports = {
                 .addField(`Name:`, `${guild.name}`, true)
                 .addField(`Owner:`, `<@${guild.ownerId}>`, true)
                 .addField(`Region:`, `Australia`, true)
-                .addField(`Description:`, `${guild.description}`, false)
+                .addField(`Description:`, `${description}`, false)
                 .addField(`Server Boosts:`, `${guild.premiumSubscriptionCount}`, true)
-                .addField(`Boost Level:`, `${guild.premiumTier}`, true)
+                .addField(`Boost Tier:`, `${premiumTier}`, true)
                 .addField(`Created On:`, `${createdAt}`, true)
-                .addField(`Vanity URL:`, `https://discord.gg/${guild.vanityURLCode}`, false)
+                .addField(`Vanity URL:`, `${vanityURL}`, false)
 
             const response2 = new MessageEmbed()
                 .setColor('#32BEA6') // GREEN
