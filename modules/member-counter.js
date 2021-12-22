@@ -16,7 +16,7 @@ module.exports = async (client, Discord) => {
             console.log(`Found ${totalOnline} members online out of ${memberCount} total members.`);
 
             function kFormatter(num) {
-                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'K' : Math.sign(num) * Math.abs(num);
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'K' : Math.sign(num) * Math.abs(num) + 130;
             }
 
             let onlineReal = kFormatter(totalOnline);

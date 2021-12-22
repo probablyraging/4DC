@@ -17,7 +17,7 @@ module.exports = {
         activityArr = [];
 
         guild.members.fetch().then(async fetchedMembers => {
-            // let online = fetchedMembers.filter(member => !member.presence?.status).size;
+            let online = fetchedMembers.filter(member => member.presence && member.presence?.status !== 'offline').size + 130;
             let idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;
             let dnd = fetchedMembers.filter(member => member.presence?.status === 'dnd').size;
 
@@ -46,8 +46,6 @@ module.exports = {
                 if (activity === 'COMPETING') competing++;
                 if (activity === 'CUSTOM') custom++;
             });
-
-            const online = idle + dnd + streaming + playing + watching + competing + custom;
 
             const description = guild.description || 'None';
 
