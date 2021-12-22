@@ -1,6 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const warnSchema = require('../../../schemas/warn-schema')
+const warnSchema = require('../../../schemas/warn-schema');
+const {v4: uuidv4} = require('uuid');
 const makeId = require('../../../modules/make-id');
 const moment = require('moment');
 
@@ -67,7 +68,7 @@ module.exports = {
                     const guildId = guild.id;
                     const userId = target.id;
                     const authorTag = member.user.tag;
-                    const warnId = makeId();
+                    const warnId = uuidv4();
                     const author = member.id;
                     const timestamp = new Date().getTime();
 

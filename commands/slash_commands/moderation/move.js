@@ -56,10 +56,9 @@ module.exports = {
         const toChannel = options.getChannel('channel');
 
         messagesArr = [];
-        messagesArr.push(messageId, messageId2, messageId3, messageId4, messageId5)
+        messagesArr.push(messageId, messageId2, messageId3, messageId4, messageId5);
 
         const fetchMsg = channel.messages.fetch();
-
 
         for (let i = 0; i < messagesArr.length; i++) {
             (await fetchMsg).filter(msg => {
