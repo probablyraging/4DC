@@ -85,6 +85,8 @@ module.exports = {
             .setFooter(`ID: ${target.id}`)
             .setTimestamp()
 
+        if (target.user.bot) response.addField('Additional:', `This user is a BOT`, false);
+
         await interaction.reply({
             embeds: [response],
             ephemeral: true
