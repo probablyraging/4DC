@@ -28,6 +28,13 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch();
 
+        if (!guild.me.permissionsIn(channel).has('MANAGE_MESSAGES') || !guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`I do not have to proper permissions for #${channel.name}\``,
+                ephemeral: true
+            });
+        }
+
         if (fetchMsg.size < 1) {
             await interaction.reply({
                 content: `${process.env.BOT_INFO} \`I could not find any messages from ${target.user.tag} in #${channel.name}\``,
