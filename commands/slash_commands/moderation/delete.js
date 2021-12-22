@@ -21,7 +21,7 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const { member, channel, options } = interaction;
+        const { guild, member, channel, options } = interaction;
 
         const amount = options.getNumber('amount');
         const target = options.getMember('username');
