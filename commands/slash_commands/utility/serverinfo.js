@@ -17,7 +17,7 @@ module.exports = {
         activityArr = [];
 
         guild.members.fetch().then(async fetchedMembers => {
-            let online = fetchedMembers.filter(member => !member.presence?.status).size;
+            // let online = fetchedMembers.filter(member => !member.presence?.status).size;
             let idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;
             let dnd = fetchedMembers.filter(member => member.presence?.status === 'dnd').size;
 
@@ -47,9 +47,16 @@ module.exports = {
                 if (activity === 'CUSTOM') custom++;
             });
 
+            const online = idle + dnd + streaming + playing + watching + competing + custom;
+
             const description = guild.description || 'None';
 
+            let premiumTier = guild.premiumTier;
+
             if (guild.premiumTier === 'NONE') premiumTier = '0';
+            if (guild.premiumTier === 'TIER_1') premiumTier = '1';
+            if (guild.premiumTier === 'TIER_2') premiumTier = '2';
+            if (guild.premiumTier === 'TIER_3') premiumTier = '3';
 
             if (!guild.vanityURLCode) {
                 vanityURL = 'None';

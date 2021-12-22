@@ -6,9 +6,9 @@ module.exports = async (client, Discord) => {
     setInterval(() => {
         guild.members.fetch().then(async fetchedMembers => {
             console.log("Updating online members");
-            fetchedMembers.forEach(member => {
-                console.log(`Name: ${member.displayName}, Status: ${member.presence?.status}`);
-            });
+            // fetchedMembers.forEach(member => {
+            //     console.log(`Name: ${member.displayName}, Status: ${member.presence?.status}`);
+            // });
 
             let totalOnline = fetchedMembers.filter(member => member.presence && member.presence?.status !== 'offline').size;
             let memberCount = guild.memberCount;

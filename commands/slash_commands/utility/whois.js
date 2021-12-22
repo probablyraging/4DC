@@ -16,11 +16,11 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, options } = interaction;
+        const { guild, member, options } = interaction;
 
         const target = options.getMember(`username`) || member
 
-        acknowledgements = null
+        let acknowledgements = 'None'
         permissions = [];
 
         if (target.permissions.has("ADMINISTRATOR")) {
@@ -58,7 +58,7 @@ module.exports = {
             permissions.push("Manage Webhooks");
         }
         if (target.permissions.has("MANAGE_EMOJIS_AND_STICKERS")) {
-            permissions.push("Manage Emojis");
+            permissions.push("Manage Emojis and Stickers");
         }
         if (permissions.length == 0) {
             permissions.push("No Key Permissions Found");
@@ -72,6 +72,10 @@ module.exports = {
         if (target.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';
         if (!target.presence?.status) targetStatus = 'Offline';
 
+        const roles = guild.members.cache.get(target.id)._roles.length;
+        let roleList = `None`;
+        if (roles > 0) roleList = `<@&${guild.members.cache.get(target.id)._roles.join('>, <@&')}>`;
+
         const response = new MessageEmbed()
             .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setColor('RANDOM')
@@ -79,7 +83,7 @@ module.exports = {
             .addField('Registered:', `<t:${parseInt(target.user.createdTimestamp / 1000)}:R>`, true)
             .addField('Joined:', `<t:${parseInt(target.joinedTimestamp / 1000)}:R>`, true)
             .addField('Status:', `${targetStatus}`, true)
-            .addField('Roles:', `<@&${interaction.guild.members.cache.get(target.id)._roles.join('>, <@&')}>`, false)
+            .addField('Roles:', `${roleList}`, false)
             .addField('Acknowledgements:', `${acknowledgements}`, true)
             .addField('Permissions:', `${permissions.join(`, `)}`, false)
             .setFooter(`ID: ${target.id}`)
