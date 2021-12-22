@@ -46,7 +46,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { channel, options } = interaction;
+        const { guild, channel, options } = interaction;
 
         const messageId = options.getString('message');
         const messageId2 = options.getString('message2');
@@ -55,18 +55,53 @@ module.exports = {
         const messageId5 = options.getString('message5');
         const toChannel = options.getChannel('channel');
 
+        function filterArr(value, index, self) {
+            return self.indexOf(value) === index;
+        }
+
         messagesArr = [];
         messagesArr.push(messageId, messageId2, messageId3, messageId4, messageId5);
+        const delNull = messagesArr.filter(function (e) { return e != null; });
+        const filteredArr = delNull.filter(filterArr);
+
+        if (!guild.me.permissionsIn(channel).has('MANAGE_MESSAGES') || !guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`I do not have to proper permissions for #${channel.name}\``,
+                ephemeral: true
+            });
+        }
 
         const fetchMsg = channel.messages.fetch();
 
-        for (let i = 0; i < messagesArr.length; i++) {
+        const channelType = toChannel.type;
+
+        if (channelType === 'GUILD_VOICE') cType = 'voice channel';
+        if (channelType === 'GUILD_CATEGORY') cType = 'category';
+        if (channelType === 'GUILD_NEWS') cType = 'news channel';
+
+        if (channelType !== 'GUILD_TEXT') {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`You can't move a message to a ${cType}\``,
+                ephemeral: true
+            });
+        }
+
+        for (let i = 0; i < filteredArr.length; i++) {
             (await fetchMsg).filter(msg => {
-                if (msg.id === messagesArr[i]) {
+                if (msg.id === filteredArr[i]) {
                     let msgAttachment = msg.attachments.size > 0 ? msg.attachments : null;
                     let msgContent = msg.content || ' ';
 
-                    msgAuthor = msg.author;
+                    author = msg.author;
+
+                    if (!author) {
+                        msg.delete();
+
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`That user no longer exists. Their message(s) were deleted\``,
+                            ephemeral: true
+                        });
+                    }
 
                     if (msgAttachment) {
                         imageArr = [];
@@ -102,7 +137,7 @@ module.exports = {
 
         try {
             await interaction.reply({
-                content: `${msgAuthor} your post was moved to ${toChannel}`
+                content: `${author} your post was moved to ${toChannel}`
             });
         } catch {
             await interaction.reply({
