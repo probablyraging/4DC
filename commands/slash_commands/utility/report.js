@@ -5,17 +5,17 @@ const {addCooldown, hasCooldown, removeCooldown} = require('../../../modules/rep
 
 module.exports = {
     name: "report",
-    description: "Report a user to the CreatorHub staff.",
+    description: "Report a user to the CreatorHub staff",
     options: [
         {
             name: "username",
-            description: "The user to report.",
+            description: "The user to report",
             type: "USER",
             required: true
         },
         {
             name: "reason",
-            description: "Why the user is being reported.",
+            description: "Why the user is being reported",
             type: "STRING",
             required: true
         }
@@ -54,7 +54,7 @@ module.exports = {
                 if (!closingUser.bot && reaction.emoji.name === "⛔") {
                     const closedEmbed = new MessageEmbed(reportEmbed)
                         .addField(`Closed By:`, `${closingUser}`, false)
-                        .setColor('#1fe000');
+                        .setColor('#32BEA6');
                     reactionMessage.edit({embeds: [closedEmbed]});
                     reactionMessage.reactions.resolve('⛔').remove('⛔');
 
