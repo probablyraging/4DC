@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const linkCooldown = require('../../modules/link-cooldown');
+const linkCooldown = require('../../modules/link_cooldown');
 
 module.exports = {
     name: `messageCreate`,

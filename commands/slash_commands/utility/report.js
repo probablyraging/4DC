@@ -1,7 +1,7 @@
 require('dotenv').config();
 const {MessageEmbed} = require('discord.js');
 const {v4: uuidv4} = require('uuid');
-const {addCooldown, hasCooldown, removeCooldown} = require('../../../modules/reportCooldown');
+const {addCooldown, hasCooldown, removeCooldown} = require('../../../modules/report_cooldown');
 
 module.exports = {
     name: "report",
@@ -45,7 +45,7 @@ module.exports = {
             await reactionMessage.react('⛔').catch(err => console.error(`Could not react to message '${reportId}': `, err));
 
             const filter = (reaction, user) => {
-                return guild.members.cache.find((member) => member.id === user.id)?.permissions.has("MANAGE_MESSAGES");
+                return guild.members.cache.find((member) => member.id === user.id).permissions.has("MANAGE_MESSAGES");
             };
 
             const collector = reactionMessage.createReactionCollector({filter, dispose: true});
