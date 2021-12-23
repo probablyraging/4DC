@@ -62,10 +62,10 @@ module.exports = {
             acknowledgements = 'Server Owner';
         }
 
-        if (target.presence?.status === 'online') targetStatus = 'Online';
-        if (target.presence?.status === 'idle') targetStatus = 'Idle';
-        if (target.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';
-        if (!target.presence?.status) targetStatus = 'Offline';
+        if (target?.presence?.status === 'online') targetStatus = 'Online';
+        if (target?.presence?.status === 'idle') targetStatus = 'Idle';
+        if (target?.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';
+        if (!target?.presence?.status) targetStatus = 'Offline';
 
 
         const roles = guild.members.cache.get(target.id)._roles.length;

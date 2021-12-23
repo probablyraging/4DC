@@ -19,8 +19,8 @@ module.exports = async (client, Discord) => {
             let onlineReal = kFormatter(totalOnline);
             let totalReal = kFormatter(memberCount);
 
-            const channelOnline = guild.channels?.cache.get(process.env.VC_ONLINE);
-            const channelTotal = guild.channels?.cache.get(process.env.VC_TOTAL);
+            const channelOnline = guild.channels.cache.get(process.env.VC_ONLINE);
+            const channelTotal = guild.channels.cache.get(process.env.VC_TOTAL);
             channelOnline.setName(`Online Members: ${onlineReal}`);
             channelTotal.setName(`Total Members: ${totalReal}`);
         })

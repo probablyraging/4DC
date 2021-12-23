@@ -36,7 +36,7 @@ module.exports = {
         const country = options.getString('country');
         const reason = options.getString('reason');
 
-        if (!member.roles.cache.has(process.env.RANK10_ROLE)) {
+        if (!member?.roles?.cache.has(process.env.RANK10_ROLE)) {
             await interaction.reply({
                 content: `${process.env.BOT_DENY} \`You must be rank 10 to apply for a staff role\``,
                 ephemeral: true
