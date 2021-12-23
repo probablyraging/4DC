@@ -13,7 +13,12 @@ module.exports = {
     async execute(interaction) {
         const { guild } = interaction;
 
-        const target = await guild.members.fetch(interaction.targetId);
+        const target = await guild.members.fetch(interaction.targetId).catch(() => {
+            interaction.reply({
+                content: `${process.env.BOT_DENY} \`This user no longer exists\``,
+                ephemeral: true
+            });
+        });
 
         let acknowledgements = 'None'
         permissions = [];
@@ -87,7 +92,7 @@ module.exports = {
 
         if (target.user.bot) response.addField('Additional:', `This user is a BOT`, false);
 
-        await interaction.reply({
+        interaction.reply({
             embeds: [response],
             ephemeral: true
         });

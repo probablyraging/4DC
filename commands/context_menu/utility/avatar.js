@@ -10,7 +10,12 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const target = await interaction.guild.members.fetch(interaction.targetId);
+        const target = await interaction.guild.members.fetch(interaction.targetId).catch(() => {
+            interaction.reply({
+                content: `${process.env.BOT_DENY} \`This user no longer exists\``,
+                ephemeral: true
+            });
+        });;
 
         const response = new MessageEmbed()
             .setColor('#32BEA6') // GREEN
