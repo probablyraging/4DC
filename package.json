@@ -22,7 +22,6 @@
 		"dotenv": "^9.0.2",
 		"express": "^4.17.1",
 		"ffmpeg-static": "^4.3.0",
-		"git-auto-pull": "^1.0.9",
 		"glob": "^7.2.0",
 		"lint": "^0.7.0",
 		"mongoose": "^5.12.10",

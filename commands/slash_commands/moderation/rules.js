@@ -14,7 +14,7 @@ module.exports = {
     },
     {
         name: `username`,
-        description: `The user you want to direct the reminder to`,
+        description: `The user you want to direct the reminder at`,
         type: `USER`,
         required: true
     }],
@@ -32,7 +32,7 @@ module.exports = {
 
         await interaction.reply({
             content: `*Please read the rules ${target}:*
-> [${process.env.BOT_DOC} **Rule ${number}**](<${url}>) - ${rules[number - 1]}`
+> ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rules[number - 1]}`
         });
     }
 }
