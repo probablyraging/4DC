@@ -17,9 +17,9 @@ module.exports = {
         activityArr = [];
 
         guild.members.fetch().then(async fetchedMembers => {
-            const resolve = await fetch(`https://discord.com/api/v6/guilds/${process.env.GUILD_ID}/widget.json`);
+            const resolve = await fetch('https://discord.com/api/v9/guilds/820889004055855144?with_counts=true', { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } });
             const data = await resolve.json();
-            let online = data.presence_count;
+            let online = data.approximate_presence_count;
 
             let idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;
             let dnd = fetchedMembers.filter(member => member.presence?.status === 'dnd').size;
