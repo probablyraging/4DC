@@ -106,7 +106,7 @@ module.exports = {
                                     let dmFail = false;
                                     let banFail = false;
 
-                                    await target.send({
+                                    target.send({
                                         content: `${process.env.BOT_DENY} \`You have been permanently banned from ${guild.name}\`
                                                                                 
 **Reason**
@@ -115,14 +115,14 @@ module.exports = {
 
                                     let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
 
-                                    await target.ban({
+                                    target.ban({
                                         days: 0,
                                         reason: `Warning threshold reached`
                                     }).catch(() => banFail = true);
 
                                     let banMsg = banFail ? `${process.env.BOT_DENY} \`I could not ban ${target.user.tag}\`` : `${process.env.BOT_CONF} \`${target.user.tag} was banned\``;
 
-                                    await interaction.reply({
+                                    interaction.reply({
                                         content: `${replyMsg}
 ${banMsg}`,
                                         ephemeral: true
@@ -130,7 +130,7 @@ ${banMsg}`,
                                 } else {
                                     let dmFail = false;
 
-                                    await target.send({
+                                    target.send({
                                         content: `${process.env.BOT_DENY} \`You received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!\`
                                                                                 
 **Reason**
@@ -166,7 +166,7 @@ ${banMsg}`,
                                     ephemeral: true
                                 }));
                             } else {
-                                await interaction.reply({
+                                interaction.reply({
                                     content: `${process.env.BOT_DENY} \`Warning '${warning}' does not exist or has already been deleted\``,
                                     ephemeral: true
                                 });

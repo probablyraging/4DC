@@ -27,7 +27,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { guild, member, options } = interaction;
 
         const channel = guild.channels.cache.get(process.env.STAFF_APP2);
@@ -37,7 +37,7 @@ module.exports = {
         const reason = options.getString('reason');
 
         if (!member?.roles?.cache.has(process.env.RANK10_ROLE)) {
-            await interaction.reply({
+            interaction.reply({
                 content: `${process.env.BOT_DENY} \`You must be rank 10 to apply for a staff role\``,
                 ephemeral: true
             });
@@ -54,7 +54,7 @@ Reason: ${reason}\`\`\``, true)
                 embeds: [response]
             });
 
-            await interaction.reply({
+            interaction.reply({
                 content: `${process.env.BOT_CONF} \`Thank you! Your staff application has been received. If your application is successful a staff member will contact you\``,
                 ephemeral: true
             });

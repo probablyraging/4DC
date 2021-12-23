@@ -41,7 +41,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { client, member, guild, channel, options } = interaction;
 
 

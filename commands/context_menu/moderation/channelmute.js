@@ -13,7 +13,7 @@ module.exports = {
         const { client, member, guild, channel } = interaction;
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
-        const target = await fetchMsg.author;
+        const target = fetchMsg.author;
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
         const reason = `None - command ran via context menu`;
 

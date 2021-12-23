@@ -1,4 +1,4 @@
-module.exports = async (client, Discord) => {
+module.exports = (client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     setInterval(() => {

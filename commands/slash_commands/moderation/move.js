@@ -136,11 +136,11 @@ module.exports = {
         }
 
         try {
-            await interaction.reply({
+            interaction.reply({
                 content: `${author} your post was moved to ${toChannel}`
             });
         } catch {
-            await interaction.reply({
+            interaction.reply({
                 content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
                 ephemeral: true
             });

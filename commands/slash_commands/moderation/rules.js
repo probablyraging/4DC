@@ -22,7 +22,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { options } = interaction;
 
         const number = options.getNumber('number');
@@ -30,7 +30,7 @@ module.exports = {
 
         const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
 
-        await interaction.reply({
+        interaction.reply({
             content: `*Please read the rules ${target}:*
 > ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rules[number - 1]}`
         });

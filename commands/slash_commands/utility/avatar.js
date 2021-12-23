@@ -26,7 +26,7 @@ module.exports = {
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 
-        await interaction.reply({
+        interaction.reply({
             embeds: [response],
             ephemeral: true
         });

@@ -94,7 +94,7 @@ module.exports = {
                 .addField(`Competing:`, `${competing}`, true)
                 .addField(`Total Members:`, `${guild.memberCount}`, false)
 
-            await interaction.reply({
+            interaction.reply({
                 embeds: [response, response2],
                 ephemeral: true
             });

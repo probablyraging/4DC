@@ -1,6 +1,6 @@
 module.exports = {
     name: 'guildMemberUpdate',
-    async execute(newMember, oldMember, client, Discord) {
+    execute(newMember, oldMember, client, Discord) {
 
 
     }

@@ -1,3 +1,3 @@
-module.exports = async (Discord, client, oldMessage, newMessage) => {
+module.exports = (Discord, client, oldMessage, newMessage) => {
     
 }

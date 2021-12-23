@@ -94,7 +94,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { member, user, channel, options } = interaction;
 
         if (!member.id === process.env.BOT_OWNER) {

@@ -15,7 +15,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { guild, member, options } = interaction;
 
         const target = options.getMember(`username`) || member
@@ -91,7 +91,7 @@ module.exports = {
 
         if (target.user.bot) response.addField('Additional:', `This user is a BOT`, false);
 
-        await interaction.reply({
+        interaction.reply({
             embeds: [response],
             ephemeral: true
         });
