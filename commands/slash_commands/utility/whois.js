@@ -77,6 +77,27 @@ module.exports = {
         let roleList = `None`;
         if (roles > 0) roleList = `<@&${guild.members.cache.get(target.id)._roles.join('>, <@&')}>`;
 
+        if (roleList && roleList.length > 1024) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`Role field exceeds 1024 characters\``,
+                ephemeral: true
+            });
+        }
+
+        if (acknowledgements && acknowledgements.length > 1024) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`Acknowledgements field exceeds 1024 characters\``,
+                ephemeral: true
+            });
+        }
+
+        if (permissions && permissions.length > 1024) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`Permissions field exceeds 1024 characters\``,
+                ephemeral: true
+            });
+        }
+
         const response = new MessageEmbed()
             .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setColor('RANDOM')
@@ -98,6 +119,6 @@ module.exports = {
         });
 
 
-        
+
     }
 }

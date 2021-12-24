@@ -62,6 +62,13 @@ module.exports = {
                     const targetChan = options.getChannel('channel');
                     const reason = options.getString('reason');
 
+                    if (reason && reason.length > 1024) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                            ephemeral: true
+                        });
+                    }
+
                     const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
                     targetChan.permissionOverwrites.edit(target.id, {

@@ -34,6 +34,13 @@ module.exports = {
         const target = options.getMember('username');
         const reason = options.getString('reason');
 
+        if (reason && reason.length > 1024) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`Permissions field exceeds 1024 characters\``,
+                ephemeral: true
+            });
+        }
+
         if (!hasCooldown(user.id)) {
             const reportEmbed = new MessageEmbed()
                 .setColor('#E04F5F')

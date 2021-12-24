@@ -43,6 +43,27 @@ module.exports = {
                 ephemeral: true
             });
         } else {
+            if (age && age.length > 1024) {
+                return interaction.reply({
+                    content: `${process.env.BOT_DENY} \`Age field exceeds 1024 characters\``,
+                    ephemeral: true
+                });
+            }
+
+            if (country && country.length > 1024) {
+                return interaction.reply({
+                    content: `${process.env.BOT_DENY} \`Country field exceeds 1024 characters\``,
+                    ephemeral: true
+                });
+            }
+
+            if (reason && reason.length > 1024) {
+                return interaction.reply({
+                    content: `${process.env.BOT_DENY} \`Reason field exceeds 1024 characters\``,
+                    ephemeral: true
+                });
+            }
+
             const response = new MessageEmbed()
                 .setColor('#FF9E00')
                 .setAuthor(`${member.user.tag}`, `${member.user.displayAvatarURL({ dynamic: true })}`)
