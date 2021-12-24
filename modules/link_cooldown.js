@@ -6,46 +6,46 @@ const cooldown = new Set();
  */
 
 module.exports = (message, client, Discord) => {
-    const author = message.author;
-    const content = message.content.toLocaleLowerCase();
+    const author = message?.author;
+    const content = message?.content.toLocaleLowerCase();
     const conditions = ['https://', 'http://', 'www.'];
     const check = conditions.some(el => content.includes(el));
 
     if (!author) {
         return;
     } else {
-        if (check === true && !message.member?.permissions.has("MANAGE_MESSAGES")) {
-            if (cooldown.has(message.author.id)) {
+        if (check === true && !message?.member?.permissions.has("MANAGE_MESSAGES")) {
+            if (cooldown.has(message?.author.id)) {
                 const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
                 let userMsg = message;
 
-                author.send({
+                author?.send({
                     content: `${response}`,
                 }).catch(() => {
-                    message.reply({
+                    message?.reply({
                         content: `${response}`,
                         deleteallowedMentions: { repliedUser: true }
                     }).catch(() => {
-                        message.reply({
+                        message?.reply({
                             content: `${response}`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => setTimeout(() => {
-                            msg.delete().catch(() => { });
+                            msg?.delete().catch(() => { });
                         }, 4000));
                     }).then(msg => setTimeout(() => {
-                        msg.delete().catch(() => { });
+                        msg?.delete().catch(() => { });
                     }, 4000));
                 }).then(() => {
                     setTimeout(() => {
-                        userMsg.delete().catch(() => { });
+                        userMsg?.delete().catch(() => { });
                     }, 100);
                 });
             } else {
-                cooldown.add(message.author.id);
+                cooldown.add(message?.author.id);
 
                 setTimeout(() => {
-                    cooldown.delete(message.author.id);
+                    cooldown.delete(message?.author.id);
                 }, 30000);
             }
         }
