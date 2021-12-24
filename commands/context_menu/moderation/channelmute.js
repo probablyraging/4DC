@@ -21,7 +21,7 @@ module.exports = {
             SEND_MESSAGES: false,
         });
 
-        const response = new MessageEmbed()
+        const log = new MessageEmbed()
             .setColor('#E04F5F')
             .setAuthor(`${target.tag} has been muted`, `${target.displayAvatarURL({ dynamic: true })}`)
             .addField(`Channel:`, `${channel}`, true)
@@ -31,7 +31,7 @@ module.exports = {
             .setTimestamp()
 
         mutesChan.send({
-            embeds: [response]
+            embeds: [log]
         });
 
         let dmFail = false;

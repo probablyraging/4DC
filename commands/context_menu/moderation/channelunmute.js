@@ -19,7 +19,7 @@ module.exports = {
 
         channel.permissionOverwrites.delete(target);
 
-        const response = new MessageEmbed()
+        const log = new MessageEmbed()
             .setColor('#32BEA6')
             .setAuthor(`${target.tag} has been unmuted`, `${target.displayAvatarURL({ dynamic: true })}`)
             .addField(`Channel:`, `${channel}`, true)
@@ -29,7 +29,7 @@ module.exports = {
             .setTimestamp()
 
         mutesChan.send({
-            embeds: [response]
+            embeds: [log]
         });
 
         let dmFail = false;

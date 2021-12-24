@@ -75,7 +75,7 @@ module.exports = {
                         SEND_MESSAGES: false,
                     });
 
-                    const response = new MessageEmbed()
+                    const log = new MessageEmbed()
                         .setColor('#E04F5F')
                         .setAuthor(`${target.user.tag} has been muted`, `${target.user.displayAvatarURL({ dynamic: true })}`)
                         .addField(`Channel:`, `${targetChan}`, true)
@@ -85,7 +85,7 @@ module.exports = {
                         .setTimestamp()
 
                     mutesChan.send({
-                        embeds: [response]
+                        embeds: [log]
                     });
 
                     let dmFail = false;
@@ -110,7 +110,7 @@ module.exports = {
                 case 'remove': {
                     targetChan.permissionOverwrites.delete(target.id);
 
-                    const response = new MessageEmbed()
+                    const log = new MessageEmbed()
                         .setColor('#32BEA6')
                         .setAuthor(`${target.user.tag} has been unmuted`, `${target.user.displayAvatarURL({ dynamic: true })}`)
                         .addField(`Channel:`, `${targetChan}`, true)
@@ -119,7 +119,7 @@ module.exports = {
                         .setTimestamp()
 
                     mutesChan.send({
-                        embeds: [response]
+                        embeds: [log]
                     });
 
                     let dmFail = false;
