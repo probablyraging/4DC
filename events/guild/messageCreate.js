@@ -1,6 +1,7 @@
 const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/link_cooldown');
 const ckqPost = require('../../modules/ckq_post');
+const bumpPost = require('../../modules/bump_post');
 
 module.exports = {
     name: `messageCreate`,
@@ -12,6 +13,6 @@ module.exports = {
 
         linkCooldown(message, client, Discord);
         ckqPost(message, client, Discord);
-
+        bumpPost(message, client, Discord);
     }
 }

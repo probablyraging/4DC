@@ -96,7 +96,7 @@ module.exports = {
                                 upsert: true
                             }).catch(err => { return; });
                         } finally {
-                            mongoose.connection.close().catch(() => { return });
+                            return;
                         }
 
                         await mongo().then(async (mongoose) => {
@@ -187,7 +187,7 @@ ${banMsg}`,
                                     });
                                 }
                             } finally {
-                                mongoose.connection.close().catch(() => { return });
+                                return;
                             }
                         })
                     })
@@ -228,7 +228,7 @@ ${banMsg}`,
                                 });
                             }
                         } finally {
-                            mongoose.connection.close().catch(() => { return });
+                            return;
                         }
                     });
                 }
@@ -275,7 +275,7 @@ ${banMsg}`,
                                 ephemeral: true
                             });
                         } finally {
-                            mongoose.connection.close().catch(err => { return; });
+                            return;
                         }
                     });
                 }

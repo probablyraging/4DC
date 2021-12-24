@@ -54,7 +54,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                 }).catch(err => { return; });
 
             } finally {
-                mongoose.connection.close().catch(err => { return; });
+                return;
             }
         }).then(interaction.reply({
             content: `${[process.env.BOT_CONF]} \`#${ckqChannel.name} has been reset\``,

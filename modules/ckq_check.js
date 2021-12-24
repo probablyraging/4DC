@@ -7,7 +7,6 @@ const timerSchema = require('../schemas/timer-schema');
  */
 module.exports = async (message, client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-
     const ckqChannel = guild.channels.cache.get(process.env.CKQ_CHAN);
     const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
 
@@ -18,9 +17,9 @@ module.exports = async (message, client, Discord) => {
                 const results = await timerSchema.find({ searchFor })
 
                 for (const info of results) {
-                    const { timestamp } = info
+                    const { timestamp } = info;
 
-                    dbTimestamp = timestamp
+                    dbTimestamp = timestamp;
                 }
 
                 const ckEmbed = new MessageEmbed()
@@ -58,7 +57,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                     }).catch(err => { return; });
                 }
             } finally {
-                mongoose.connection.close().catch(err => { return; });
+                return;
             }
         });
     }, 30000);

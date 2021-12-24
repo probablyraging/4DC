@@ -2,6 +2,7 @@ const { client } = require('discord.js');
 const memberCounter = require('../../modules/member_counter');
 const statusCounter = require('../../modules/status_counter');
 const ckqCheck = require('../../modules/ckq_check');
+const bumpCheck = require('../../modules/bump_check');
 const { mongoose } = require('mongoose');
 const mongo = require('../../mongo');
 const moment = require('moment');
@@ -28,5 +29,6 @@ module.exports = {
         statusCounter(client);
         memberCounter(client);
         ckqCheck(message, client, Discord);
+        bumpCheck(message, client, Discord);
     }
 };

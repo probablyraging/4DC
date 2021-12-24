@@ -6,15 +6,14 @@ const timerSchema = require('../schemas/timer-schema');
  * @param {Message} message 
  */
 module.exports = async (message, client, Discord) => {
-
-    if (message.channel.id === process.env.CKQ_CHAN) {
-        if (message.author.bot) return;
+    if (message?.channel.id === process.env.CKQ_CHAN) {
+        if (message?.author.bot) return;
 
         const ckqChannel = message?.channel;
         const ckqRole = message?.guild.roles.cache.get(process.env.CKQ_ROLE);
         const target = message?.member;
 
-        ckqChannel.permissionOverwrites.edit(message.guildId, {
+        ckqChannel.permissionOverwrites.edit(message?.guildId, {
             SEND_MESSAGES: false,
         });
 
@@ -38,7 +37,7 @@ module.exports = async (message, client, Discord) => {
                     upsert: true
                 }).catch(err => { return; });
             } finally {
-                mongoose.connection.close().catch(err => { return; });
+                return;
             }
         });
     }
