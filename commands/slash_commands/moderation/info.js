@@ -8,6 +8,7 @@ module.exports = {
     options: [{
         name: `review`,
         description: `Information about the review channel`,
+        permission: ``,
         type: `SUB_COMMAND`,
         usage: `/info review [@username]`,
         options: [{
