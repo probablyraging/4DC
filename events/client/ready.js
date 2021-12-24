@@ -7,6 +7,7 @@ const { mongoose } = require('mongoose');
 const mongo = require('../../mongo');
 const moment = require('moment');
 const date = new Date();
+const blacklist = require('../../lists/blacklist')
 
 module.exports = {
     name: 'ready',

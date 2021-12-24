@@ -25,7 +25,7 @@ module.exports = (message, client, Discord) => {
     }
 
     // when someone levels up, mee6 sends a message. we hijack that message and apply roles when neccessary
-    if (message?.author.id === process.env.OWNER_ID && message?.content.startsWith('GG') && message?.channel.id === process.env.BOT_CHAN) {
+    if (message?.author.id === process.env.MEE6_ID && message?.content.startsWith('GG') && message?.channel.id === process.env.BOT_CHAN) {
         message?.delete().catch(err => { return; });
         message?.channel.send({
             content: `${message?.content}`

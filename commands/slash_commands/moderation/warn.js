@@ -96,7 +96,7 @@ module.exports = {
                                 upsert: true
                             }).catch(err => { return; });
                         } finally {
-                            return;
+                            // do nothing
                         }
 
                         await mongo().then(async (mongoose) => {

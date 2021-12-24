@@ -4,6 +4,8 @@ const ckqPost = require('../../modules/ckq_post');
 const bumpPost = require('../../modules/bump_post');
 const levelsCheck = require('../../modules/levels_check');
 const invitesCheck = require('../../modules/invites_check');
+const blLinks = require('../../modules/bl_links');
+const blPromo = require('../../modules/bl_promo');
 
 module.exports = {
     name: `messageCreate`,
@@ -18,6 +20,8 @@ module.exports = {
         bumpPost(message, client, Discord);
         levelsCheck(message, client, Discord);
         invitesCheck(message, client, Discord);
+        blLinks(message, client, Discord);
+        blPromo(message, client, Discord);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
