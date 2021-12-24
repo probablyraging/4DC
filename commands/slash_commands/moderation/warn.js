@@ -1,7 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const warnSchema = require('../../../schemas/warn-schema');
-const {v4: uuidv4} = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const makeId = require('../../../modules/make_id');
 const moment = require('moment');
 
@@ -57,13 +57,15 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { client, member, guild, channel, options } = interaction;
+        const { client, member, guild, user, options } = interaction;
 
         try {
             switch (options.getSubcommand()) {
                 case 'add': {
                     const target = options.getMember('username');
                     const reason = options.getString('reason');
+
+                    const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
 
                     const guildId = guild.id;
                     const userId = target.id;
@@ -122,6 +124,26 @@ module.exports = {
 
                                     let banMsg = banFail ? `${process.env.BOT_DENY} \`I could not ban ${target.user.tag}\`` : `${process.env.BOT_CONF} \`${target.user.tag} was banned\``;
 
+                                    if (reason && reason.length > 1024) {
+                                        return interaction.reply({
+                                            content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                            ephemeral: true
+                                        });
+                                    }
+
+                                    const log = new MessageEmbed()
+                                        .setColor('#E04F5F')
+                                        .setAuthor(`${target.tag} has been warned`, `${target.displayAvatarURL({ dynamic: true })}`)
+                                        .addField(`Warned By:`, `<@${member.id}>`, true)
+                                        .addField(`Warning Count:`, `${warnCount}`, true)
+                                        .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
+                                        .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
+                                        .setTimestamp()
+
+                                    warnChan.send({
+                                        embeds: [log]
+                                    });
+
                                     interaction.reply({
                                         content: `${replyMsg}
 ${banMsg}`,
@@ -139,6 +161,26 @@ ${banMsg}`,
 
                                     let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
 
+                                    if (reason && reason.length > 1024) {
+                                        return interaction.reply({
+                                            content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                            ephemeral: true
+                                        });
+                                    }
+
+                                    const log = new MessageEmbed()
+                                        .setColor('#E04F5F')
+                                        .setAuthor(`${target.user.tag} has been warned`, `${target.displayAvatarURL({ dynamic: true })}`)
+                                        .addField(`Warned By:`, `<@${member.id}>`, true)
+                                        .addField(`Warning Count:`, `${warnCount}`, true)
+                                        .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
+                                        .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
+                                        .setTimestamp()
+
+                                    warnChan.send({
+                                        embeds: [log]
+                                    });
+
                                     interaction.reply({
                                         content: `${replyMsg}`,
                                         ephemeral: true
@@ -154,6 +196,8 @@ ${banMsg}`,
 
             switch (options.getSubcommand()) {
                 case 'remove': {
+                    const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
+
                     const warning = options.getString('warning');
 
                     await mongo().then(async mongoose => {
@@ -161,6 +205,18 @@ ${banMsg}`,
                             const results = await warnSchema.find({ warnId: warning })
 
                             if (results.length > 0) {
+
+                                const log = new MessageEmbed()
+                                    .setColor('#32BEA6')
+                                    .setAuthor(`${user.tag} has been warned`, `${user.displayAvatarURL({ dynamic: true })}`)
+                                    .addField(`Deleted By:`, `<@${user.id}>`, true)
+                                    .setFooter(`${guild.name} • Warning ID ${warning}`, `${guild.iconURL({ dynamic: true })}`)
+                                    .setTimestamp()
+
+                                warnChan.send({
+                                    embeds: [log]
+                                });
+
                                 await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                     content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                     ephemeral: true
