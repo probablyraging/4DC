@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: `move`,
@@ -47,7 +47,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { guild, channel, options } = interaction;
+        const { client, user, guild, channel, options } = interaction;
 
         const messageId = options.getString('message');
         const messageId2 = options.getString('message2');
@@ -55,6 +55,8 @@ module.exports = {
         const messageId4 = options.getString('message4');
         const messageId5 = options.getString('message5');
         const toChannel = options.getChannel('channel');
+
+        const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
 
         function filterArr(value, index, self) {
             return self.indexOf(value) === index;
@@ -91,7 +93,7 @@ module.exports = {
             (await fetchMsg).filter(msg => {
                 if (msg.id === filteredArr[i]) {
                     let msgAttachment = msg.attachments.size > 0 ? msg.attachments : null;
-                    let msgContent = msg.content || ' ';
+                    msgContent = msg.content || ' ';
 
                     author = msg.author;
 
@@ -137,8 +139,24 @@ module.exports = {
         }
 
         try {
+            let log = new MessageEmbed()
+                .setAuthor(`${user.tag}`, `${user.displayAvatarURL({ dynamic: true })}`)
+                .setColor("#FF9E00")
+                .setDescription(`**A message was moved**`)
+                .addField(`By`, `<@${user.id}>`, false)
+                .addField("Author", `<@${author.id}>`, true)
+                .addField("From", `${channel}`, true)
+                .addField("To", `${toChannel}`, true)
+                .addField('Message', `\`\`\`${msgContent}\`\`\``)
+                .setFooter(guild.name, `${guild.iconURL({ dynamic: true })}`)
+                .setTimestamp()
+
+            msgUpChan.send({
+                embeds: [log]
+            });
+
             interaction.reply({
-                content: `${author} your post was moved to ${toChannel}`
+                content: `${author} your message was moved to ${toChannel}`
             });
         } catch {
             interaction.reply({
