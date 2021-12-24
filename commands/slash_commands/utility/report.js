@@ -6,6 +6,9 @@ const {addCooldown, hasCooldown, removeCooldown} = require('../../../modules/rep
 module.exports = {
     name: "report",
     description: "Report a user to the CreatorHub staff",
+    permission: ``,
+    type: `CHAT_INPUT`,
+    usage: `/report [@username] [reason] (imageURL)`,
     options: [
         {
             name: "username",

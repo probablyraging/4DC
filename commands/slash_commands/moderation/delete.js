@@ -4,6 +4,7 @@ module.exports = {
     name: `delete`,
     description: `Delete a specific number of messages from a channel or user`,
     permission: `MANAGE_MESSAGES`,
+    usage: `/delete [amount] (@username)`,
     options: [{
         name: `amount`,
         description: `Number of messages to delete`,

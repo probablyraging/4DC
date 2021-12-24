@@ -5,6 +5,7 @@ module.exports = {
     description: `Fetch a user's avatar and display it in an embed`,
     permission: ``,
     type: `CHAT_INPUT`,
+    usage: `/avatar (@username)`,
     options: [{
         name: `username`,
         description: `The user whos avatar you want to fetch`,
@@ -21,7 +22,7 @@ module.exports = {
         const target = options.getMember(`username`) || member;
 
         const response = new MessageEmbed()
-            .setColor('#32BEA6') // GREEN
+            .setColor('#32BEA6')
             .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)

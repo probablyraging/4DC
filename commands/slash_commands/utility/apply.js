@@ -5,6 +5,7 @@ module.exports = {
     description: `Apply for a staff role`,
     permission: ``,
     type: `CHAT_INPUT`,
+    usage: `/apply [age] [country] [reason]`,
     options: [{
         name: `age`,
         description: `Your age`,

@@ -6,6 +6,7 @@ module.exports = {
     description: `Remind a user to not be an a-hole`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
+    usage: `/rules [ruleNumber] [@username]`,
     options: [{
         name: `number`,
         description: `The number of the rule you want to reference`,

@@ -5,6 +5,7 @@ module.exports = {
     description: `Get information and stats about the server`,
     permission: ``,
     type: `CHAT_INPUT`,
+    usage: `/serverinfo`,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 

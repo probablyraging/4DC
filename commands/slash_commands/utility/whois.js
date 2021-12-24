@@ -5,6 +5,7 @@ module.exports = {
     description: `Get detailed information about a user`,
     permission: ``,
     type: `CHAT_INPUT`,
+    usage: `/whois (@username)`,
     options: [{
         name: `username`,
         description: `The user whos information you want`,

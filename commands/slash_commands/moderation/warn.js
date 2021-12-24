@@ -13,8 +13,8 @@ module.exports = {
     options: [{
         name: `add`,
         description: `Add a warning to a specific user`,
-        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
+        usage: `/warn add [@username] [reason]`,
         options: [{
             name: `username`,
             description: `The user you want to add a warning to`,
@@ -31,8 +31,8 @@ module.exports = {
     {
         name: `remove`,
         description: `Remove a warning from a specific user`,
-        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
+        usage: `/warn remove [warningId]`,
         options: [{
             name: `warning`,
             description: `The warning ID you want to remove`,
@@ -43,8 +43,8 @@ module.exports = {
     {
         name: `list`,
         description: `List warnings warning IDs for a specific user`,
-        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
+        usage: `/warn list [@username]`,
         options: [{
             name: `username`,
             description: `The user whos warnings you want to list`,

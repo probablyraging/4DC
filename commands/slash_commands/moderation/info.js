@@ -9,6 +9,7 @@ module.exports = {
         name: `review`,
         description: `Information about the review channel`,
         type: `SUB_COMMAND`,
+        usage: `/info review [@username]`,
         options: [{
             name: `username`,
             description: `The user you want to direct the information at`,
@@ -20,6 +21,7 @@ module.exports = {
         name: `connections`,
         description: `Explains how to connect socials to Discord`,
         type: `SUB_COMMAND`,
+        usage: `/info connections [@username]`,
         options: [{
             name: `username`,
             description: `The user you want to direct the information at`,
@@ -31,6 +33,7 @@ module.exports = {
         name: `seo`,
         description: `Provide brief information regarding SEO`,
         type: `SUB_COMMAND`,
+        usage: `/info seo [@username]`,
         options: [{
             name: `username`,
             description: `The user you want to direct the information at`,
@@ -42,6 +45,7 @@ module.exports = {
         name: `xp`,
         description: `Explains the XP and rank system`,
         type: `SUB_COMMAND`,
+        usage: `/info xp [@username]`,
         options: [{
             name: `username`,
             description: `The user you want to direct the information at`,
@@ -53,7 +57,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    async execute(interaction) {
+    execute(interaction) {
         const { channel, options } = interaction;
 
         try {

@@ -8,8 +8,8 @@ module.exports = {
     options: [{
         name: `create`,
         description: `Create a new embed`,
-        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
+        usage: `/embed create [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `description`,
             description: `The description for the embed`,
@@ -51,8 +51,8 @@ module.exports = {
     {
         name: `edit`,
         description: `Edit an existing embed`,
-        permission: `MANAGE_MESSAGES`,
         type: `SUB_COMMAND`,
+        usage: `/embed edit [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `id`,
             description: `The id of the message containing the embed you want to edit`,

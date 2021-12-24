@@ -5,6 +5,7 @@ module.exports = {
     description: `Move a message to a specific channel. Move up to 5 messages at a time`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
+    usage: `/move [#toChannel] [messageId] (messageId2)...`,
     options: [{
         name: `channel`,
         description: `The channel you want to move a message to`,
