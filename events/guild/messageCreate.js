@@ -1,5 +1,6 @@
 const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/link_cooldown');
+const ckqPost = require('../../modules/ckq_post');
 
 module.exports = {
     name: `messageCreate`,
@@ -7,9 +8,10 @@ module.exports = {
      * 
      * @param {Message} message
      */
-    execute(message, client, Discord) {
+    async execute(message, client, Discord) {
 
         linkCooldown(message, client, Discord);
+        ckqPost(message, client, Discord);
 
     }
 }
