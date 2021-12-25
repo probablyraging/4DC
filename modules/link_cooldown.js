@@ -44,10 +44,10 @@ module.exports = (message, client, Discord) => {
                     }, 600);
                 });
             } else {
-                cooldown.add(message?.author.id).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user to cooldown: `, err))
+                cooldown.add(message?.author.id)
 
                 setTimeout(() => {
-                    cooldown.delete(message?.author.id).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user from cooldown: `, err))
+                    cooldown.delete(message?.author.id)
                 }, 30000);
             }
         }

@@ -203,12 +203,18 @@ ${banMsg}`,
                     await mongo().then(async mongoose => {
                         try {
                             const results = await warnSchema.find({ warnId: warning })
+                            for (const data of results) {
+                                var { userId } = data
+                                gotUserId = userId
+                            }
 
                             if (results.length > 0) {
 
                                 const log = new MessageEmbed()
                                     .setColor('#32BEA6')
-                                    .setAuthor(`${user.tag} has been warned`, `${user.displayAvatarURL({ dynamic: true })}`)
+                                    .setAuthor(`${user.tag} deleted a warning`, `${user.displayAvatarURL({ dynamic: true })}`)
+                                    .addField(`Warning Id`, `${warning}`, false)
+                                    .addField(`Removed From`, `<@${gotUserId}>`, false)
                                     .addField(`Deleted By:`, `<@${user.id}>`, true)
                                     .setFooter(`${guild.name} • Warning ID ${warning}`, `${guild.iconURL({ dynamic: true })}`)
                                     .setTimestamp()

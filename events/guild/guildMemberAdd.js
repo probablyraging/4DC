@@ -6,7 +6,6 @@ module.exports = {
     execute(member, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const joinLeaveChannel = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
-        const seasonRole = guild.roles.cache.get(process.env.SEASON_ROLE);
         
         const memberCount = guild.memberCount;
 
@@ -23,9 +22,5 @@ There are now **${memberCount}** members in the server`)
         joinLeaveChannel.send({
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-
-        setTimeout(() => {
-            member?.roles.add(seasonRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-        }, 300000);
     }
 }
