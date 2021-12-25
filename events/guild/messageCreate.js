@@ -8,6 +8,7 @@ const blLinks = require('../../modules/bl_links');
 const blPromo = require('../../modules/bl_promo');
 const blMass = require('../../modules/bl_mass');
 const blWords = require('../../modules/bl_words');
+const blTwitch = require('../../modules/bl_twitch');
 
 module.exports = {
     name: `messageCreate`,
@@ -26,6 +27,7 @@ module.exports = {
         blPromo(message, client, Discord);
         blMass(message, client, Discord);
         blWords(message, client, Discord);
+        blTwitch(message, client, Discord);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {

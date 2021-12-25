@@ -1,5 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
 const blacklist = require('../lists/blacklist');
+const path = require('path');
 /**
  * 
  * @param {Message} message 
