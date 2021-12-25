@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const path = require('path');
 const linkCooldown = require('../../modules/link_cooldown');
 const ckqPost = require('../../modules/ckq_post');
 const bumpPost = require('../../modules/bump_post');
@@ -34,7 +35,7 @@ module.exports = {
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
             if (message?.content.toLowerCase().includes('tweet')) {
-                message?.delete().catch(err => { return; });
+                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
         }
     }

@@ -1,3 +1,9 @@
-module.exports = (Discord, client, oldUser, newUser) => {
-    
+const { MessageEmbed } = require('discord.js');
+const path = require('path');
+
+module.exports = {
+    name: 'userUpdate',
+    execute(client, Discord) {
+
+    }
 }

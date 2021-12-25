@@ -1,3 +1,9 @@
-module.exports = async (Discord, client, oldPresence, newPresence) => {
+const { MessageEmbed } = require('discord.js');
+const path = require('path');
 
+module.exports = {
+    name: 'presenceUpdate',
+    execute(client, Discord) {
+
+    }
 }

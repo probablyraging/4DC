@@ -1,3 +1,9 @@
-module.exports = async (Discord, client, message) => {
-    
+const { MessageEmbed } = require('discord.js');
+const path = require('path');
+
+module.exports = {
+    name: 'messageDelete',
+    execute(client, Discord) {
+
+    }
 }

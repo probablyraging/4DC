@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const path = require('path');
 /**
  * 
  * @param {Message} message 
@@ -14,7 +15,7 @@ module.exports = (message, client, Discord) => {
 
         message?.channel.send({
             content: ` `,
-            files: imageArr
+            files: [image]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
@@ -30,7 +31,7 @@ module.exports = (message, client, Discord) => {
         let target = message?.mentions.members.first();
 
         let verified = message?.guild.roles.cache.find(r => r.id === process.env.VERIFIED_ROLE);
-        
+
         let lv5 = message?.guild.roles.cache.get(process.env.RANK5_ROLE);
         let lv10 = message?.guild.roles.cache.get(process.env.RANK10_ROLE);
         let lv15 = message?.guild.roles.cache.get(process.env.RANK15_ROLE);
