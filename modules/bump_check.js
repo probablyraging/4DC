@@ -27,11 +27,16 @@ module.exports = async (message, client, Discord) => {
                 if (nowTime > dbTimestamp) {
                     bumpChan.permissionOverwrites.edit(guild.id, {
                         SEND_MESSAGES: true,
-                    })
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-                    bumpChan.send(`:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again!`).then(msg => setTimeout(() => msg.delete(), 7200000));
+                    bumpChan.send({
+                        content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again!`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                        .then(msg => {
+                            setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 7200000);
+                        });
 
-                    await timerSchema.findOneAndRemove({ searchFor: 'bumpTime' })
+                    await timerSchema.findOneAndRemove({ searchFor: 'bumpTime' }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                     await timerSchema.findOneAndUpdate({
                         timestamp: 'null',
                         searchFor
@@ -40,11 +45,11 @@ module.exports = async (message, client, Discord) => {
                         searchFor
                     }, {
                         upsert: true
-                    }).catch(err => { return; });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                 }
             } finally {
-                return;
+                // do bothing
             }
-        })
+        });
     }, 30000);
 }

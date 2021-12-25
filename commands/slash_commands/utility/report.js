@@ -38,7 +38,7 @@ module.exports = {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`Permissions field exceeds 1024 characters\``,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (!hasCooldown(user.id)) {

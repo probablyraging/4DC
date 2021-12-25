@@ -69,7 +69,7 @@ module.exports = {
                     interaction.reply({
                         content: `*Information for ${target}:*
 > ${process.env.BOT_DOC} Please be more specific about what you are wanting us to review or give advice on. Asking things like "how's this video?" or "what do you think?" does not count as specific and your post will be deleted if not fixed`
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
 
@@ -80,7 +80,7 @@ module.exports = {
                     interaction.reply({
                         content: `*Information for ${target}:*
 > ${process.env.BOT_DOC} Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings ⚙️ > Connections**`
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
 
@@ -91,7 +91,7 @@ module.exports = {
                     interaction.reply({
                         content: `*Information for ${target}:*
 > ${process.env.BOT_DOC} Search Engine Optimization(SEO) such as using good keywords, thumbnails, titles and descriptions. SEO improves your chances of YouTube and Google choosing your content to fill it's search results when someone makes search request uings keywords that you've used. Find more information in <#${process.env.RES_CHAN}> and do your own research.`
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
 
@@ -102,7 +102,7 @@ module.exports = {
                     interaction.reply({
                         content: `*Information for ${target}:*
 > ${process.env.BOT_DOC} Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The higher you rank, the more server features you unlock, such as, less competitive promotional channels. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#${process.env.BOT_CHAN}> and typing \`!rank\``
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
         } catch (err) {

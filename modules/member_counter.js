@@ -21,8 +21,9 @@ module.exports = async (client, Discord) => {
 
             const channelOnline = guild.channels.cache.get(process.env.VC_ONLINE);
             const channelTotal = guild.channels.cache.get(process.env.VC_TOTAL);
-            channelOnline.setName(`Online Members: ${onlineReal}`);
-            channelTotal.setName(`Total Members: ${totalReal}`);
+
+            channelOnline.setName(`Online Members: ${onlineReal}`).catch(err => console.error(`${path.basename(__filename)} There was a problem changing a channel's name: `, err));
+            channelTotal.setName(`Total Members: ${totalReal}`).catch(err => console.error(`${path.basename(__filename)} There was a problem changing a channel's name: `, err))
         })
     }, 600000);
 };

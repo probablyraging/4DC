@@ -98,7 +98,7 @@ module.exports = {
             interaction.reply({
                 embeds: [response, response2],
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         });
     }
 }

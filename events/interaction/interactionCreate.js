@@ -27,7 +27,7 @@ module.exports = {
 
             cmdOptionsArr = [];
 
-            const response = new MessageEmbed()
+            const log = new MessageEmbed()
                 .setColor('#FF9E00')
                 .setAuthor(`${user.tag} used /${command.name}`, `${user.displayAvatarURL({ dynamic: true })}`)
                 .addField(`Channel:`, `${channel}`, false)
@@ -40,11 +40,11 @@ module.exports = {
 
             const capFirst = cmdOptionsArr.join('\n').split(/\n/g).map(x => x.charAt(0).toUpperCase() + x.substr(1)).join("\n");
 
-            response.addField(`Values:`, `\`\`\`${capFirst}\`\`\``, false);
+            log.addField(`Values:`, `\`\`\`${capFirst}\`\`\``, false);
 
             logChan.send({
-                embeds: [response]
-            });
+                embeds: [log]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     }
 }

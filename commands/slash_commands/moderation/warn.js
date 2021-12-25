@@ -94,7 +94,7 @@ module.exports = {
                                 reason
                             }, {
                                 upsert: true
-                            }).catch(err => { return; });
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                         } finally {
                             // do nothing
                         }
@@ -128,7 +128,7 @@ module.exports = {
                                         return interaction.reply({
                                             content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
                                             ephemeral: true
-                                        });
+                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                     }
 
                                     const log = new MessageEmbed()
@@ -142,13 +142,13 @@ module.exports = {
 
                                     warnChan.send({
                                         embeds: [log]
-                                    });
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                                     interaction.reply({
                                         content: `${replyMsg}
 ${banMsg}`,
                                         ephemeral: true
-                                    });
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                 } else {
                                     let dmFail = false;
 
@@ -165,7 +165,7 @@ ${banMsg}`,
                                         return interaction.reply({
                                             content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
                                             ephemeral: true
-                                        });
+                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                     }
 
                                     const log = new MessageEmbed()
@@ -179,18 +179,18 @@ ${banMsg}`,
 
                                     warnChan.send({
                                         embeds: [log]
-                                    });
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                                     interaction.reply({
                                         content: `${replyMsg}`,
                                         ephemeral: true
-                                    });
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                 }
                             } finally {
-                                return;
+                                // do nothing
                             }
-                        })
-                    })
+                        });
+                    });
                 }
             }
 
@@ -215,20 +215,20 @@ ${banMsg}`,
 
                                 warnChan.send({
                                     embeds: [log]
-                                });
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                                 await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                     content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                     ephemeral: true
-                                }));
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
                             } else {
                                 interaction.reply({
                                     content: `${process.env.BOT_DENY} \`Warning '${warning}' does not exist or has already been deleted\``,
                                     ephemeral: true
-                                });
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                             }
                         } finally {
-                            return;
+                            // do nothing
                         }
                     });
                 }
@@ -273,9 +273,9 @@ ${banMsg}`,
                             interaction.reply({
                                 embeds: [warningEmbed],
                                 ephemeral: true
-                            });
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         } finally {
-                            return;
+                            // do bothing
                         }
                     });
                 }

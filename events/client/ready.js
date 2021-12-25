@@ -23,7 +23,7 @@ module.exports = {
             try {
                 console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, 'Connected to database')
             } finally {
-                return;
+                // do nothing
             }
         });
 

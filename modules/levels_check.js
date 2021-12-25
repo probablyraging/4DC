@@ -42,23 +42,41 @@ module.exports = (message, client, Discord) => {
         if (!message?.content.includes('you just advanced to level') && !target) return;
 
         if (message?.content.includes(` 5!`)) {
-            target?.roles.add(lv5).catch(err => { return; });
+            target?.roles.add(lv5)
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         } else if (message?.content.includes(` 10!`)) {
-            target?.roles.remove(lv5).catch(err => { return; });
-            target?.roles.add(lv10).catch(err => { return; });
-            target?.roles.add(verified).catch(err => { return; });
+            target?.roles.remove(lv5).catch(err => { return; })            
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            target?.roles.add(lv10).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+
+            target?.roles.add(verified).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         } else if (message?.content.includes(` 15!`)) {
-            target?.roles.remove(lv10).catch(err => { return; });
-            target?.roles.add(lv15).catch(err => { return; });
+            target?.roles.remove(lv10).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            target?.roles.add(lv15).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));                
         } else if (message?.content.includes(` 20!`)) {
-            target?.roles.remove(lv15).catch(err => { return; });
-            target?.roles.add(lv20).catch(err => { return; });
+            target?.roles.remove(lv15).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            target?.roles.add(lv20).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         } else if (message?.content.includes(` 25!`)) {
-            target?.roles.remove(lv20).catch(err => { return; });
-            target?.roles.add(lv25).catch(err => { return; });
+            target?.roles.remove(lv20).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            target?.roles.add(lv25).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         } else if (message?.content.includes(` 30!`)) {
-            target?.roles.remove(lv25).catch(err => { return; });
-            target?.roles.add(lv30).catch(err => { return; });
+            target?.roles.remove(lv25).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            target?.roles.add(lv30).catch(err => { return; })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         }
-    };
+    }
 }

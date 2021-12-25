@@ -31,6 +31,8 @@ module.exports = (message, client, Discord) => {
                         content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been muted for 30 seconds to prevent spamming\``,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
+                    }).catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                     }).then(msg => {
                         setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
                     });

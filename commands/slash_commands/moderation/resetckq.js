@@ -31,15 +31,19 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
         await mongo().then(async mongoose => {
             try {
 
-                setTimeout(() => ckqChannel.bulkDelete(10).then(ckqChannel.send({ embeds: [ckqEmbed] })), 100);
+                setTimeout(() => ckqChannel.bulkDelete(10).catch(err => {
+                    console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)
+                }).then(ckqChannel.send({ 
+                    embeds: [ckqEmbed] 
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err)) ), 100);
 
                 setTimeout(() => ckqRole.members.each(member => {
-                    member.roles.remove(ckqRole);
+                    member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 }), 200);
 
                 setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
                     SEND_MESSAGES: true,
-                }), 300);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
 
                 await timerSchema.findOneAndRemove({ searchFor });
 
@@ -51,14 +55,14 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                     searchFor
                 }, {
                     upsert: true
-                }).catch(err => { return; });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updated a database entry: `, err));
 
             } finally {
-                return;
+                // do nothing
             }
         }).then(interaction.reply({
             content: `${[process.env.BOT_CONF]} \`#${ckqChannel.name} has been reset\``,
             ephemeral: true
-        }));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)))
     }
 }

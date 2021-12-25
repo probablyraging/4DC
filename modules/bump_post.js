@@ -20,7 +20,7 @@ module.exports = async (message, client, Discord) => {
             })
 
             await mongo().then(async mongoose => {
-                await timerSchema.findOneAndRemove({ searchFor })
+                await timerSchema.findOneAndRemove({ searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 try {
                     await timerSchema.findOneAndUpdate({
                         timestamp,
@@ -30,11 +30,11 @@ module.exports = async (message, client, Discord) => {
                         searchFor
                     }, {
                         upsert: true
-                    }).catch(err => { return; });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                 } finally {
-                    return;
+                    // do nothing
                 }
-            })
+            });
 
             const bumpConfirm = new MessageEmbed()
                 .setColor('#32BEA6')
@@ -43,14 +43,22 @@ module.exports = async (message, client, Discord) => {
                 .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/server/820889004055855144)`)
                 .setImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/81z2HgQ.jpg')
 
-            message?.channel.send({ embeds: [bumpConfirm] }).catch(err => { return; });
+            message?.channel.send({
+                embeds: [bumpConfirm]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         } else {
-            message?.delete().catch(err => { return; });
-            message?.channel.send(`${process.env.BOT_DENY} \`Unknown command. Please try '!d bump'\``).then(msg => { setTimeout(() => msg.delete(), 10000) }).catch(err => { return; });
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+
+            message?.channel.send({
+                content: `${process.env.BOT_DENY} \`Unknown command. Please try '!d bump'\``
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                .then(msg => {
+                    setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 10000);
+                });
         }
     }
 
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === process.env.DISBOARD_ID) {
-        message?.delete().catch(err => { return; });
+        message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
     }
 }

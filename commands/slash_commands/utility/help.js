@@ -58,7 +58,7 @@ module.exports = {
             interaction.reply({
                 embeds: [response],
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
             modCmds = [];
             utilCmds = [];
@@ -87,7 +87,7 @@ Parameters inside \`()\` brackets are optional
             interaction.reply({
                 embeds: [response],
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     }
 }

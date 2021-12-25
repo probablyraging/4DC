@@ -17,7 +17,7 @@ module.exports = {
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
         const reason = `None - command ran via context menu`;
 
-        channel.permissionOverwrites.delete(target);
+        channel.permissionOverwrites.delete(target).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
         const log = new MessageEmbed()
             .setColor('#32BEA6')
@@ -30,7 +30,7 @@ module.exports = {
 
         mutesChan.send({
             embeds: [log]
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
         let dmFail = false;
 
@@ -45,7 +45,7 @@ module.exports = {
             interaction.reply({
                 content: `${replyMsg}`,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         });
     }
 }

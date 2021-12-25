@@ -31,9 +31,10 @@ module.exports = (message, client, Discord) => {
                             content: `${response}`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
-                        }).then(msg => setTimeout(() => {
-                            msg?.delete().catch(err => console.error(`${path.basename(__filename)} 1 There was a problem deleting a message: `, err));
-                        }, 4000));
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                            .then(msg => setTimeout(() => {
+                                msg?.delete().catch(err => console.error(`${path.basename(__filename)} 1 There was a problem deleting a message: `, err));
+                            }, 4000));
                     }).then(msg => setTimeout(() => {
                         msg?.delete().catch(err => console.error(`${path.basename(__filename)} 2 There was a problem deleting a message: `, err));
                     }, 4000));
@@ -43,10 +44,10 @@ module.exports = (message, client, Discord) => {
                     }, 600);
                 });
             } else {
-                cooldown.add(message?.author.id);
+                cooldown.add(message?.author.id).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user to cooldown: `, err))
 
                 setTimeout(() => {
-                    cooldown.delete(message?.author.id);
+                    cooldown.delete(message?.author.id).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user from cooldown: `, err))
                 }, 30000);
             }
         }

@@ -18,9 +18,9 @@ module.exports = async (message, client, Discord) => {
 
         ckqChannel.permissionOverwrites.edit(message?.guildId, {
             SEND_MESSAGES: false,
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-        target?.roles?.add(ckqRole);
+        target?.roles?.add(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         const myDate = new Date();
         const addTwo = myDate.setHours(myDate.getHours() + 5);
@@ -28,7 +28,7 @@ module.exports = async (message, client, Discord) => {
 
         const searchFor = 'currentTime';
         await mongo().then(async mongoose => {
-            await timerSchema.findOneAndRemove({ searchFor });
+            await timerSchema.findOneAndRemove({ searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
             try {
                 await timerSchema.findOneAndUpdate({
                     timestamp,
@@ -38,9 +38,9 @@ module.exports = async (message, client, Discord) => {
                     searchFor
                 }, {
                     upsert: true
-                }).catch(err => { return; });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             } finally {
-                return;
+                // do nothing
             }
         });
     }

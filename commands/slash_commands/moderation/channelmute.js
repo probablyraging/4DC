@@ -66,14 +66,14 @@ module.exports = {
                         return interaction.reply({
                             content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
                             ephemeral: true
-                        });
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
                     const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
                     targetChan.permissionOverwrites.edit(target.id, {
                         SEND_MESSAGES: false,
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
@@ -86,7 +86,7 @@ module.exports = {
 
                     mutesChan.send({
                         embeds: [log]
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                     let dmFail = false;
 
@@ -101,14 +101,14 @@ module.exports = {
                         interaction.reply({
                             content: `${replyMsg}`,
                             ephemeral: true
-                        });
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     });
                 }
             }
 
             switch (options.getSubcommand()) {
                 case 'remove': {
-                    targetChan.permissionOverwrites.delete(target.id);
+                    targetChan.permissionOverwrites.delete(target.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
 
                     const log = new MessageEmbed()
                         .setColor('#32BEA6')
@@ -120,7 +120,7 @@ module.exports = {
 
                     mutesChan.send({
                         embeds: [log]
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                     let dmFail = false;
 
@@ -132,7 +132,7 @@ module.exports = {
                         interaction.reply({
                             content: `${replyMsg}`,
                             ephemeral: true
-                        });
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     });
                 }
             }

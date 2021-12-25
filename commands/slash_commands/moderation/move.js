@@ -71,7 +71,7 @@ module.exports = {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`I do not have to proper permissions for #${channel.name}\``,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         const fetchMsg = channel.messages.fetch();
@@ -86,7 +86,7 @@ module.exports = {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`You can't move a message to a ${cType}\``,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         for (let i = 0; i < filteredArr.length; i++) {
@@ -98,12 +98,12 @@ module.exports = {
                     author = msg.author;
 
                     if (!author) {
-                        msg.delete();
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
                         return interaction.reply({
                             content: `${process.env.BOT_DENY} \`That user no longer exists. Their message(s) were deleted\``,
                             ephemeral: true
-                        });
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
                     if (msgAttachment) {
@@ -117,22 +117,22 @@ module.exports = {
                             webhook.send({
                                 content: `${msgContent}`,
                                 files: imageArr
-                            }).then(() => {
-                                webhook.delete();
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
+                                webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                             });
                         });
 
-                        msg.delete();
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     } else {
                         toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`
-                            }).then(() => {
-                                webhook.delete();
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
+                                webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                             });
                         });
 
-                        msg.delete();
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     }
                 }
             });
@@ -153,16 +153,16 @@ module.exports = {
 
             msgUpChan.send({
                 embeds: [log]
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
             interaction.reply({
                 content: `${author} your message was moved to ${toChannel}`
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } catch {
             interaction.reply({
                 content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     }
 }

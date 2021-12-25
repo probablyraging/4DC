@@ -34,6 +34,6 @@ module.exports = {
         interaction.reply({
             content: `*Please read the rules ${target}:*
 > ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rules[number - 1]}`
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }

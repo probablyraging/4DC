@@ -15,6 +15,8 @@ module.exports = (message, client, Discord) => {
                 content: `${process.env.BOT_DENY} \`This channel is for Twitch links only\``,
                 deleteallowedMentions: { repliedUser: true },
                 failIfNotExists: false
+            }).catch(err => {
+                console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
             }).then(msg => {
                 setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
             });

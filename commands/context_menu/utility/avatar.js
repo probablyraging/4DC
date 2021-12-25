@@ -14,7 +14,7 @@ module.exports = {
             interaction.reply({
                 content: `${process.env.BOT_DENY} \`This user no longer exists\``,
                 ephemeral: true
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         });;
 
         const response = new MessageEmbed()
@@ -26,6 +26,6 @@ module.exports = {
         interaction.reply({
             embeds: [response],
             ephemeral: true
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
