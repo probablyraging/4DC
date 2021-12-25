@@ -16,10 +16,10 @@ module.exports = (message, client, Discord) => {
                 deleteallowedMentions: { repliedUser: true },
                 failIfNotExists: false
             }).then(msg => {
-                setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)}\n1 There was a problem deleting a message: `, err)) }, 5000);
+                setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
             });
         });
-        
-        setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)}\n2 There was a problem deleting a message: `, err)) }, 600);
+
+        setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
     }
 }

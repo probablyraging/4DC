@@ -14,7 +14,7 @@ module.exports = (message, client, Discord) => {
 
     for (var i in blacklist.words2) {
         if (message?.content.toLowerCase().includes(blacklist.words2[i].toLowerCase())) {
-            message?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err));
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
     }
 
@@ -35,11 +35,11 @@ module.exports = (message, client, Discord) => {
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).then(msg => {
-                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 5000);
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
                     });
                 });
 
-                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 600);
+                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
                 const msgContent = message?.content || ` `;
 
@@ -54,7 +54,7 @@ module.exports = (message, client, Discord) => {
 
                 blChan.send({
                     embeds: [blacklistEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem sending a log: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
             }
         }
     }

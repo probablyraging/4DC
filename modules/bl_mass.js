@@ -20,17 +20,17 @@ module.exports = (message, client, Discord) => {
                 deleteallowedMentions: { repliedUser: true },
                 failIfNotExists: false
             }).then(msg => {
-                setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 5000);
+                setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
             });
         });
 
-        setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 600);
+        setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-        member?.roles.add(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem adding a role: `, err));
+        member?.roles.add(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         setTimeout(() => {
             if (guild?.members?.cache.get(member?.id)) {
-                member?.roles?.remove(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem removing a role: `, err));
+                member?.roles?.remove(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
         }, 30000);
 
@@ -57,11 +57,11 @@ module.exports = (message, client, Discord) => {
 
         blChan.send({
             embeds: [blacklistEmbed]
-        }).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem sending a log: `, err));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
         muteChan.send({
             embeds: [muteEmbed]
-        }).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem sending a log: `, err));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
     }
 }
 
