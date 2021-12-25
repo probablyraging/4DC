@@ -25,7 +25,7 @@ There are now **${memberCount}** members in the server`)
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
         setTimeout(() => {
-            member?.roles.add(divRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+            member?.roles.add(seasonRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
         }, 300000);
     }
 }
