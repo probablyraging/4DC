@@ -1,13 +1,16 @@
 const { Message } = require('discord.js');
 const mongo = require('../mongo');
 const timerSchema = require('../schemas/timer-schema');
+const blacklist = require('../lists/blacklist');
 /**
  * 
  * @param {Message} message 
  */
 module.exports = async (message, client, Discord) => {
-    if (message?.channel.id === process.env.CKQ_CHAN) {
-        if (message?.author.bot) return;
+    if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {
+        for (var i in blacklist.links) {
+            if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
+        }
 
         const ckqChannel = message?.channel;
         const ckqRole = message?.guild.roles.cache.get(process.env.CKQ_ROLE);
