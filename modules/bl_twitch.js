@@ -9,7 +9,7 @@ module.exports = (message, client, Discord) => {
 
     if (message?.channel.id === process.env.TWITCH_CHAN && !message?.content.toLowerCase().includes('twitch.tv/') && !message?.author?.bot) {
         member?.send({
-            content: `${process.env.BOT_DENY} \`${message?.channel.name} is for Twitch links only\``
+            content: `${process.env.BOT_DENY} \`#${message?.channel.name} is for Twitch links only\``
         }).catch(() => {
             message?.reply({
                 content: `${process.env.BOT_DENY} \`This channel is for Twitch links only\``,

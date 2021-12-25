@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'guildBanRemove',
     execute(ban, client, Discord) {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);        
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const banChan = client.channels.cache.get(process.env.BAN_CHAN);
 
         setTimeout(async () => {
@@ -16,7 +16,7 @@ module.exports = {
             const banLog = fetchedLogs.entries.first();
             const { executor } = banLog;
 
-            const response = new MessageEmbed()
+            const log = new MessageEmbed()
                 .setColor('#32BEA6')
                 .setAuthor(`${ban?.user?.tag} has been unbanned`, `${ban?.user?.displayAvatarURL({ dynamic: true })}`)
                 .addField(`Unbanned By`, `${executor}`, true)
@@ -24,7 +24,7 @@ module.exports = {
                 .setTimestamp()
 
             banChan.send({
-                embeds: [response]
+                embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }, 2000);
     }

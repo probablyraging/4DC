@@ -16,7 +16,7 @@ module.exports = {
             const banLog = fetchedLogs.entries.first();
             const { executor, reason } = banLog;
 
-            const response = new MessageEmbed()
+            const log = new MessageEmbed()
                 .setColor('#E04F5F')
                 .setAuthor(`${ban?.user?.tag} has been banned`, `${ban?.user?.displayAvatarURL({ dynamic: true })}`)
                 .addField(`Banned By`, `${executor}`, true)
@@ -25,7 +25,7 @@ module.exports = {
                 .setTimestamp()
 
             banChan.send({
-                embeds: [response]
+                embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }, 2000);
     }

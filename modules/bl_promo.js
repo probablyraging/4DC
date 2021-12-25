@@ -30,10 +30,10 @@ module.exports = (message, client, Discord) => {
         if (found && message?.channel.id === blacklist.noLinkChannels[e] && !message?.content.includes('tenor.com') && !message?.author.bot) {
             if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE)) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in ${message?.channel.name}\``
+                    content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}\``
                 }).catch(() => {
                     message?.reply({
-                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in ${message?.channel.name}\``,
+                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}\``,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).then(msg => {
