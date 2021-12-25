@@ -16,6 +16,7 @@ module.exports = (message, client, Discord) => {
         if (message?.content.toLowerCase().includes(blacklist.words2[i].toLowerCase())) {
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
+        return;
     }
 
     let found = false;
