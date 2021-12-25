@@ -1,5 +1,4 @@
 const { Message, MessageEmbed } = require('discord.js');
-const blacklist = require('../lists/blacklist');
 const path = require('path');
 /**
  * 
@@ -10,7 +9,7 @@ module.exports = (message, client, Discord) => {
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
     const muteChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
-    const member = message?.member
+    const member = message?.member;
 
     if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions.members.size > 4) {
         member?.send({

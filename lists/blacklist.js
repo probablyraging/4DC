@@ -7,6 +7,14 @@ module.exports = {
         "https://", "http://", "www.", "youtu.be/", "youtube.com/", "twitch.tv/", "facebook.com/", "spotify.com/", "instagram.com/", "tiktok.com/", "reddit.com/", "twitter.com/", "onlyfans.com/", "linktr.ee/", "bit.ly/", "shorturl.at/", "rb.gy/", "tinyurl.com/", "rotf.lol/", "tiny.one", "carrd.co", "shorby.com/"
     ],
 
+    words: [
+        "abbo", "cum", "coom", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "date rape", "daterape"
+    ],
+
+    words2: [
+        "child porn", "child porno", "child pornography", "kid porn", "kiddie porn", "dead server", "server dead", "dead chat", "ded chat", "chat dead", "chat died", "dead-chat", "chat-dead", "dead_chat", "chat_dead", "chat ded"
+    ],
+
     noLinkChannels: [
         "844795289897664552", "838060518832472124", "820889004055855147", "821329744963436555", "845177148003844096", "843103680592609320", "846449072105586708", "843841108798210099", "845180817281253406", "837041072168632360", "848168241275731979", "837941067450023937", "820905483757027338", "853515804422176768", "851584454036029441", "855427926136193054", "837945839799500850", "860500455801356348", "847491481110708224", "896069772624683018", "841948855263690782"
     ],
