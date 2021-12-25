@@ -6,6 +6,7 @@ const levelsCheck = require('../../modules/levels_check');
 const invitesCheck = require('../../modules/invites_check');
 const blLinks = require('../../modules/bl_links');
 const blPromo = require('../../modules/bl_promo');
+const blMass = require('../../modules/bl_mass');
 
 module.exports = {
     name: `messageCreate`,
@@ -14,6 +15,7 @@ module.exports = {
      * @param {Message} message
      */
     async execute(message, client, Discord) {
+        console.log(message.mentions.members.size)
 
         linkCooldown(message, client, Discord);
         ckqPost(message, client, Discord);
@@ -22,6 +24,7 @@ module.exports = {
         invitesCheck(message, client, Discord);
         blLinks(message, client, Discord);
         blPromo(message, client, Discord);
+        blMass(message, client, Discord);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {

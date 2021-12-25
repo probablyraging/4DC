@@ -64,7 +64,7 @@ module.exports = {
         if (permissions?.length == 0) {
             permissions.push("No Key Permissions Found");
         }
-        if (target.id == interaction.guild.ownerId) {
+        if (target?.id == interaction.guild.ownerId) {
             acknowledgements = 'Server Owner';
         }
 
@@ -73,9 +73,9 @@ module.exports = {
         if (target?.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';
         if (!target?.presence?.status) targetStatus = 'Offline';
 
-        const roles = guild.members.cache.get(target.id)._roles.length;
+        const roles = guild.members.cache.get(target?.id)._roles.length;
         let roleList = `None`;
-        if (roles > 0) roleList = `<@&${guild.members.cache.get(target.id)._roles.join('>, <@&')}>`;
+        if (roles > 0) roleList = `<@&${guild.members.cache.get(target?.id)._roles.join('>, <@&')}>`;
 
         if (roleList && roleList.length > 1024) {
             return interaction.reply({
@@ -99,19 +99,19 @@ module.exports = {
         }
 
         const response = new MessageEmbed()
-            .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor(`${target?.user.tag}`, `${target?.user.displayAvatarURL({ dynamic: true })}`)
             .setColor('RANDOM')
-            .setThumbnail(`${target.user.displayAvatarURL({ dynamic: true })}`)
-            .addField('Registered:', `<t:${parseInt(target.user.createdTimestamp / 1000)}:R>`, true)
-            .addField('Joined:', `<t:${parseInt(target.joinedTimestamp / 1000)}:R>`, true)
+            .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
+            .addField('Registered:', `<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>`, true)
+            .addField('Joined:', `<t:${parseInt(target?.joinedTimestamp / 1000)}:R>`, true)
             .addField('Status:', `${targetStatus}`, true)
             .addField('Roles:', `${roleList}`, false)
             .addField('Acknowledgements:', `${acknowledgements}`, true)
             .addField('Permissions:', `${permissions.join(`, `)}`, false)
-            .setFooter(`ID: ${target.id}`)
+            .setFooter(`ID: ${target?.id}`)
             .setTimestamp()
 
-        if (target.user.bot) response.addField('Additional:', `This user is a BOT`, false);
+        if (target?.user.bot) response.addField('Additional:', `This user is a BOT`, false);
 
         interaction.reply({
             embeds: [response],

@@ -22,20 +22,20 @@ module.exports = (message, client, Discord) => {
 
     for (var e in blacklist.noLinkChannels) {
         if (found && message?.channel.id === blacklist.noLinkChannels[e] && !message?.content.includes('tenor.com')) {
-            if (member?.id !== process.env.OWNER_ID && !message?.author?.bot && !message?.member?.roles.cache.has(process.env.RANK5_ROLE)) {
+            if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE && !message?.author?.bot)) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} \`you must be rank 5 to post links in ${message?.channel.name}\``
+                    content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in ${message?.channel.name}\``
                 }).catch(() => {
                     message?.reply({
-                        content: `${process.env.BOT_DENY} \`you must be rank 5 to post links in ${message?.channel.name}\``,
+                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in ${message?.channel.name}\``,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).then(msg => {
-                        setTimeout(() => { msg?.delete().catch(err => console.error("There was a problem deleting a message: ", err)) }, 5000);
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 5000);
                     });
                 });
 
-                setTimeout(() => { message?.delete().catch(err => console.error("There was a problem deleting a message: ", err)) }, 600);
+                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)}\nThere was a problem deleting a message: `, err)) }, 600);
 
                 const msgContent = message?.content || ` `;
 
@@ -51,7 +51,7 @@ module.exports = (message, client, Discord) => {
 
                 blChan.send({
                     embeds: [blacklistEmbed]
-                }).catch(err => console.error("There was a problem sending a log: ", err));
+                }).catch(err => console.error(`${path.basename(__filename)}\nThere was a problem sending a log: `, err));
             }
         }
     }
