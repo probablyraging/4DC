@@ -16,7 +16,7 @@ module.exports = {
             const banLog = fetchedLogs.entries.first();
             const { executor } = banLog;
 
-            const response = new Discord.MessageEmbed()
+            const response = new MessageEmbed()
                 .setColor('#32BEA6')
                 .setAuthor(`${ban?.user?.tag} has been unbanned`, `${ban?.user?.displayAvatarURL({ dynamic: true })}`)
                 .addField(`Unbanned By`, `${executor}`, true)
@@ -25,7 +25,7 @@ module.exports = {
 
             banChan.send({
                 embeds: [response]
-            })
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }, 2000);
     }
 }
