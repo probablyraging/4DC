@@ -26,22 +26,29 @@ module.exports = {
 
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
 
-            cmdOptionsArr = [];
+            let cmdName = command.name;
+            if (options._subcommand) cmdName = `${command.name} > ${options._subcommand}`;
 
             const log = new MessageEmbed()
                 .setColor('#FF9E00')
-                .setAuthor({ name: `${user?.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
-                .addField(`Channel:`, `${channel}`, false)
+                .setAuthor({ name: `${user?.tag} used a command`, iconURL: user.displayAvatarURL({ dynamic: true }) })
+                .addField(`Command`, `${cmdName}`, false)
+                .addField(`Channel`, `${channel}`, true)
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()
 
-            options._hoistedOptions?.forEach(option => {
-                cmdOptionsArr.push(`${option.name}: ${option.value}`);
-            });
+            cmdOptions = [];
 
-            const capFirst = cmdOptionsArr.join('\n').split(/\n/g).map(x => x.charAt(0).toUpperCase() + x.substr(1)).join("\n");
+            options._hoistedOptions.forEach(option => {
+                if (option.name === 'command') cmdOptions.push(`Param: ${option?.value}`);
+                if (option.name === 'reason') cmdOptions.push(`Param: ${option?.value}`);
+                if (option.name === 'number') cmdOptions.push(`Param: ${option?.value}`);
+                if (option.name === 'username') cmdOptions.push(`User: ${option?.user?.tag}`);
+                if (option.name === 'channel') cmdOptions.push(`Channel: #${option?.channel?.name}`);
+            })
 
-            log.addField(`Values:`, `\`\`\`${capFirst}\`\`\``, false);
+            let input = cmdOptions.join('\n') || 'None';
+            log.addField(`Input`, `\`\`\`${input}\`\`\``, false)
 
             logChan.send({
                 embeds: [log]

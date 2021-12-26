@@ -1,6 +1,7 @@
 const { client } = require('discord.js');
 const { mongoose } = require('mongoose');
 const mongo = require('../../mongo');
+const cronjob = require('cron').CronJob;
 const moment = require('moment');
 const date = new Date();
 const path = require('path');
@@ -8,7 +9,7 @@ const memberCounter = require('../../modules/member_counter');
 const statusCounter = require('../../modules/status_counter');
 const ckqCheck = require('../../modules/ckq_check');
 const bumpCheck = require('../../modules/bump_check');
-const liveNow =  require('../../modules/live_now');
+const liveNow = require('../../modules/live_now');
 
 module.exports = {
     name: 'ready',
@@ -33,5 +34,15 @@ module.exports = {
         ckqCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
         liveNow(message, client, Discord);
+
+        let img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHServerBooster.png'
+        const boostTimer = new cronjob('0 */10 * * *', function () {
+            client.channels.cache.get(process.env.GENERAL_CHAN)
+                .send({
+                    files: [img]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        });
+
+        boostTimer.start();
     }
 };

@@ -15,7 +15,7 @@ module.exports = (message, client, Discord) => {
     if (!author) {
         return;
     } else {
-        if (check && !message?.member?.permissions.has("MANAGE_MESSAGES")) {
+        if (check && !message?.member?.permissions.has("MANAGE_MESSAGES") && !message?.author.bot) {
             if (cooldown.has(message?.author.id)) {
                 const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
                 let messageId = message?.id;

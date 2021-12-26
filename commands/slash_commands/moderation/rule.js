@@ -3,7 +3,7 @@ const { rules } = require('../../../lists/rule-list');
 const path = require('path');
 
 module.exports = {
-    name: `rules`,
+    name: `rule`,
     description: `Remind a user to not be an a-hole`,
     permission: `MANAGE_MESSAGES`,
     type: `CHAT_INPUT`,
