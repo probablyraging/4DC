@@ -1,13 +1,14 @@
 const { client } = require('discord.js');
-const memberCounter = require('../../modules/member_counter');
-const statusCounter = require('../../modules/status_counter');
-const ckqCheck = require('../../modules/ckq_check');
-const bumpCheck = require('../../modules/bump_check');
 const { mongoose } = require('mongoose');
 const mongo = require('../../mongo');
 const moment = require('moment');
 const date = new Date();
 const path = require('path');
+const memberCounter = require('../../modules/member_counter');
+const statusCounter = require('../../modules/status_counter');
+const ckqCheck = require('../../modules/ckq_check');
+const bumpCheck = require('../../modules/bump_check');
+const liveNow =  require('../../modules/live_now');
 
 module.exports = {
     name: 'ready',
@@ -31,5 +32,6 @@ module.exports = {
         memberCounter(client);
         ckqCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
+        liveNow(message, client, Discord);
     }
 };

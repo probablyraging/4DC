@@ -32,7 +32,7 @@ module.exports = {
         let msgAttachment = message?.attachments.size > 0 ? message?.attachments : null;
 
         if (msgAttachment) {
-            log.setImage(msgAttachment.first().url).catch(err => console.error(`${path.basename(__filename)} There was a problem adding an image: `, err));
+            log.setImage(msgAttachment.first().url);
         }
 
         msgDelChan.send({

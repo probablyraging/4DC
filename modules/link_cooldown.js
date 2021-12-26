@@ -40,7 +40,7 @@ module.exports = (message, client, Discord) => {
                     }, 4000));
                 }).then(() => {
                     setTimeout(() => {
-                        message?.delete().catch(err => console.error(`${path.basename(__filename)} 3 There was a problem deleting a message: `, err));
+                        message?.delete().catch(err => console.error(`${path.basename(__filename)} 3 ### THIS IS EXPECTED SOME TIMES: `, err));
                     }, 600);
                 });
             } else {

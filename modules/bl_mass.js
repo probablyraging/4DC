@@ -11,7 +11,7 @@ module.exports = (message, client, Discord) => {
 
     const member = message?.member;
 
-    if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions.members.size > 4) {
+    if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions?.members?.size > 4) {
         member?.send({
             content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been muted for 30 seconds to prevent spamming\``
         }).catch(() => {
