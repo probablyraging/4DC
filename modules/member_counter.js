@@ -1,5 +1,6 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
+const path = requires('path');
 
 module.exports = async (client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);

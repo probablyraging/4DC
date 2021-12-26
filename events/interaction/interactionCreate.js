@@ -1,4 +1,5 @@
 const { client, CommandInteraction, MessageEmbed } = require('discord.js');
+const path = requires('path');
 
 module.exports = {
     name: 'interactionCreate',

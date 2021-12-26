@@ -1,4 +1,5 @@
 const { CommandInteraction } = require('discord.js');
+const path = requires('path');
 
 module.exports = {
     name: `delete`,

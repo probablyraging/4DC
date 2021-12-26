@@ -2,6 +2,7 @@ require('dotenv').config();
 const {MessageEmbed} = require('discord.js');
 const {v4: uuidv4} = require('uuid');
 const {addCooldown, hasCooldown, removeCooldown} = require('../../../modules/report_cooldown');
+const path = requires('path');
 
 module.exports = {
     name: "report",

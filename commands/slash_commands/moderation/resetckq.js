@@ -1,6 +1,7 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const timerSchema = require('../../../schemas/timer-schema');
+const path = requires('path');
 
 module.exports = {
     name: `resetckq`,

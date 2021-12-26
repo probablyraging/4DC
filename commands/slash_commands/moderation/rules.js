@@ -1,5 +1,6 @@
 const { ContextMenuInteraction } = require('discord.js');
 const { rules } = require('../../../lists/rule-list');
+const path = requires('path');
 
 module.exports = {
     name: `rules`,

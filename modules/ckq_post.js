@@ -2,6 +2,7 @@ const { Message } = require('discord.js');
 const mongo = require('../mongo');
 const timerSchema = require('../schemas/timer-schema');
 const blacklist = require('../lists/blacklist');
+const path = requires('path');
 /**
  * 
  * @param {Message} message 

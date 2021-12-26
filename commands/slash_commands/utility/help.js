@@ -1,8 +1,8 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require('glob');
-const { join } = require('path');
 const PG = promisify(glob);
+const path = requires('path');
 
 module.exports = {
     name: `help`,
