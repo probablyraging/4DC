@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const path = requires('path');
+const path = require('path');
 /**
  * 
  * @param {Message} message 

@@ -3,7 +3,7 @@ const mongo = require('../../../mongo');
 const warnSchema = require('../../../schemas/warn-schema');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
-const path = requires('path');
+const path = require('path');
 
 module.exports = {
     name: `warn`,

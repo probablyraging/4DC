@@ -1,5 +1,5 @@
 const { ContextMenuInteraction } = require('discord.js');
-const path = requires('path');
+const path = require('path');
 
 module.exports = {
     name: `info`,
