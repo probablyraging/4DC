@@ -133,7 +133,7 @@ module.exports = {
 
                                     const log = new MessageEmbed()
                                         .setColor('#E04F5F')
-                                        .setAuthor(`${target.tag} has been warned`, `${target.displayAvatarURL({ dynamic: true })}`)
+                                        .setAuthor({ name: `${target?.tag} has been warned`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
                                         .addField(`Warned By:`, `<@${member.id}>`, true)
                                         .addField(`Warning Count:`, `${warnCount}`, true)
                                         .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
@@ -170,7 +170,7 @@ ${banMsg}`,
 
                                     const log = new MessageEmbed()
                                         .setColor('#E04F5F')
-                                        .setAuthor(`${target.user.tag} has been warned`, `${target.displayAvatarURL({ dynamic: true })}`)
+                                        .setAuthor({ name: `${target?.tag} has been warned`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                                         .addField(`Warned By:`, `<@${member.id}>`, true)
                                         .addField(`Warning Count:`, `${warnCount}`, true)
                                         .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
@@ -212,7 +212,7 @@ ${banMsg}`,
 
                                 const log = new MessageEmbed()
                                     .setColor('#32BEA6')
-                                    .setAuthor(`${user.tag} deleted a warning`, `${user.displayAvatarURL({ dynamic: true })}`)
+                                    .setAuthor({ name: `${user.tag} deleted a warning`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                                     .addField(`Warning Id`, `${warning}`, false)
                                     .addField(`Removed From`, `<@${gotUserId}>`, false)
                                     .addField(`Deleted By:`, `<@${user.id}>`, true)
@@ -253,7 +253,7 @@ ${banMsg}`,
 
                             let warningEmbed = new MessageEmbed()
                                 .setColor('#32BEA6')
-                                .setAuthor(`Warnings for ${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
+                                .setAuthor({ name: `Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                                 .setTimestamp()
 

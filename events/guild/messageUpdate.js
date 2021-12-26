@@ -11,7 +11,7 @@ module.exports = {
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
             var log = new Discord.MessageEmbed()
                 .setColor('#FF9E00')
-                .setAuthor(`${oldMessage?.author.tag}`, `${oldMessage?.author.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${oldMessage?.author.tag}`, iconURL: oldMessage?.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addField(`Author`, `${oldMessage?.author}`, true)
                 .addField(`Channel`, `${oldMessage?.channel}`, true)
@@ -69,7 +69,7 @@ module.exports = {
                     const msgContent = newMessage?.content || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
-                        .setAuthor(`${newMessage?.author?.tag}'s message was deleted`, `${newMessage?.author?.displayAvatarURL({ dynamic: true })}`)
+                        .setAuthor({ name: `${newMessage?.user.tag}'s message was deleted`, iconURL: newMessage?.user.displayAvatarURL({ dynamic: true }) })
                         .setColor('#E04F5F')
                         .addField(`Author`, `<@${newMessage?.author?.id}>`, true)
                         .addField(`Channel`, `${newMessage?.channel}`, true)
@@ -79,8 +79,8 @@ module.exports = {
                         .setTimestamp()
 
                     const muteEmbed = new MessageEmbed()
-                        .setColor('#E04F5F') // RED
-                        .setAuthor(`${newMessage?.author?.tag} has been auto muted`, `${newMessage?.author?.displayAvatarURL({ dynamic: true })}`)
+                        .setColor('#E04F5F')
+                        .setAuthor({ name: `${newMessage?.author.tag} has been auto muted`, iconURL: newMessage?.author.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel:`, `Server wide mute`, true)
                         .addField(`By:`, `<@841409086960697385>`, false)
                         .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second mute\`\`\``, false)
@@ -128,7 +128,7 @@ module.exports = {
                     const msgContent = newMessage?.content || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
-                        .setAuthor(`${newMessage?.author?.tag}'s message was deleted`, `${newMessage?.author?.displayAvatarURL({ dynamic: true })}`)
+                        .setAuthor({ name: `${newMessage?.author.tag}'s message was deleted`, iconURL: newMessage?.author.displayAvatarURL({ dynamic: true }) })
                         .setColor('#E04F5F')
                         .addField(`Author`, `<@${newMessage?.author?.id}>`, true)
                         .addField(`Channel`, `${newMessage?.channel}`, true)

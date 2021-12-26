@@ -18,7 +18,7 @@ module.exports = {
 
             const log = new MessageEmbed()
                 .setColor('#E04F5F')
-                .setAuthor(`${ban?.user?.tag} has been banned`, `${ban?.user?.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${ban?.user.tag} has been banned`, iconURL: ban?.user.displayAvatarURL({ dynamic: true }) })
                 .addField(`Banned By`, `${executor}`, true)
                 .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)

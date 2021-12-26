@@ -39,7 +39,7 @@ module.exports = (message, client, Discord) => {
         const msgContent = message?.content || ` `;
 
         const blacklistEmbed = new Discord.MessageEmbed()
-            .setAuthor(`${message?.author?.tag}'s message was deleted`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
             .setColor("#E04F5F")
             .addField("Author", `<@${message?.author?.id}>`, true)
             .addField("Channel", `${message?.channel}`, true)
@@ -49,8 +49,8 @@ module.exports = (message, client, Discord) => {
             .setTimestamp()
 
         const muteEmbed = new MessageEmbed()
-            .setColor('#E04F5F') // RED
-            .setAuthor(`${message?.author?.tag} has been auto muted`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+            .setColor('#E04F5F')
+            .setAuthor({ name: `${message?.author?.tag} has been auto muted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
             .addField(`Channel:`, `Server wide mute`, true)
             .addField(`By:`, `<@841409086960697385>`, false)
             .addField(`Reason:`, `\`\`\`Mass mentions\`\`\``, false)

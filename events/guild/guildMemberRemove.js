@@ -11,7 +11,7 @@ module.exports = {
 
         const log = new MessageEmbed()
             .setColor('#E04F5F')
-            .setAuthor(`${member?.user.tag}`, `${member?.user.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`${member} left
 
 There are now **${memberCount}** members in the server`)

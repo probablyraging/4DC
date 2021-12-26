@@ -23,7 +23,7 @@ module.exports = {
 
         const response = new MessageEmbed()
             .setColor('#32BEA6')
-            .setAuthor(`${target.user.tag}`, `${target.user.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 

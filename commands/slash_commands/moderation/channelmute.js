@@ -77,7 +77,7 @@ module.exports = {
 
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
-                        .setAuthor(`${target.user.tag} has been muted`, `${target.user.displayAvatarURL({ dynamic: true })}`)
+                        .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel:`, `${targetChan}`, true)
                         .addField(`By:`, `<@${member.id}>`, false)
                         .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
@@ -112,7 +112,7 @@ module.exports = {
 
                     const log = new MessageEmbed()
                         .setColor('#32BEA6')
-                        .setAuthor(`${target.user.tag} has been unmuted`, `${target.user.displayAvatarURL({ dynamic: true })}`)
+                        .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel:`, `${targetChan}`, true)
                         .addField(`By:`, `<@${member.id}>`, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)

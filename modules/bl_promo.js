@@ -48,7 +48,7 @@ module.exports = (message, client, Discord) => {
                 const msgContent = message?.content || ` `;
 
                 const blacklistEmbed = new MessageEmbed()
-                    .setAuthor(`${message?.author?.tag}'s message was deleted`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+                    .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
                     .setColor('#E04F5F')
                     .addField(`Author`, `<@${message?.author?.id}>`, true)
                     .addField(`Channel`, `${message?.channel}`, true)

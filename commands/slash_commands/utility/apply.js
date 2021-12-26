@@ -66,7 +66,7 @@ module.exports = {
 
             const response = new MessageEmbed()
                 .setColor('#FF9E00')
-                .setAuthor(`${member.user.tag}`, `${member.user.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Staff application`)
                 .addField(`⠀`, `\`\`\`Age: ${age}
 Region: ${country}

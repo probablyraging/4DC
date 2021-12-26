@@ -140,7 +140,7 @@ module.exports = {
 
         try {
             let log = new MessageEmbed()
-                .setAuthor(`${user.tag}`, `${user.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                 .setColor("#FF9E00")
                 .setDescription(`**A message was moved**`)
                 .addField(`By`, `<@${user.id}>`, false)

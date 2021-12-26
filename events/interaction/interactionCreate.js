@@ -29,7 +29,7 @@ module.exports = {
 
             const log = new MessageEmbed()
                 .setColor('#FF9E00')
-                .setAuthor(`${user.tag} used /${command.name}`, `${user.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${user?.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
                 .addField(`Channel:`, `${channel}`, false)
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()

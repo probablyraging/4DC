@@ -23,7 +23,7 @@ module.exports = {
 
         const log = new MessageEmbed()
             .setColor('#E04F5F')
-            .setAuthor(`${target.tag} has been muted`, `${target.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${target?.tag}`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
             .addField(`Channel:`, `${channel}`, true)
             .addField(`By:`, `<@${member.id}>`, false)
             .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)

@@ -26,7 +26,7 @@ module.exports = {
 
         if (newMember?.displayName !== oldMember?.displayName) {
             const log = new Discord.MessageEmbed()
-                .setAuthor(`${newMember?.user?.tag}`, `${newMember?.user?.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `${newMember?.user.tag}`, iconURL: newMember?.user.displayAvatarURL({ dynamic: true }) })
                 .setColor('#FF9E00') // ORANGE
                 .setDescription(`**<@${newMember?.id}> changed their nickname**
                 
@@ -54,7 +54,7 @@ module.exports = {
 
                 const log = new MessageEmbed()
                     .setColor('#E04F5F')
-                    .setAuthor(`Timeout added to ${oldMember?.user?.tag}`, `${oldMember?.user?.displayAvatarURL({ dynamic: true })}`)
+                    .setAuthor({ name: `Timeout added to ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
                     .addField(`Expires`, `\`\`\`${date}\`\`\``, false)
                     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                     .setTimestamp()
@@ -68,7 +68,7 @@ module.exports = {
         } else if (timeouts.has(oldMember?.user.id) && oldMember?.communicationDisabledUntilTimestamp === null) {
             const log = new MessageEmbed()
                 .setColor('#32BEA6')
-                .setAuthor(`Timeout removed from ${oldMember?.user?.tag}`, `${oldMember?.user?.displayAvatarURL({ dynamic: true })}`)
+                .setAuthor({ name: `Timeout removed from ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()
 

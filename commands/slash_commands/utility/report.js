@@ -44,7 +44,7 @@ module.exports = {
         if (!hasCooldown(user.id)) {
             const reportEmbed = new MessageEmbed()
                 .setColor('#E04F5F')
-                .setAuthor(`${user.tag}`, user.displayAvatarURL({dynamic: true}))
+                .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                 .addField(`Reported User:`, `<@${target.id}>`, false)
                 .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
                 .setFooter(`${guild.name} • Report ID ${reportId}`, `${guild.iconURL({dynamic: true})}`)
@@ -71,7 +71,7 @@ module.exports = {
                     const replyEmbed = new MessageEmbed()
                         .setColor('#32BEA6')
                         .setTitle(`CreatorHub Report`)
-                        .setAuthor(`${user.tag}`, `${user.displayAvatarURL({dynamic: true})}`)
+                        .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`Your report's status has been updated to \`CLOSED\``)
                         .addField(`Report Message:`, `\`\`\`${reason}\`\`\``, false)
                         .addField(`Closed By:`, `${closingUser}`, false)

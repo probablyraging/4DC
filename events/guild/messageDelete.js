@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const path = require('path');
 
-module.exports =  {
+module.exports = {
     name: 'messageDelete',
     async execute(message, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -20,7 +20,7 @@ module.exports =  {
         const content = message?.content || ` `;
 
         const log = new Discord.MessageEmbed()
-            .setAuthor(`${message?.author.tag}`, `${message?.author.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
             .setColor("#E04F5F")
             .setDescription(`**A message was deleted**`)
             .addField("Author", `${message?.author}`, true)

@@ -98,7 +98,7 @@ module.exports = {
         }
 
         const response = new MessageEmbed()
-            .setAuthor(`${target?.user.tag}`, `${target?.user.displayAvatarURL({ dynamic: true })}`)
+            .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setColor('RANDOM')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
             .addField('Registered:', `<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>`, true)
