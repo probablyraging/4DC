@@ -98,7 +98,7 @@ module.exports = {
     execute(interaction) {
         const { member, user, channel, options } = interaction;
 
-        if (member.id !== process.env.BOT_OWNER) {
+        if (member.id !== process.env.OWNER_ID) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
                 ephemeral: true

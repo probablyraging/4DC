@@ -15,7 +15,7 @@ module.exports = {
         description: `The name of the feature or command`,
         type: `STRING`,
         required: true,
-        choices: [{ name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rules`, value: `rules` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `help`, value: `help` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }],
+        choices: [{ name: `about`, value: `about` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `help`, value: `help` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }, { name: `invite`, value: `invite` }, { name: `livenow`, value: `livenow` }, { name: `say`, value: `say` }, { name: `index`, value: `index` }, { name: `modschoice`, value: `modschoice` }, { name: `lockdown`, value: `lockdown` }, { name: `leaderboard`, value: `leaderboard` }],
     }],
     /**
      * 
