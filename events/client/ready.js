@@ -10,12 +10,17 @@ const statusCounter = require('../../modules/status_counter');
 const ckqCheck = require('../../modules/ckq_check');
 const bumpCheck = require('../../modules/bump_check');
 const liveNow = require('../../modules/live_now');
+const fetch = require('node-fetch');
 
 module.exports = {
     name: 'ready',
     once: true,
     async execute(message, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
+        // const resolve = await fetch(`https://discord.com/api/v8/applications/920931602870181909/guilds/${process.env.GUILD_ID}/commands`, { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } })
+        // const data = await resolve.json(); 
+        // console.log(data)
 
         client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
 

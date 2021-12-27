@@ -10,6 +10,7 @@ module.exports = {
     name: `leaderboard`,
     description: `View leaderboards for the server ranks, games and others`,
     permission: ``,
+    cooldown: 5,
     type: `CHAT_INPUT`,
     options: [{
         name: `ranks`,

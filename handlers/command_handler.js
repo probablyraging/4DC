@@ -1,8 +1,9 @@
 const { perms } = require('../lists/permissions');
+const { ids } = require('../lists/ident');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
-const ascii = require('ascii-table')
+const ascii = require('ascii-table');
 
 module.exports = async (client, Discord) => {
     const table = new ascii('Commands loaded!');
@@ -55,7 +56,7 @@ module.exports = async (client, Discord) => {
                 return [...accumulator, { id: r.id, permissions }]
             }, []);
 
-            await mainGuild.commands.permissions.set({ fullPermissions })
+            await mainGuild.commands.permissions.set({ fullPermissions });
         });
     });
 }

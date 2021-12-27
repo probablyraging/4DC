@@ -5,6 +5,7 @@ module.exports = {
     name: `livenow`,
     description: `Shows a list of all server members who are currently streaming`,
     permission: `MANAGE_MESSAGES`,
+    cooldown: 3600,
     type: `CHAT_INPUT`,
     usage: `/livenow`,
     /**

@@ -5,6 +5,7 @@ module.exports = {
     name: `invite`,
     description: `Provides a working invite URL for you to invite friends and family`,
     permission: ``,
+    cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/invite`,
     /**

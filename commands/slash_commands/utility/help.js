@@ -8,6 +8,7 @@ module.exports = {
     name: `help`,
     description: `Information about CreatorBot and it's features and commands`,
     permission: ``,
+    cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/help [commandName]`,
     options: [{

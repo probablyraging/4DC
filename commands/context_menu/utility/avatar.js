@@ -5,6 +5,7 @@ module.exports = {
     name: `Avatar`,
     description: ``,
     permission: ``,
+    cooldown: 5,
     type: `USER`,
     /**
      * 

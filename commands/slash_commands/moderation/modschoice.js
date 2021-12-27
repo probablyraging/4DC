@@ -5,6 +5,7 @@ module.exports = {
     name: `modschoice`,
     description: `Add a user to the mod's choice role`,
     permission: `MANAGE_MESSAGES`,
+    cooldown: 0,
     type: `CHAT_INPUT`,
     usage: `/modschoice [@username]`,
     options: [{

@@ -5,6 +5,8 @@ module.exports = {
     name: `lockdown`,
     description: `Prevent everyone from sending messages in all channels`,
     permission: `MANAGE_MESSAGES`,
+    locked: true,
+    cooldown: 0,
     type: `CHAT_INPUT`,
     options: [{
         name: `start`,
@@ -35,13 +37,6 @@ module.exports = {
 
         const noticeChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
         const everyone = guild.roles.cache.get(process.env.GUILD_ID);
-
-        if (member.id !== process.env.OWNER_ID) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
 
         try {
             switch (options.getSubcommand()) {

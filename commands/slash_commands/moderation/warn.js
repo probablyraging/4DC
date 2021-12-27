@@ -9,6 +9,7 @@ module.exports = {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
     permission: `MANAGE_MESSAGES`,
+    cooldown: 10,
     type: `CHAT_INPUT`,
     options: [{
         name: `add`,

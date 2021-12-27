@@ -4,7 +4,9 @@ const path = require('path');
 module.exports = {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
-    permission: `MANAGE_MESSAGES`,
+    permission: ``,
+    locked: true,
+    cooldown: 0,
     type: `CHAT_INPUT`,
     options: [{
         name: `create`,
@@ -96,14 +98,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const { member, user, channel, options } = interaction;
-
-        if (member.id !== process.env.OWNER_ID) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        const { user, channel, options } = interaction;
 
         try {
             switch (options.getSubcommand()) {

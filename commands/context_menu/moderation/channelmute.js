@@ -5,6 +5,7 @@ module.exports = {
     name: `Channel Mute`,
     description: ``,
     permission: `MANAGE_MESSAGES`,
+    cooldown: 5,
     type: `MESSAGE`,
     /**
      * 

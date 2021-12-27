@@ -50,7 +50,7 @@ module.exports = (message, client, Discord) => {
 
                     const log = new Discord.MessageEmbed()
                         .setColor('#fc3c3c')
-                        .setAuthor(`${message?.author?.tag}`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+                        .setAuthor({ name: `${message?.author?.tag}`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
                         .addField("Author", `<@${message?.author?.id}>`, true)
                         .addField("Channel", `${message?.channel}`, true)
                         .addField("Reason", `Link cooldown`, true)

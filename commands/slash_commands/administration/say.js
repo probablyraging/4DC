@@ -5,6 +5,8 @@ module.exports = {
     name: `say`,
     description: `Send a message as the bot`,
     permission: `MANAGE_MESSAGES`,
+    locked: true,
+    cooldown: 0,
     type: `CHAT_INPUT`,
     usage: `/say (#channel) (message) (imageURL)`,
     options: [{
@@ -35,13 +37,6 @@ module.exports = {
         const toChannel = options.getChannel('channel');
         const message = options.getString('message') || ` `;
         const image = options.getString('image');
-
-        if (member.id !== process.env.OWNER_ID) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
 
         if (!toChannel) {
             if (image) {

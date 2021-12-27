@@ -20,6 +20,8 @@ module.exports = {
         if (reaction.emoji.name === '🎲') roleId = emojis.s;
         if (reaction.emoji.name === '📣') roleId = emojis.t;
 
+        let roleId = 0;
+
         if (reaction.emoji.name === '🔵') {
             roleId = emojis.a;
 
