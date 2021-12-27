@@ -10,7 +10,7 @@
   </p>
 </div>
 
-# CreatorBot-2.0
+# CreatorBot2.0
 This is a discord.js v13 bot for [CreatorHub](https://discord.gg/creatorhub)
 
 # CreatorHub Discord Server
