@@ -8,6 +8,9 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
 
+        let original = oldMessage.content.slice(0, 1000) + (oldMessage.content.length > 1000 ? '...' : '');
+        let edited = newMessage.content.slice(0, 1000) + (newMessage.content.length > 1000 ? '...' : '');
+
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
             var log = new Discord.MessageEmbed()
                 .setColor('#FF9E00')
@@ -15,14 +18,14 @@ module.exports = {
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addField(`Author`, `${oldMessage?.author}`, true)
                 .addField(`Channel`, `${oldMessage?.channel}`, true)
-                .addField(`Old Message`, `\`\`\`${oldMessage}\`\`\``, false)
-                .addField(`New Message`, `\`\`\`${newMessage}\`\`\``, false)
+                .addField(`Old Message`, `\`\`\`${original}\`\`\``, false)
+                .addField(`New Message`, `\`\`\`${edited}\`\`\``, false)
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()
 
             msgUpChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         }
 
         /**
@@ -66,7 +69,7 @@ module.exports = {
                         }
                     }, 30000);
 
-                    const msgContent = newMessage?.content || ` `;
+                    const msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
                         .setAuthor({ name: `${newMessage?.user?.tag}'s message was deleted`, iconURL: newMessage?.user?.displayAvatarURL({ dynamic: true }) })
@@ -125,7 +128,7 @@ module.exports = {
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-                    const msgContent = newMessage?.content || ` `;
+                    const msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
                         .setAuthor({ name: `${newMessage?.author.tag}'s message was deleted`, iconURL: newMessage?.author.displayAvatarURL({ dynamic: true }) })

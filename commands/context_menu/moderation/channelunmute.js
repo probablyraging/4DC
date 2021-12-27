@@ -22,7 +22,7 @@ module.exports = {
 
         const log = new MessageEmbed()
             .setColor('#32BEA6')
-            .setAuthor({ name: `${target?.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${target?.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .addField(`Channel:`, `${channel}`, true)
             .addField(`By:`, `<@${member.id}>`, false)
             .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)

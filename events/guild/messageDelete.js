@@ -17,7 +17,7 @@ module.exports = {
         const delLog = fetchedLogs.entries.first();
         const { executor } = delLog;
 
-        const content = message?.content || ` `;
+        const content = message?.content.slice(0, 1000) + '...' || ` `;
 
         const log = new Discord.MessageEmbed()
             .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
@@ -37,6 +37,6 @@ module.exports = {
 
         msgDelChan.send({
             embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
     }
 }

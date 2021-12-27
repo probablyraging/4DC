@@ -48,7 +48,7 @@ module.exports = (message, client, Discord) => {
                     }
                 }, 30000);
 
-                const msgContent = message?.content || ` `;
+                const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
                 const blacklistEmbed = new MessageEmbed()
                     .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
