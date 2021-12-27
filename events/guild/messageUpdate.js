@@ -48,10 +48,10 @@ module.exports = {
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been muted for 30 seconds to prevent spamming\``
+                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``
                     }).catch(() => {
                         newMessage?.reply({
-                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been muted for 30 seconds to prevent spamming\``,
+                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => {
@@ -61,13 +61,7 @@ module.exports = {
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-                    member?.roles.add(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-
-                    setTimeout(() => {
-                        if (guild?.members?.cache.get(member?.id)) {
-                            member?.roles?.remove(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-                        }
-                    }, 30000);
+                    member?.timeout(30000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                     const msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
@@ -83,10 +77,9 @@ module.exports = {
 
                     const muteEmbed = new MessageEmbed()
                         .setColor('#E04F5F')
-                        .setAuthor({ name: `${newMessage?.author?.tag} has been auto muted`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
-                        .addField(`Channel:`, `Server wide mute`, true)
-                        .addField(`By:`, `<@841409086960697385>`, false)
-                        .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second mute\`\`\``, false)
+                        .setAuthor({ name: `${newMessage?.author?.tag} has been auto timedout`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
+                        .addField(`By:`, `${client.uder.id}`, false)
+                        .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 

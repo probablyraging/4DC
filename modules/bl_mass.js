@@ -13,10 +13,10 @@ module.exports = (message, client, Discord) => {
 
     if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions?.members?.size > 4) {
         member?.send({
-            content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been muted for 30 seconds to prevent spamming\``
+            content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 30 seconds to prevent spamming\``
         }).catch(() => {
             message?.reply({
-                content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been muted for 30 seconds to prevent spamming\``,
+                content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 30 seconds to prevent spamming\``,
                 deleteallowedMentions: { repliedUser: true },
                 failIfNotExists: false
             }).catch(err => {
@@ -28,13 +28,7 @@ module.exports = (message, client, Discord) => {
 
         setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-        member?.roles.add(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-
-        setTimeout(() => {
-            if (guild?.members?.cache.get(member?.id)) {
-                member?.roles?.remove(process.env.MUTED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-            }
-        }, 30000);
+        member?.timeout(30000, 'Mass mentions').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
         const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
@@ -50,10 +44,9 @@ module.exports = (message, client, Discord) => {
 
         const muteEmbed = new MessageEmbed()
             .setColor('#E04F5F')
-            .setAuthor({ name: `${message?.author?.tag} has been auto muted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-            .addField(`Channel:`, `Server wide mute`, true)
-            .addField(`By:`, `<@841409086960697385>`, false)
-            .addField(`Reason:`, `\`\`\`Mass mentions\`\`\``, false)
+            .setAuthor({ name: `${message?.author?.tag} has been auto timedout`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
+            .addField(`By:`, `${client.uder.id}`, false)
+            .addField(`Reason:`, `\`\`\`Mass mentions - 30 second timeout\`\`\``, false)
             .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
             .setTimestamp()
 

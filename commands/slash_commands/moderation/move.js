@@ -139,6 +139,8 @@ module.exports = {
             });
         }
 
+        const embedContent = msgContent.slice(0, 1000) + '...' || ` `;
+
         try {
             let log = new MessageEmbed()
                 .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
@@ -148,7 +150,7 @@ module.exports = {
                 .addField("Author", `<@${author.id}>`, true)
                 .addField("From", `${channel}`, true)
                 .addField("To", `${toChannel}`, true)
-                .addField('Message', `\`\`\`${msgContent}\`\`\``)
+                .addField('Message', `\`\`\`${embedContent}\`\`\``)
                 .setFooter(guild.name, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()
 

@@ -4,7 +4,7 @@ const timeouts = new Set();
 
 module.exports = {
     name: 'guildMemberUpdate',
-    execute(newMember, oldMember, client, Discord) {
+    async execute(newMember, oldMember, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
         const userUpChan = client.channels.cache.get(process.env.USERUP_CHAN);
@@ -52,9 +52,21 @@ module.exports = {
                 const timestamp = oldMember?.communicationDisabledUntilTimestamp;
                 const date = new Date(timestamp).toLocaleString();
 
+                const fetchedLogs = await guild.fetchAuditLogs({
+                    limit: 1,
+                    action: 'MEMBER_UPDATE'
+                });
+
+                const muteLog = fetchedLogs.entries.first();
+                const { executor, reason } = muteLog;
+
+                const toReason = reason || `None`;
+
                 const log = new MessageEmbed()
                     .setColor('#E04F5F')
                     .setAuthor({ name: `Timeout added to ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
+                    .addField(`Added By`, `${executor}`, false)
+                    .addField(`Reason`, `\`\`\`${toReason}\`\`\``, false)
                     .addField(`Expires`, `\`\`\`${date}\`\`\``, false)
                     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                     .setTimestamp()
@@ -63,11 +75,20 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-                timeouts.add(oldMember?.user.id).catch(err => console.error(`${path.basename(__filename)} There was a problem adding to the map: `, err));;
+                timeouts.add(oldMember?.user.id);
             }
         } else if (timeouts.has(oldMember?.user.id) && oldMember?.communicationDisabledUntilTimestamp === null) {
+            const fetchedLogs = await guild.fetchAuditLogs({
+                limit: 1,
+                action: 'MEMBER_UPDATE'
+            });
+
+            const muteLog = fetchedLogs.entries.first();
+            const { executor, reason } = muteLog;
+
             const log = new MessageEmbed()
                 .setColor('#32BEA6')
+                .addField(`Removed By`, `${executor}`, false)
                 .setAuthor({ name: `Timeout removed from ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
                 .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                 .setTimestamp()
@@ -76,7 +97,7 @@ module.exports = {
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-            timeouts.delete(oldMember?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting from the map: `, err));
+            timeouts.delete(oldMember?.id);
         }
     }
 }

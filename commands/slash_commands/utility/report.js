@@ -37,7 +37,7 @@ module.exports = {
 
         if (reason && reason.length > 1024) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`Permissions field exceeds 1024 characters\``,
+                content: `${process.env.BOT_DENY} \`Reason cannot exceeds 1024 characters\``,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
