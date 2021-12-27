@@ -18,10 +18,6 @@ module.exports = {
     async execute(message, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
-        // const resolve = await fetch(`https://discord.com/api/v8/applications/920931602870181909/guilds/${process.env.GUILD_ID}/commands`, { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } })
-        // const data = await resolve.json(); 
-        // console.log(data)
-
         client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
 
         console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
@@ -49,7 +45,7 @@ module.exports = {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
                     files: [img]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         });
 
         boostTimer.start();
