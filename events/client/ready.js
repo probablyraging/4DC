@@ -29,6 +29,10 @@ module.exports = {
             }
         });
 
+        // fetch messages in #sefl-roles to listen for messageReactionAdd/Remove
+        const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
+        reactChannel.messages.fetch();
+
         statusCounter(client);
         memberCounter(client);
         ckqCheck(message, client, Discord);

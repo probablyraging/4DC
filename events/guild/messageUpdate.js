@@ -78,7 +78,7 @@ module.exports = {
                     const muteEmbed = new MessageEmbed()
                         .setColor('#E04F5F')
                         .setAuthor({ name: `${newMessage?.author?.tag} has been auto timedout`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
-                        .addField(`By:`, `${client.uder.id}`, false)
+                        .addField(`By:`, `${client.user.id}`, false)
                         .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()

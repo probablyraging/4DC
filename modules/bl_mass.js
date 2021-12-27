@@ -45,7 +45,7 @@ module.exports = (message, client, Discord) => {
         const muteEmbed = new MessageEmbed()
             .setColor('#E04F5F')
             .setAuthor({ name: `${message?.author?.tag} has been auto timedout`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-            .addField(`By:`, `${client.uder.id}`, false)
+            .addField(`By:`, `${client.user.id}`, false)
             .addField(`Reason:`, `\`\`\`Mass mentions - 30 second timeout\`\`\``, false)
             .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
             .setTimestamp()

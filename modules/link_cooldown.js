@@ -7,6 +7,9 @@ const path = require('path');
  */
 
 module.exports = (message, client, Discord) => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    const blChan = client.channels.cache.get(process.env.BL_CHAN);
+
     const author = message?.author;
     const content = message?.content.toLocaleLowerCase();
     const conditions = ['https://', 'http://', 'www.'];
@@ -15,8 +18,8 @@ module.exports = (message, client, Discord) => {
     if (!author) {
         return;
     } else {
-        if (check && !message?.member?.permissions.has("MANAGE_MESSAGES") && !message?.author.bot) {
-            if (cooldown.has(message?.author.id)) {
+        if (check && !message?.member?.permissions.has("MANAGE_MESSAGES") && !message?.author?.bot) {
+            if (cooldown.has(message?.author?.id)) {
                 const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
                 let messageId = message?.id;
 
@@ -42,6 +45,22 @@ module.exports = (message, client, Discord) => {
                     setTimeout(() => {
                         message?.delete().catch(err => console.error(`${path.basename(__filename)} 3 ### THIS IS EXPECTED SOME TIMES: `, err));
                     }, 600);
+
+                    const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
+
+                    const log = new Discord.MessageEmbed()
+                        .setColor('#fc3c3c')
+                        .setAuthor(`${message?.author?.tag}`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+                        .addField("Author", `<@${message?.author?.id}>`, true)
+                        .addField("Channel", `${message?.channel}`, true)
+                        .addField("Reason", `Link cooldown`, true)
+                        .addField('Message', `\`\`\`${msgContent}\`\`\``)
+                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setTimestamp()
+
+                    blChan.send({
+                        embeds: [log]
+                    }).catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending a log: `, err));
                 });
             } else {
                 cooldown.add(message?.author.id)
