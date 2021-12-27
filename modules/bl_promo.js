@@ -28,7 +28,7 @@ module.exports = (message, client, Discord) => {
 
     for (var e in blacklist.noLinkChannels) {
         if (found && message?.channel.id === blacklist.noLinkChannels[e] && !message?.content.includes('tenor.com') && !message?.author.bot) {
-            if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE)) {
+            if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                 member?.send({
                     content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}\``
                 }).catch(() => {

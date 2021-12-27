@@ -75,21 +75,21 @@ module.exports = {
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 
-                    const muteEmbed = new MessageEmbed()
-                        .setColor('#E04F5F')
-                        .setAuthor({ name: `${newMessage?.author?.tag} has been auto timedout`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
-                        .addField(`By:`, `${client.user}`, false)
-                        .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
-                        .setTimestamp()
+                    // const muteEmbed = new MessageEmbed()
+                    //     .setColor('#E04F5F')
+                    //     .setAuthor({ name: `${newMessage?.author?.tag} has been auto timedout`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
+                    //     .addField(`By:`, `${client.user}`, false)
+                    //     .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
+                    //     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                    //     .setTimestamp()
 
                     blChan.send({
                         embeds: [blacklistEmbed]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-                    muteChan.send({
-                        embeds: [muteEmbed]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+                    // muteChan.send({
+                    //     embeds: [muteEmbed]
+                    // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
                 }
             }
         }
@@ -106,7 +106,7 @@ module.exports = {
 
         for (var e in blacklist.noLinkChannels) {
             if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
-                if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE)) {
+                if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                     member?.send({
                         content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${newMessage?.channel.name}\``
                     }).catch(() => {

@@ -54,21 +54,21 @@ module.exports = (message, client, Discord) => {
                     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                     .setTimestamp()
 
-                const muteEmbed = new MessageEmbed()
-                    .setColor('#E04F5F')
-                    .setAuthor({ name: `${message?.author?.tag} has been auto timedout`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-                    .addField(`By:`, `${client.user}`, false)
-                    .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
-                    .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
-                    .setTimestamp()
+                // const muteEmbed = new MessageEmbed()
+                //     .setColor('#E04F5F')
+                //     .setAuthor({ name: `${message?.author?.tag} has been auto timedout`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
+                //     .addField(`By:`, `${client.user}`, false)
+                //     .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
+                //     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                //     .setTimestamp()
 
                 blChan.send({
                     embeds: [blacklistEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-                muteChan.send({
-                    embeds: [muteEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+                // muteChan.send({
+                //     embeds: [muteEmbed]
+                // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
             }
         }
     }
