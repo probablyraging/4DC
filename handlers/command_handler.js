@@ -1,5 +1,4 @@
 const { perms } = require('../lists/permissions');
-const { ids } = require('../lists/ident');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);

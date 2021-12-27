@@ -134,10 +134,10 @@ module.exports = {
 
                                     const log = new MessageEmbed()
                                         .setColor('#E04F5F')
-                                        .setAuthor({ name: `${target?.tag} has been warned`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
-                                        .addField(`Warned By:`, `<@${member.id}>`, true)
-                                        .addField(`Warning Count:`, `${warnCount}`, true)
-                                        .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
+                                        .setAuthor({ name: `${target?.user?.tag} has been warned`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
+                                        .addField(`Warned By`, `<@${member.id}>`, true)
+                                        .addField(`Warning Count`, `${warnCount}`, true)
+                                        .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
                                         .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
                                         .setTimestamp()
 
@@ -171,10 +171,10 @@ ${banMsg}`,
 
                                     const log = new MessageEmbed()
                                         .setColor('#E04F5F')
-                                        .setAuthor({ name: `${target?.tag} has been warned`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                                        .addField(`Warned By:`, `<@${member.id}>`, true)
-                                        .addField(`Warning Count:`, `${warnCount}`, true)
-                                        .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
+                                        .setAuthor({ name: `${target?.user?.tag} has been warned`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                                        .addField(`Warned By`, `<@${member.id}>`, true)
+                                        .addField(`Warning Count`, `${warnCount}`, true)
+                                        .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
                                         .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
                                         .setTimestamp()
 
@@ -213,10 +213,10 @@ ${banMsg}`,
 
                                 const log = new MessageEmbed()
                                     .setColor('#32BEA6')
-                                    .setAuthor({ name: `${user.tag} deleted a warning`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                                    .addField(`Warning Id`, `${warning}`, false)
-                                    .addField(`Removed From`, `<@${gotUserId}>`, false)
-                                    .addField(`Deleted By:`, `<@${user.id}>`, true)
+                                    .setAuthor({ name: `${user.tag} deleted a warning`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                                    .addField(`Removed From`, `<@${gotUserId}>`, true)
+                                    .addField(`Removed By`, `<@${user.id}>`, true)
+                                    .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
                                     .setFooter(`${guild.name} • Warning ID ${warning}`, `${guild.iconURL({ dynamic: true })}`)
                                     .setTimestamp()
 
@@ -268,11 +268,11 @@ ${banMsg}`,
                                     warnCount++
 
                                     warningEmbed.addField(`#${warnCount}
-🆔 Warning ID:`, `${warnId}
-⠀`, false)
-                                    warningEmbed.addField(`🛡️ Staff Member:`, `<@${author}>
-⠀`, false)
-                                    warningEmbed.addField(`✏️ Reason:`, `${reason} *- ${moment(timestamp).format('llll')}*
+⠀
+Warning ID`, `\`\`\`${warnId}\`\`\``, false)
+                                    warningEmbed.addField(`Date`, `\`\`\`${moment(timestamp).format('llll')}\`\`\``, false)
+                                    warningEmbed.addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
+                                    warningEmbed.addField(`Warned By`, `<@${author}>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, false)
                                 }
                             }
