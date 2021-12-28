@@ -19,11 +19,11 @@ module.exports = {
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
         const reason = `None - command ran via context menu`;
 
-        channel.permissionOverwrites.delete(target).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+        channel.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
         const log = new MessageEmbed()
             .setColor('#32BEA6')
-            .setAuthor({ name: `${target?.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${target?.tag} has been unmuted`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
             .addField(`Channel:`, `${channel}`, true)
             .addField(`By:`, `<@${member.id}>`, false)
             .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)

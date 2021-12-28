@@ -32,7 +32,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const { member, channel, options } = interaction;
+        const { channel, options } = interaction;
 
         const toChannel = options.getChannel('channel');
         const message = options.getString('message') || ` `;

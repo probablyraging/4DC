@@ -74,7 +74,7 @@ module.exports = {
 
                     targetChan.permissionOverwrites.edit(target.id, {
                         SEND_MESSAGES: false,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+                    }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
@@ -109,7 +109,7 @@ module.exports = {
 
             switch (options.getSubcommand()) {
                 case 'remove': {
-                    targetChan.permissionOverwrites.delete(target.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
+                    targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                     const log = new MessageEmbed()
                         .setColor('#32BEA6')

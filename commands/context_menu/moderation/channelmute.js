@@ -19,9 +19,9 @@ module.exports = {
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
         const reason = `None - command ran via context menu`;
 
-        channel.permissionOverwrites.edit(target, {
+        channel.permissionOverwrites.edit(target.id, {
             SEND_MESSAGES: false,
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+        }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
         const log = new MessageEmbed()
             .setColor('#E04F5F')

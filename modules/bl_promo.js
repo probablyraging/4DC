@@ -30,10 +30,10 @@ module.exports = (message, client, Discord) => {
         if (found && message?.channel.id === blacklist.noLinkChannels[e] && !message?.content.includes('tenor.com') && !message?.author.bot) {
             if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}\``
+                    content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}. You have been timedout for 30 seconds to prevent spamming\``
                 }).catch(() => {
                     message?.reply({
-                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}\``,
+                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}. You have been timedout for 30 seconds to prevent spamming\``,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
@@ -44,6 +44,8 @@ module.exports = (message, client, Discord) => {
                 });
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+
+                member?.timeout(30000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                 let msgContent = message?.content || ` `;
                 if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
