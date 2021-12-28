@@ -73,7 +73,7 @@ module.exports = async (message, client, Discord) => {
                     setTimeout(() => {
                         msg.delete()
                     }, 6000);
-                })
+                });
             }
 
             /**
@@ -84,6 +84,7 @@ module.exports = async (message, client, Discord) => {
 
             if (!failed && test) {
                 failed = true;
+                deleted = true;
                 currentCounter = 0;
                 dbUpdateCount();
 
@@ -91,7 +92,7 @@ module.exports = async (message, client, Discord) => {
                     nextLetter = fetchFirst.content;
 
                     return message.reply({
-                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can only use \`a-Z\`. Your previous message was deleted. The next letter is \`${nextLetter.toUpperCase()}\`!`,
+                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can only use \`a-Z\`. Your previous message was deleted. The next letter is \`${nextLetter.slice(-1).toUpperCase()}\`!`,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
@@ -109,7 +110,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${message.content.charAt(0).toUpperCase()}\`. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${message.content.slice(-1).toUpperCase()}\`. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -126,7 +127,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your word has to be longer than \`1\` letter. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your word has to be longer than \`1\` letter. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -147,7 +148,7 @@ module.exports = async (message, client, Discord) => {
                         dbUpdateCount();
 
                         return message.reply({
-                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` was used in the last 10 messages. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` was used in the last 10 messages. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
@@ -161,7 +162,7 @@ module.exports = async (message, client, Discord) => {
              * IF SAME USER ADDS TWO MESSAGES IN A ROW
              */
             if (!failed) {
-                await message.channel.messages.fetch({ limit: 3 }).then(async fetched => {
+                await message.channel.messages.fetch({ limit: 2 }).then(async fetched => {
                     const repeats = fetched.filter(m => m.author.id && !m.content.startsWith('>') === message.author.id).size;
 
                     if (repeats > 1) {
@@ -170,7 +171,7 @@ module.exports = async (message, client, Discord) => {
                         dbUpdateCount();
 
                         return message.reply({
-                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
@@ -179,16 +180,16 @@ module.exports = async (message, client, Discord) => {
                     }
 
                     if (repeats < 2) {
-                        await message.channel.messages.fetch({ limit: 3 }).then(fetched => {
+                        await message.channel.messages.fetch({ limit: 4 }).then(fetched => {
                             const repeats = fetched.filter(m => !m.author.bot && !m.content.startsWith('>') && m.author.id === message.author.id).size
 
-                            if (repeats > 1) {
+                            if (repeats > 2) {
                                 failed = true;
                                 currentCounter = 0;
                                 dbUpdateCount();
 
                                 return message.reply({
-                                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                                     deleteallowedMentions: { repliedUser: true },
                                     failIfNotExists: false
                                 }).catch(err => {
@@ -212,7 +213,7 @@ module.exports = async (message, client, Discord) => {
                     dbUpdateCount();
 
                     return message.reply({
-                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` isn't in the dictionary. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` isn't in the dictionary. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
@@ -235,7 +236,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -254,7 +255,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -273,7 +274,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -292,7 +293,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -311,7 +312,7 @@ module.exports = async (message, client, Discord) => {
                 dbUpdateCount();
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.charAt(0).toUpperCase()}\`!`,
+                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
