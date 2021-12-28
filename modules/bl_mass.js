@@ -30,7 +30,8 @@ module.exports = (message, client, Discord) => {
 
         member?.timeout(30000, 'Mass mentions').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
-        const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
+        let msgContent = message?.content || ` `;
+        if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
         const blacklistEmbed = new Discord.MessageEmbed()
             .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
@@ -42,21 +43,9 @@ module.exports = (message, client, Discord) => {
             .setFooter(`${guild?.name}`, `${guild?.iconURL({ dynamic: true })}`)
             .setTimestamp()
 
-        // const muteEmbed = new MessageEmbed()
-        //     .setColor('#E04F5F')
-        //     .setAuthor({ name: `${message?.author?.tag} has been auto timedout`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-        //     .addField(`By:`, `${client.user}`, false)
-        //     .addField(`Reason:`, `\`\`\`Mass mentions - 30 second timeout\`\`\``, false)
-        //     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
-        //     .setTimestamp()
-
         blChan.send({
             embeds: [blacklistEmbed]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
-        // muteChan.send({
-        //     embeds: [muteEmbed]
-        // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
     }
 }
 

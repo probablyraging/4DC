@@ -6,7 +6,6 @@ const path = require('path');
 module.exports = {
     name: `index`,
     description: `Pre-written content for specific channels`,
-    permission: `MANAGE_MESSAGES`,
     locked: true,
     cooldown: 0,
     type: `CHAT_INPUT`,

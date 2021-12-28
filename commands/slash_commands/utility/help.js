@@ -6,17 +6,27 @@ const path = require('path');
 
 module.exports = {
     name: `help`,
-    description: `Information about CreatorBot and it's features and commands`,
+    description: `Information about CreatorBot and it's commands and features`,
     permission: ``,
     cooldown: 3,
     type: `CHAT_INPUT`,
-    usage: `/help [commandName]`,
     options: [{
         name: `command`,
-        description: `The name of the feature or command`,
-        type: `STRING`,
-        required: true,
-        choices: [{ name: `about`, value: `about` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `help`, value: `help` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }, { name: `invite`, value: `invite` }, { name: `livenow`, value: `livenow` }, { name: `say`, value: `say` }, { name: `index`, value: `index` }, { name: `modschoice`, value: `modschoice` }, { name: `lockdown`, value: `lockdown` }, { name: `leaderboard`, value: `leaderboard` }],
+        description: `Get information about a specific command`,
+        type: `SUB_COMMAND`,
+        options: [{
+            name: `name`,
+            description: `The name of the feature or command`,
+            type: `STRING`,
+            required: true,
+            choices: [{ name: `about`, value: `about` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `help`, value: `help` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }, { name: `invite`, value: `invite` }, { name: `livenow`, value: `livenow` }, { name: `say`, value: `say` }, { name: `index`, value: `index` }, { name: `modschoice`, value: `modschoice` }, { name: `lockdown`, value: `lockdown` }, { name: `leaderboard`, value: `leaderboard` }],
+        }]
+    },
+    {
+        name: `menu`,
+        description: `The main menu of the help command`,
+        type: `SUB_COMMAND`,
+        usage: `/help menu`,
     }],
     /**
      * 
@@ -25,70 +35,93 @@ module.exports = {
     async execute(interaction) {
         const { guild, client, options } = interaction;
 
-        const choice = options.getString('command');
+        try {
+            switch (options.getSubcommand()) {
+                case 'command': {
+                    const choice = options.getString('name');
 
-        cmdArr = [];
+                    console.log(choice)
 
-        (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
-            const command = require(file);
-            cmdArr.push(command);
-        });
+                    cmdArr = [];
 
-        if (choice !== 'menu') {
+                    (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
+                        const command = require(file);
 
-            let perm = 'Utility';
-            let color = '#3fa6ff';
+                        if (file.includes('administration')) cmdArr.push({ command, access: 'Administration' });
+                        if (file.includes('moderation')) cmdArr.push({ command, access: 'Moderation' });
+                        if (file.includes('utility')) cmdArr.push({ command, access: 'Utility' });
+                    });
 
-            const cmd = cmdArr.find(c => c.name === choice);
+                    const cmd = cmdArr.find(c => c.command.name === choice);
 
-            if (cmd.permission === 'MANAGE_MESSAGES') perm = 'Moderation', color = '#05fffc';
+                    const response = new MessageEmbed()
+                        .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
+                        .setDescription(`${cmd.command.description}`)
 
-            const response = new MessageEmbed()
-                .setColor(color)
-                .setTitle(`${perm} > ${cmd.name.toUpperCase()}`)
-                .setDescription(`${cmd.description}`)
+                    if (cmd.command.locked) response.addField(`Required Permissions`, `\`Owner\``, false), response.setColor('#87ecff');
+                    if (cmd.command.permission === `MANAGE_MESSAGES`) response.addField(`Required Permissions`, `\`Staff\``, false), response.setColor('#fff766');
+                    if (cmd.command.permission === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#87ffd4');
 
-            if (!cmd.usage) {
-                cmd.options.forEach(option => {
-                    response.addField(`Usage (sub-command)`, `\`\`\`${option.usage}\`\`\``, false);
-                });
-            } else {
-                response.addField(`Usage`, `\`\`\`${cmd.usage}\`\`\``, false);
+                    if (!cmd.command.usage) {
+                        cmd.command.options.forEach(option => {
+                            response.addField(`Usage (sub-command)`, `\`\`\`${option.usage}\`\`\``, false);
+                        });
+                    } else {
+                        response.addField(`Usage`, `\`\`\`${cmd.command.usage}\`\`\``, false);
+                    }
+
+                    interaction.reply({
+                        embeds: [response],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                }
             }
 
-            interaction.reply({
-                embeds: [response],
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        } else {
-            modCmds = [];
-            utilCmds = [];
+            switch (options.getSubcommand()) {
+                case 'menu': {
+                    cmdArr = [];
 
-            cmdArr.forEach(cmd => {
-                if (!cmd.permission) utilCmds.push(cmd.name);
-                if (cmd.permission === 'MANAGE_MESSAGES') modCmds.push(cmd.name);
-            });
+                    (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
+                        const command = require(file);
+                        cmdArr.push(command);
+                    });
 
-            const response = new MessageEmbed()
-                .setColor('#32BEA6')
-                .setTitle(`ℹ️ CreatorBot's Help Menu`)
-                .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
+                    ownerCmd = [];
+                    modCmds = [];
+                    utilCmds = [];
 
-Use \`/help [command]\` for information about a specific command
-Parameters inside \`[]\` brackets are mandatory
-Parameters inside \`()\` brackets are optional
-⠀`)
-                .addField(`👮 Staff Commands`, `\`/${modCmds.join(`\`, \`/`)}\`
-⠀`, false)
-                .addField(`👥 Everyone`, `\`/${utilCmds.join(`\`, \`/`)}\`
-⠀`, false)
-                .setFooter(`${guild.name}`, `${client.user.displayAvatarURL()}`)
-                .setTimestamp()
+                    cmdArr.forEach(cmd => {
+                        if (cmd.locked) ownerCmd.push(cmd.name);
+                        if (cmd.permission === 'MANAGE_MESSAGES') modCmds.push(cmd.name);
+                        if (cmd.permission === ``) utilCmds.push(cmd.name);
+                    });
 
-            interaction.reply({
-                embeds: [response],
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    const response = new MessageEmbed()
+                        .setColor('#32BEA6')
+                        .setTitle(`ℹ️ CreatorBot's Help Menu`)
+                        .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
+        
+        Use \`/help [command]\` for information about a specific command
+        Parameters inside \`[]\` brackets are mandatory
+        Parameters inside \`()\` brackets are optional
+        ⠀`)
+                        .addField(`👑 Owner`, `\`/${ownerCmd.join(`\`, \`/`)}\`
+        ⠀`, false)
+                        .addField(`👮 Staff`, `\`/${modCmds.join(`\`, \`/`)}\`
+        ⠀`, false)
+                        .addField(`👥 Everyone`, `\`/${utilCmds.join(`\`, \`/`)}\`
+        ⠀`, false)
+                        .setFooter(`${client.user.username} • Created by ProbablyRaging`, `${client.user.displayAvatarURL()}`)
+
+                    interaction.reply({
+                        embeds: [response],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+            }
+        } catch (err) {
+            console.error(err);
         }
     }
 }

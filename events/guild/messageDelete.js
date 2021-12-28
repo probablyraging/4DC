@@ -1,4 +1,3 @@
-const { MessageEmbed } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -17,7 +16,8 @@ module.exports = {
         const delLog = fetchedLogs.entries.first();
         const { executor } = delLog;
 
-        const content = message?.content.slice(0, 1000) + '...' || ` `;
+        let content = message?.content || ` `;
+        if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
 
         const log = new Discord.MessageEmbed()
             .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })

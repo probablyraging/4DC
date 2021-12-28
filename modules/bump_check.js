@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message } = require('discord.js');
 const mongo = require('../mongo');
 const timerSchema = require('../schemas/timer-schema');
 const path = require('path');

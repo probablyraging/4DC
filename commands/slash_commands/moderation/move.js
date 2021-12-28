@@ -71,7 +71,7 @@ module.exports = {
 
         if (!guild.me.permissionsIn(channel).has('MANAGE_MESSAGES') || !guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`I do not have to proper permissions for #${channel.name}\``,
+                content: `${process.env.BOT_DENY} \`I do not have the proper permissions for #${channel.name}\``,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
@@ -140,7 +140,7 @@ module.exports = {
             });
         }
 
-        const embedContent = msgContent.slice(0, 1000) + '...' || ` `;
+        if (msgContent.length > 1000) embedContent = msgContent.slice(0, 1000) + '...' || ` `;
 
         try {
             let log = new MessageEmbed()

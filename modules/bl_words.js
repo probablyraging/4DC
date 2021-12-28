@@ -44,7 +44,8 @@ module.exports = (message, client, Discord) => {
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-                const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
+                let msgContent = message?.content || ` `;
+                if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
                 const blacklistEmbed = new MessageEmbed()
                     .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })

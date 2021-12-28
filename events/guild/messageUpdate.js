@@ -63,7 +63,8 @@ module.exports = {
 
                     member?.timeout(30000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
-                    const msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
+                    let msgContent = newMessage?.content || ` `;
+                    if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
                         .setAuthor({ name: `${newMessage?.user?.tag}'s message was deleted`, iconURL: newMessage?.user?.displayAvatarURL({ dynamic: true }) })
@@ -121,7 +122,8 @@ module.exports = {
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-                    const msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
+                    let msgContent = newMessage?.content || ` `;
+                    if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
                     const blacklistEmbed = new MessageEmbed()
                         .setAuthor({ name: `${newMessage?.author.tag}'s message was deleted`, iconURL: newMessage?.author.displayAvatarURL({ dynamic: true }) })

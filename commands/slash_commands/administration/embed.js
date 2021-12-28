@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
-    permission: ``,
     locked: true,
     cooldown: 0,
     type: `CHAT_INPUT`,

@@ -46,7 +46,8 @@ module.exports = (message, client, Discord) => {
                         message?.delete().catch(err => console.error(`${path.basename(__filename)} 3 ### THIS IS EXPECTED SOME TIMES: `, err));
                     }, 600);
 
-                    const msgContent = message?.content.slice(0, 1000) + '...' || ` `;
+                    let msgContent = message?.content || ` `;
+                    if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
                     const log = new Discord.MessageEmbed()
                         .setColor('#fc3c3c')

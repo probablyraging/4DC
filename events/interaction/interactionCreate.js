@@ -60,7 +60,7 @@ module.exports = {
             command.execute(interaction, client)
 
             // log command usage
-            const logChan = client.channels.cache.get(process.env.CMD_CHAN)
+            const logChan = client.channels.cache.get(process.env.CMDLOG_CHAN)
 
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
 

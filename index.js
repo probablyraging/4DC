@@ -1,7 +1,5 @@
 require('dotenv').config();
-const fs = require('fs');
-const Discord = require('discord.js')
-const { Intents, Collection } = require('discord.js');
+const Discord = require('discord.js');
 const client = new Discord.Client({ partials: ['CHANNEL'], intents: 32767 });
 
 client.setMaxListeners(0);

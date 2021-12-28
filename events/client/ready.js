@@ -10,7 +10,6 @@ const statusCounter = require('../../modules/status_counter');
 const ckqCheck = require('../../modules/ckq_check');
 const bumpCheck = require('../../modules/bump_check');
 const liveNow = require('../../modules/live_now');
-const fetch = require('node-fetch');
 
 module.exports = {
     name: 'ready',
