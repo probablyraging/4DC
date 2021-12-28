@@ -40,8 +40,6 @@ module.exports = {
                 case 'command': {
                     const choice = options.getString('name');
 
-                    console.log(choice)
-
                     cmdArr = [];
 
                     (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {

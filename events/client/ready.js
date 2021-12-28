@@ -29,9 +29,13 @@ module.exports = {
             }
         });
 
-        // fetch messages in #sefl-roles to listen for messageReactionAdd/Remove
+        // fetch messages in #self-roles to listen for messageReactionAdd/Remove
         const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
         reactChannel.messages.fetch();
+
+        // fetch messages in #last-letter to get the most recent message's content
+        const llChan = client.channels.cache.get(process.env.LL_CHAN);
+        llChan.messages.fetch({ limit: 3 });
 
         statusCounter(client);
         memberCounter(client);
