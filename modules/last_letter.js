@@ -85,19 +85,20 @@ module.exports = async (message, client, Discord) => {
             if (!failed && test) {
                 failed = true;
                 deleted = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
                 message.delete().then(() => {
                     nextLetter = fetchFirst.content;
 
-                    return message.reply({
+                    message.reply({
                         content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can only use \`a-Z\`. Your previous message was deleted. The next letter is \`${nextLetter.slice(-1).toUpperCase()}\`!`,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                     });
+
+                    currentCounter = 0;
+                    return dbUpdateCount();
                 });
             }
 
@@ -106,16 +107,17 @@ module.exports = async (message, client, Discord) => {
              */
             if (!failed && lastLetter !== firstLetter) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${message.content.charAt(0).toUpperCase()}\`. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);;
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             /**
@@ -123,16 +125,17 @@ module.exports = async (message, client, Discord) => {
              */
             if (!failed && message.content.length < 2) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. Your word has to be longer than \`1\` letter. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             /**
@@ -144,16 +147,17 @@ module.exports = async (message, client, Discord) => {
 
                     if (repeats > 1) {
                         failed = true;
-                        currentCounter = 0;
-                        dbUpdateCount();
 
-                        return message.reply({
+                        message.reply({
                             content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` was used in the last 10 messages. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                         });
+
+                        currentCounter = 0;
+                        return dbUpdateCount();
                     }
                 });
             }
@@ -167,16 +171,17 @@ module.exports = async (message, client, Discord) => {
 
                     if (repeats > 1) {
                         failed = true;
-                        currentCounter = 0;
-                        dbUpdateCount();
 
-                        return message.reply({
+                        message.reply({
                             content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                             deleteallowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                         });
+
+                        currentCounter = 0;
+                        return dbUpdateCount();
                     }
 
                     if (repeats < 2) {
@@ -185,16 +190,17 @@ module.exports = async (message, client, Discord) => {
 
                             if (repeats > 2) {
                                 failed = true;
-                                currentCounter = 0;
-                                dbUpdateCount();
 
-                                return message.reply({
+                                message.reply({
                                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                                     deleteallowedMentions: { repliedUser: true },
                                     failIfNotExists: false
                                 }).catch(err => {
                                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                                 });
+
+                                currentCounter = 0;
+                                return dbUpdateCount();
                             }
                         });
                     }
@@ -209,16 +215,17 @@ module.exports = async (message, client, Discord) => {
 
                 if (resolve.status !== 200) {
                     failed = true;
-                    currentCounter = 0;
-                    dbUpdateCount();
 
-                    return message.reply({
+                    message.reply({
                         content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentCounter}**. The word \`${message.content.toUpperCase()}\` isn't in the dictionary. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                         deleteallowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                     });
+
+                    currentCounter = 0;
+                    return dbUpdateCount();
                 }
             }
 
@@ -232,16 +239,17 @@ module.exports = async (message, client, Discord) => {
             }
             if (!failed && parseInt(currentCounter) >= 20 && message.content.length < 4) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             // NEW LEVEL
@@ -251,16 +259,17 @@ module.exports = async (message, client, Discord) => {
             }
             if (!failed && parseInt(currentCounter) >= 40 && message.content.length < 5) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             // NEW LEVEL
@@ -270,16 +279,17 @@ module.exports = async (message, client, Discord) => {
             }
             if (!failed && parseInt(currentCounter) >= 80 && message.content.length < 6) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             // NEW LEVEL
@@ -289,16 +299,17 @@ module.exports = async (message, client, Discord) => {
             }
             if (!failed && parseInt(currentCounter) >= 100 && message.content.length < 7) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             // NEW LEVEL
@@ -308,16 +319,17 @@ module.exports = async (message, client, Discord) => {
             }
             if (!failed && parseInt(currentCounter) >= 150 && message.content.length < 8) {
                 failed = true;
-                currentCounter = 0;
-                dbUpdateCount();
 
-                return message.reply({
+                message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLetterCounter}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     deleteallowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
                 });
+
+                currentCounter = 0;
+                return dbUpdateCount();
             }
 
             /**

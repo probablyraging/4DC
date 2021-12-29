@@ -43,7 +43,7 @@ module.exports = {
         bumpCheck(message, client, Discord);
         liveNow(message, client, Discord);
 
-        let img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHServerBooster.png'
+        let img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoost.png'
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
