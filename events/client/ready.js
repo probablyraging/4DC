@@ -17,14 +17,14 @@ module.exports = {
     async execute(message, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
-        client.user.setActivity('+help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
+        client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
 
         setInterval(() => {
             client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
         }, 60000);
 
         setInterval(() => {
-            client.user.setActivity('+help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
+            client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
         }, 120000);       
         
 
