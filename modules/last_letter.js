@@ -47,7 +47,7 @@ module.exports = async (message, client, Discord) => {
 
             msgContentArr = [];
 
-            const filtered = fetched.filter(m => !m.author.bot);
+            const filtered = fetched.filter(m => !m.author.bot && !m.content.startsWith('>'));
 
             filtered.forEach(msg => {
                 msgContentArr.push(msg.content.toLowerCase());

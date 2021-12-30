@@ -15,10 +15,10 @@ module.exports = {
     execute(interaction) {
         const { } = interaction;
 
-        const image = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoost.png';
+        const img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
 
         interaction.reply({
-            files: [image],
+            files: [img],
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
