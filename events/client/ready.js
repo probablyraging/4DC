@@ -17,13 +17,22 @@ module.exports = {
     async execute(message, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
-        client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
+        client.user.setActivity('+help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
+
+        setInterval(() => {
+            client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
+        }, 60000);
+
+        setInterval(() => {
+            client.user.setActivity('+help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
+        }, 120000);       
+        
 
         console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
 
         await mongo().then(mongoose => {
             try {
-                console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, 'Connected to database')
+                console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, 'Connected to database');
             } finally {
                 // do nothing
             }
@@ -43,7 +52,7 @@ module.exports = {
         bumpCheck(message, client, Discord);
         liveNow(message, client, Discord);
 
-        let img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png'
+        let img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
