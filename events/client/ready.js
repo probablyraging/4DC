@@ -21,11 +21,11 @@ module.exports = {
 
         setInterval(() => {
             client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
-        }, 60000);
+        }, 120000);
 
         setInterval(() => {
             client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
-        }, 120000);       
+        }, 90000);       
         
 
         console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
