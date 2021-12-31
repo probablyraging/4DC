@@ -5,7 +5,7 @@ module.exports = {
     name: `info`,
     description: `Information regarding individual topics`,
     permission: `MANAGE_MESSAGES`,
-    cooldown: 0,
+    cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{
         name: `review`,

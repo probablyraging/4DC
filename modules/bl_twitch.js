@@ -5,6 +5,8 @@ const path = require('path');
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    if (message?.deleted) return;
+    
     const member = message?.member;
 
     if (message?.channel.id === process.env.TWITCH_CHAN && !message?.content.toLowerCase().includes('twitch.tv/') && !message?.author?.bot) {

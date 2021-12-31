@@ -14,7 +14,6 @@ module.exports = {
         });
 
         const delLog = fetchedLogs.entries.first();
-        const { executor } = delLog;
 
         let content = message?.content || ` `;
         if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;

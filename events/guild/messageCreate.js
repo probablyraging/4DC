@@ -22,15 +22,15 @@ module.exports = {
     async execute(message, client, Discord) {
 
         linkCooldown(message, client, Discord);
-        ckqPost(message, client, Discord);
-        bumpPost(message, client, Discord);
-        levelsCheck(message, client, Discord);
-        invitesCheck(message, client, Discord);
         blLinks(message, client, Discord);
         blPromo(message, client, Discord);
         blMass(message, client, Discord);
         blWords(message, client, Discord);
         blTwitch(message, client, Discord);
+        ckqPost(message, client, Discord);
+        bumpPost(message, client, Discord);
+        levelsCheck(message, client, Discord);
+        invitesCheck(message, client, Discord);
         resPost(message, client, Discord);
         lastletter(message, client, Discord);
 

@@ -31,14 +31,13 @@ module.exports = {
         /**
          * blacklists for when a message is updated/edited
          */
-
         // ------- same as bl_links.js
         const blChan = client.channels.cache.get(process.env.BL_CHAN);
-        const muteChan = client.channels.cache.get(process.env.MUTES_CHAN);
-
         const member = newMessage?.member;
 
         let found = false;
+
+        if (newMessage?.deleted) return;
 
         for (var i in blacklist.links) {
             if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) found = true;
@@ -76,21 +75,9 @@ module.exports = {
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 
-                    // const muteEmbed = new MessageEmbed()
-                    //     .setColor('#E04F5F')
-                    //     .setAuthor({ name: `${newMessage?.author?.tag} has been auto timedout`, iconURL: newMessage?.author?.displayAvatarURL({ dynamic: true }) })
-                    //     .addField(`By:`, `${client.user}`, false)
-                    //     .addField(`Reason:`, `\`\`\`Blacklisted link detected - 30 second timeout\`\`\``, false)
-                    //     .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
-                    //     .setTimestamp()
-
                     blChan.send({
                         embeds: [blacklistEmbed]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
-                    // muteChan.send({
-                    //     embeds: [muteEmbed]
-                    // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
                 }
             }
         }

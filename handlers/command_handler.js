@@ -28,7 +28,7 @@ module.exports = async (client, Discord) => {
         client.commands.set(command.name, command);
         commandsArr.push(command);
 
-        await table.addRow(command.name, `SUCCESSFULLY LOADED!`);
+        table.addRow(command.name, `SUCCESSFULLY LOADED!`);
     });
     console.log(table.toString()); // use to check if commands loaded without error
 

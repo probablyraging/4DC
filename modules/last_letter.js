@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message } = require('discord.js');
 const mongo = require('../mongo');
 const letterSchema = require('../schemas/letter-schema');
 const letterRecordSchema = require('../schemas/letter-record-schema');
@@ -12,7 +12,6 @@ let currentCounter = 0;
  */
 module.exports = async (message, client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const llChan = guild.channels.cache.get(process.env.LL_CHAN);
 
     if (message.channel.id === process.env.LL_CHAN && !message.author.bot) {
         /**

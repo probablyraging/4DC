@@ -5,7 +5,7 @@ module.exports = {
     name: `lockdown`,
     description: `Prevent everyone from sending messages in all channels`,
     permission: `MANAGE_MESSAGES`,
-    cooldown: 0,
+    cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{
         name: `start`,

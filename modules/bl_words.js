@@ -6,10 +6,13 @@ const path = require('path');
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    if (message?.deleted) return;
+    
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
 
     const member = message?.member;
+
     const content = message?.content.toLowerCase().split(' ');
 
     for (var i in blacklist.words2) {

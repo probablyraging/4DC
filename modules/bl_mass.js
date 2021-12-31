@@ -1,13 +1,14 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message } = require('discord.js');
 const path = require('path');
 /**
  * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    if (message?.deleted) return;
+    
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
-    const muteChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
     const member = message?.member;
 

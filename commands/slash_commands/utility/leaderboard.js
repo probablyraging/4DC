@@ -91,7 +91,7 @@ module.exports = {
                                 gotCount = currentLetterCounter;
                             }
                         } finally {
-                            // do bothing
+                            // do nothing
                         }
                     });
 

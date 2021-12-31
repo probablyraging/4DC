@@ -12,7 +12,7 @@ module.exports = async (client, Discord) => {
 
         if (!events.includes(event.name) || !event.name) {
             const l = file.split('/');
-            await table.addRow(`${event.name || 'missing'}`, `Event name invalid or missing: ${l[6] + `/` + l[7]}`);
+             table.addRow(`${event.name || 'missing'}`, `Event name invalid or missing: ${l[6] + `/` + l[7]}`);
             return;
         }
 
@@ -22,7 +22,7 @@ module.exports = async (client, Discord) => {
             client.on(event.name, (...args) => event.execute(...args, client, Discord));
         }
 
-        await table.addRow(event.name, `SUCCESSFULLY LOADED!`);
+        table.addRow(event.name, `SUCCESSFULLY LOADED!`);
     })
     // console.log(table.toString()); // use to check if events loaded without error
 }

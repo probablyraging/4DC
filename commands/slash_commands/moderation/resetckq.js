@@ -7,7 +7,7 @@ module.exports = {
     name: `resetckq`,
     description: `Resets the content king/queen channel`,
     permission: `MANAGE_MESSAGES`,
-    cooldown: 5,
+    cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/resetckq`,
     /**

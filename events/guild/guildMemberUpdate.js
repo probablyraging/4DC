@@ -84,7 +84,7 @@ module.exports = {
             });
 
             const muteLog = fetchedLogs.entries.first();
-            const { executor, reason } = muteLog;
+            const { executor } = muteLog;
 
             const log = new MessageEmbed()
                 .setColor('#32BEA6')

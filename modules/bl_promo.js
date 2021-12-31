@@ -10,6 +10,8 @@ module.exports = (message, client, Discord) => {
      * This black list focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be
      * posted in the "SELF PROMOTE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
+    if (message?.deleted) return;
+
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
 
@@ -17,10 +19,11 @@ module.exports = (message, client, Discord) => {
 
     let found = false;
 
+    // TODO : remove below lines if checking if message.deleted works as expected
     // ignore links from the 'links' array to not cause double messages
-    for (var i in blacklist.links) {
-        if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
-    }
+    // for (var i in blacklist.links) {
+    //     if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
+    // }
 
     for (var i in blacklist.promo) {
         if (message?.content.toLowerCase().includes(blacklist.promo[i].toLowerCase())) found = true;

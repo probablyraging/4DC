@@ -1,5 +1,3 @@
-const { client } = require('discord.js');
-const { mongoose } = require('mongoose');
 const mongo = require('../../mongo');
 const cronjob = require('cron').CronJob;
 const moment = require('moment');
