@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 require("dotenv").config();
+=======
+>>>>>>> Stashed changes
 const emojis = require("../lists/role-emojis");
 
 const selfRoleReactions = {
@@ -66,4 +69,8 @@ const selfRoleReactions = {
 
 module.exports = {
     selfRoleReactions
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes

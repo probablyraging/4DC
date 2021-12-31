@@ -28,6 +28,7 @@ module.exports = {
                 for (let reactionKey in selfRoleReactions) {
                     if (selfRoleReactions.hasOwnProperty(reactionKey)) {
                         let selfRoleMessage = selfRoleReactions[reactionKey];
+<<<<<<< Updated upstream
                         // Check if we have the right message from self-roles
                         if (selfRoleMessage.messageId === message.id) {
                             for (let roleIdKey in selfRoleMessage.roleIds) {
@@ -40,10 +41,31 @@ module.exports = {
                                 }
                             }
                             break;
+=======
+                        for (let reactionClass in selfRoleMessage) {
+                            let selfRoleClass = selfRoleMessage[reactionClass];
+                            // Check if we have the right message from self-roles
+                            if (selfRoleClass.messageId === message.id) {
+                                for (let roleIdKey in selfRoleClass.roleIds) {
+                                    // if (selfRoleMessage.roleIds.hasOwnProperty(roleIdKey)) {
+                                        let roleId = selfRoleClass.roleIds[roleIdKey];
+                                        if (roleIdKey === emoji.name) {
+                                            member?.roles.remove(roleId);
+                                            break;
+                                        }
+                                    // }
+                                }
+                                break;
+                            }
+>>>>>>> Stashed changes
                         }
                     }
                 }
             }
         }
     }
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes

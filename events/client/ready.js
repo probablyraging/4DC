@@ -37,7 +37,11 @@ module.exports = {
             }
         });
 
+<<<<<<< Updated upstream
         // // Fetch messages in #self-roles to listen for messageReactionAdd/Remove - this adds them to the cache
+=======
+        // fetch messages in #self-roles to listen for messageReactionAdd/Remove
+>>>>>>> Stashed changes
         const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
         reactChannel.messages.fetch();
 

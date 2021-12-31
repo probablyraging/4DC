@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 require("dotenv").config();
+=======
+>>>>>>> Stashed changes
 const selfRoleReactions = require("../../objects/selfRoleReactions");
 
 module.exports = {
@@ -28,6 +31,7 @@ module.exports = {
                 for (let reactionKey in selfRoleReactions) {
                     if (selfRoleReactions.hasOwnProperty(reactionKey)) {
                         let selfRoleMessage = selfRoleReactions[reactionKey];
+<<<<<<< Updated upstream
                         // Check if we have the right message from self-roles
                         if (selfRoleMessage.messageId === message.id) {
                             for (let roleIdKey in selfRoleMessage.roleIds) {
@@ -45,10 +49,31 @@ module.exports = {
                                 }
                             }
                             break;
+=======
+                        for (let reactionClass in selfRoleMessage) {
+                            let selfRoleClass = selfRoleMessage[reactionClass];
+                            // Check if we have the right message from self-roles
+                            if (selfRoleClass.messageId === message.id) {
+                                for (let roleIdKey in selfRoleClass.roleIds) {
+                                        let roleId = selfRoleClass.roleIds[roleIdKey];
+                                        if (roleIdKey === emoji.name) {
+                                            member?.roles.add(roleId);
+                                        } else if (selfRoleClass.exclusive) {
+                                            message.reactions.resolve(roleIdKey).users.remove(member?.id);
+                                            member?.roles.remove(roleId);
+                                        }
+                                }
+                                break;
+                            }
+>>>>>>> Stashed changes
                         }
                     }
                 }
             }
         }
     }
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes
