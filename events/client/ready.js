@@ -8,6 +8,7 @@ const statusCounter = require('../../modules/status_counter');
 const ckqCheck = require('../../modules/ckq_check');
 const bumpCheck = require('../../modules/bump_check');
 const liveNow = require('../../modules/live_now');
+const fetchInvites = require('../../modules/upload_invites');
 
 module.exports = {
     name: 'ready',
@@ -23,8 +24,7 @@ module.exports = {
 
         setInterval(() => {
             client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
-        }, 90000);       
-        
+        }, 90000);
 
         console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
 
@@ -36,14 +36,15 @@ module.exports = {
             }
         });
 
-        // fetch messages in #self-roles to listen for messageReactionAdd/Remove
-        const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
-        reactChannel.messages.fetch();
+        // // fetch messages in #self-roles to listen for messageReactionAdd/Remove
+        // const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
+        // reactChannel.messages.fetch();
 
-        // fetch messages in #last-letter to get the most recent message's content
-        const llChan = client.channels.cache.get(process.env.LL_CHAN);
-        llChan.messages.fetch({ limit: 3 });
+        // // fetch messages in #last-letter to get the most recent message's content
+        // const llChan = client.channels.cache.get(process.env.LL_CHAN);
+        // llChan.messages.fetch({ limit: 3 });
 
+        fetchInvites(message, client, Discord);
         statusCounter(client);
         memberCounter(client);
         ckqCheck(message, client, Discord);
