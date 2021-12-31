@@ -44,13 +44,11 @@ There are now **${memberCount}** members in the server`)
                         invites.forEach(async i => {
                             if (i.code === code && i.uses > uses) {
                                 vanity = false;
+                                
                                 const inviter = client.users.cache.get(userId);
 
                                 inviteChan.send({
-                                    content: `${member.user.tag} was invited by ${inviter.tag} who now has **${parseInt(uses) + 1}** invites`,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
+                                    content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                                 await inviteSchema.findOneAndRemove({ code: code }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a database entry: `, err));
@@ -73,9 +71,6 @@ There are now **${memberCount}** members in the server`)
                     if (vanity) {
                         return inviteChan.send({
                             content: `${member.user.tag} joined using a vanity invite`,
-                            allowedMentions: {
-                                parse: []
-                            }
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
                 } finally {
