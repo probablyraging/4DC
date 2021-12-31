@@ -37,9 +37,9 @@ module.exports = {
             }
         });
 
-        // // fetch messages in #self-roles to listen for messageReactionAdd/Remove
-        // const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
-        // reactChannel.messages.fetch();
+        // // Fetch messages in #self-roles to listen for messageReactionAdd/Remove - this adds them to the cache
+        const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
+        reactChannel.messages.fetch();
 
         // // fetch messages in #last-letter to get the most recent message's content
         // const llChan = client.channels.cache.get(process.env.LL_CHAN);
