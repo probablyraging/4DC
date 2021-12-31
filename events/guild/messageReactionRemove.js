@@ -1,4 +1,3 @@
-require("dotenv").config();
 const selfRoleReactions = require("../../objects/selfRoleReactions");
 
 module.exports = {
@@ -47,4 +46,4 @@ module.exports = {
             }
         }
     }
-};
+}

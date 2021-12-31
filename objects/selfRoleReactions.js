@@ -65,4 +65,4 @@ const selfRoleReactions = {
 
 module.exports = {
     selfRoleReactions
-};
+}
