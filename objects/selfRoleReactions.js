@@ -1,5 +1,5 @@
 require("dotenv").config();
-const emojis = require("../../lists/role-emojis");
+const emojis = require("../lists/role-emojis");
 
 const selfRoleReactions = {
     "Platforms": {
