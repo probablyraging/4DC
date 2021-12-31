@@ -1,5 +1,8 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const mongo = require('../../../mongo');
+const muteSchema = require('../../../schemas/mute-schema');
 const path = require('path');
+
 
 module.exports = {
     name: `channelmute`,
@@ -29,6 +32,12 @@ module.exports = {
             description: `The reason for muting the user`,
             type: `STRING`,
             required: true
+        },
+        {
+            name: `duration`,
+            description: `Set a duration (IN HOURS) for when the channel mute should expire`,
+            type: `STRING`,
+            required: false
         }],
     },
     {
@@ -54,7 +63,7 @@ module.exports = {
      * 
      * @param {ContextMenuInteraction} interaction 
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { client, member, guild, channel, options } = interaction;
 
         try {
@@ -63,6 +72,7 @@ module.exports = {
                     const target = options.getMember('username');
                     const targetChan = options.getChannel('channel');
                     const reason = options.getString('reason');
+                    const duration = options.getString('duration');
 
                     if (reason && reason.length > 1024) {
                         return interaction.reply({
@@ -76,6 +86,29 @@ module.exports = {
                     targetChan.permissionOverwrites.edit(target.id, {
                         SEND_MESSAGES: false,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+
+                    if (duration) {
+                        const myDate = new Date();
+                        const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
+
+                        await mongo().then(async mongoose => {
+                            try {
+                                await muteSchema.findOneAndUpdate({
+                                    timestamp,
+                                    userId: target.id,
+                                    channelId: channel.id
+                                }, {
+                                    timestamp,
+                                    userId: target.id,
+                                    channelId: channel.id
+                                }, {
+                                    upsert: true
+                                }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err) });
+                            } finally {
+                                // do nothing
+                            }
+                        });
+                    }
 
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
@@ -114,7 +147,7 @@ module.exports = {
 
                     const log = new MessageEmbed()
                         .setColor('#32BEA6')
-                        .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                        .setAuthor({ name: `${target?.user.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel:`, `${targetChan}`, true)
                         .addField(`By:`, `<@${member.id}>`, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)

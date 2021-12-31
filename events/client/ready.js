@@ -9,6 +9,7 @@ const ckqCheck = require('../../modules/ckq_check');
 const bumpCheck = require('../../modules/bump_check');
 const liveNow = require('../../modules/live_now');
 const fetchInvites = require('../../modules/upload_invites');
+const mutesCheck = require('../../modules/mutes_check');
 
 module.exports = {
     name: 'ready',
@@ -44,6 +45,7 @@ module.exports = {
         // const llChan = client.channels.cache.get(process.env.LL_CHAN);
         // llChan.messages.fetch({ limit: 3 });
 
+        mutesCheck(message, client, Discord);
         fetchInvites(message, client, Discord);
         statusCounter(client);
         memberCounter(client);
