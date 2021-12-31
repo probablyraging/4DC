@@ -47,7 +47,7 @@ There are now **${memberCount}** members in the server`)
                                 const inviter = client.users.cache.get(userId);
 
                                 inviteChan.send({
-                                    content: `${member} was invited by ${inviter} who now has **${parseInt(uses) + 1}** invites`,
+                                    content: `${member.user.tag} was invited by ${inviter.tag} who now has **${parseInt(uses) + 1}** invites`,
                                     allowedMentions: {
                                         parse: []
                                     }
@@ -72,7 +72,7 @@ There are now **${memberCount}** members in the server`)
 
                     if (vanity) {
                         return inviteChan.send({
-                            content: `${member} joined using a vanity invite`,
+                            content: `${member.user.tag} joined using a vanity invite`,
                             allowedMentions: {
                                 parse: []
                             }
