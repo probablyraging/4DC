@@ -16,6 +16,7 @@
 		"@discordjs/rest": "^0.1.0-canary.0",
 		"@mapbox/node-pre-gyp": "^1.0.5",
 		"ascii-table": "^0.0.9",
+		"canvas": "^2.8.0",
 		"cluster": "^0.7.7",
 		"cron": "^1.8.2",
 		"discord-api-types": "^0.25.2",
