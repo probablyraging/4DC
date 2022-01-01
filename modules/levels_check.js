@@ -7,19 +7,20 @@ const path = require('path');
 module.exports = (message, client, Discord) => {
     let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().proxyURL : null;
 
+    // TODO : i wont delete thios yet, just incase we need to revert back to the !rank command
     // when someone uses !rank, mee6 replies with an attachment. we delete that reply and resend the attachment
-    if (msgAttachment && message?.author.id === process.env.MEE6_ID && message?.channel.id === process.env.BOT_CHAN) {
-        const msgAttachment = message?.attachments.size > 0 ? message?.attachments : null;
+    // if (msgAttachment && message?.author.id === process.env.MEE6_ID && message?.channel.id === process.env.BOT_CHAN) {
+    //     const msgAttachment = message?.attachments.size > 0 ? message?.attachments : null;
 
-        const image = msgAttachment.first().url;
+    //     const image = msgAttachment.first().url;
 
-        message?.channel.send({
-            content: ` `,
-            files: [image]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+    //     message?.channel.send({
+    //         content: ` `,
+    //         files: [image]
+    //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-    }
+    //     message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+    // }
 
     // when someone levels up, mee6 sends a message. we hijack that message and apply roles when neccessary
     if (message?.author.id === process.env.MEE6_ID && message?.content.startsWith('GG') && message?.channel.id === process.env.BOT_CHAN) {

@@ -26,7 +26,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
     > <#859117794779987978>
     > <#841568782992277524>
 
-    Promotional channels are available to everyone, but you can also earn new ranks by chatting and being active on the server. As you rank up you will unlock new channels, and the higher you rank, the less competitive the promotional channels will be. You can check your current rank by going to <#837945839799500850> and typing \`!rank\`
+    Promotional channels are available to everyone, but you can also earn new ranks by chatting and being active on the server. As you rank up you will unlock new channels, and the higher you rank, the less competitive the promotional channels will be. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
 ⠀`,
 
         `https://i.imgur.com/0DypVcg.png`,
@@ -38,7 +38,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
         `https://i.imgur.com/oxx8wvJ.png`,
 
         `**When/how can I self promote?**
-> All self-promotion channels can be found under the ‘SELF PROMOTE’ section. Self-promotion channels are unlocked at Rank 0. Reaching higher ranks allows you to self-promote in less competitive channels, allowing your content to be seen easier by others. You can bypass rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and typing \`!rank\`
+> All self-promotion channels can be found under the ‘SELF PROMOTE’ section. Self-promotion channels are unlocked at Rank 0. Reaching higher ranks allows you to self-promote in less competitive channels, allowing your content to be seen easier by others. You can bypass rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
 ⠀
 **Can I promote my own server or paid service?**
 > Advertising, as well as looking for other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM **ProbablyRaging** for more information
@@ -48,7 +48,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 ⠀`,
 
         `**How do I rank up?**
-> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, less competitive promotional channels, game channels, permission to post links outside of the 'SELF PROMOTE' section. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`!rank\`
+> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, less competitive promotional channels, game channels, permission to post links outside of the 'SELF PROMOTE' section. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
                     
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings :gear: > Connections**
