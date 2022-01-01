@@ -126,7 +126,7 @@ module.exports = {
 
                     interaction.reply({
                         content: `*Information for ${target}:*
-> ${process.env.BOT_DOC} The #premium-ads channel is a paid service with optional extras like @everyone pings, where you can promote content that generally isn't allowed to be posted in the rest of the server. Things like Discord servers, paid services and products and even regular social media, channels and videos. For more information [click here](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@${process.env.OWNER_ID}>`,
+> ${process.env.BOT_DOC} The <#${process.env.PREM_CHAN}> channel is a paid service where you can promote content that generally isn't allowed to be posted in the rest of the server. Things like Discord server invites, paid services and products and even regular social media, channels and videos. For more information [click here](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@${process.env.OWNER_ID}>`,
                         allowedMentions: {
                             parse: []
                         }

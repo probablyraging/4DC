@@ -32,7 +32,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const { member, channel, client, options } = interaction;
+        const { message, channel, client, options } = interaction;
 
         try {
             switch (options.getSubcommand()) {
@@ -93,7 +93,12 @@ module.exports = {
                     channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
                         for (let i = 0; i < 4; i++) {
                             setTimeout(function () {
-                                webhook.send(index.faq[i])
+                                webhook.send({
+                                    content: `${index.faq[i]}`,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                })
                             }, i * 1000);
                         }
                         setTimeout(() => {
