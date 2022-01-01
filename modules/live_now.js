@@ -117,18 +117,16 @@ module.exports = (message, client, Discord) => {
         presenceArr = [];
 
         liveRole?.members?.forEach(async member => {
-            for (let i = 0; i < 7; i++) {
+            for (let i = 0; i < member?.presence?.activities?.length; i++) {
                 if (member?.presence?.activities[i]) presenceArr.push(member?.presence?.activities[i]?.name);
             }
 
             if (!presenceArr.includes('Twitch')) {
                 searchFor = member?.id;
-                userId = member?.id;
-                console.log(searchFor, userId)
 
                 await mongo().then(async mongoose => {
                     try {
-                        await streamSchema.findOneAndRemove({ userId: searchFor });
+                        await streamSchema.findOneAndRemove({ userId: searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                     } finally {
                         // do nothing
                     }
@@ -136,5 +134,5 @@ module.exports = (message, client, Discord) => {
                 member?.roles?.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
         });
-    }, 10000);
+    }, 30000);
 }
