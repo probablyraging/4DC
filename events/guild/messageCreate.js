@@ -42,5 +42,21 @@ module.exports = {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
         }
+
+        // remind people to use /rank command
+        if (message?.channel?.id === process.env.BOT_CHAN && message?.content?.toLowerCase().includes('!rank')) {
+            message?.reply({
+                content: `${process.env.BOT_DENY} \`Please use /rank instead\``
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    }, 5000);
+                });
+
+            setTimeout(() => {
+                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            }, 100);
+        }
     }
 }

@@ -26,21 +26,28 @@ module.exports = {
 
         const botChan = guild.channels.cache.get(process.env.BOT_CHAN)
 
-        // if (channel.id !== process.env.BOT_CHAN && member.id !== process.env.OWNER_ID) {
-        //     return interaction.reply({
-        //         content: `${process.env.BOT_DENY} \`You can only use this command in #${botChan.name}\``,
-        //         ephemeral: true
-        //     })
-        // }
+        // make sure we only use this command in the #bot-spam channel
+        if (channel.id !== process.env.BOT_CHAN && !member.permissions.has('MANAGE_MESSAGES')) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} \`You can only use this command in\` ${botChan}`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
-        interaction.deferReply();
+        await interaction.deferReply();
 
         const target = options.getMember('username') || member;
         const targetId = target?.user?.id || member?.id;
 
         await mongo().then(async mongoose => {
             try {
-                const results = await rankSchema.find({ id: targetId })
+                const results = await rankSchema.find({ id: targetId }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                if (results.length === 0) {
+                    return interaction.editReply({
+                        content: `${process.env.BOT_DENY} \`You aren't ranked yet. Send some messages to earn XP\``,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
 
                 for (const info of results) {
                     let { id, username, discrim, rank, level, msgCount, xp, xxp, xxxp } = info;
@@ -59,10 +66,10 @@ module.exports = {
 
                     // stretch background to the size of the canvas
                     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-                    
+
                     // draw an opaque rectangle ontop of image
                     ctx.fillStyle = 'rgba(0,0,0,0.5)';
-                    ctx.fillRect(20, 20, canvas.width - 40, canvas.height - 40);
+                    ctx.fillRect(20, 30, canvas.width - 40, canvas.height - 60);
 
                     // draw a rectangle the same size as the canvas
                     ctx.strokeStyle = '#ffffff';
