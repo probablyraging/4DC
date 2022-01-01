@@ -12,6 +12,7 @@ const blWords = require('../../modules/bl_words');
 const blTwitch = require('../../modules/bl_twitch');
 const resPost = require('../../modules/resource_post');
 const lastletter = require('../../modules/last_letter');
+const rankXP = require('../../modules/rank-xp');
 
 module.exports = {
     name: `messageCreate`,
@@ -33,12 +34,29 @@ module.exports = {
         invitesCheck(message, client, Discord);
         resPost(message, client, Discord);
         lastletter(message, client, Discord);
+        rankXP(message, client, Discord);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
             if (message?.content.toLowerCase().includes('tweet')) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
+        }
+
+        // remind people to use /rank command
+        if (message?.channel?.id === process.env.BOT_CHAN && message?.content?.toLowerCase().includes('!rank')) {
+            message?.reply({
+                content: `${process.env.BOT_DENY} \`Please use /rank instead\``
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    }, 5000);
+                });
+
+            setTimeout(() => {
+                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            }, 100);
         }
     }
 }
