@@ -57,7 +57,12 @@ module.exports = {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
                     files: [img]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
+                    }, 900000);
+                })
         });
 
         boostTimer.start();

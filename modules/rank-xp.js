@@ -30,8 +30,36 @@ module.exports = async (message, client, Discord) => {
 
             rankPosArr = [];
             for (let i = 0; i < sortArr.length; i++) {
-                rankPosArr.push(sortArr[i].id, sortArr[i].xp);
+                rankPosArr.push({ pos: i + 1, id: sortArr[i].id, xp: sortArr[i].xp });
             }
+
+            const findInArr = rankPosArr.find(m => m.id === message.author.id);
+            rankPos = findInArr.pos;
+
+            // use this to remove non-existent users from top 100
+            // for (var i = 0; i < 100; i++) {
+            //     console.log({ id: rankPosArr[i].id, pos: rankPosArr[i].pos })
+
+            //     const exists = guild.members.cache.get(rankPosArr[i].id)
+
+            //     if (!exists) {
+            //         await rankSchema.findOneAndRemove({ id: rankPosArr[i].id })
+            //     }
+            // }
+
+            // use this to correct rank position if needed
+            // for (var i = 0; i < rankPosArr.length; i++) {
+            //     console.log({ id: rankPosArr[i].id, pos: rankPosArr[i].pos })
+            //     await rankSchema.findOneAndUpdate({
+            //         id: rankPosArr[i].id
+            //     }, {
+            //         rank: rankPosArr[i].pos
+            //     }, {
+            //         upsert: true
+            //     })
+            // }
+
+
 
             const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
             // check to see if the user is in our database yet, if not, add them
@@ -78,7 +106,6 @@ module.exports = async (message, client, Discord) => {
                 let xxxpInt = parseInt(xxxp);
                 let newUsername = message?.author?.username;
                 let newDiscrim = message?.author?.discriminator;
-                let rankPos = rankPosArr.indexOf(message?.author?.id) + 1;
 
                 // update user's xp and xxp per 1 message, per 60 seconds
                 await rankSchema.findOneAndUpdate({

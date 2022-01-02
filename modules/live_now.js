@@ -130,7 +130,6 @@ module.exports = (message, client, Discord) => {
 
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
-
         });
     }, 5000);
 }
