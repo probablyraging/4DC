@@ -34,7 +34,7 @@ module.exports = (message, client, Discord) => {
                     }).catch(() => {
                         message?.reply({
                             content: `${process.env.BOT_DENY} \`Discord invite detected. You can only post Discord invites in ${premChan.name}\``,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -48,7 +48,7 @@ module.exports = (message, client, Discord) => {
                     }).catch(() => {
                         message?.reply({
                             content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);

@@ -28,11 +28,11 @@ module.exports = (message, client, Discord) => {
                 }).catch(() => {
                     message?.reply({
                         content: `${response}`,
-                        deleteallowedMentions: { repliedUser: true }
+                        allowedMentions: { repliedUser: true }
                     }).catch(() => {
                         message?.reply({
                             content: `${response}`,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
                             .then(msg => setTimeout(() => {

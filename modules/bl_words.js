@@ -36,7 +36,7 @@ module.exports = (message, client, Discord) => {
                 }).catch(() => {
                     message?.reply({
                         content: `${process.env.BOT_DENY} \`Blacklisted word detected\``,
-                        deleteallowedMentions: { repliedUser: true },
+                        allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);

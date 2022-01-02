@@ -64,7 +64,7 @@ module.exports = async (message, client, Discord) => {
 
                 return message.reply({
                     content: `${process.env.BOT_DENY} \`To send chat messages, put a '> ' (greater than followed by a space) in front of your message\``,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -90,7 +90,7 @@ module.exports = async (message, client, Discord) => {
 
                     message.reply({
                         content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can only use \`a-Z\`. Your previous message was deleted. The next letter is \`${nextLetter.slice(-1).toUpperCase()}\`!`,
-                        deleteallowedMentions: { repliedUser: true },
+                        allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -109,7 +109,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${message.content.charAt(0).toUpperCase()}\`. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);;
@@ -127,7 +127,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word has to be longer than \`1\` letter. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -149,7 +149,7 @@ module.exports = async (message, client, Discord) => {
 
                         message.reply({
                             content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` was used in the last 10 messages. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -173,7 +173,7 @@ module.exports = async (message, client, Discord) => {
 
                         message.reply({
                             content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
                             console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -192,7 +192,7 @@ module.exports = async (message, client, Discord) => {
 
                                 message.reply({
                                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                                    deleteallowedMentions: { repliedUser: true },
+                                    allowedMentions: { repliedUser: true },
                                     failIfNotExists: false
                                 }).catch(err => {
                                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -217,7 +217,7 @@ module.exports = async (message, client, Discord) => {
 
                     message.reply({
                         content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` isn't in the dictionary. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                        deleteallowedMentions: { repliedUser: true },
+                        allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -241,7 +241,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -261,7 +261,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -281,7 +281,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -301,7 +301,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
@@ -321,7 +321,7 @@ module.exports = async (message, client, Discord) => {
 
                 message.reply({
                     content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    deleteallowedMentions: { repliedUser: true },
+                    allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);

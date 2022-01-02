@@ -37,7 +37,7 @@ module.exports = (message, client, Discord) => {
                 }).catch(() => {
                     message?.reply({
                         content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}. You have been timedout for 30 seconds to prevent spamming\``,
-                        deleteallowedMentions: { repliedUser: true },
+                        allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
                         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);

@@ -51,7 +51,7 @@ module.exports = {
                     }).catch(() => {
                         newMessage?.reply({
                             content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => {
                             setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
@@ -100,7 +100,7 @@ module.exports = {
                     }).catch(() => {
                         newMessage?.reply({
                             content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${newMessage?.channel.name}\``,
-                            deleteallowedMentions: { repliedUser: true },
+                            allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => {
                             setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
