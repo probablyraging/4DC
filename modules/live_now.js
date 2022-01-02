@@ -114,25 +114,23 @@ module.exports = (message, client, Discord) => {
 
     // check live now role to see if someone stopped streaming
     setInterval(async () => {
-        presenceArr = [];
+        const liveNow = new Map();
 
         liveRole?.members?.forEach(async member => {
             for (let i = 0; i < member?.presence?.activities?.length; i++) {
-                if (member?.presence?.activities[i]) presenceArr.push(member?.presence?.activities[i]?.name);
+                if (member?.presence?.activities[i]?.name === 'Twitch') {
+                    liveNow.set(member?.id);
+                }
             }
 
-            if (!presenceArr.includes('Twitch')) {
-                searchFor = member?.id;
-
+            if (!liveNow.has(member.id)) {
                 await mongo().then(async mongoose => {
-                    try {
-                        await streamSchema.findOneAndRemove({ userId: searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-                    } finally {
-                        // do nothing
-                    }
+                    await streamSchema.findOneAndRemove({ userId: member.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 });
-                member?.roles?.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+                guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
+
         });
-    }, 30000);
+    }, 5000);
 }
