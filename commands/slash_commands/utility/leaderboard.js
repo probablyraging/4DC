@@ -3,6 +3,7 @@ const mongo = require('../../../mongo');
 const letterSchema = require('../../../schemas/letter-schema');
 const letterRecordSchema = require('../../../schemas/letter-record-schema');
 const letterLBSchema = require('../../../schemas/letter-lb-schema');
+const rankSchema = require('../../../schemas/rank-schema');
 const path = require('path');
 const fetch = require('node-fetch');
 
@@ -45,33 +46,50 @@ module.exports = {
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 
-                    const resolve = await fetch('https://mee6.xyz/api/plugins/levels/leaderboard/820889004055855144');
-                    const data = await resolve.json();
+                    await mongo().then(async mongoose => {
+                        const sort = await rankSchema.find({ xp: { $gt: 0 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                    const userData = data.players;
+                        sortArr = [];
+                        for (const data of sort) {
+                            const { id, xp } = data;
+
+                            sortArr.push({ id, xp });
+                        }
+                    });
+
+                    sortArr.sort(function (a, b) {
+                        return b.xp - a.xp;
+                    });
 
                     function kFormatter(num) {
                         return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
                     }
 
-                    dataArr = [];
+                    rankArr = [];
+                    for (let i = 0; i < sortArr.length; i++) {
+                        let exists = guild.members.cache.get(sortArr[i].id);
 
-                    for (let i = 0; i < 10; i++) {
-                        xp = kFormatter(userData[i].detailed_xp[2]);
-                        dataArr.push(xp);
+                        if (exists) {
+                            xpkFormat = kFormatter(sortArr[i].xp);
+                            rankArr.push({ id: sortArr[i].id, xp: xpkFormat });
+                        }
+
+
                     }
 
+                    console.log(rankArr)
+
                     response.addField(`:trophy: \`CreatorHub Rank Leaderboard\``, `⠀
-🥇 <@${userData[0].id}> - **${dataArr[0]}** XP
-🥈 <@${userData[1].id}> - **${dataArr[1]}** XP
-🥉 <@${userData[2].id}> - **${dataArr[2]}** XP
-\`4.\` <@${userData[3].id}> - **${dataArr[3]}** XP
-\`5.\` <@${userData[4].id}> - **${dataArr[4]}** XP
-\`6.\` <@${userData[5].id}> - **${dataArr[5]}** XP
-\`7.\` <@${userData[6].id}> - **${dataArr[6]}** XP
-\`8.\` <@${userData[7].id}> - **${dataArr[7]}** XP
-\`9.\` <@${userData[8].id}> - **${dataArr[8]}** XP
-\`10.\` <@${userData[9].id}> - **${dataArr[9]}** XP`, false)
+🥇 <@${rankArr[0].id}> - **${rankArr[0].xp}** XP
+🥈 <@${rankArr[1].id}> - **${rankArr[1].xp}** XP
+🥉 <@${rankArr[2].id}> - **${rankArr[2].xp}** XP
+\`4.\` <@${rankArr[3].id}> - **${rankArr[3].xp}** XP
+\`5.\` <@${rankArr[4].id}> - **${rankArr[4].xp}** XP
+\`6.\` <@${rankArr[5].id}> - **${rankArr[5].xp}** XP
+\`7.\` <@${rankArr[6].id}> - **${rankArr[6].xp}** XP
+\`8.\` <@${rankArr[7].id}> - **${rankArr[7].xp}** XP
+\`9.\` <@${rankArr[8].id}> - **${rankArr[8].xp}** XP
+\`10.\` <@${rankArr[9].id}> - **${rankArr[9].xp}** XP`, false)
 
                     interaction.reply({
                         embeds: [response],
@@ -132,8 +150,17 @@ module.exports = {
 
                                             letterArr = [];
 
-                                            for (let i = 0; i < 10; i++) {
-                                                letterArr.push(resultsArr[i].userId, resultsArr[i].correctCount);
+                                            function kFormatter(num) {
+                                                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
+                                            }
+
+                                            for (let i = 0; i < resultsArr.length; i++) {
+                                                let exists = guild.members.cache.get(resultsArr[i].userId);
+
+                                                if (exists) {
+                                                    countkFormat = kFormatter(resultsArr[i].correctCount);
+                                                    letterArr.push({ id: resultsArr[i].userId, count: countkFormat });
+                                                }
                                             }
 
                                             let lllbEmbed = new MessageEmbed()
@@ -141,16 +168,16 @@ module.exports = {
                                                 .setFooter(`${guild.name}`)
                                                 .setTimestamp()
                                                 .addField(`🏆 \`Last Letter Leaderboard\``, `⠀
-🥇 <@${letterArr[0]}> - **${letterArr[1]}** correct words
-🥈 <@${letterArr[2]}> - **${letterArr[3]}** correct words
-🥉 <@${letterArr[4]}> - **${letterArr[5]}** correct words
-\`4.\` <@${letterArr[6]}> - **${letterArr[7]}** correct words
-\`5.\` <@${letterArr[8]}> - **${letterArr[9]}** correct words
-\`6.\` <@${letterArr[10]}> - **${letterArr[11]}** correct words
-\`7.\` <@${letterArr[12]}> - **${letterArr[13]}** correct words
-\`8.\` <@${letterArr[14]}> - **${letterArr[15]}** correct words
-\`9.\` <@${letterArr[16]}> - **${letterArr[17]}** correct words
-\`10.\` <@${letterArr[18]}> - **${letterArr[19]}** correct words
+🥇 <@${letterArr[0].id}> - **${letterArr[0].count}** correct words
+🥈 <@${letterArr[1].id}> - **${letterArr[1].count}** correct words
+🥉 <@${letterArr[2].id}> - **${letterArr[2].count}** correct words
+\`4.\` <@${letterArr[3].id}> - **${letterArr[3].count}** correct words
+\`5.\` <@${letterArr[4].id}> - **${letterArr[4].count}** correct words
+\`6.\` <@${letterArr[5].id}> - **${letterArr[5].count}** correct words
+\`7.\` <@${letterArr[6].id}> - **${letterArr[6].count}** correct words
+\`8.\` <@${letterArr[7].id}> - **${letterArr[7].count}** correct words
+\`9.\` <@${letterArr[8].id}> - **${letterArr[8].count}** correct words
+\`10.\` <@${letterArr[9].id}> - **${letterArr[9].count}** correct words
         
 Last submit by: ${lastSubmit}
 Current level: **${gotCount}**

@@ -67,12 +67,13 @@ module.exports = async (message, client, Discord) => {
             }
 
             for (const data of results) {
-                const { xp, xxp, xxxp, level, msgCount } = data;
+                let { xp, xxp, xxxp, level, msgCount } = data;
 
+                let msgMath = parseInt(msgCount) + 1;
                 let random = randomNum(15, 25);
                 let xpMath = parseInt(xp) + random;
                 let xxpMath = parseInt(xxp) + random;
-                let msgMath = parseInt(msgCount) + 1;
+
                 let xxpInt = parseInt(xxp);
                 let xxxpInt = parseInt(xxxp);
                 let newUsername = message?.author?.username;
@@ -86,7 +87,6 @@ module.exports = async (message, client, Discord) => {
                     rank: rankPos,
                     username: newUsername,
                     discrim: newDiscrim,
-                    msgCount: msgMath,
                     xp: xpMath,
                     xxp: xxpMath
                 }, {
@@ -102,7 +102,6 @@ module.exports = async (message, client, Discord) => {
                         id: message?.author?.id
                     }, {
                         level: levelMath,
-                        msgCount: msgMath,
                         xp: xpMath,
                         xxp: 0,
                         xxxp: exponential
@@ -124,4 +123,23 @@ module.exports = async (message, client, Discord) => {
             xpLimit.delete(message?.author?.id)
         }, 60000);
     }
+
+    // count all new messages towards msgCount
+    await mongo().then(async mongoose => {
+        const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+        for (const data of results) {
+            let { msgCount } = data;
+
+            let msgMath = parseInt(msgCount) + 1;
+
+            await rankSchema.findOneAndUpdate({
+                id: message?.author?.id
+            }, {
+                msgCount: msgMath
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+    });
 }
