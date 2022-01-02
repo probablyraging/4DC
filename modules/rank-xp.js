@@ -15,7 +15,7 @@ module.exports = async (message, client, Discord) => {
         await mongo().then(async mongoose => {
 
             // find all entries, sort them based on their 'xp' and assign each user a 'rank'
-            const sort = await rankSchema.find({ xp: { $gt: 0 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+            const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
             sortArr = [];
             for (const data of sort) {
@@ -27,14 +27,6 @@ module.exports = async (message, client, Discord) => {
             sortArr.sort(function (a, b) {
                 return b.xp - a.xp;
             });
-
-            rankPosArr = [];
-            for (let i = 0; i < sortArr.length; i++) {
-                rankPosArr.push({ pos: i + 1, id: sortArr[i].id, xp: sortArr[i].xp });
-            }
-
-            const findInArr = rankPosArr.find(m => m.id === message.author.id);
-            rankPos = findInArr.pos;
 
             // use this to remove non-existent users from top 100
             // for (var i = 0; i < 100; i++) {
@@ -58,8 +50,6 @@ module.exports = async (message, client, Discord) => {
             //         upsert: true
             //     })
             // }
-
-
 
             const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
             // check to see if the user is in our database yet, if not, add them
@@ -106,6 +96,15 @@ module.exports = async (message, client, Discord) => {
                 let xxxpInt = parseInt(xxxp);
                 let newUsername = message?.author?.username;
                 let newDiscrim = message?.author?.discriminator;
+
+                // get a users current rank position
+                rankPosArr = [];
+                for (let i = 0; i < sortArr.length; i++) {
+                    await rankPosArr.push({ pos: i + 1, id: sortArr[i].id, xp: sortArr[i].xp });
+                }
+
+                const findInArr = await rankPosArr.find(m => m?.id === message?.author?.id);
+                rankPos = findInArr?.pos;
 
                 // update user's xp and xxp per 1 message, per 60 seconds
                 await rankSchema.findOneAndUpdate({
