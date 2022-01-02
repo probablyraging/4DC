@@ -181,10 +181,31 @@ module.exports = {
         
 Last submit by: ${lastSubmit}
 Current level: **${gotCount}**
-Highest level: **${letterRecord}**`, false)
+Record level: **${letterRecord}**`, false)
+
+                                            const letterRecordEmbed = new MessageEmbed()
+                                                .setColor('#32BEA6')
+                                                .addField(`🔡 \`Last Letter Information\``, `Match the first letter of your word to the last letter of the previous word.
+If the previous word was \`rabbit\`, then the next word would start with \`t\`, like \`tomato\`, and so on.
+                                
+The game gets progressively harder over time by increasing the minimum amount of characters you must use per word. Try to beat the record level found below!
+⠀`, false)
+                                                .addField(`💬 \`Chatting\``, `If you want to send messages in the channel without ruining the game, the bot will ignore messages that start with \`>\`, like \`> nice word!\` *(that is a greater-than sign followed by a space and then your message)*
+⠀`, false)
+                                                .addField(`📜 \`Rules\``, `- words must be in the English dictionary
+- you can not play 2 words in a row, you'll need a friend to help
+- you can not use a word that has already been used in the previous 10 messages
+- you can only submit 1 word per message, more than 1 word will be deleted
+- your word must not contain any numbers *(0-9)* or symbols *(!$#)*
+⠀`, false)
+                                                .addField(`🆙 \`Levels\``, `- level 20: four or more character words
+- level 40: five or more character words
+- level 80: six or more character words
+- level 100: seven or more character words
+- level 150: eight or more character words`, false)
 
                                             interaction.reply({
-                                                embeds: [lllbEmbed],
+                                                embeds: [letterRecordEmbed, lllbEmbed],
                                                 ephemeral: true
                                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
