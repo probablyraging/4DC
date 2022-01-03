@@ -61,7 +61,7 @@ module.exports = {
                     // default background
                     let background = await Canvas.loadImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/rankbg.png');
                     // custom background per user
-                    if (id === '438434841617367080') background = await Canvas.loadImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/rankraging.png');
+                    if (id === '438434841617367080') background = await Canvas.loadImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/ragingrank.png');
                     if (id === '707488396695699528') background = await Canvas.loadImage('https://cdn.discordapp.com/attachments/820907130378518539/899576398488948777/sccjonjorank.png');
 
                     // stretch background to the size of the canvas
