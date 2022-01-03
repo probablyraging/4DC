@@ -93,7 +93,7 @@ module.exports = {
 \`9.\` <@${rankArr[8].id}> - **${rankArr[8].xp}** XP
 \`10.\` <@${rankArr[9].id}> - **${rankArr[9].xp}** XP`, false)
 
-                    interaction.reply({
+                    interaction.editReply({
                         embeds: [response],
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
