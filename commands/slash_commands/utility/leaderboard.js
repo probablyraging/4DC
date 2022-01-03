@@ -41,6 +41,8 @@ module.exports = {
         try {
             switch (options.getSubcommand()) {
                 case 'ranks': {
+                    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
                     const response = new MessageEmbed()
                         .setColor('#32BEA6')
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
