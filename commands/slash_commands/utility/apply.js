@@ -39,7 +39,7 @@ module.exports = {
         const country = options.getString('country');
         const reason = options.getString('reason');
 
-        if (!member?.roles?.cache.has(process.env.RANK10_ROLE)) {
+        if (!member?.roles?.cache.has(process.env.RANK10_ROLE) && !member?.roles?.cache.has(process.env.RANK15_ROLE) && !member?.roles?.cache.has(process.env.RANK20_ROLE) && !member?.roles?.cache.has(process.env.RANK25_ROLE) && !member?.roles?.cache.has(process.env.RANK30_ROLE)) {
             interaction.reply({
                 content: `${process.env.BOT_DENY} \`You must be rank 10 to apply for a staff role\``,
                 ephemeral: true
@@ -75,6 +75,7 @@ Region: ${country}
 Reason: ${reason}\`\`\``, true)
 
             channel.send({
+                content: `<@&${process.env.STAFF_ROLE}>`,
                 embeds: [response]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
