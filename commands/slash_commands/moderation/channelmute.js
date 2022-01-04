@@ -72,7 +72,7 @@ module.exports = {
                     const target = options.getMember('username');
                     const targetChan = options.getChannel('channel');
                     const reason = options.getString('reason');
-                    const duration = options.getString('duration');
+                    const duration = options.getString('duration') || `0`;
 
                     if (reason && reason.length > 1024) {
                         return interaction.reply({
@@ -113,9 +113,10 @@ module.exports = {
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
                         .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                        .addField(`Channel:`, `${targetChan}`, true)
-                        .addField(`By:`, `<@${member.id}>`, false)
-                        .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
+                        .addField(`Channel`, `${targetChan}`, true)
+                        .addField(`By`, `<@${member.id}>`, false)
+                        .addField(`Druation`, `${duration} hours`, true)
+                        .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 
@@ -148,8 +149,8 @@ module.exports = {
                     const log = new MessageEmbed()
                         .setColor('#32BEA6')
                         .setAuthor({ name: `${target?.user.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                        .addField(`Channel:`, `${targetChan}`, true)
-                        .addField(`By:`, `<@${member.id}>`, false)
+                        .addField(`Channel`, `${targetChan}`, true)
+                        .addField(`By`, `<@${member.id}>`, false)
                         .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
                         .setTimestamp()
 
