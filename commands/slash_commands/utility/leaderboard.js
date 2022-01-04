@@ -160,16 +160,16 @@ module.exports = {
                                                 .setFooter(`${guild.name}`)
                                                 .setTimestamp()
                                                 .addField(`🏆 \`Last Letter Leaderboard\``, `⠀
-🥇 <@${letterArr[0].id}> - **${letterArr[0].count}** correct words
-🥈 <@${letterArr[1].id}> - **${letterArr[1].count}** correct words
-🥉 <@${letterArr[2].id}> - **${letterArr[2].count}** correct words
-\`4.\` <@${letterArr[3].id}> - **${letterArr[3].count}** correct words
-\`5.\` <@${letterArr[4].id}> - **${letterArr[4].count}** correct words
-\`6.\` <@${letterArr[5].id}> - **${letterArr[5].count}** correct words
-\`7.\` <@${letterArr[6].id}> - **${letterArr[6].count}** correct words
-\`8.\` <@${letterArr[7].id}> - **${letterArr[7].count}** correct words
-\`9.\` <@${letterArr[8].id}> - **${letterArr[8].count}** correct words
-\`10.\` <@${letterArr[9].id}> - **${letterArr[9].count}** correct words
+🥇 <@${letterArr[0].id}> - **${letterArr[0].count}** points
+🥈 <@${letterArr[1].id}> - **${letterArr[1].count}** points
+🥉 <@${letterArr[2].id}> - **${letterArr[2].count}** points
+\`4.\` <@${letterArr[3].id}> - **${letterArr[3].count}** points
+\`5.\` <@${letterArr[4].id}> - **${letterArr[4].count}** points
+\`6.\` <@${letterArr[5].id}> - **${letterArr[5].count}** points
+\`7.\` <@${letterArr[6].id}> - **${letterArr[6].count}** points
+\`8.\` <@${letterArr[7].id}> - **${letterArr[7].count}** points
+\`9.\` <@${letterArr[8].id}> - **${letterArr[8].count}** points
+\`10.\` <@${letterArr[9].id}> - **${letterArr[9].count}** points
         
 Last submit by: ${lastSubmit}
 Current level: **${gotCount}**

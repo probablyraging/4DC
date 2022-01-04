@@ -402,17 +402,20 @@ module.exports = async (message, client, Discord) => {
                             for (const info of results) {
                                 const { correctCount } = info;
 
-                                usersCount = correctCount;
+                                let newCount = correctCount;
+                                newCount++;
+                                let points = message?.content?.length + newCount;
+
 
                                 await letterLBSchema.findOneAndRemove({ userId });
 
                                 await letterLBSchema.findOneAndUpdate({
                                     userId,
-                                    correctCount: usersCount++,
+                                    correctCount: points,
                                     searchFor
                                 }, {
                                     userId,
-                                    correctCount: usersCount++,
+                                    correctCount: points,
                                     searchFor
                                 }, {
                                     upsert: true
