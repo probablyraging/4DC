@@ -35,9 +35,9 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
 
                 setTimeout(() => ckqChannel.bulkDelete(10).catch(err => {
                     console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)
-                }).then(ckqChannel.send({ 
-                    embeds: [ckqEmbed] 
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err)) ), 100);
+                }).then(ckqChannel.send({
+                    embeds: [ckqEmbed]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))), 100);
 
                 setTimeout(() => ckqRole.members.each(member => {
                     member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
@@ -62,9 +62,10 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
             } finally {
                 // do nothing
             }
-        }).then(interaction.reply({
-            content: `${[process.env.BOT_CONF]} \`#${ckqChannel.name} has been reset\``,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)))
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err))
+            .then(interaction.reply({
+                content: `${[process.env.BOT_CONF]} \`#${ckqChannel.name} has been reset\``,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)))
     }
 }

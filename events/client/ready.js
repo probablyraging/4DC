@@ -35,7 +35,8 @@ module.exports = {
             } finally {
                 // do nothing
             }
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+        
         // // Fetch messages in #self-roles to listen for messageReactionAdd/Remove - this adds them to the cache
         const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
         reactChannel.messages.fetch();

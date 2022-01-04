@@ -190,8 +190,8 @@ ${banMsg}`,
                             } finally {
                                 // do nothing
                             }
-                        });
-                    });
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 }
             }
 
@@ -237,7 +237,7 @@ ${banMsg}`,
                         } finally {
                             // do nothing
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 }
             }
 
@@ -284,7 +284,7 @@ Warning ID`, `\`\`\`${warnId}\`\`\``, false)
                         } finally {
                             // do bothing
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 }
             }
         } catch (err) {

@@ -63,7 +63,7 @@ module.exports = (message, client, Discord) => {
             } finally {
                 // do nothing
             }
-        })
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
 
         // booster member check
@@ -109,7 +109,7 @@ module.exports = (message, client, Discord) => {
             } finally {
                 // do nothing
             }
-        })
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     }, 30000);
 
     // check live now role to see if someone stopped streaming
@@ -126,7 +126,7 @@ module.exports = (message, client, Discord) => {
             if (!liveNow.has(member.id)) {
                 await mongo().then(async mongoose => {
                     await streamSchema.findOneAndRemove({ userId: member.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-                });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }

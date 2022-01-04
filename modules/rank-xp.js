@@ -183,7 +183,7 @@ module.exports = async (message, client, Discord) => {
                     }
                 }
             }
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
         // add user to xpLimit for 60 seconds to prevent spamming for xp
         xpLimit.add(message?.author?.id)
 
@@ -209,5 +209,5 @@ module.exports = async (message, client, Discord) => {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
-    });
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }

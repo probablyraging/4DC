@@ -63,6 +63,6 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
             } finally {
                 // do nothing
             }
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     }, 30000);
 }

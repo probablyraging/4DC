@@ -36,7 +36,7 @@ module.exports = async (message, client, Discord) => {
             } finally {
                 // do nothing
             }
-        });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
         let fetchFirst = message.channel.messages.cache.first();
 
@@ -366,7 +366,7 @@ module.exports = async (message, client, Discord) => {
                         } finally {
                             // do nothing
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 }
                 dbCheckRecord();
 
@@ -422,7 +422,7 @@ module.exports = async (message, client, Discord) => {
                     } finally {
                         // do nothing
                     }
-                });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
             }
 
             /**
@@ -447,7 +447,7 @@ module.exports = async (message, client, Discord) => {
                     } finally {
                         // do nothing
                     }
-                });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
             }
             dbUpdateCount();
         });

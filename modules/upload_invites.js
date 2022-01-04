@@ -36,7 +36,7 @@ module.exports = async (client) => {
                 } finally {
                     //do nothing
                 }
-            });
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
         }
     });
 }

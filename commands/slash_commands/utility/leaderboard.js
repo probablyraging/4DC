@@ -57,7 +57,7 @@ module.exports = {
 
                             sortArr.push({ id, xp });
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                     sortArr.sort(function (a, b) {
                         return b.xp - a.xp;
@@ -109,7 +109,7 @@ module.exports = {
                         } finally {
                             // do nothing
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                     let searchForRecord = 'currentRecord'
                     await mongo().then(async (mongoose) => {
@@ -210,13 +210,13 @@ The game gets progressively harder over time by increasing the minimum amount of
                                         } finally {
                                             // do nothing
                                         }
-                                    });
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                                 });
                             }
                         } finally {
                             // do nothing
                         }
-                    });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 }
             }
 
