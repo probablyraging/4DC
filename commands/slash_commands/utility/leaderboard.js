@@ -24,12 +24,6 @@ module.exports = {
         description: `View the lastlatter game's leaderboard`,
         type: `SUB_COMMAND`,
         usage: `/leaderboard lastletter`,
-    },
-    {
-        name: `levels`,
-        description: `View the server's level leaderboard`,
-        type: `SUB_COMMAND`,
-        usage: `/leaderboard levels`,
     }],
     /**
      * 
@@ -217,21 +211,6 @@ The game gets progressively harder over time by increasing the minimum amount of
                             // do nothing
                         }
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-                }
-            }
-
-            switch (options.getSubcommand()) {
-                case 'levels': {
-                    const response = new MessageEmbed()
-                        .setColor('#32BEA6')
-                        .setTitle(`CreatorHub Leaderboard`)
-                        .setURL(`https://mee6.xyz/leaderboard/${process.env.GUILD_ID}`)
-                        .setDescription(`View the CreatorHub leaderboard **[HERE](https://mee6.xyz/leaderboard/${process.env.GUILD_ID})**`)
-
-                    interaction.reply({
-                        embeds: [response],
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
         } catch (err) {
