@@ -120,7 +120,7 @@ module.exports = async (message, client, Discord) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                 // when a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
-                if (xxpInt > xxxpInt) {
+                if (xxpMath > xxxpInt) {
                     let levelMath = parseInt(level) + 1;
                     let exponential = 5 * Math.pow(levelMath, 2) + (50 * levelMath) + 100 - 0;
 
@@ -139,10 +139,52 @@ module.exports = async (message, client, Discord) => {
                         content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    // add user to xpLimit for 60 seconds to prevent spamming for xp
+                    let lv5 = guild.roles.cache.get(process.env.RANK5_ROLE);
+                    let lv10 = guild.roles.cache.get(process.env.RANK10_ROLE);
+                    let lv15 = guild.roles.cache.get(process.env.RANK15_ROLE);
+                    let lv20 = guild.roles.cache.get(process.env.RANK20_ROLE);
+                    let lv25 = guild.roles.cache.get(process.env.RANK25_ROLE);
+                    let lv30 = guild.roles.cache.get(process.env.RANK30_ROLE);
+
+                    if (levelMath === 5) {
+                        message?.member?.roles.add(lv5)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                    }
+                    if (levelMath === 10) {
+                        message?.member?.roles.add(lv10)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.remove(lv5)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+                    }
+                    if (levelMath === 15) {
+                        message?.member?.roles.add(lv15)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.remove(lv10)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                    }
+                    if (levelMath === 20) {
+                        message?.member?.roles.add(lv20)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.remove(lv15)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                    }
+                    if (levelMath === 25) {
+                        message?.member?.roles.add(lv25)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.remove(lv20)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                    }
+                    if (levelMath === 30) {
+                        message?.member?.roles.add(lv30)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.remove(lv25)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                    }
                 }
             }
         });
+        // add user to xpLimit for 60 seconds to prevent spamming for xp
         xpLimit.add(message?.author?.id)
 
         setTimeout(() => {

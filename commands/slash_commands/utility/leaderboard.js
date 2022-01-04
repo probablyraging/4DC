@@ -75,11 +75,7 @@ module.exports = {
                             xpkFormat = kFormatter(sortArr[i].xp);
                             rankArr.push({ id: sortArr[i].id, xp: xpkFormat });
                         }
-
-
                     }
-
-                    console.log(rankArr)
 
                     response.addField(`:trophy: \`CreatorHub Rank Leaderboard\``, `⠀
 🥇 <@${rankArr[0].id}> - **${rankArr[0].xp}** XP
