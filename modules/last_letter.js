@@ -3,6 +3,7 @@ const mongo = require('../mongo');
 const letterSchema = require('../schemas/letter-schema');
 const letterRecordSchema = require('../schemas/letter-record-schema');
 const letterLBSchema = require('../schemas/letter-lb-schema');
+const letterVals = require('../lists/letter-values');
 const fetch = require('node-fetch');
 const path = require('path');
 let currentCounter = 0;
@@ -402,20 +403,63 @@ module.exports = async (message, client, Discord) => {
                             for (const info of results) {
                                 const { correctCount } = info;
 
-                                let newCount = correctCount;
-                                newCount++;
-                                let points = message?.content?.length + newCount;
+                                let newCount = parseInt(correctCount);
 
+                                // find the value of each letter in a submission
+                                let tens = 0;
+                                let eights = 0;
+                                let fives = 0;
+                                let fours = 0;
+                                let threes = 0;
+                                let twos = 0;
+                                let ones = 0;
+
+                                for (let i = 0; i < message?.content?.length; i++) {
+                                    const letters = message?.content?.toLowerCase().split('');
+
+                                    letters.forEach(letter => {
+                                        if (letterVals.tens.letters.includes(letter[i])) {
+                                            tens++;
+                                        }
+                                        if (letterVals.eights.letters.includes(letter[i])) {
+                                            eights++;
+                                        }
+                                        if (letterVals.fives.letters.includes(letter[i])) {
+                                            fives++;
+                                        }
+                                        if (letterVals.fours.letters.includes(letter[i])) {
+                                            fours++;
+                                        }
+                                        if (letterVals.threes.letters.includes(letter[i])) {
+                                            threes++;
+                                        }
+                                        if (letterVals.twos.letters.includes(letter[i])) {
+                                            twos++;
+                                        }
+                                        if (letterVals.ones.letters.includes(letter[i])) {
+                                            ones++;
+                                        }
+                                    })
+                                }
+
+                                const tensMath = tens * letterVals.tens.value;
+                                const eightsMath = eights * letterVals.eights.value;
+                                const fivesMath = fives * letterVals.fives.value;
+                                const foursMath = fours * letterVals.fours.value;
+                                const threesMath = threes * letterVals.threes.value;
+                                const twosMath = twos * letterVals.twos.value;
+                                const onesMath = ones * letterVals.ones.value;
+                                const totalPoints = tensMath + eightsMath + fivesMath + foursMath + threesMath + twosMath + onesMath + newCount;
 
                                 await letterLBSchema.findOneAndRemove({ userId });
 
                                 await letterLBSchema.findOneAndUpdate({
                                     userId,
-                                    correctCount: points,
+                                    correctCount: totalPoints,
                                     searchFor
                                 }, {
                                     userId,
-                                    correctCount: points,
+                                    correctCount: totalPoints,
                                     searchFor
                                 }, {
                                     upsert: true

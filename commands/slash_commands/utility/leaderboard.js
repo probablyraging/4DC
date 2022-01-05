@@ -201,7 +201,20 @@ The game gets progressively harder over time by increasing the minimum amount of
 - level 40: five or more character words
 - level 80: six or more character words
 - level 100: seven or more character words
-- level 150: eight or more character words`, false)
+- level 150: eight or more character words
+⠀`, false)
+                                                .addField(`🆙 \`Points System\``, `Each letter has a point value assigned to it. You can use the same letter multiple times in a word for a higher overall points.
+
+**Q, Z** - 10 points
+**J, X** - 8 points
+**K** - 5 points
+**F, H, V, W, Y** - 4 points
+**B, C, M, P** - 3 points
+**D, G** - 2 points
+**A, E, I, O, N, R, T, L, S, U** - 1 point
+
+So, if you played the word \`GOOD\` you would get a total of **6** points.
+If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, false)
 
                                             interaction.reply({
                                                 embeds: [letterRecordEmbed, lllbEmbed],
