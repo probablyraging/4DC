@@ -24,6 +24,12 @@ module.exports = {
         description: `View the lastlatter game's leaderboard`,
         type: `SUB_COMMAND`,
         usage: `/leaderboard lastletter`,
+    },
+    {
+        name: `messages`,
+        description: `View the message count leaderboard`,
+        type: `SUB_COMMAND`,
+        usage: `/leaderboard messages`,
     }],
     /**
      * 
@@ -59,6 +65,7 @@ module.exports = {
 
                     function kFormatter(num) {
                         return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
+
                     }
 
                     rankArr = [];
@@ -143,7 +150,7 @@ module.exports = {
                                             letterArr = [];
 
                                             function kFormatter(num) {
-                                                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
+                                                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'K' : Math.sign(num) * Math.abs(num);
                                             }
 
                                             for (let i = 0; i < resultsArr.length; i++) {
@@ -211,6 +218,73 @@ The game gets progressively harder over time by increasing the minimum amount of
                             // do nothing
                         }
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                }
+            }
+
+            switch (options.getSubcommand()) {
+                case 'messages': {
+                    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+                    const response = new MessageEmbed()
+                        .setColor('#32BEA6')
+                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setTimestamp()
+
+                    await mongo().then(async mongoose => {
+                        const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                        sortArr = [];
+                        for (const data of sort) {
+                            const { id, msgCount } = data;
+
+                            sortArr.push({ id, msgCount });
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+                    sortArr.sort(function (a, b) {
+                        return b.msgCount - a.msgCount;
+                    });
+
+                    function kFormatter(num) {
+                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+
+                    msgCountArr = [];
+                    for (let i = 0; i < sortArr.length; i++) {
+                        let exists = guild.members.cache.get(sortArr[i].id);
+
+                        if (exists) {
+                            msgkFormat = kFormatter(sortArr[i].msgCount);
+                            msgCountArr.push({ id: sortArr[i].id, xp: msgkFormat });
+                        }
+                    }
+
+                    response.addField(`:trophy: \`CreatorHub Message Count Leaderboard\``, `⠀
+🥇 <@${msgCountArr[0].id}> - **${msgCountArr[0].xp}** messages
+🥈 <@${msgCountArr[1].id}> - **${msgCountArr[1].xp}** messages
+🥉 <@${msgCountArr[2].id}> - **${msgCountArr[2].xp}** messages
+\`4.\` <@${msgCountArr[3].id}> - **${msgCountArr[3].xp}** messages
+\`5.\` <@${msgCountArr[4].id}> - **${msgCountArr[4].xp}** messages
+\`6.\` <@${msgCountArr[5].id}> - **${msgCountArr[5].xp}** messages
+\`7.\` <@${msgCountArr[6].id}> - **${msgCountArr[6].xp}** messages
+\`8.\` <@${msgCountArr[7].id}> - **${msgCountArr[7].xp}** messages
+\`9.\` <@${msgCountArr[8].id}> - **${msgCountArr[8].xp}** messages
+\`10.\` <@${msgCountArr[9].id}> - **${msgCountArr[9].xp}** messages
+\`11.\` <@${msgCountArr[10].id}> - **${msgCountArr[10].xp}** messages
+\`12.\` <@${msgCountArr[11].id}> - **${msgCountArr[11].xp}** messages
+\`13.\` <@${msgCountArr[12].id}> - **${msgCountArr[12].xp}** messages
+\`14.\` <@${msgCountArr[13].id}> - **${msgCountArr[13].xp}** messages
+\`15.\` <@${msgCountArr[14].id}> - **${msgCountArr[14].xp}** messages
+\`16.\` <@${msgCountArr[15].id}> - **${msgCountArr[15].xp}** messages
+\`17.\` <@${msgCountArr[16].id}> - **${msgCountArr[16].xp}** messages
+\`18.\` <@${msgCountArr[17].id}> - **${msgCountArr[17].xp}** messages
+\`19.\` <@${msgCountArr[18].id}> - **${msgCountArr[18].xp}** messages
+\`20.\` <@${msgCountArr[19].id}> - **${msgCountArr[19].xp}** messages`, false)
+
+                    interaction.editReply({
+                        embeds: [response],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
         } catch (err) {
