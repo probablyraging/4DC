@@ -63,6 +63,9 @@ Promotional channels are available to everyone, but you can also earn new ranks 
 **Why do people keep DMing me spam and promo content?**
 > Unfortunately this is just a part of Discord. We try to remove as many of these spam accounts as possible, but we also recommend you disable DMs from people you aren't friends with, by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members
 ⠀
+**How can I apply for a staff role?**
+> We are always accepting new applications for staff members. If you think you would make a good addition to the team, you can apply by using the \`/apply\` command and filling out the required information. To apply, you must be Rank 10 or higher. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is accepted however, a staff member will contact you to discuss further
+⠀
 **How can I report someone for breaking the rules?**
 > To make a report, you can send a DM including any screenshots to <@841409086960697385> and one of the staff members will review it. If the matter is more urgent, you can ping a staff member or one of the staff roles`
         ]

@@ -15,11 +15,18 @@ module.exports = {
         description: `Get information about a specific command`,
         type: `SUB_COMMAND`,
         options: [{
-            name: `name`,
+            name: `list1`,
             description: `The name of the feature or command`,
             type: `STRING`,
-            required: true,
+            required: false,
             choices: [{ name: `about`, value: `about` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `help`, value: `help` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }, { name: `invite`, value: `invite` }, { name: `livenow`, value: `livenow` }, { name: `say`, value: `say` }, { name: `index`, value: `index` }, { name: `modschoice`, value: `modschoice` }, { name: `lockdown`, value: `lockdown` }, { name: `leaderboard`, value: `leaderboard` }, { name: `boost`, value: `boost` }, { name: `rank`, value: `rank` }],
+        },
+        {
+            name: `list2`,
+            description: `The name of the feature or command`,
+            type: `STRING`,
+            required: false,
+            choices: [{ name: `xp`, value: `xp` }],
         }]
     },
     {
@@ -38,7 +45,8 @@ module.exports = {
         try {
             switch (options.getSubcommand()) {
                 case 'command': {
-                    const choice = options.getString('name');
+                    const choice = options.getString('list1');
+                    const choice2 = options.getString('list2');
 
                     cmdArr = [];
 
@@ -50,7 +58,7 @@ module.exports = {
                         if (file.includes('utility')) cmdArr.push({ command, access: 'Utility' });
                     });
 
-                    const cmd = cmdArr.find(c => c.command.name === choice);
+                    const cmd = cmdArr.find(c => c.command.name === choice) || cmdArr.find(c => c.command.name === choice2);
 
                     const response = new MessageEmbed()
                         .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
