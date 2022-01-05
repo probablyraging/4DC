@@ -139,6 +139,7 @@ module.exports = async (message, client, Discord) => {
                         content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
+                    let ver = guild.roles.cache.get(process.env.VERIFIED_ROLE);
                     let lv5 = guild.roles.cache.get(process.env.RANK5_ROLE);
                     let lv10 = guild.roles.cache.get(process.env.RANK10_ROLE);
                     let lv15 = guild.roles.cache.get(process.env.RANK15_ROLE);
@@ -152,6 +153,8 @@ module.exports = async (message, client, Discord) => {
                     }
                     if (levelMath === 10) {
                         message?.member?.roles.add(lv10)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                        message?.member?.roles.add(ver)
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
                         message?.member?.roles.remove(lv5)
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
