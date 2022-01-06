@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {MessageEmbed} = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const path = require("path");
 
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const {client, user, guild, channel, options} = interaction;
+        const { client, user, guild, channel, options } = interaction;
 
         const messageId = options.getString("message");
         const messageId2 = options.getString("message2");
@@ -108,7 +108,7 @@ module.exports = {
                 if (msg.id === filteredArr[i]) {
                     let msgAttachment = msg.attachments.size > 0 ? msg.attachments : null;
                     let msgContent = msg.content || " ";
-                    let author = msg.author;
+                    author = msg.author;
 
                     if (!author) {
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
@@ -127,7 +127,7 @@ module.exports = {
                             imageArr.push(image.url);
                         });
 
-                        toChannel.createWebhook(msg.member.displayName, {avatar: msg.author.displayAvatarURL()}).then(webhook => {
+                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`,
                                 files: imageArr
@@ -138,7 +138,7 @@ module.exports = {
 
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     } else {
-                        toChannel.createWebhook(msg.member.displayName, {avatar: msg.author.displayAvatarURL()}).then(webhook => {
+                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
@@ -157,34 +157,34 @@ module.exports = {
                         content = msgContent;
                     }
 
-                    try {
-                        let log = new MessageEmbed()
-                            .setAuthor({name: `${user?.tag}`, iconURL: user?.displayAvatarURL({dynamic: true})})
-                            .setColor("#FF9E00")
-                            .setDescription(`**A message was moved**`)
-                            .addField(`By`, `<@${user.id}>`, false)
-                            .addField("Author", `<@${author.id}>`, true)
-                            .addField("From", `${channel}`, true)
-                            .addField("To", `${toChannel}`, true)
-                            .addField("Message", `\`\`\`${content}\`\`\``)
-                            .setFooter(guild.name, `${guild.iconURL({dynamic: true})}`)
-                            .setTimestamp();
+                    let log = new MessageEmbed()
+                        .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                        .setColor("#FF9E00")
+                        .setDescription(`**A message was moved**`)
+                        .addField(`By`, `<@${user.id}>`, false)
+                        .addField("Author", `<@${author.id}>`, true)
+                        .addField("From", `${channel}`, true)
+                        .addField("To", `${toChannel}`, true)
+                        .addField("Message", `\`\`\`${content}\`\`\``)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setTimestamp();
 
-                        msgUpChan.send({
-                            embeds: [log]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
-                        interaction.reply({
-                            content: `${author} your message was moved to ${toChannel}`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                    } catch {
-                        interaction.reply({
-                            content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
-                            ephemeral: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                    }
+                    msgUpChan.send({
+                        embeds: [log]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
                 }
             });
+        }
+
+        try {
+            interaction.reply({
+                content: `${author} your message was moved to ${toChannel}`
+            }).catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
+        } catch {
+            interaction.reply({
+                content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending an interaction: `, err));
         }
     }
 };
