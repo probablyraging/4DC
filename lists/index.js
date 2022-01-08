@@ -68,6 +68,27 @@ Promotional channels are available to everyone, but you can also earn new ranks 
 ⠀
 **How can I report someone for breaking the rules?**
 > To make a report, you can send a DM including any screenshots to <@841409086960697385> and one of the staff members will review it. If the matter is more urgent, you can ping a staff member or one of the staff roles`
+        ],
+
+        modschoice: [
+                `**What Is Mod's Choice**
+Mod's Choice is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
+
+**How It Works**
+Every member of the channel is required to support all other members, the easiest way to do this is;
+
+\`1.\` Open/tab all the new videos that have been posted in the channel
+\`2.\` Give each individual video a like
+\`3.\` Take a screenshot of the browser tabs and upload it to the channel
+\`4.\` Leave the tabbed videos playing in the background for at least 10-15 minutes while you do some other stuff
+\`5. (optional)\` If you actually enjoy someone's content, consider leaving a comment with something relating to the video
+
+**Rules**
+\`1.\` You can only post one link every 24 hours
+\`2.\` You can not post the same link twice. Instead, bump your old post by replying to it and saying "bump"
+\`3.\` You must be actively posting tab screenshots at least once every 3 days to not be removed
+\`4.\` Do not use this channel for chatting, please use #general instead
+\`5.\` Try to only post screenshots with a maximum of 10 tabs per screenshot`
         ]
 }
 

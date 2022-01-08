@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const index = require('../../../lists/index');
 const rules = require('../../../lists/rule-list');
 const path = require('path');
@@ -26,6 +26,12 @@ module.exports = {
         description: `Pre-written content for the faq channel`,
         type: `SUB_COMMAND`,
         usage: `/index faq`,
+    },
+    {
+        name: `modschoice`,
+        description: `Pre-written content for the modschoice channel`,
+        type: `SUB_COMMAND`,
+        usage: `/index modschoice`,
     }],
     /**
      * 
@@ -111,6 +117,24 @@ module.exports = {
                         content: `${process.env.BOT_CONF} \`Done\``,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
+
+            switch (options.getSubcommand()) {
+                case 'modschoice': {
+
+                    const response = new MessageEmbed()
+                        .setColor('#32BEA6')
+                        .setDescription(`${index.modschoice}`)
+
+                    channel.send({
+                        embeds: [response]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+                    interaction.reply({
+                        content: `${process.env.BOT_CONF} \`Done\``,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
             }
         } catch (err) {
             console.error(err);
