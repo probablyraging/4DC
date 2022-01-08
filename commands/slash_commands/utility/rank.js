@@ -146,17 +146,14 @@ module.exports = {
                     if (rankPos.length >= 3) ctx.font = '50px grotesk';
                     if (rankPos.length >= 5) ctx.font = '45px grotesk';
                     if (rankPos === 1) {
-                        ctx.fillStyle = '#FFD700';
-                        ctx.textAlign = 'right';
-                        ctx.fillText(`🥇`, canvas.width / 1.05, canvas.height / 2.8);
+                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/1st-place-medal_1f947.png')
+                        ctx.drawImage(rankFirst, 800, 50, 90, 90);
                     } else if (rankPos === 2) {
-                        ctx.fillStyle = '#C0C0C0';
-                        ctx.textAlign = 'right';
-                        ctx.fillText(`🥈`, canvas.width / 1.05, canvas.height / 2.8);
+                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/2nd-place-medal_1f948.png')
+                        ctx.drawImage(rankFirst, 800, 50, 90, 90);
                     } else if (rankPos === 3) {
-                        ctx.fillStyle = '#CD7F32';
-                        ctx.textAlign = 'right';
-                        ctx.fillText(`🥉`, canvas.width / 1.05, canvas.height / 2.8);
+                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/3rd-place-medal_1f949.png')
+                        ctx.drawImage(rankFirst, 800, 50, 90, 90);
                     } else {
                         ctx.font = '55px grotesk';
                         ctx.fillStyle = '#44eaff';
