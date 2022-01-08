@@ -50,20 +50,17 @@ module.exports = {
                 }
 
                 for (const info of results) {
-                    let { id, username, discrim, rank, level, msgCount, xp, xxp, xxxp } = info;
+                    let { username, discrim, rank, level, msgCount, xxp, xxxp } = info;
 
                     const rankPos = parseInt(rank);
 
                     // create our canvas
-                    Canvas.registerFont('./fonts/ulm_grotesk.ttf', { family: 'grotesk' })
+                    Canvas.registerFont('./res/fonts/ulm_grotesk.ttf', { family: 'grotesk' })
                     const canvas = Canvas.createCanvas(930, 280);
                     const ctx = canvas.getContext('2d');
 
                     // default background
-                    let background = await Canvas.loadImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/rankbg.png');
-                    // custom background per user
-                    if (id === '438434841617367080') background = await Canvas.loadImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/ragingrank.png');
-                    if (id === '707488396695699528') background = await Canvas.loadImage('https://cdn.discordapp.com/attachments/820907130378518539/899576398488948777/sccjonjorank.png');
+                    let background = await Canvas.loadImage('./res/images/rankbg.png');
 
                     // stretch background to the size of the canvas
                     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -72,20 +69,16 @@ module.exports = {
                     ctx.fillStyle = 'rgba(0,0,0,0.5)';
                     ctx.fillRect(20, 30, canvas.width - 40, canvas.height - 60);
 
-                    // draw a rectangle the same size as the canvas
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
                     // try to compensate for long usernames
-                    ctx.font = '40px grotesk';
+                    ctx.font = '37px grotesk';
                     let userDiscrim = username + '#' + discrim;
                     if (userDiscrim.length > 20) ctx.font = '30px grotesk';
-                    if (userDiscrim.length > 30) ctx.font = '25px grotesk', userDiscrim = userDiscrim.slice(0, 25) + '...';
+                    if (userDiscrim.length > 30) ctx.font = '30px grotesk', userDiscrim = userDiscrim.slice(0, 25) + '...';
                     ctx.fillStyle = '#ffffff';
                     ctx.fillText(userDiscrim, canvas.width / 3.8, canvas.height / 2.8);
 
                     // not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
-                    ctx.font = '40px grotesk';
+                    ctx.font = '35px grotesk';
                     ctx.fillStyle = '#44eaff';
                     ctx.fillText(`Rank ${level}`, canvas.width / 3.8, canvas.height / 1.6);
 
@@ -102,15 +95,12 @@ module.exports = {
                     let count = kFormatter(msgCount);
 
                     // message count
-                    ctx.font = '26px grotesk';
+                    ctx.font = '23px grotesk';
                     ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'right';
                     ctx.fillText(`Message Count: ${count}`, canvas.width / 1.16, canvas.height / 1.6);
 
                     // draw and fill our xp bar
-                    const colors = [0x00E2FF, 0x00FF85];
-                    const randomColorNo = Math.floor(Math.random() * colors.length);
-                    const randomColor = colors[randomColorNo];
                     const percentage = Math.floor((xxp / xxxp) * 100);
                     const roundedPercent = Math.round(percentage);
 
@@ -146,13 +136,13 @@ module.exports = {
                     if (rankPos.length >= 3) ctx.font = '50px grotesk';
                     if (rankPos.length >= 5) ctx.font = '45px grotesk';
                     if (rankPos === 1) {
-                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/1st-place-medal_1f947.png')
-                        ctx.drawImage(rankFirst, 800, 50, 90, 90);
+                        const rankFirst = await Canvas.loadImage('./res/images/firstplace.png')
+                        ctx.drawImage(rankFirst, 820, 50, 70, 70);
                     } else if (rankPos === 2) {
-                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/2nd-place-medal_1f948.png')
+                        const rankFirst = await Canvas.loadImage('./res/images/secondplace.png')
                         ctx.drawImage(rankFirst, 800, 50, 90, 90);
                     } else if (rankPos === 3) {
-                        const rankFirst = await Canvas.loadImage('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/313/3rd-place-medal_1f949.png')
+                        const rankFirst = await Canvas.loadImage('./res/images/thirdplace.png')
                         ctx.drawImage(rankFirst, 800, 50, 90, 90);
                     } else {
                         ctx.font = '55px grotesk';
@@ -167,7 +157,9 @@ module.exports = {
                     ctx.closePath();
                     ctx.clip();
 
-                    const avatar = await Canvas.loadImage(target?.user.displayAvatarURL({ format: 'png' }));
+                    // get a small res version of the user's avatar and draw it onto the canvas
+                    const avatarURL = target?.user.displayAvatarURL({ format: 'png' }) + '?size=64';
+                    const avatar = await Canvas.loadImage(avatarURL);
                     ctx.drawImage(avatar, 60, 60, 160, 160);
 
                     const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
