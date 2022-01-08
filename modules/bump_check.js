@@ -1,23 +1,20 @@
-const { Message } = require('discord.js');
-const mongo = require('../mongo');
-const timerSchema = require('../schemas/timer-schema');
-const path = require('path');
-/**
- * 
- * @param {Message} message 
- */
-module.exports = async (message, client, Discord) => {
+const mongo = require("../mongo");
+const timerSchema = require("../schemas/timer-schema");
+const path = require("path");
+
+module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const bumpChan = guild.channels.cache.get(process.env.BUMP_CHAN);
 
     setInterval(async () => {
-        const searchFor = 'bumpTime'
+        const searchFor = "bumpTime";
         await mongo().then(async mongoose => {
+            let dbTimestamp;
             try {
-                const results = await timerSchema.find({ searchFor })
+                const results = await timerSchema.find({searchFor});
 
                 for (const info of results) {
-                    const { timestamp } = info;
+                    const {timestamp} = info;
 
                     dbTimestamp = timestamp;
                 }
@@ -25,7 +22,7 @@ module.exports = async (message, client, Discord) => {
                 const myDate = new Date();
                 const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
 
-                if (nowTime > dbTimestamp) {
+                if (dbTimestamp && nowTime > dbTimestamp) {
                     bumpChan.permissionOverwrites.edit(guild.id, {
                         SEND_MESSAGES: true,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
@@ -37,12 +34,12 @@ module.exports = async (message, client, Discord) => {
                             setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 7200000);
                         });
 
-                    await timerSchema.findOneAndRemove({ searchFor: 'bumpTime' }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+                    await timerSchema.findOneAndRemove({searchFor: "bumpTime"}).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                     await timerSchema.findOneAndUpdate({
-                        timestamp: 'null',
+                        timestamp: "null",
                         searchFor
                     }, {
-                        timestamp: 'null',
+                        timestamp: "null",
                         searchFor
                     }, {
                         upsert: true
@@ -53,4 +50,4 @@ module.exports = async (message, client, Discord) => {
             }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     }, 30000);
-}
+};
