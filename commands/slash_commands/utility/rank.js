@@ -55,6 +55,7 @@ module.exports = {
                     const rankPos = parseInt(rank);
 
                     // create our canvas
+                    Canvas.registerFont('./fonts/ulm_grotesk.ttf', { family: 'grotesk' })
                     const canvas = Canvas.createCanvas(930, 280);
                     const ctx = canvas.getContext('2d');
 
@@ -76,15 +77,15 @@ module.exports = {
                     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
                     // try to compensate for long usernames
-                    ctx.font = '45px sans-serif';
+                    ctx.font = '40px grotesk';
                     let userDiscrim = username + '#' + discrim;
-                    if (userDiscrim.length > 20) ctx.font = '35px sans-serif';
-                    if (userDiscrim.length > 30) ctx.font = '30px sans-serif', userDiscrim = userDiscrim.slice(0, 25) + '...';
+                    if (userDiscrim.length > 20) ctx.font = '30px grotesk';
+                    if (userDiscrim.length > 30) ctx.font = '25px grotesk', userDiscrim = userDiscrim.slice(0, 25) + '...';
                     ctx.fillStyle = '#ffffff';
                     ctx.fillText(userDiscrim, canvas.width / 3.8, canvas.height / 2.8);
 
                     // not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
-                    ctx.font = '40px sans-serif';
+                    ctx.font = '40px grotesk';
                     ctx.fillStyle = '#44eaff';
                     ctx.fillText(`Rank ${level}`, canvas.width / 3.8, canvas.height / 1.6);
 
@@ -101,7 +102,7 @@ module.exports = {
                     let count = kFormatter(msgCount);
 
                     // message count
-                    ctx.font = '26px sans-serif';
+                    ctx.font = '26px grotesk';
                     ctx.fillStyle = '#ffffff';
                     ctx.textAlign = 'right';
                     ctx.fillText(`Message Count: ${count}`, canvas.width / 1.16, canvas.height / 1.6);
@@ -136,14 +137,14 @@ module.exports = {
                     }
 
                     // current xp and xp needed
-                    ctx.font = '24px sans-serif';
+                    ctx.font = '24px grotesk';
                     ctx.fillStyle = '#000000';
                     ctx.fillText(`${xp3} / ${xp2} XP`, canvas.width / 1.525, canvas.height / 1.31);
 
                     // position in the leadboard
-                    ctx.font = '60px sans-serif';
-                    if (rankPos.length >= 3) ctx.font = '50px sans-serif';
-                    if (rankPos.length >= 5) ctx.font = '45px sans-serif';
+                    ctx.font = '60px grotesk';
+                    if (rankPos.length >= 3) ctx.font = '50px grotesk';
+                    if (rankPos.length >= 5) ctx.font = '45px grotesk';
                     if (rankPos === 1) {
                         ctx.fillStyle = '#FFD700';
                         ctx.textAlign = 'right';
@@ -157,7 +158,7 @@ module.exports = {
                         ctx.textAlign = 'right';
                         ctx.fillText(`🥉`, canvas.width / 1.05, canvas.height / 2.8);
                     } else {
-                        ctx.font = '55px sans-serif';
+                        ctx.font = '55px grotesk';
                         ctx.fillStyle = '#44eaff';
                         ctx.textAlign = 'right';
                         ctx.fillText(`#${rankPos}`, canvas.width / 1.05, canvas.height / 2.8);
