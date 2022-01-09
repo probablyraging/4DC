@@ -1,6 +1,7 @@
 const path = require('path');
 const mongo = require('../mongo');
 const streamSchema = require('../schemas/stream-schema');
+const cooldown = new Set();
 /**
  * 
  * @param {Message} message 
@@ -50,14 +51,23 @@ module.exports = (message, client, Discord) => {
                             upsert: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                        guild.members.cache.get(liveStaffArr[i].id).roles.add(liveRole)
+                        guild.members.cache.get(liveStaffArr[i]?.id).roles.add(liveRole)
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
-                        staffPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        if (!cooldown.has(liveStaffArr[i]?.id)) {
+                            staffPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
+                                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                        twitchPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            twitchPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
+                                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                            // we only allow the bot to send one notification every 6 hours
+                            cooldown.add(liveStaffArr[i]?.id)
+
+                            setTimeout(() => {
+                                cooldown.delete(liveStaffArr[i]?.id)
+                            }, 1000 * 21600);
+                        }
                     }
                 }
             } finally {
@@ -99,11 +109,20 @@ module.exports = (message, client, Discord) => {
                         guild.members.cache.get(liveBoosterArr[i].id).roles.add(liveRole)
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
-                        boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        if (!cooldown.has(liveBoosterArr[i]?.id)) {
+                            boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                        twitchPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            twitchPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                            // we only allow the bot to send one notification every 6 hours
+                            cooldown.add(liveBoosterArr[i]?.id)
+
+                            setTimeout(() => {
+                                cooldown.delete(liveBoosterArr[i]?.id)
+                            }, 1000 * 21600);
+                        }
                     }
                 }
             } finally {
