@@ -107,7 +107,9 @@ module.exports = {
                 if (msg.id === filteredArr[i]) {
                     let msgAttachment = msg.attachments.size > 0 ? msg.attachments : null;
                     let msgContent = msg.content || " ";
-                    let author = msg.author;
+                    author = msg.author;
+
+                    exists = true;
 
                     // if the user no longer exists in the server
                     if (!msg.member) {
@@ -176,12 +178,14 @@ module.exports = {
                     msgUpChan.send({
                         embeds: [log]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
-                    interaction.reply({
-                        content: `${author} your message was moved to ${toChannel}`
-                    }).catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
                 }
             });
+        }
+
+        if (exists) {
+            interaction.reply({
+                content: `${author} your message was moved to ${toChannel}`
+            }).catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
         }
     }
 };
