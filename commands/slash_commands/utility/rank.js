@@ -17,7 +17,7 @@ module.exports = {
     usage: `/rank`,
     options: [{
         name: `username`,
-        description: `The user whos rank you want to fetch. Leave black to fetch your own`,
+        description: `The user whos rank you want to fetch. Leave blank to fetch your own`,
         type: `USER`,
         required: false,
     }],
@@ -53,7 +53,7 @@ module.exports = {
                 const results = await rankSchema.find({id: targetId}).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                 if (results.length === 0) {
-                    return interaction.editReply(`${process.env.BOT_DENY} \`The user isn't ranked yet. They need to send some messages to earn XP.\``)
+                    return interaction.editReply(`${process.env.BOT_DENY} \`${target.user.tag} isn't ranked yet. They need to send some messages to earn XP.\``)
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
