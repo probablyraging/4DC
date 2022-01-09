@@ -1,5 +1,5 @@
 module.exports = {
-    img: 'https://i.imgur.com/vYaHwwJ.png',
+    img: 'https://i.imgur.com/hbZyIw8.png',
 
     pre: `To keep CreatorHub a safe and positive experience for everyone, you are required to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
 
