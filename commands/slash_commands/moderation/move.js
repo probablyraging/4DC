@@ -82,7 +82,6 @@ module.exports = {
         }
 
         const fetchMsg = channel.messages.fetch();
-
         const channelType = toChannel.type;
 
         let cType;
@@ -108,16 +107,21 @@ module.exports = {
                 if (msg.id === filteredArr[i]) {
                     let msgAttachment = msg.attachments.size > 0 ? msg.attachments : null;
                     let msgContent = msg.content || " ";
-                    author = msg.author;
+                    let author = msg.author;
 
-                    if (!author) {
+                    // if the user no longer exists in the server
+                    if (!msg.member) {
+                        exists = false;
+
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
-                        return interaction.reply({
+                        interaction.reply({
                             content: `${process.env.BOT_DENY} \`That user no longer exists. Their message(s) were deleted\``,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
+
+                    if (!exists) return;
 
                     if (msgAttachment) {
                         // If the message has an attachment, we need to move that too
@@ -127,7 +131,7 @@ module.exports = {
                             imageArr.push(image.url);
                         });
 
-                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
+                        toChannel.createWebhook(msg.member?.displayName, { avatar: msg.author?.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`,
                                 files: imageArr
@@ -138,7 +142,7 @@ module.exports = {
 
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     } else {
-                        toChannel.createWebhook(msg.member.displayName, { avatar: msg.author.displayAvatarURL() }).then(webhook => {
+                        toChannel.createWebhook(msg.member?.displayName, { avatar: msg.author?.displayAvatarURL() }).then(webhook => {
                             webhook.send({
                                 content: `${msgContent}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
@@ -172,19 +176,12 @@ module.exports = {
                     msgUpChan.send({
                         embeds: [log]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+                    interaction.reply({
+                        content: `${author} your message was moved to ${toChannel}`
+                    }).catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
                 }
             });
-        }
-
-        try {
-            interaction.reply({
-                content: `${author} your message was moved to ${toChannel}`
-            }).catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
-        } catch {
-            interaction.reply({
-                content: `${process.env.BOT_DENY} \`The message or message author no longer exists\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending an interaction: `, err));
         }
     }
 };
