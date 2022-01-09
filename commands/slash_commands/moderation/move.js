@@ -109,6 +109,9 @@ module.exports = {
 
         await interaction.deferReply();
         let interactionReplyMessage;
+        // We use a map to track the counts of messages from a specific author
+        let movedMessageMap = new Map();
+        let deletedMessages = 0;
 
         for (let i = 0; i < filteredArr.length; i++) {
             (await fetchMsg).filter(msg => {
@@ -119,7 +122,7 @@ module.exports = {
 
                     if (!author) {
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        interactionReplyMessage = concatMessage(interactionReplyMessage, `${process.env.BOT_DENY} \`That user no longer exists. Their message(s) were deleted\``);
+                        deletedMessages++;
                     } else {
                         // If the user is a member, then they'll have a displayName - else, get their discord username
                         let authorUsername = msg.member ? msg.member.displayName : author.username;
@@ -153,8 +156,13 @@ module.exports = {
                             msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         }
 
-                        // Update the interactionReply to say that we moved a message
-                        interactionReplyMessage = concatMessage(interactionReplyMessage, `${author}'s message was moved to ${toChannel}`);
+                        // Increase the count of messages from the author
+                        if (movedMessageMap.has(author)) {
+                            let count = movedMessageMap.get(author) + 1;
+                            movedMessageMap.set(author, count);
+                        } else {
+                            movedMessageMap.set(author, 1);
+                        }
 
                         // Add a message to the message-updates channel to state that the message was moved
                         let content;
@@ -183,6 +191,20 @@ module.exports = {
                 }
             });
         }
+
+        // Add in any deleted messages to the reply
+        if (deletedMessages !== 0) {
+            interactionReplyMessage = concatMessage(interactionReplyMessage, `${process.env.BOT_DENY} \`Deleted ${deletedMessages} message(s) from users who no longer exist.\``);
+        }
+
+        // Go through the authors and add how many messages were moved from each author to the reply
+        movedMessageMap.forEach((value, key) => {
+            if (value === 1) {
+                interactionReplyMessage = concatMessage(interactionReplyMessage, `${value} of ${key}'s messages was moved to ${toChannel}`);
+            } else {
+                interactionReplyMessage = concatMessage(interactionReplyMessage, `${value} of ${key}'s messages were moved to ${toChannel}`);
+            }
+        });
 
         try {
             await interaction.editReply(interactionReplyMessage)
