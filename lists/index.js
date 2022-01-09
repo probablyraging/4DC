@@ -1,13 +1,13 @@
 module.exports = {
         welcome: [
-                `https://i.imgur.com/7QUVSMl.png`,
+                `https://i.imgur.com/vWR2ROk.png`,
 
                 `CreatorHub is a growing community of content creators and gamers alike. The main goal of this Discord server is to connect like-minded people from all around the world together in a friendly and welcoming environment. We are all about sharing advice, providing constructive feedback, and growing our online presence.
 
 So if you are a youtuber, streamer, game developer, casual gamer, or social media influencer, you are in the right place!
 ⠀`,
 
-                `https://i.imgur.com/zhYsPzo.png`,
+                `https://i.imgur.com/aDjNgb9.png`,
 
                 `> <#898541066595209248> Read the server rules
 > <#898611031146889286> Get answers to frequently asked questions
@@ -17,7 +17,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 > <#838060518832472124> If you need help with anything, just ask
 ⠀`,
 
-                `https://i.imgur.com/NmTo9aU.png`,
+                `https://i.imgur.com/pq4qwaZ.png`,
 
                 `> <#859076562053365780>
 > <#856719763187302441>
@@ -29,13 +29,13 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 Promotional channels are available to everyone, but you can also earn new ranks by chatting and being active on the server. As you rank up you will unlock new channels, and the higher you rank, the less competitive the promotional channels will be. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
 ⠀`,
 
-                `https://i.imgur.com/0DypVcg.png`,
+                `https://i.imgur.com/KnG7SnL.png`,
 
                 `By participating in this server, you agree to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`
         ],
 
         faq: [
-                `https://i.imgur.com/oxx8wvJ.png`,
+                `https://i.imgur.com/kea6hih.png`,
 
                 `**When/how can I self promote?**
 > All self-promotion channels can be found under the ‘SELF PROMOTE’ section. Self-promotion channels are unlocked at Rank 0. Reaching higher ranks allows you to self-promote in less competitive channels, allowing your content to be seen easier by others. You can bypass rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
