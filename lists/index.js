@@ -48,7 +48,7 @@ Promotional channels are available to everyone, but you can also earn new ranks 
 ⠀`,
 
                 `**How do I rank up?**
-> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, less competitive promotional channels, game channels, permission to post links outside of the 'SELF PROMOTE' section. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
+> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, less competitive promotional channels, game channels, permission to post links outside of the 'SELF PROMOTE' section. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`. *You will not gain XP for posting links in the SELF PROMOTE section!*
                     
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings :gear: > Connections**
