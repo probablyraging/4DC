@@ -48,6 +48,13 @@ module.exports = {
                     const choice = options.getString('list1');
                     const choice2 = options.getString('list2');
 
+                    if (!choice && !choice2) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`You did not include a command name\``,
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    }
+
                     cmdArr = [];
 
                     (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
@@ -66,7 +73,7 @@ module.exports = {
 
                     if (cmd.command.locked) response.addField(`Required Permissions`, `\`Owner\``, false), response.setColor('#87ecff');
                     if (cmd.command.permission === `MANAGE_MESSAGES`) response.addField(`Required Permissions`, `\`Staff\``, false), response.setColor('#fff766');
-                    if (cmd.command.permission === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#87ffd4');
+                    if (cmd.command.permission === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#ffa116');
 
                     if (!cmd.command.usage) {
                         cmd.command.options.forEach(option => {
