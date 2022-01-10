@@ -30,7 +30,7 @@ module.exports = {
             .setDescription(`Created by <@${guild.ownerId}> for [**CreatorHub**](https://discord.gg/creatorhub)
       
 Uptime: \`${botUptime}\``)
-            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
         interaction.reply({

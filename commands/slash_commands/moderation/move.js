@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {MessageEmbed} = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const path = require("path");
 
 module.exports = {
@@ -52,7 +52,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const {client, user, guild, channel, options} = interaction;
+        const { client, user, guild, channel, options } = interaction;
 
         const messageId = options.getString("message");
         const messageId2 = options.getString("message2");
@@ -134,10 +134,13 @@ module.exports = {
                                 imageArr.push(image.url);
                             });
 
-                            toChannel.createWebhook(authorUsername, {avatar: author.displayAvatarURL()}).then(webhook => {
+                            toChannel.createWebhook(authorUsername, { avatar: author.displayAvatarURL() }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
-                                    files: imageArr
+                                    files: imageArr,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
                                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                                 });
@@ -145,9 +148,12 @@ module.exports = {
 
                             msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         } else {
-                            toChannel.createWebhook(authorUsername, {avatar: author.displayAvatarURL()}).then(webhook => {
+                            toChannel.createWebhook(authorUsername, { avatar: author.displayAvatarURL() }).then(webhook => {
                                 webhook.send({
-                                    content: `${msgContent}`
+                                    content: `${msgContent}`,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
                                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                                 });
@@ -173,7 +179,7 @@ module.exports = {
                         }
 
                         let log = new MessageEmbed()
-                            .setAuthor({name: `${user?.tag}`, iconURL: user?.displayAvatarURL({dynamic: true})})
+                            .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                             .setColor("#FF9E00")
                             .setDescription(`**A message was moved**`)
                             .addField(`By`, `<@${user.id}>`, false)
@@ -181,7 +187,7 @@ module.exports = {
                             .addField("From", `${channel}`, true)
                             .addField("To", `${toChannel}`, true)
                             .addField("Message", `\`\`\`${content}\`\`\``)
-                            .setFooter({text: guild.name, iconURL: guild.iconURL({dynamic: true})})
+                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                             .setTimestamp();
 
                         msgUpChan.send({

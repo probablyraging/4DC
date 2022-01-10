@@ -11,6 +11,8 @@ module.exports = async (message, client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
 
+    const disableXP = [process.env.PROMO_1, process.env.PROMO_2, process.env.PROMO_3, process.env.PROMO_4, process.env.TWITCH_PROMO, process.env.BOT_CHAN]
+
     if (!message?.author?.bot && !xpLimit.has(message?.author?.id)) {
         await mongo().then(async mongoose => {
 
@@ -78,6 +80,9 @@ module.exports = async (message, client, Discord) => {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
+
+            // if the message is in an XP disabled channel, don't add XP
+            if (disableXP.includes(message?.channel?.id)) return;
 
             // get a random number between 15 and 25
             function randomNum(min, max) {

@@ -22,7 +22,7 @@ module.exports = {
 
 There are now **${memberCount}** members in the server`)
             .setThumbnail(`${member?.user.displayAvatarURL({ dynamic: true })}`)
-            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
         joinLeaveChannel.send({
@@ -44,7 +44,7 @@ There are now **${memberCount}** members in the server`)
                         invites.forEach(async i => {
                             if (i.code === code && i.uses > uses) {
                                 vanity = false;
-                                
+
                                 const inviter = client.users.cache.get(userId);
 
                                 inviteChan.send({

@@ -154,7 +154,7 @@ module.exports = {
                     if (title) create.setTitle(`${title}`);
                     if (thumbnail) create.setThumbnail(`${thumbnail}`);
                     if (image) create.setImage(`${image}`);
-                    if (author === 'yes') create.setFooter(`Created by ${user.tag}`, `${user.displayAvatarURL({ dynamic: true })}`)
+                    if (author === 'yes') create.setFooter({ text: `Created by ${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
 
                     channel.send({
                         embeds: [create],

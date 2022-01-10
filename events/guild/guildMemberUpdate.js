@@ -34,7 +34,7 @@ module.exports = {
                 .addField(`New Nickname`, `${nName}#${newMember?.user?.discriminator}`, true)
                 .addField(`Old Nickname`, `${oName}#${oldMember?.user?.discriminator}`, true)
                 .setThumbnail(`${newMember?.user?.displayAvatarURL({ dynamic: true })}`)
-                .setFooter(`${oldMember.guild.name}`)
+                .setFooter({ text: oldMember.guild.name })
                 .setTimestamp()
 
             userUpChan.send({
@@ -68,7 +68,7 @@ module.exports = {
                     .addField(`Added By`, `${executor}`, false)
                     .addField(`Reason`, `\`\`\`${toReason}\`\`\``, false)
                     .addField(`Expires`, `\`\`\`${date}\`\`\``, false)
-                    .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp()
 
                 mutesChan.send({
@@ -90,7 +90,7 @@ module.exports = {
                 .setColor('#32BEA6')
                 .addField(`Removed By`, `${executor}`, false)
                 .setAuthor({ name: `Timeout removed from ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             mutesChan.send({

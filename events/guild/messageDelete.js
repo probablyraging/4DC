@@ -25,7 +25,7 @@ module.exports = {
             .addField("Author", `${message?.author}`, true)
             .addField("Channel", `${message?.channel}`, true)
             .addField('Message', `\`\`\`${content}\`\`\``)
-            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
         let msgAttachment = message?.attachments.size > 0 ? message?.attachments : null;

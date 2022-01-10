@@ -22,7 +22,7 @@ module.exports = {
 Old Avatar**`)
                 .setImage(`${oldAvatar}`)
                 .setThumbnail(`${newUser?.displayAvatarURL({ dynamic: true })}`)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             userUpChan.send({
@@ -42,7 +42,7 @@ Old Avatar**`)
                 .addField(`New Username`, `${newUser?.tag}`, true)
                 .addField(`Old Username`, `${oldUser?.tag}`, true)
                 .setThumbnail(`${newUser?.displayAvatarURL({ dynamic: true })}`)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             userUpChan.send({

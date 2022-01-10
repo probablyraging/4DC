@@ -20,7 +20,7 @@ module.exports = {
                 .setColor('#32BEA6')
                 .setAuthor({ name: `${ban?.user.tag} has been unbanned`, iconURL: ban?.user.displayAvatarURL({ dynamic: true }) })
                 .addField(`Unbanned By`, `${executor}`, true)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             banChan.send({

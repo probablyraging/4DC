@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'guildBanAdd',
     execute(ban, client, Discord) {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);        
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const banChan = client.channels.cache.get(process.env.BAN_CHAN);
 
         setTimeout(async () => {
@@ -21,7 +21,7 @@ module.exports = {
                 .setAuthor({ name: `${ban?.user.tag} has been banned`, iconURL: ban?.user.displayAvatarURL({ dynamic: true }) })
                 .addField(`Banned By`, `${executor}`, true)
                 .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             banChan.send({

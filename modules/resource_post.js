@@ -15,7 +15,7 @@ module.exports = (message, client, Discord) => {
             .setColor('#F44336')
             .setTitle(`${content[0]}`)
             .setDescription(`${content.slice(1).join('\n')}`)
-            .setFooter(`By ${message?.author?.tag}`, `${message?.author?.displayAvatarURL({ dynamic: true })}`)
+            .setFooter({ text: message?.author?.tag, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
             .setTimestamp()
 
         let msgAttachment = message?.attachments?.size > 0 ? message?.attachments : null;

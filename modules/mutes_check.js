@@ -32,7 +32,7 @@ module.exports = async (message, client, Discord) => {
                             .setAuthor({ name: `${target?.tag} has been unmuted`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
                             .addField(`Channel:`, `${targetChan}`, true)
                             .addField(`By:`, `${client.user}`, false)
-                            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                             .setTimestamp()
 
                         mutesChan?.send({

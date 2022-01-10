@@ -56,7 +56,7 @@ module.exports = (message, client, Discord) => {
                         .addField("Channel", `${message?.channel}`, true)
                         .addField("Reason", `Link cooldown`, true)
                         .addField('Message', `\`\`\`${msgContent}\`\`\``)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     blChan.send({

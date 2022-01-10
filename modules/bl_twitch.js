@@ -9,7 +9,7 @@ module.exports = (message, client, Discord) => {
     
     const member = message?.member;
 
-    if (message?.channel.id === process.env.TWITCH_CHAN && !message?.content.toLowerCase().includes('twitch.tv/') && !message?.author?.bot) {
+    if (message?.channel.id === process.env.TWITCH_PROMO && !message?.content.toLowerCase().includes('twitch.tv/') && !message?.author?.bot) {
         member?.send({
             content: `${process.env.BOT_DENY} \`#${message?.channel.name} is for Twitch links only\``
         }).catch(() => {

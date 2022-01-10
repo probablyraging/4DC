@@ -45,7 +45,7 @@ module.exports = {
 
                     const response = new MessageEmbed()
                         .setColor('#32BEA6')
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {
@@ -164,7 +164,7 @@ module.exports = {
 
                                             let lllbEmbed = new MessageEmbed()
                                                 .setColor('#32BEA6')
-                                                .setFooter(`${guild.name}`)
+                                                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                                                 .setTimestamp()
                                                 .addField(`🏆 \`Last Letter Leaderboard\``, `⠀
 🥇 <@${letterArr[0].id}> - **${letterArr[0].count}** points
@@ -240,7 +240,7 @@ If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, fa
 
                     const response = new MessageEmbed()
                         .setColor('#32BEA6')
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {

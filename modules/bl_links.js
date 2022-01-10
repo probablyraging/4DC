@@ -10,7 +10,7 @@ module.exports = (message, client, Discord) => {
      * This black list focuses on strict blacklisting in all channels for things like discord invites and onlyfans links 
      */
     if (message?.deleted) return;
-    
+
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
     const premChan = client.channels.cache.get(process.env.PREM_CHAN);
@@ -72,7 +72,7 @@ module.exports = (message, client, Discord) => {
                     .addField(`Channel`, `${message?.channel}`, true)
                     .addField(`Reason`, `Blacklisted link`, true)
                     .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                    .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp()
 
                 blChan.send({

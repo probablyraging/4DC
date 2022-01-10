@@ -117,7 +117,7 @@ module.exports = {
                         .addField(`By`, `<@${member.id}>`, false)
                         .addField(`Druation`, `${duration} hours`, true)
                         .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     mutesChan.send({
@@ -151,7 +151,7 @@ module.exports = {
                         .setAuthor({ name: `${target?.user.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel`, `${targetChan}`, true)
                         .addField(`By`, `<@${member.id}>`, false)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     mutesChan.send({

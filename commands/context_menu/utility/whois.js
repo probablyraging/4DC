@@ -109,7 +109,7 @@ module.exports = {
             .addField('Roles:', `${roleList}`, false)
             .addField('Acknowledgements:', `${acknowledgements}`, true)
             .addField('Permissions:', `${permissions.join(`, `)}`, false)
-            .setFooter(`ID: ${target?.id}`)
+            .setFooter({ text: target?.id })
             .setTimestamp()
 
         if (target?.user.bot) response.addField('Additional:', `This user is a BOT`, false);

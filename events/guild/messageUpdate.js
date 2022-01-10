@@ -20,7 +20,7 @@ module.exports = {
                 .addField(`Channel`, `${oldMessage?.channel}`, true)
                 .addField(`Old Message`, `\`\`\`${original}\`\`\``, false)
                 .addField(`New Message`, `\`\`\`${edited}\`\`\``, false)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             msgUpChan.send({
@@ -72,7 +72,7 @@ module.exports = {
                         .addField(`Channel`, `${newMessage?.channel}`, true)
                         .addField(`Reason`, `Blacklisted link`, true)
                         .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     blChan.send({
@@ -119,7 +119,7 @@ module.exports = {
                         .addField(`Channel`, `${newMessage?.channel}`, true)
                         .addField(`Reason`, `Contains link`, true)
                         .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                        .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()
 
                     blChan.send({

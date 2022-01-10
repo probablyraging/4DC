@@ -15,7 +15,7 @@ module.exports = {
         let command = client.commands.get(interaction.commandName);
 
         // owner only commands
-        if (command.locked) {            
+        if (command.locked) {
             if (member.id !== process.env.OWNER_ID)
                 return interaction.reply({
                     content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
@@ -72,7 +72,7 @@ module.exports = {
                 .setAuthor({ name: `${user?.tag} used a command`, iconURL: user.displayAvatarURL({ dynamic: true }) })
                 .addField(`Command`, `${cmdName}`, false)
                 .addField(`Channel`, `${channel}`, true)
-                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
             cmdOptions = [];

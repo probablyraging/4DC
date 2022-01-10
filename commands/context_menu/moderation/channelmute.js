@@ -29,7 +29,7 @@ module.exports = {
             .addField(`Channel:`, `${channel}`, true)
             .addField(`By:`, `<@${member.id}>`, false)
             .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
-            .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
         mutesChan.send({

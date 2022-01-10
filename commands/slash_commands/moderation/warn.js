@@ -138,7 +138,7 @@ module.exports = {
                                         .addField(`Warned By`, `<@${member.id}>`, true)
                                         .addField(`Warning Count`, `${warnCount}`, true)
                                         .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                        .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
+                                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                                         .setTimestamp()
 
                                     warnChan.send({
@@ -175,7 +175,7 @@ ${banMsg}`,
                                         .addField(`Warned By`, `<@${member.id}>`, true)
                                         .addField(`Warning Count`, `${warnCount}`, true)
                                         .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                        .setFooter(`${guild.name} • Warning ID ${warnId}`, `${guild.iconURL({ dynamic: true })}`)
+                                        .setFooter({ text: guild.name`• Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
                                         .setTimestamp()
 
                                     warnChan.send({
@@ -217,7 +217,7 @@ ${banMsg}`,
                                     .addField(`Removed From`, `<@${gotUserId}>`, true)
                                     .addField(`Removed By`, `<@${user.id}>`, true)
                                     .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
-                                    .setFooter(`${guild.name} • Warning ID ${warning}`, `${guild.iconURL({ dynamic: true })}`)
+                                    .setFooter({ text: guild.name`• Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
                                     .setTimestamp()
 
                                 warnChan.send({
@@ -255,7 +255,7 @@ ${banMsg}`,
                             let warningEmbed = new MessageEmbed()
                                 .setColor('#32BEA6')
                                 .setAuthor({ name: `Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                                .setFooter(`${guild.name}`, `${guild.iconURL({ dynamic: true })}`)
+                                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                                 .setTimestamp()
 
                             if (results.length < 1) {

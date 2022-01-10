@@ -14,7 +14,7 @@ module.exports = (message, client, Discord) => {
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
     const staffPromoChan = guild.channels.cache.get(process.env.STAFF_PROMO);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOST_PROMO);
-    const twitchPromoChan = guild.channels.cache.get(process.env.TWITCH_CHAN);
+    const twitchPromoChan = guild.channels.cache.get(process.env.TWITCH_PROMO);
 
     function filterArr(value, index, self) {
         return self.indexOf(value) === index;
