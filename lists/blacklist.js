@@ -8,11 +8,11 @@ module.exports = {
     ],
 
     words: [
-        "abbo", "cum", "coom", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "date rape", "daterape"
+        "abbo", "cum", "coom", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "daterape"
     ],
 
     words2: [
-        "child porn", "child porno", "child pornography", "kid porn", "kiddie porn", "dead server", "server dead", "dead chat", "ded chat", "chat dead", "chat died", "dead-chat", "chat-dead", "dead_chat", "chat_dead", "chat ded"
+        "child porn", "child porno", "child pornography", "kid porn", "kiddie porn", "dead server", "server dead", "ded server", "server ded", "dead chat", "ded chat", "chat dead", "chat died", "dead-chat", "chat-dead", "dead_chat", "chat_dead", "chat ded"
     ],
 
     noLinkChannels: [

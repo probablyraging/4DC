@@ -16,16 +16,15 @@ module.exports = (message, client, Discord) => {
     const content = message?.content.toLowerCase().split(' ');
 
     for (var i in blacklist.words2) {
-        if (message?.content.toLowerCase().includes(blacklist.words2[i].toLowerCase())) {
-            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-        }
-        return;
+        if (blacklist.words2.includes(message?.content.toLowerCase())) {
+            return message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }        
     }
 
     let found = false;
 
-    for (var i in content) {
-        if (content.includes(blacklist.words[i].toLowerCase())) found = true;
+    for (var e in blacklist.words) {
+        if (blacklist.words.includes(content[e])) found = true;
     }
 
     for (var e in blacklist.allChannels) {
