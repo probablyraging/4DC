@@ -125,7 +125,7 @@ module.exports = {
         ⠀`, false)
                         .addField(`👥 Everyone`, `\`/${utilCmds.join(`\`, \`/`)}\`
         ⠀`, false)
-                        .setFooter({ text: client.user.username `• Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setFooter({ text: `${client.user.username} • Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
 
                     interaction.reply({
                         embeds: [response],

@@ -8,7 +8,7 @@ module.exports = {
     ],
 
     words: [
-        "abbo", "cum", "coom", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "daterape"
+        "abbo", "cum", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "rapist", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "daterape"
     ],
 
     words2: [

@@ -175,7 +175,7 @@ ${banMsg}`,
                                         .addField(`Warned By`, `<@${member.id}>`, true)
                                         .addField(`Warning Count`, `${warnCount}`, true)
                                         .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                        .setFooter({ text: guild.name`• Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
+                                        .setFooter({ text: `${guild.name} • Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
                                         .setTimestamp()
 
                                     warnChan.send({
@@ -217,7 +217,7 @@ ${banMsg}`,
                                     .addField(`Removed From`, `<@${gotUserId}>`, true)
                                     .addField(`Removed By`, `<@${user.id}>`, true)
                                     .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
-                                    .setFooter({ text: guild.name`• Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
+                                    .setFooter({ text: `${guild.name} • Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
                                     .setTimestamp()
 
                                 warnChan.send({
