@@ -16,15 +16,14 @@ module.exports = async (message, client, Discord) => {
             const timestamp = addTwo;
 
             const searchFor = 'bumpTime';
+
             message?.channel.permissionOverwrites.edit(message?.guild.id, {
                 SEND_MESSAGES: false,
             })
 
             await mongo().then(async mongoose => {
-                await timerSchema.findOneAndRemove({ searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 try {
                     await timerSchema.findOneAndUpdate({
-                        timestamp,
                         searchFor
                     }, {
                         timestamp,

@@ -11,10 +11,10 @@ module.exports = async (message, client) => {
         await mongo().then(async mongoose => {
             let dbTimestamp;
             try {
-                const results = await timerSchema.find({searchFor});
+                const results = await timerSchema.find({ searchFor });
 
                 for (const info of results) {
-                    const {timestamp} = info;
+                    const { timestamp } = info;
 
                     dbTimestamp = timestamp;
                 }
@@ -29,14 +29,9 @@ module.exports = async (message, client) => {
 
                     bumpChan.send({
                         content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again!`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
-                        .then(msg => {
-                            setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 7200000);
-                        });
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    await timerSchema.findOneAndRemove({searchFor: "bumpTime"}).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                     await timerSchema.findOneAndUpdate({
-                        timestamp: "null",
                         searchFor
                     }, {
                         timestamp: "null",
@@ -46,7 +41,7 @@ module.exports = async (message, client) => {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                 }
             } finally {
-                // do bothing
+                // do nothing
             }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     }, 30000);
