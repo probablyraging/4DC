@@ -115,16 +115,16 @@ module.exports = {
                         .setTitle(`ℹ️ CreatorBot's Help Menu`)
                         .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
         
-        Use \`/help [command]\` for information about a specific command
-        Parameters inside \`[]\` brackets are mandatory
-        Parameters inside \`()\` brackets are optional
-        ⠀`)
+Use \`/help [command]\` for information about a specific command
+Parameters inside \`[]\` brackets are mandatory
+Parameters inside \`()\` brackets are optional
+⠀`)
                         .addField(`👑 Owner`, `\`/${ownerCmd.join(`\`, \`/`)}\`
-        ⠀`, false)
+⠀`, false)
                         .addField(`👮 Staff`, `\`/${modCmds.join(`\`, \`/`)}\`
-        ⠀`, false)
+⠀`, false)
                         .addField(`👥 Everyone`, `\`/${utilCmds.join(`\`, \`/`)}\`
-        ⠀`, false)
+⠀`, false)
                         .setFooter({ text: `${client.user.username} • Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
 
                     interaction.reply({
