@@ -36,6 +36,7 @@ module.exports = {
         "MANAGE_THREADS",
         "USE_PUBLIC_THREADS",
         "USE_PRIVATE_THREADS",
-        "USE_EXTERNAL_STICKERS"
+        "USE_EXTERNAL_STICKERS",
+        "MODERATE_MEMBERS"
     ]   
 }

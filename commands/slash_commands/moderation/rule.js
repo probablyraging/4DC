@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     name: `rule`,
     description: `Remind a user to not be an a-hole`,
-    permission: `MANAGE_MESSAGES`,
+    permission: `MODERATE_MEMBERS`,
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/rules [ruleNumber] [@username]`,

@@ -8,7 +8,7 @@ const path = require('path');
 module.exports = {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
-    permission: `MANAGE_MESSAGES`,
+    permission: `MODERATE_MEMBERS`,
     cooldown: 10,
     type: `CHAT_INPUT`,
     options: [{
