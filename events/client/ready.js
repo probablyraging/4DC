@@ -11,6 +11,7 @@ const bumpCheck = require('../../modules/bump_check');
 const liveNow = require('../../modules/live_now');
 const fetchInvites = require('../../modules/upload_invites');
 const mutesCheck = require('../../modules/mutes_check');
+const ytNotifications = require('../../modules/yt-notifications');
 
 module.exports = {
     name: 'ready',
@@ -66,5 +67,6 @@ module.exports = {
         ckqCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
         liveNow(message, client, Discord);
+        ytNotifications(message, client, Discord);
     }
 };
