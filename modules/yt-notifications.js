@@ -58,7 +58,7 @@ module.exports = async (client) => {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
 
-                        if (member?.roles?.cache.has(process.env.STAFF_ROLE)) {
+                        if (member?.roles?.cache.has(process.env.STAFF_ROLE) || member?.roles?.cache.has(process.env.MOD_ROLE)) {
                             staffPromoChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
