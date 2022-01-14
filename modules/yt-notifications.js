@@ -36,7 +36,7 @@ module.exports = async (client) => {
                     const regex = item.id.replace('yt:video:', '');
 
                     if (!videoIds.includes(regex)) {
-                        const userTag = guild.members.cache.get(userId).user.tag;
+                        const userTag = guild.members.cache.get(userId).user?.tag;
 
                         // add the user's new video ID to the database
                         videoIds.push(regex);
