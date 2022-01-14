@@ -1,7 +1,7 @@
 const mongo = require('../mongo');
 const ytNotificationSchema = require('../schemas/yt-notification-schema');
-const fetch = require('node-fetch');
 const path = require('path');
+const res = new (require('rss-parser'))();
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -27,17 +27,19 @@ module.exports = async (client) => {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
-                // fetch the 10 most recent video IDs from each user's channel
-                const resolve = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${process.env.GAPI_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=10`)
-                const response = await resolve.json()
-                const items = response.items;
+                // parse youtube's RSS XML feed as something we can read
+                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
+                const items = resolve.items;
 
                 items.forEach(async item => {
-                    if (!videoIds.includes(item.id.videoId)) {
+                    // remove the XML markup from video IDs
+                    const regex = item.id.replace('yt:video:', '');
+
+                    if (!videoIds.includes(regex)) {
                         const userTag = guild.members.cache.get(userId).user?.tag;
 
                         // add the user's new video ID to the database
-                        videoIds.push(item.id.videoId);
+                        videoIds.push(regex);
 
                         await ytNotificationSchema.findOneAndUpdate({
                             userId: userId,
@@ -52,13 +54,13 @@ module.exports = async (client) => {
                         // send a notification to a specific channel, depending on the user's roles
                         if (member?.roles?.cache.has(process.env.BOOST_ROLE)) {
                             boostPromoChan.send({
-                                content: `**${userTag}** uploaded a new video - https://youtu.be/${item.id.videoId}`
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
 
                         if (member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             staffPromoChan.send({
-                                content: `**${userTag}** uploaded a new video - https://youtu.be/${item.id.videoId}`
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
                     }
