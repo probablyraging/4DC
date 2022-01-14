@@ -107,7 +107,6 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
-        await interaction.deferReply();
         let interactionReplyMessage;
         // We use a map to track the counts of messages from a specific author
         let movedMessageMap = new Map();
@@ -139,7 +138,7 @@ module.exports = {
                                     content: `${msgContent}`,
                                     files: imageArr,
                                     allowedMentions: {
-                                        parse: []
+                                        parse: ['users']
                                     }
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
                                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
@@ -152,7 +151,7 @@ module.exports = {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     allowedMentions: {
-                                        parse: []
+                                        parse: ['users']
                                     }
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
                                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
@@ -213,10 +212,10 @@ module.exports = {
         });
 
         try {
-            await interaction.editReply(interactionReplyMessage)
+            await interaction.reply(interactionReplyMessage)
                 .catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
         } catch {
-            await interaction.editReply(`${process.env.BOT_DENY} \`There was a problem replying to this interaction.\``)
+            await interaction.reply(`${process.env.BOT_DENY} \`There was a problem replying to this interaction.\``)
                 .catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending an interaction: `, err));
         }
     }
