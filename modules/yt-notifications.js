@@ -5,7 +5,7 @@ const res = new (require("rss-parser"))();
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const boostPromoChan = guild.channels.cache.get(process.env.TEST_CHAN);
+    const boostPromoChan = guild.channels.cache.get(process.env.BOOST_PROMO);
 
     await mongo().then(async mongoose => {
         setInterval(async () => {

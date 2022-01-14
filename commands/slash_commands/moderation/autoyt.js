@@ -80,7 +80,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                         interaction.reply({
-                            content: `${process.env.BOT_CONF} \`${target.user.tag} with channel ID '${channelId}' had been added to the YouTube auto list\``,
+                            content: `${process.env.BOT_CONF} \`${target.user.tag}, with channel ID '${channelId}' has been added to the YouTube auto list\``,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     } catch {
