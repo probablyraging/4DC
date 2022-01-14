@@ -1,7 +1,7 @@
 const mongo = require('../mongo');
 const ytNotificationSchema = require('../schemas/yt-notification-schema');
 const path = require('path');
-const res = new (require("rss-parser"))();
+const res = new (require('rss-parser'))();
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -66,6 +66,6 @@ module.exports = async (client) => {
                     }
                 });
             }
-        }, 5000);
+        }, 30000);
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
