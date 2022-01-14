@@ -5,7 +5,7 @@ const res = new (require("rss-parser"))();
 const path = require('path');
 
 module.exports = {
-    name: `ytauto`,
+    name: `autoyt`,
     description: `Add or remove a user from the YouTube auto notification list`,
     permission: `MANAGE_MESSAGES`,
     cooldown: 3,
@@ -14,7 +14,7 @@ module.exports = {
         name: `add`,
         description: `Add a user to the YouTube auto list`,
         type: `SUB_COMMAND`,
-        usage: `/ytauto [@username] [ytChannelId]`,
+        usage: `/autoyt [@username] [ytChannelId]`,
         options: [{
             name: `username`,
             description: `The user who you would like to add`,
@@ -32,7 +32,7 @@ module.exports = {
         name: `remove`,
         description: `Remove a user from the YouTube auto list`,
         type: `SUB_COMMAND`,
-        usage: `/ytauto remove [@username]`,
+        usage: `/autoyt remove [@username]`,
         options: [{
             name: `username`,
             description: `The user who you would like to remove`,
