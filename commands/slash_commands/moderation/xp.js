@@ -13,7 +13,7 @@ module.exports = {
         name: `reset`,
         description: `Reset a user's XP and Rank to 0`,
         type: `SUB_COMMAND`,
-        usage: `/xp reset [user]`,
+        usage: `/xp reset [@username]`,
         options: [{
             name: `username`,
             description: `The user whos XP and Rank you want to reset`,
