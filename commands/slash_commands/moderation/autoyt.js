@@ -1,7 +1,7 @@
 const { ContextMenuInteraction } = require('discord.js');
 const mongo = require('../../../mongo');
 const ytNotificationSchema = require('../../../schemas/yt-notification-schema');
-const res = new (require("rss-parser"))();
+const fetch = require('node-fetch');
 const path = require('path');
 
 module.exports = {
@@ -54,17 +54,16 @@ module.exports = {
                     const channelId = options.getString('channelid');
 
                     try {
-                        // we need to store a list of the user's current video IDs
-                        const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
-                        const items = resolve.items;
+                        // fetch the 10 most recent video IDs from the user's channel
+                        const resolve = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${process.env.GAPI_KEY}&channelId=${channelId}&part=snippet,id&order=date&maxResults=10`)
+                        const response = await resolve.json()
+                        const items = response.items;
 
+                        // we need to store a list of the user's current video IDs
                         let videoIdArr = [];
 
                         items.forEach(item => {
-                            // remove the XML markup from video IDs
-                            const regex = item.id.replace('yt:video:', '');
-
-                            videoIdArr.push(regex);
+                            videoIdArr.push(item.id.videoId);
                         })
 
                         await mongo().then(async mongoose => {
