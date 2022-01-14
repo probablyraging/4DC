@@ -6,13 +6,13 @@ const path = require('path');
 
 module.exports = {
     name: `autoyt`,
-    description: `Add or remove a user from the YouTube auto notification list`,
+    description: `Add or remove a user from the AUTOYT list`,
     permission: `MANAGE_MESSAGES`,
     cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{
         name: `add`,
-        description: `Add a user to the YouTube auto list`,
+        description: `Add a user to the AUTOYT list`,
         type: `SUB_COMMAND`,
         usage: `/autoyt [@username] [ytChannelId]`,
         options: [{
@@ -30,7 +30,7 @@ module.exports = {
     },
     {
         name: `remove`,
-        description: `Remove a user from the YouTube auto list`,
+        description: `Remove a user from the AUTOYT list`,
         type: `SUB_COMMAND`,
         usage: `/autoyt remove [@username]`,
         options: [{
@@ -45,7 +45,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, options } = interaction;
+        const { options } = interaction;
 
         try {
             switch (options.getSubcommand()) {
@@ -80,10 +80,11 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                         interaction.reply({
-                            content: `${process.env.BOT_CONF} \`${target.user.tag}, with channel ID '${channelId}' has been added to the YouTube auto list\``,
+                            content: `${process.env.BOT_CONF} \`${target.user.tag}, with YouTube channel ID '${channelId}', has been added to the AUTOYT list\``,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     } catch {
+
                         // if the supplied channel ID is incorrect
                         interaction.reply({
                             content: `${process.env.BOT_DENY} \`An error occurred. This is most likely because the channel ID doesn't exist\``,
@@ -103,7 +104,7 @@ module.exports = {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                     interaction.reply({
-                        content: `${process.env.BOT_CONF} \`${target.user.tag} had been removed from the YouTube auto list\``,
+                        content: `${process.env.BOT_CONF} \`${target.user.tag} has been removed from the AUTOYT list\``,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }

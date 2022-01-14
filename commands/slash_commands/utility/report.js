@@ -55,7 +55,7 @@ module.exports = {
         await interaction.deferReply({ephemeral: true});
 
         const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
-        const staffChannel = interaction.client.channels.cache.get(process.env.STAFF_CHAT);
+        const staffChannel = interaction.client.channels.cache.get(process.env.STAFF_CHAN);
         const reportId = uuidv4();
         const {user, options} = interaction;
 
