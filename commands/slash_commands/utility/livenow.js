@@ -4,8 +4,8 @@ const path = require('path');
 module.exports = {
     name: `livenow`,
     description: `Shows a list of all server members who are currently streaming`,
-    permission: `MANAGE_MESSAGES`,
-    cooldown: 3600,
+    permission: ``,
+    cooldown: 10,
     type: `CHAT_INPUT`,
     usage: `/livenow`,
     /**
@@ -15,8 +15,8 @@ module.exports = {
     execute(interaction) {
         const { guild } = interaction;
 
-        const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE)
-        const liveSize = guild.members.cache.filter(member => member.roles.cache.find(role => role === liveRole)).size
+        const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
+        const liveSize = guild.members.cache.filter(member => member.roles.cache.find(role => role === liveRole)).size;
         const liveMember = guild.members.cache.filter(member => member.roles.cache.find(role => role === liveRole)).map(member => member.user.id);
 
         let response = new MessageEmbed()
