@@ -1,4 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
+const { ImgurClient } = require('imgur');
 const path = require('path');
 /**
  * 
@@ -18,10 +19,20 @@ module.exports = (message, client, Discord) => {
             .setFooter({ text: message?.author?.tag, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
             .setTimestamp()
 
-        let msgAttachment = message?.attachments?.size > 0 ? message?.attachments : null;
+        let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
 
         if (msgAttachment) {
-            response.setImage(msgAttachment.first().url).catch(err => console.error(`${path.basename(__filename)} There was a problem adding an image: `, err));
+            // create a new imgur client
+            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+
+            // upload attachment to imgur, get the link and attach it to the embed
+            const response = await imgur.upload({
+                image: msgAttachment,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+
+            response.forEach(res => {
+                response.setImage(res.data.link)
+            });
         }
 
         resChan.send({
