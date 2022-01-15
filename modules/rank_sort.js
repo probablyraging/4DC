@@ -6,7 +6,7 @@ module.exports = async (message, client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     await mongo().then(async mongoose => {
-        setInterval(() => {
+        setInterval(async () => {
             // find all entries, sort them in descending order based on their 'xp'
             const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
