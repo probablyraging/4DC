@@ -11,7 +11,7 @@ const blWords = require('../../modules/bl_words');
 const blTwitch = require('../../modules/bl_twitch');
 const resPost = require('../../modules/resource_post');
 const lastletter = require('../../modules/last_letter');
-const rankXP = require('../../modules/rank-xp');
+const rankXP = require('../../modules/rank_xp');
 
 module.exports = {
     name: `messageCreate`,

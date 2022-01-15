@@ -30,29 +30,6 @@ module.exports = async (message, client, Discord) => {
                 return b.xp - a.xp;
             });
 
-            // use this to remove non-existent users from top 100
-            // for (var i = 0; i < 100; i++) {
-            //     console.log({ id: rankPosArr[i].id, pos: rankPosArr[i].pos })
-
-            //     const exists = guild.members.cache.get(rankPosArr[i].id)
-
-            //     if (!exists) {
-            //         await rankSchema.findOneAndRemove({ id: rankPosArr[i].id })
-            //     }
-            // }
-
-            // use this to correct rank position if needed
-            // for (var i = 0; i < rankPosArr.length; i++) {
-            //     console.log({ id: rankPosArr[i].id, pos: rankPosArr[i].pos })
-            //     await rankSchema.findOneAndUpdate({
-            //         id: rankPosArr[i].id
-            //     }, {
-            //         rank: rankPosArr[i].pos
-            //     }, {
-            //         upsert: true
-            //     })
-            // }
-
             const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
             // check to see if the user is in our database yet, if not, add them
             if (results.length === 0) {

@@ -12,6 +12,7 @@ const liveNow = require('../../modules/live_now');
 const fetchInvites = require('../../modules/upload_invites');
 const mutesCheck = require('../../modules/mutes_check');
 const ytNotifications = require('../../modules/yt-notifications');
+const rankSort = require('../../modules/rank_sort');
 
 module.exports = {
     name: 'ready',
@@ -68,5 +69,6 @@ module.exports = {
         bumpCheck(message, client, Discord);
         liveNow(message, client, Discord);
         ytNotifications(message, client, Discord);
+        rankSort(message, client, Discord);
     }
 };
