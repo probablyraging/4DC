@@ -47,8 +47,8 @@ module.exports = async (message, client, Discord) => {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-    }, 1000 * 600);
+        }, 1000 * 600);
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
 
 
