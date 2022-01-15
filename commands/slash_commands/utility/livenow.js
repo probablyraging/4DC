@@ -27,7 +27,7 @@ module.exports = {
             response.setDescription(`There are currently **${liveSize}** members streaming`)
         } else {
             response.setDescription(`There are currently **${liveSize}** members streaming`)
-            response.addField(` `, `<@${liveMember.join('>\n<@')}>`, false)
+            response.addField(`⠀`, `<@${liveMember.join('>\n<@')}>`, false)
         }
 
         interaction.reply({
