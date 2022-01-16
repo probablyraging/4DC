@@ -33,7 +33,7 @@ module.exports = async (message, client) => {
         return message.match(urlRegex)
     }
 
-    if (message?.channel.id === '924271299004600350') {
+    if (message?.channel.id === process.env.MOVIE_CHAN || message?.channel.id === process.env.MEDIA_CHAN) {
         const username = message?.author?.username.toLowerCase();
         const displayName = message?.member?.displayName.toLowerCase();
 
