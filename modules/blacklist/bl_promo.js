@@ -1,6 +1,7 @@
 const { Message, MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const res = new (require('rss-parser'))();
+const fetch = require('node-fetch');
 
 const path = require('path');
 /**
@@ -25,28 +26,32 @@ module.exports = async (message, client) => {
     //     if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
     // }
 
-    // if a message contains a youtube channel url, get the channel id and see if the channel's name is the same os the author's
+    // if a message contains a youtube channel url, get the channel id and see if the channel's name is the same as the author's
     // this is for the movies-tv-music and memes-and-media channel only, as they allow all ranks to post links unchecked
-    if (message?.channel.id === process.env.MOVIE_CHAN || message?.channel.id === process.env.MEDIA_CHAN) {
-        if (message?.content.toLowerCase().includes('youtube.com/channel/')) {
-            function detectURLs(message) {
-                var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-                return message.match(urlRegex)
-            }
+    function detectURLs(message) {
+        var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        return message.match(urlRegex)
+    }
 
-            const urlInStr = detectURLs(message?.content);
+    if (message?.channel.id === '924271299004600350') {
+        const username = message?.author?.username.toLowerCase();
+        const displayName = message?.member?.displayName.toLowerCase();
+
+        // if the url is a youtube channel url, we can get the channel's name from the channels rss feed and see if it matches the message author's username
+        if (message?.content?.toLowerCase().includes('youtube.com/channel/')) {
+            const urlInStr = detectURLs(message?.content) || [`${message?.content}`];
             const splitStr = urlInStr[0].split('/');
             const channelId = splitStr[splitStr.length - 1];
 
             try {
                 const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
 
-                if (resolve && resolve.title === message?.author.username) {
+                if (resolve && resolve.title.toLowerCase() === username || resolve.title.toLowerCase() === displayName) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel.name}\``
-                    }).catch(() => {
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
+                    }).catch(() => {``
                         message?.reply({
-                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel.name}\``,
+                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
                             allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {
@@ -59,6 +64,59 @@ module.exports = async (message, client) => {
                     setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
                 }
             } catch { }
+        }
+
+        // if the url is a video url, we can check the video author's name in the embed json data and see if it matches the message author's username
+        if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
+            const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
+            const replace = urlInStr[0].replace('www.', '');``
+
+            try {
+                const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
+                const response = await resolve.json();
+
+                if (response && response.author_name.toLowerCase() === username || response.author_name.toLowerCase() === displayName) {
+                    member?.send({
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
+                    }).catch(() => {
+                        message?.reply({
+                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
+                            allowedMentions: { repliedUser: true },
+                            failIfNotExists: false
+                        }).catch(err => {
+                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                        }).then(msg => {
+                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+                        });
+                    });
+
+                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                }
+            } catch { }
+        }
+
+        // if the url is a twitch channel url, we can get the channel's name ur; and see if it matches the message author's username
+        if (message?.content.toLowerCase().includes('twitch.tv/')) {
+            const splitStr = message?.content?.split('/');
+            const twitchUser = splitStr[splitStr.length - 1];
+
+            if (twitchUser && twitchUser.toLowerCase() === username || twitchUser.toLowerCase() === displayName) {
+                member?.send({
+                    content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
+                }).catch(() => {
+                    message?.reply({
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
+                        allowedMentions: { repliedUser: true },
+                        failIfNotExists: false
+                    }).catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                    }).then(msg => {
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+                    });
+                });
+
+                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+            }
         }
     }
 
