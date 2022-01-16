@@ -28,7 +28,8 @@ module.exports = async (client) => {
                 }
 
                 // parse youtube's RSS XML feed as something we can read
-                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
+                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem parsing a url: `, err));
                 const items = resolve.items;
 
                 items.forEach(async item => {

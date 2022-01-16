@@ -1,10 +1,12 @@
 const { Message, MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
+const res = new (require('rss-parser'))();
+
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client, Discord) => {
+module.exports = async (message, client) => {
     /**
      * This black list focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "SELF PROMOTE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
@@ -22,6 +24,43 @@ module.exports = (message, client, Discord) => {
     // for (var i in blacklist.links) {
     //     if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
     // }
+
+    // if a message contains a youtube channel url, get the channel id and see if the channel's name is the same os the author's
+    // this is for the movies-tv-music and memes-and-media channel only, as they allow all ranks to post links unchecked
+    if (message?.channel.id === process.env.MOVIE_CHAN || message?.channel.id === process.env.MEDIA_CHAN) {
+        if (message?.content.toLowerCase().includes('youtube.com/channel/')) {
+            function detectURLs(message) {
+                var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+                return message.match(urlRegex)
+            }
+
+            const urlInStr = detectURLs(message?.content);
+            const splitStr = urlInStr[0].split('/');
+            const channelId = splitStr[splitStr.length - 1];
+
+            try {
+                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+
+                if (resolve && resolve.title === message?.author.username) {
+                    member?.send({
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel.name}\``
+                    }).catch(() => {
+                        message?.reply({
+                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel.name}\``,
+                            allowedMentions: { repliedUser: true },
+                            failIfNotExists: false
+                        }).catch(err => {
+                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                        }).then(msg => {
+                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+                        });
+                    });
+
+                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                }
+            } catch { }
+        }
+    }
 
     for (var i in blacklist.promo) {
         if (message?.content.toLowerCase().includes(blacklist.promo[i].toLowerCase())) found = true;
