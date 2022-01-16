@@ -2,7 +2,6 @@ const { Message } = require('discord.js');
 const cooldown = new Set();
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 
@@ -11,6 +10,7 @@ module.exports = (message, client, Discord) => {
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
 
     const author = message?.author;
+
     const content = message?.content.toLocaleLowerCase();
     const conditions = ['https://', 'http://', 'www.'];
     const check = conditions.some(el => content.includes(el));
@@ -21,7 +21,6 @@ module.exports = (message, client, Discord) => {
         if (check && !message?.member?.permissions.has("MANAGE_MESSAGES") && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE) && !message?.author?.bot) {
             if (cooldown.has(message?.author?.id)) {
                 const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
-                let messageId = message?.id;
 
                 author?.send({
                     content: `${response}`,

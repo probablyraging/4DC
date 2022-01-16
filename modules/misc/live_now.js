@@ -1,0 +1,145 @@
+const path = require('path');
+const mongo = require('../../mongo');
+const streamSchema = require('../../schemas/stream-schema');
+const cooldown = new Set();
+/**
+ * @param {Message} message 
+ */
+module.exports = (client) => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
+    const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
+    const boostRole = guild.roles.cache.get(process.env.BOOST_ROLE);
+    const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
+
+    const staffPromoChan = guild.channels.cache.get(process.env.STAFF_PROMO);
+    const boostPromoChan = guild.channels.cache.get(process.env.BOOST_PROMO);
+    const twitchPromoChan = guild.channels.cache.get(process.env.TWITCH_PROMO);
+
+    function filterArr(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
+    setInterval(async () => {
+        // staff member check
+        liveStaff = [];
+
+        staffRole?.members?.forEach(async member => {
+            for (let i = 0; i < 7; i++) {
+                if (member?.presence?.activities[i]?.name === 'Twitch') {
+
+                    liveStaff.push({ username: member?.user?.username, id: member?.user?.id, url: member?.presence?.activities[i]?.url })
+                }
+            }
+        });
+
+        let liveStaffArr = liveStaff.filter(filterArr);
+
+        await mongo().then(async mongoose => {
+            for (let i = 0; i < liveStaffArr?.length; i++) {
+                const userId = liveStaffArr[i]?.id;
+
+                const results = await streamSchema.find({ userId: userId })
+
+                if (results?.length < 1) {
+                    await streamSchema.findOneAndUpdate({
+                        userId,
+                    }, {
+                        userId,
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                    guild.members.cache.get(liveStaffArr[i]?.id).roles.add(liveRole)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+
+                    if (!cooldown.has(liveStaffArr[i]?.id)) {
+                        staffPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                        twitchPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                        // we only allow the bot to send one notification every 6 hours
+                        cooldown.add(liveStaffArr[i]?.id)
+
+                        setTimeout(() => {
+                            cooldown.delete(liveStaffArr[i]?.id)
+                        }, 1000 * 21600);
+                    }
+                }
+            }
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+        // booster member check
+        liveBooster = [];
+
+        boostRole?.members?.forEach(async member => {
+            for (let i = 0; i < 7; i++) {
+                if (member?.presence?.activities[i]?.name === 'Twitch') {
+
+                    liveBooster.push({ username: member?.user?.username, id: member?.user?.id, url: member?.presence?.activities[i]?.url })
+                }
+            }
+        });
+
+        let liveBoosterArr = liveBooster.filter(filterArr);
+
+        await mongo().then(async mongoose => {
+            for (let i = 0; i < liveBoosterArr?.length; i++) {
+                const userId = liveBoosterArr[i]?.id;
+
+                const results = await streamSchema.find({ userId: userId })
+
+                if (results?.length < 1) {
+                    await streamSchema.findOneAndUpdate({
+                        userId,
+                    }, {
+                        userId,
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                    guild.members.cache.get(liveBoosterArr[i].id).roles.add(liveRole)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+
+                    if (!cooldown.has(liveBoosterArr[i]?.id)) {
+                        boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                        twitchPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                        // we only allow the bot to send one notification every 6 hours
+                        cooldown.add(liveBoosterArr[i]?.id)
+
+                        setTimeout(() => {
+                            cooldown.delete(liveBoosterArr[i]?.id)
+                        }, 1000 * 21600);
+                    }
+                }
+            }
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+    }, 30000);
+
+    // check live now role to see if someone stopped streaming
+    setInterval(async () => {
+        const liveNow = new Map();
+
+        liveRole?.members?.forEach(async member => {
+            for (let i = 0; i < member?.presence?.activities?.length; i++) {
+                if (member?.presence?.activities[i]?.name === 'Twitch') {
+                    liveNow.set(member?.id);
+                }
+            }
+
+            if (!liveNow.has(member.id)) {
+                await mongo().then(async mongoose => {
+                    await streamSchema.findOneAndRemove({ userId: member.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+                guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+            }
+        });
+    }, 5000);
+}

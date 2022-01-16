@@ -4,32 +4,20 @@ const moment = require('moment');
 const date = new Date();
 const path = require('path');
 const Canvas = require("canvas");
-const memberCounter = require('../../modules/member_counter');
-const statusCounter = require('../../modules/status_counter');
-const ckqCheck = require('../../modules/ckq_check');
-const bumpCheck = require('../../modules/bump_check');
-const liveNow = require('../../modules/live_now');
-const fetchInvites = require('../../modules/upload_invites');
-const mutesCheck = require('../../modules/mutes_check');
-const ytNotifications = require('../../modules/yt-notifications');
-const rankSort = require('../../modules/rank_sort');
+const memberCounter = require('../../modules/misc/member_counter');
+const statusCounter = require('../../modules/misc/status_counter');
+const ckqCheck = require('../../modules/bump_ckq/ckq_check');
+const bumpCheck = require('../../modules/bump_ckq/bump_check');
+const liveNow = require('../../modules/misc/live_now');
+const fetchInvites = require('../../modules/misc/upload_invites');
+const mutesCheck = require('../../modules/misc/mutes_check');
+const autoYT = require('../../modules/misc/auto_yt');
+const rankSort = require('../../modules/rank/rank_sort');
 
 module.exports = {
     name: 'ready',
     once: true,
     async execute(message, client, Discord) {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);
-
-        client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
-
-        setInterval(() => {
-            client.user.setActivity(`${guild.memberCount} users`, { type: 'WATCHING' });
-        }, 120000);
-
-        setInterval(() => {
-            client.user.setActivity('/help', { type: 'STREAMING', url: 'https://www.twitch.tv/probablyraging' });
-        }, 90000);
-
         console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
 
         await mongo().then(mongoose => {
@@ -67,8 +55,8 @@ module.exports = {
         memberCounter(client);
         ckqCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
-        liveNow(message, client, Discord);
-        ytNotifications(message, client, Discord);
-        rankSort(message, client, Discord);
+        liveNow(client);
+        autoYT(client);
+        rankSort(client);
     }
 };

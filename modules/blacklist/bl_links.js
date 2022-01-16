@@ -1,13 +1,12 @@
 const { Message, MessageEmbed } = require('discord.js');
-const blacklist = require('../lists/blacklist');
+const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
     /**
-     * This black list focuses on strict blacklisting in all channels for things like discord invites and onlyfans links 
+     * This black list focuses on strict blacklisting in all channels for things like discord invites, porn links and onlyfans links
      */
     if (message?.deleted) return;
 

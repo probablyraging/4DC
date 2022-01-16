@@ -2,14 +2,12 @@ const { Message, MessageEmbed } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = async (message, client, Discord) => {
     const resChan = client.channels.cache.get(process.env.RES_CHAN);
 
     if (message?.channel.id === process.env.RES_CHAN && !message?.author.bot) {
-
         const content = message?.cleanContent.split('\n');
 
         let response = new MessageEmbed()

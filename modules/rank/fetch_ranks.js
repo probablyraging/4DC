@@ -1,10 +1,9 @@
 const { Message } = require('discord.js');
-const mongo = require('../mongo');
-const rankSchema = require('../schemas/rank-schema');
+const mongo = require('../../mongo');
+const rankSchema = require('../../schemas/rank-schema');
 const fetch = require('node-fetch');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = async (message, client, Discord) => {
@@ -22,7 +21,6 @@ module.exports = async (message, client, Discord) => {
                 await newPage();
             }, i * 10000)
         }
-        // 
 
         async function newPage() {
             resolve = await fetch(`https://mee6.xyz/api/plugins/levels/leaderboard/820889004055855144?page=${page}`);

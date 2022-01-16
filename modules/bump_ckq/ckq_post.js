@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
-const mongo = require('../mongo');
-const timerSchema = require('../schemas/timer-schema');
-const blacklist = require('../lists/blacklist');
+const mongo = require('../../mongo');
+const timerSchema = require('../../schemas/timer-schema');
+const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
  * 
@@ -26,23 +26,18 @@ module.exports = async (message, client, Discord) => {
         const myDate = new Date();
         const addTwo = myDate.setHours(myDate.getHours() + 5);
         const timestamp = addTwo;
-
-        const searchFor = 'currentTime';
+        
         await mongo().then(async mongoose => {
-            await timerSchema.findOneAndRemove({ searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            try {
-                await timerSchema.findOneAndUpdate({
-                    timestamp,
-                    searchFor
-                }, {
-                    timestamp,
-                    searchFor
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            } finally {
-                // do nothing
-            }
+            const searchFor = 'currentTime';
+
+            await timerSchema.findOneAndUpdate({
+                searchFor
+            }, {
+                timestamp,
+                searchFor
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     }
 }

@@ -1,6 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
-const mongo = require('../mongo');
-const timerSchema = require('../schemas/timer-schema');
+const mongo = require('../../mongo');
+const timerSchema = require('../../schemas/timer-schema');
 const path = require('path');
 /**
  * 
@@ -22,18 +22,14 @@ module.exports = async (message, client, Discord) => {
             })
 
             await mongo().then(async mongoose => {
-                try {
-                    await timerSchema.findOneAndUpdate({
-                        searchFor
-                    }, {
-                        timestamp,
-                        searchFor
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                } finally {
-                    // do nothing
-                }
+                await timerSchema.findOneAndUpdate({
+                    searchFor
+                }, {
+                    timestamp,
+                    searchFor
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
             const bumpConfirm = new MessageEmbed()

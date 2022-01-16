@@ -1,14 +1,12 @@
 const { Message, MessageEmbed } = require('discord.js');
-const blacklist = require('../lists/blacklist');
+const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
     /**
-     * This black list focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be
-     * posted in the "SELF PROMOTE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
+     * This black list focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "SELF PROMOTE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
     if (message?.deleted) return;
 

@@ -1,17 +1,16 @@
 const { Message } = require('discord.js');
 const path = require('path');
-const linkCooldown = require('../../modules/link_cooldown');
-const ckqPost = require('../../modules/ckq_post');
-const bumpPost = require('../../modules/bump_post');
-const invitesCheck = require('../../modules/invites_check');
-const blLinks = require('../../modules/bl_links');
-const blPromo = require('../../modules/bl_promo');
-const blMass = require('../../modules/bl_mass');
-const blWords = require('../../modules/bl_words');
-const blTwitch = require('../../modules/bl_twitch');
-const resPost = require('../../modules/resource_post');
-const lastletter = require('../../modules/last_letter');
-const rankXP = require('../../modules/rank_xp');
+const linkCooldown = require('../../modules/misc/link_cooldown');
+const ckqPost = require('../../modules/bump_ckq/ckq_post');
+const bumpPost = require('../../modules/bump_ckq/bump_post');
+const blLinks = require('../../modules/blacklist/bl_links');
+const blPromo = require('../../modules/blacklist/bl_promo');
+const blMass = require('../../modules/blacklist/bl_mass');
+const blWords = require('../../modules/blacklist/bl_words');
+const blTwitch = require('../../modules/blacklist/bl_twitch');
+const resPost = require('../../modules/misc/resource_post');
+const lastletter = require('../../modules/games/last_letter');
+const rankXP = require('../../modules/rank/rank_xp');
 
 module.exports = {
     name: `messageCreate`,
@@ -29,7 +28,6 @@ module.exports = {
         blTwitch(message, client, Discord);
         ckqPost(message, client, Discord);
         bumpPost(message, client, Discord);
-        invitesCheck(message, client, Discord);
         resPost(message, client, Discord);
         lastletter(message, client, Discord);
         rankXP(message, client, Discord);

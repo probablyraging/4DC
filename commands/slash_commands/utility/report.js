@@ -1,7 +1,7 @@
 require("dotenv").config();
 const {MessageEmbed} = require("discord.js");
 const {v4: uuidv4} = require("uuid");
-const {addCooldown, hasCooldown, removeCooldown} = require("../../../modules/report_cooldown");
+const {addCooldown, hasCooldown, removeCooldown} = require("../../../modules/misc/report_cooldown");
 const path = require("path");
 const https = require("https");
 

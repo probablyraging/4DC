@@ -1,8 +1,8 @@
-const mongo = require('../mongo');
-const rankSchema = require('../schemas/rank-schema');
+const mongo = require('../../mongo');
+const rankSchema = require('../../schemas/rank-schema');
 const path = require('path');
 
-module.exports = async (message, client, Discord) => {
+module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     await mongo().then(async mongoose => {
@@ -50,6 +50,3 @@ module.exports = async (message, client, Discord) => {
         }, 1000 * 600);
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
-
-
-

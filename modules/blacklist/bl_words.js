@@ -1,11 +1,13 @@
 const { Message, MessageEmbed } = require('discord.js');
-const blacklist = require('../lists/blacklist');
+const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    /**
+     * This blacklist focuses on deleting specific blacklisted waords
+     */
     if (message?.deleted) return;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);

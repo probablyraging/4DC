@@ -1,13 +1,13 @@
 const { Message } = require('discord.js');
-const mongo = require('../mongo');
-const rankSchema = require('../schemas/rank-schema');
+const mongo = require('../../mongo');
+const rankSchema = require('../../schemas/rank-schema');
 const path = require('path');
 const xpLimit = new Set();
 /**
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client, Discord) => {
+module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
 

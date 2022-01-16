@@ -1,5 +1,5 @@
-const mongo = require('../mongo');
-const muteSchema = require('../schemas/mute-schema');
+const mongo = require('../../mongo');
+const muteSchema = require('../../schemas/mute-schema');
 const path = require('path');
 
 

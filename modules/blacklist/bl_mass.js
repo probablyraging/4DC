@@ -1,10 +1,12 @@
 const { Message } = require('discord.js');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    /**
+     * This blacklist focuses on not allowing mass mention spamming, usually done by server raid bots
+     */
     if (message?.deleted) return;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);

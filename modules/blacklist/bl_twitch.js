@@ -1,10 +1,12 @@
 const { Message } = require('discord.js');
 const path = require('path');
 /**
- * 
  * @param {Message} message 
  */
 module.exports = (message, client, Discord) => {
+    /**
+     * This blacklist focuses on deleting links other than twitch.tv links in the twitch promo channel
+     */
     if (message?.deleted) return;
     
     const member = message?.member;
