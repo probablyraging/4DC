@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     name: 'messageUpdate',
     execute(oldMessage, newMessage, client, Discord) {
-        if (message?.author?.bot) return;
+        if (oldMessage?.author?.bot) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
