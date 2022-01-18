@@ -49,7 +49,7 @@ module.exports = {
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {
-                        const sort = await rankSchema.find({ xp: { $gt: 0 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                        const sort = await rankSchema.find({ xp: { $gt: 50000 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                         sortArr = [];
                         for (const data of sort) {
@@ -244,7 +244,7 @@ If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, fa
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {
-                        const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                        const sort = await rankSchema.find({ msgCount: { $gt: 2000 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                         sortArr = [];
                         for (const data of sort) {
