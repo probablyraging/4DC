@@ -88,9 +88,9 @@ Every member of the channel is required to support all other members, the easies
 \`1.\` You can only post one link every 24 hours
 \`2.\` Post proof screenshots as frequently as possible, try to aim for once per day
 \`3.\` After 3 days of not posting proof screenshot, the staff will be notified and you may be removed
-\`3.\` You must tab all the videos since your last proof screenshot
-\`4.\` Try to only post proof screenshots with a maximum of 10 tabs per screenshot, a couple more or less is fine though
-\`5.\` Contact a staff member if you can't keep up with the requirements, we can make exception`
+\`4.\` You must tab all the videos since your last proof screenshot
+\`5.\` Try to only post proof screenshots with a maximum of 10 tabs per screenshot, a couple more or less is fine though
+\`6.\` Contact a staff member if you can't keep up with the requirements, we can make exception`
         ]
 }
 
