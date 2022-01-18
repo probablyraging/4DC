@@ -83,6 +83,7 @@ async function checkPreviousModsChoiceMessages(client) {
                     // Check if this timestamp is before or after the latest proof in the database
                     let latestProofTs = await mcData.getLatestProofTs(authorId);
                     if (!latestProofTs || timestamp.valueOf() > latestProofTs) {
+                        console.log(`The latest proof from ${authorId} was posted at ${latestProofTs}. Updating it to ${timestamp.valueOf()}`);
                         await mcData.setLatestProof(authorId, messageId, timestamp.valueOf());
                     }
                 }
