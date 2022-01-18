@@ -43,7 +43,6 @@ module.exports = async (message, client) => {
             // Check whether all the attachments are images (people will generally just post 1 image attachment)
             let hasImage = message.attachments.every(attachmentIsImage);
             if (hasImage) {
-                console.log("Found an image. Good job.");
                 // Set the latest proof for the user
                 let lastProof = await getLatestProofTs(authorId);
                 let videosSince = await getVideosSince(lastProof);

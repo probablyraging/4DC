@@ -64,6 +64,7 @@ async function checkPreviousModsChoiceMessages(client) {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
     let allVideoMessageIds = await mcData.getAllVideoMessageIds();
+    let timestampMap = new Map();
 
     await mcChannel.messages.fetch({limit: 100}).then(messages => {
         messages.forEach(async message => {
@@ -82,7 +83,12 @@ async function checkPreviousModsChoiceMessages(client) {
                 } else if (message.attachments.size > 0 && message.attachments.every(attachmentIsImage)) {
                     // Check if this timestamp is before or after the latest proof in the database
                     let latestProofTs = await mcData.getLatestProofTs(authorId);
-                    if (!latestProofTs || timestamp > latestProofTs) {
+                    if (!latestProofTs) {
+                        latestProofTs = timestampMap.get(authorId);
+                    }
+                    if (!latestProofTs || timestamp.valueOf() > latestProofTs) {
+                        console.log(`The latest proof from ${authorId} was posted at ${latestProofTs}. Updating it to ${timestamp.valueOf()}`);
+                        timestampMap.set(authorId, timestamp.valueOf());
                         await mcData.setLatestProof(authorId, messageId, timestamp.valueOf());
                     }
                 }
@@ -103,6 +109,8 @@ async function setupModsChoiceChecks(client) {
         const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
         const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAT);
         const mcRole = guild.roles.cache.get(process.env.MCHOICE_ROLE);
+        const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
+        const modsRole = guild.roles.cache.get(process.env.MOD_ROLE);
 
         // Remove videos older than 1 month - we assume 1 month is an even 31 days
         let oneMonthAgo = new Date(new Date().valueOf() - oneMonth);
@@ -110,12 +118,15 @@ async function setupModsChoiceChecks(client) {
         await deleteMessages(messageIds, mcChannel);
 
         // Clean videos from non-mods-choice members
-        let membersWithRole = mcRole.members.map(m => m.id);
-        messageIds = await mcData.deleteVideosFromNonChannelMembers(membersWithRole);
+        let allowedMembers = mcRole.members.map(m => m.id)
+            .concat(staffRole.members.map(m => m.id))
+            .concat(modsRole.members.map(m => m.id))
+            .filter((value, index, array) => array.indexOf(value) === index);
+        messageIds = await mcData.deleteVideosFromNonChannelMembers(allowedMembers);
         await deleteMessages(messageIds, mcChannel);
 
         // Clean up proof from non-members
-        await mcData.deleteProofFromNonChannelMembers(membersWithRole);
+        await mcData.deleteProofFromNonChannelMembers(allowedMembers);
 
         // Check if anyone hasn't posted a picture in 2 days, and hasn't been warned
         let twoDaysAgo = new Date(new Date().valueOf() - twoDays);
