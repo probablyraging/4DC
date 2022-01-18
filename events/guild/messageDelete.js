@@ -4,10 +4,10 @@ const { ImgurClient } = require('imgur');
 module.exports = {
     name: 'messageDelete',
     async execute(message, client, Discord) {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const msgDelChan = client.channels.cache.get(process.env.MSGDEL_CHAN);
-
         if (message?.author.id === process.env.OWNER_ID || message?.author.bot) return;
+
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        const msgDelChan = client.channels.cache.get(process.env.MSGDEL_CHAN);        
 
         const fetchedLogs = await guild.fetchAuditLogs({
             limit: 1,

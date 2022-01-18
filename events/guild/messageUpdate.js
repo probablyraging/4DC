@@ -5,16 +5,18 @@ const path = require('path');
 module.exports = {
     name: 'messageUpdate',
     execute(oldMessage, newMessage, client, Discord) {
+        if (message?.author?.bot) return;
+
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
 
-        let original = oldMessage.content.slice(0, 1000) + (oldMessage.content.length > 1000 ? '...' : '');
-        let edited = newMessage.content.slice(0, 1000) + (newMessage.content.length > 1000 ? '...' : '');
+        let original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
+        let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
 
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
             var log = new Discord.MessageEmbed()
                 .setColor('#FF9E00')
-                .setAuthor({ name: `${oldMessage?.author.tag}`, iconURL: oldMessage?.author.displayAvatarURL({ dynamic: true }) })
+                .setAuthor({ name: `${oldMessage?.author?.tag}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addField(`Author`, `${oldMessage?.author}`, true)
                 .addField(`Channel`, `${oldMessage?.channel}`, true)
