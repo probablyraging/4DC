@@ -107,7 +107,7 @@ async function setupModsChoiceChecks(client) {
 
     setInterval(async () => {
         const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
-        const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAT);
+        const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
         const mcRole = guild.roles.cache.get(process.env.MCHOICE_ROLE);
         const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
         const modsRole = guild.roles.cache.get(process.env.MOD_ROLE);
