@@ -82,7 +82,7 @@ async function checkPreviousModsChoiceMessages(client) {
                 } else if (message.attachments.size > 0 && message.attachments.every(attachmentIsImage)) {
                     // Check if this timestamp is before or after the latest proof in the database
                     let latestProofTs = await mcData.getLatestProofTs(authorId);
-                    if (!latestProofTs || timestamp > latestProofTs) {
+                    if (!latestProofTs || timestamp.valueOf() > latestProofTs) {
                         await mcData.setLatestProof(authorId, messageId, timestamp.valueOf());
                     }
                 }
