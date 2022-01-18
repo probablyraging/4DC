@@ -65,8 +65,11 @@ async function checkPreviousModsChoiceMessages(client) {
     const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
     let allVideoMessageIds = await mcData.getAllVideoMessageIds();
 
-    await mcChannel.messages.fetch({limit: 100}).then(messages => {
-        messages.forEach(async message => {
+    let messages = await mcChannel.messages.fetch({limit: 100})
+        .catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in mods-choice: `, err));
+    if (messages && messages.length > 0) {
+        for (let i = 0; i < messages.length; i++) {
+            let message = messages[i];
             let content = message.content;
             let author = message.author;
             let authorId = author.id;
@@ -88,8 +91,8 @@ async function checkPreviousModsChoiceMessages(client) {
                     }
                 }
             }
-        });
-    }).catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in mods-choice: `, err));
+        }
+    }
 
     console.log(`Processed previous messages in mods choice in ${(new Date - startTime).valueOf()}ms.`)
 }
