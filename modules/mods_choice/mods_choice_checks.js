@@ -109,6 +109,8 @@ async function setupModsChoiceChecks(client) {
         const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
         const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAT);
         const mcRole = guild.roles.cache.get(process.env.MCHOICE_ROLE);
+        const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
+        const modsRole = guild.roles.cache.get(process.env.MOD_ROLE);
 
         // Remove videos older than 1 month - we assume 1 month is an even 31 days
         let oneMonthAgo = new Date(new Date().valueOf() - oneMonth);
@@ -116,12 +118,15 @@ async function setupModsChoiceChecks(client) {
         await deleteMessages(messageIds, mcChannel);
 
         // Clean videos from non-mods-choice members
-        let membersWithRole = mcRole.members.map(m => m.id);
-        messageIds = await mcData.deleteVideosFromNonChannelMembers(membersWithRole);
+        let allowedMembers = mcRole.members.map(m => m.id)
+            .concat(staffRole.members.map(m => m.id))
+            .concat(modsRole.members.map(m => m.id))
+            .filter((value, index, array) => array.indexOf(value) === index);
+        messageIds = await mcData.deleteVideosFromNonChannelMembers(allowedMembers);
         await deleteMessages(messageIds, mcChannel);
 
         // Clean up proof from non-members
-        await mcData.deleteProofFromNonChannelMembers(membersWithRole);
+        await mcData.deleteProofFromNonChannelMembers(allowedMembers);
 
         // Check if anyone hasn't posted a picture in 2 days, and hasn't been warned
         let twoDaysAgo = new Date(new Date().valueOf() - twoDays);
