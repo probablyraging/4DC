@@ -64,12 +64,10 @@ async function checkPreviousModsChoiceMessages(client) {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
     let allVideoMessageIds = await mcData.getAllVideoMessageIds();
+    let timestampMap = new Map();
 
-    let messages = await mcChannel.messages.fetch({limit: 100})
-        .catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in mods-choice: `, err));
-    if (messages && messages.length > 0) {
-        for (let i = 0; i < messages.length; i++) {
-            let message = messages[i];
+    await mcChannel.messages.fetch({limit: 100}).then(messages => {
+        messages.forEach(async message => {
             let content = message.content;
             let author = message.author;
             let authorId = author.id;
@@ -85,14 +83,18 @@ async function checkPreviousModsChoiceMessages(client) {
                 } else if (message.attachments.size > 0 && message.attachments.every(attachmentIsImage)) {
                     // Check if this timestamp is before or after the latest proof in the database
                     let latestProofTs = await mcData.getLatestProofTs(authorId);
+                    if (!latestProofTs) {
+                        latestProofTs = timestampMap.get(authorId);
+                    }
                     if (!latestProofTs || timestamp.valueOf() > latestProofTs) {
                         console.log(`The latest proof from ${authorId} was posted at ${latestProofTs}. Updating it to ${timestamp.valueOf()}`);
+                        timestampMap.set(authorId, timestamp.valueOf());
                         await mcData.setLatestProof(authorId, messageId, timestamp.valueOf());
                     }
                 }
             }
-        }
-    }
+        });
+    }).catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in mods-choice: `, err));
 
     console.log(`Processed previous messages in mods choice in ${(new Date - startTime).valueOf()}ms.`)
 }
