@@ -73,19 +73,24 @@ Promotional channels are available to everyone, but you can also earn new ranks 
         modschoice: [
                 `**What Is Mod's Choice**
 Mod's Choice is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
+
+This channel is a based mainly on a trust system. Most of the members in here have been doing this for a long time and are trusted without a doubt. If you are new to the channel, you will be watched closely, and we trust that you will do what is required to remain in the channel, or you risk being removed permanently.
+
 **How It Works**
 Every member of the channel is required to support all other members, the easiest way to do this is;
-\`1.\` Open/tab all the new videos that have been posted in the channel
-\`2.\` Give each individual video a like
+\`1.\` Use the \`/mcvideos\` command to fetch all unwatched videos since your last proof screenshot
+\`2.\` Open each video in a new tab and give each video a like
 \`3.\` Take a screenshot of the browser tabs and upload it to the channel
-\`4.\` Leave the tabbed videos playing in the background for at least 10-15 minutes while you do some other stuff
+\`4.\` Leave the tabbed videos playing in the background for 10 minutes minimum, while you do some other stuff
 \`5. (optional)\` If you actually enjoy someone's content, consider leaving a comment with something relating to the video
-**Rules**
+
+**Rules - *not following these rules may get you removed from the channel***
 \`1.\` You can only post one link every 24 hours
-\`2.\` You can not post the same link twice. Instead, bump your old post by replying to it and saying "bump"
-\`3.\` You must be actively posting tab screenshots at least once every 3 days to not be removed
-\`4.\` Do not use this channel for chatting, please use #general instead
-\`5.\` Try to only post screenshots with a maximum of 10 tabs per screenshot`
+\`2.\` Post proof screenshots as frequently as possible, try to aim for once per day
+\`3.\` After 3 days of not posting proof screenshot, the staff will be notified and you may be removed
+\`3.\` You must tab all the videos since your last proof screenshot
+\`4.\` Try to only post proof screenshots with a maximum of 10 tabs per screenshot, a couple more or less is fine though
+\`5.\` Contact a staff member if you can't keep up with the requirements, we can make exception`
         ]
 }
 
