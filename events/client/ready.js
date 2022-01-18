@@ -13,6 +13,7 @@ const fetchInvites = require('../../modules/misc/upload_invites');
 const mutesCheck = require('../../modules/misc/mutes_check');
 const autoYT = require('../../modules/misc/auto_yt');
 const rankSort = require('../../modules/rank/rank_sort');
+const {checkPreviousModsChoiceMessages, setupModsChoiceChecks} = require('../../modules/mods_choice/mods_choice_checks');
 
 module.exports = {
     name: 'ready',
@@ -29,11 +30,13 @@ module.exports = {
         });
 
         // Register the font we use for the /rank command
-        Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
+        Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", {family: "grotesk"});
 
         // Fetch messages in #self-roles to listen for messageReactionAdd/Remove - this adds them to the cache
         const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
         reactChannel.messages.fetch();
+
+        await checkPreviousModsChoiceMessages(client);
 
         const img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
@@ -58,5 +61,6 @@ module.exports = {
         liveNow(client);
         autoYT(client);
         rankSort(client);
+        setupModsChoiceChecks(client);
     }
 };
