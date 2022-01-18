@@ -73,9 +73,9 @@ Promotional channels are available to everyone, but you can also earn new ranks 
         modschoice: [
                 `**What Is Mod's Choice**
 Mod's Choice is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
-
+⠀
 This channel is a based mainly on a trust system. Most of the members in here have been doing this for a long time and are trusted without a doubt. If you are new to the channel, you will be watched closely, and we trust that you will do what is required to remain in the channel, or you risk being removed permanently.
-
+⠀
 **How It Works**
 Every member of the channel is required to support all other members, the easiest way to do this is;
 \`1.\` Use the \`/mcvideos\` command to fetch all unwatched videos since your last proof screenshot
@@ -83,7 +83,7 @@ Every member of the channel is required to support all other members, the easies
 \`3.\` Take a screenshot of the browser tabs and upload it to the channel
 \`4.\` Leave the tabbed videos playing in the background for 10 minutes minimum, while you do some other stuff
 \`5. (optional)\` If you actually enjoy someone's content, consider leaving a comment with something relating to the video
-
+⠀
 **Rules - *not following these rules may get you removed from the channel***
 \`1.\` You can only post one link every 24 hours
 \`2.\` Post proof screenshots as frequently as possible, try to aim for once per day
