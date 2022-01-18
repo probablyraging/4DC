@@ -59,18 +59,19 @@ module.exports = async (message, client) => {
                     proofMessage = `Number of videos that should be in this screenshot: ${videosSinceCount}`;
                 }
 
+                let imageLinks = message.attachments.map(attachment => attachment.url).join("\n");
                 let proofEmbed = new MessageEmbed()
                     .setColor("#ffa200")
                     .setAuthor({name: `${guildMember?.user?.tag}`, iconURL: guildMember?.displayAvatarURL({dynamic: true})})
                     .addField(`User`, `${guildMember}`, false)
                     .addField("Number of Videos", `${videosSinceCount}`, false)
                     .addField(`Proof`, `\`\`\`${proofMessage}\`\`\``, false)
-                    .setImage(message.attachments.first().url)
+                    .addField("Image Links", imageLinks)
                     .setFooter({text: `${guild.name}`, iconURL: guild.iconURL({dynamic: true})})
                     .setTimestamp();
 
                 const mcLogChannel = guild.channels.cache.get(process.env.MCHOICE_LOG_CHAN);
-                await mcLogChannel.send({embeds: [proofEmbed]});
+                await mcLogChannel.send({embeds: [proofEmbed], files: [...message.attachments.values()]});
             } else {
                 // No image was found in the message, so we delete it
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
