@@ -31,7 +31,7 @@ module.exports = {
         } else {
             let videoReply = "Below are the videos since you last posted proof: ";
             videosSinceLastProof.forEach(link => {
-                videoReply = videoReply + "\n<" + link + ">";
+                videoReply = videoReply + "\n> <" + link + ">";
             });
             await interaction.editReply(videoReply)
                 .catch(err => console.error("There was a problem replying to the interaction: ", err));
