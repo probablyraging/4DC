@@ -74,6 +74,14 @@ module.exports = async (message, client) => {
             } else {
                 // No image was found in the message, so we delete it
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                // Notify the member
+                let notificationMessage = `Your screenshot was deleted from ${message.channel} because it was not a png, jpg or gif. Please use one of those formats.`;
+                message.member.send(notificationMessage)
+                    .catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err);
+                        message.channel.send(notificationMessage)
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a channel message: `, err));
+                    });
             }
         } else if (message.member?.roles.cache.some(role => role.id === process.env.STAFF_ROLE)) {
             // Staff is posting, which is fine
