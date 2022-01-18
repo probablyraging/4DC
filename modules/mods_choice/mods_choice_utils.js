@@ -31,8 +31,8 @@ function getYoutubeVideoId(string) {
  * @return {Boolean} True if the attachment ends in png or jpg, else false
  */
 function attachmentIsImage(attachment) {
-    let url = attachment.url;
-    return url.endsWith("png") || url.endsWith("jpg");
+    let url = attachment.url.toLowerCase();
+    return url.endsWith("png") || url.endsWith("jpg") || url.endsWith("gif");
 }
 
 module.exports = {
