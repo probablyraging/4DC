@@ -28,7 +28,7 @@ module.exports = {
         blWords(message, client, Discord);
         blTwitch(message, client, Discord);
         blSpam(message, client, Discord);
-        ckqPost(message, client, Discord);
+        ckqPost(message);
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);
         lastletter(message, client, Discord);

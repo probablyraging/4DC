@@ -3,7 +3,7 @@ const mongo = require("../../mongo");
 const timerSchema = require("../../schemas/timer-schema");
 const path = require("path");
 
-module.exports = async (message, client) => {
+module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const ckqChannel = guild.channels.cache.get(process.env.CKQ_CHAN);
     const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
@@ -47,9 +47,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                     SEND_MESSAGES: true,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
 
-                await timerSchema.findOneAndRemove({ searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 await timerSchema.findOneAndUpdate({
-                    timestamp: "null",
                     searchFor
                 }, {
                     timestamp: "null",

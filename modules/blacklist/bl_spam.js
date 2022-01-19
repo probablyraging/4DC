@@ -35,7 +35,7 @@ module.exports = async (message, client) => {
 
                 member?.timeout(30000, 'Repetitive messages').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
             } else if (found.author == author && found.count < 4) {
-                repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId2: message?.id, count: found.count + 1 });
+                repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId: message?.id, count: found.count + 1 });
             }
         } else {
             repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId: message?.id, count: 1 });

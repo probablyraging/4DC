@@ -56,7 +56,7 @@ module.exports = {
         fetchInvites(message, client, Discord);
         statusCounter(client);
         memberCounter(client);
-        ckqCheck(message, client, Discord);
+        ckqCheck(client);
         bumpCheck(message, client, Discord);
         liveNow(client);
         autoYT(client);

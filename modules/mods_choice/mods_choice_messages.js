@@ -77,7 +77,7 @@ module.exports = async (message, client) => {
                     imagesArr.push({ url: img.url, width: img.width, height: img.height });
                 })
 
-                // sort the images by width in descending order - we'll use the largest width as out max canvas width
+                // sort the images by width in descending order - we'll use the largest width as our max canvas width
                 imagesArr.sort(function (a, b) {
                     return b.width - a.width;
                 });
@@ -103,8 +103,8 @@ module.exports = async (message, client) => {
                 // draw each new image under the other, leaving a gap between them
                 let sum = 0;
                 for (let i = 0; i < imagesArr.length; i++) {
-                    const test = await Canvas.loadImage(imagesArr[i].url);
-                    ctx.drawImage(test, 0, sum, imagesArr[i].width, imagesArr[i].height);
+                    const proof = await Canvas.loadImage(imagesArr[i].url);
+                    ctx.drawImage(proof, 0, sum, imagesArr[i].width, imagesArr[i].height);
                     sum = sum + imagesArr[i].height + 3;
                 }
 

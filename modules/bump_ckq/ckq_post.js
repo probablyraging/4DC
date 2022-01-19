@@ -7,7 +7,7 @@ const path = require('path');
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client, Discord) => {
+module.exports = async (message) => {
     if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {
         for (var i in blacklist.links) {
             if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
