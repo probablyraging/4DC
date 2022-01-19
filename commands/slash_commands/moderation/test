@@ -1,0 +1,40 @@
+const { ContextMenuInteraction } = require('discord.js');
+const mongo = require('../../../mongo');
+const path = require('path');
+const rankSchema = require('../../../schemas/rank-schema');
+
+module.exports = {
+    name: `test`,
+    description: `dummy command for testing stuff`,
+    permission: `MANAGE_MESSAGES`,
+    cooldown: 30,
+    type: `CHAT_INPUT`,
+    /**
+     * 
+     * @param {ContextMenuInteraction} interaction 
+     */
+    async execute(interaction) {
+        const { member, options } = interaction;
+
+        await mongo().then(async mongoose => {
+
+            const results = await rankSchema.find();
+
+            for (const data of results) {
+                const { id, rank } = data
+
+                console.log(data.rank)
+
+                await rankSchema.findOneAndUpdate({
+                    id
+                }, {
+                    rank: parseInt(rank)
+                }, {
+                    upsert: true
+                })
+            }
+        })
+
+        await interaction.reply({ content: `done`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+    }
+}

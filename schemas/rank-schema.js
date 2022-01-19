@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const rankSchema = mongoose.Schema({
 
     rank: {
-        type: String,
+        type: Number,
         required: true
     },
     id: {
