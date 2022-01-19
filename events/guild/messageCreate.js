@@ -8,6 +8,7 @@ const blPromo = require('../../modules/blacklist/bl_promo');
 const blMass = require('../../modules/blacklist/bl_mass');
 const blWords = require('../../modules/blacklist/bl_words');
 const blTwitch = require('../../modules/blacklist/bl_twitch');
+const blSpam = require('../../modules/blacklist/bl_spam');
 const resPost = require('../../modules/misc/resource_post');
 const lastletter = require('../../modules/games/last_letter');
 const rankXP = require('../../modules/rank/rank_xp');
@@ -26,6 +27,7 @@ module.exports = {
         blMass(message, client, Discord);
         blWords(message, client, Discord);
         blTwitch(message, client, Discord);
+        blSpam(message, client, Discord);
         ckqPost(message, client, Discord);
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);

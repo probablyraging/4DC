@@ -1,8 +1,9 @@
 require("dotenv").config();
-const {MessageEmbed} = require("discord.js");
+const { MessageEmbed, MessageAttachment } = require("discord.js");
 const path = require("path");
-const {getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo} = require("./mods_choice_data");
-const {msToHumanTime, getYoutubeVideoId, attachmentIsImage} = require("./mods_choice_utils");
+const { getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo } = require("./mods_choice_data");
+const { msToHumanTime, getYoutubeVideoId, attachmentIsImage } = require("./mods_choice_utils");
+const Canvas = require("canvas");
 
 // Delay of 24 hours between posting videos
 const delayBetweenVideos = 24 * 60 * 60 * 1000;
@@ -59,19 +60,58 @@ module.exports = async (message, client) => {
                     proofMessage = `Number of videos that should be in this screenshot: ${videosSinceCount}`;
                 }
 
-                let imageLinks = message.attachments.map(attachment => attachment.url).join("\n");
                 let proofEmbed = new MessageEmbed()
                     .setColor("#ffa200")
-                    .setAuthor({name: `${guildMember?.user?.tag}`, iconURL: guildMember?.displayAvatarURL({dynamic: true})})
+                    .setAuthor({ name: `${guildMember?.user?.tag}`, iconURL: guildMember?.displayAvatarURL({ dynamic: true }) })
                     .addField(`User`, `${guildMember}`, false)
                     .addField("Number of Videos", `${videosSinceCount}`, false)
                     .addField(`Proof`, `\`\`\`${proofMessage}\`\`\``, false)
-                    .addField("Image Links", imageLinks)
-                    .setFooter({text: `${guild.name}`, iconURL: guild.iconURL({dynamic: true})})
+                    .setFooter({ text: `${guild.name}`, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp();
 
                 const mcLogChannel = guild.channels.cache.get(process.env.MCHOICE_LOG_CHAN);
-                await mcLogChannel.send({embeds: [proofEmbed], files: [...message.attachments.values()]});
+
+                // get all images from the message attachment
+                let imagesArr = [];
+                message.attachments.forEach(img => {
+                    imagesArr.push({ url: img.url, width: img.width, height: img.height });
+                })
+
+                // sort the images by width in descending order - we'll use the largest width as out max canvas width
+                imagesArr.sort(function (a, b) {
+                    return b.width - a.width;
+                });
+
+                // get the height of each screenshot and add them together - we'll use this as our max canvas height
+                let imageHeight = [];
+                imagesArr.forEach(img => {
+                    imageHeight.push(img.height);
+                });
+
+                function add(accumulator, a) {
+                    return accumulator + a;
+                };
+
+                const maxWidth = imagesArr[0].width;
+                const maxHeight = imageHeight.reduce(add, 0);
+                const gapBetweenImages = (message.attachments.size * 3)
+
+                // create a canvas
+                const canvas = Canvas.createCanvas(maxWidth, maxHeight + gapBetweenImages)
+                const ctx = canvas.getContext("2d");
+
+                // draw each new image under the other, leaving a gap between them
+                let sum = 0;
+                for (let i = 0; i < imagesArr.length; i++) {
+                    const test = await Canvas.loadImage(imagesArr[i].url);
+                    ctx.drawImage(test, 0, sum, imagesArr[i].width, imagesArr[i].height);
+                    sum = sum + imagesArr[i].height + 3;
+                }
+
+                const attachment = new MessageAttachment(canvas.toBuffer(), "proof.png");
+
+                proofEmbed.setImage('attachment://proof.png')
+                await mcLogChannel.send({ embeds: [proofEmbed], files: [attachment] });
             } else {
                 // No image was found in the message, so we delete it
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));

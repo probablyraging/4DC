@@ -4,7 +4,7 @@ const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client, Discord) => {
+module.exports = (message, client) => {
     /**
      * This black list focuses on strict blacklisting in all channels for things like discord invites, porn links and onlyfans links
      */

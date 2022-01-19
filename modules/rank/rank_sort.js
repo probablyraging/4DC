@@ -1,12 +1,13 @@
 const mongo = require('../../mongo');
 const rankSchema = require('../../schemas/rank-schema');
+const cronjob = require('cron').CronJob;
 const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
-    await mongo().then(async mongoose => {
-        setInterval(async () => {
+    const rankSort = new cronjob('0 0 * * *', async function () {
+        await mongo().then(async mongoose => {
             // find all entries, sort them in descending order based on their 'xp'
             const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
@@ -47,6 +48,8 @@ module.exports = async (client) => {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
-        }, 1000 * 600);
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+    });
+
+    rankSort.start();
 }
