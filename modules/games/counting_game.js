@@ -57,12 +57,12 @@ module.exports = async (message, client) => {
                             }, 10000);
                         });
 
-                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        return;
+                    message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    return;
                 }
             }
 
-            
+            let failed = false;
             let previousCounter = [];
             // fetch the previous batch of messages
             await message?.channel.messages.fetch({ limit: 20 }).then(async fetched => {
@@ -71,7 +71,7 @@ module.exports = async (message, client) => {
                 filtered.forEach(m => {
                     // only keep the results that are a number
                     if (!isNaN(m.content)) {
-                        previousCounter.push({ id: m.id });
+                        previousCounter.push({ id: m.author.id });
                     }
                 });
 
@@ -79,22 +79,26 @@ module.exports = async (message, client) => {
                 if (previousCounter[1].id === author.id) {
                     failReason = `${author} **FAILED** \n> You can't count two numbers in a row`;
 
+                    failed = true;
+
                     await checkForGuildSaves();
                     return;
-                } else {
-                    await passedCount();
                 }
 
                 // if the new number didn't increase by 1 from the previous number
-                if (content !== currentCount + 1) {
+                if (!failed && content !== currentCount + 1) {
                     failReason = `${author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${content}\``;
 
+                    failed = true
+                    
                     await checkForGuildSaves();
                     return;
-                } else {
-                    await passedCount();
                 }
             });
+
+            if (!failed) {
+                await passedCount();
+            }
 
             // check if the guild has a personal save to use, if not try and use a personal save
             async function checkForGuildSaves() {
@@ -133,7 +137,7 @@ module.exports = async (message, client) => {
                         await passedCountWithSave();
                     } else {
                         // if the user doesn't have a personal save to use, then we fail
-                        failMessage = `${failReason} \n> You did not have any saves, so the count starts again. To get a save, use the \`/counting save\` command \n> The next number is \`${currentCount + 1}\``
+                        failMessage = `${failReason} \n> You did not have any saves, so the count starts again. To get a save, use the \`/counting save\` command \n> The next number is \`1\``
 
                         await failedCount();
                     }
@@ -180,6 +184,16 @@ module.exports = async (message, client) => {
             async function updateUsersCount() {
                 const results = await countingSchema.find({ userId: author.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                // if user doesn't exist in the satabase yet, create an entry for them
+                await countingSchema.findOneAndUpdate({
+                    userId: author.id,
+                }, {
+                    userId: author.id,
+                    counts: 1,
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                 for (const data of results) {
                     const { counts } = data;
