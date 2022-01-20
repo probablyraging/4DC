@@ -12,7 +12,7 @@ module.exports = async (message, client) => {
     let failMessage;
     let failReason;
 
-    if (message.channel.id === process.env.COUNT_CHAN && !message.author.bot) {
+    if (message?.channel.id === process.env.COUNT_CHAN && !message?.author.bot) {
         const content = parseInt(message?.content);
         const author = message?.author;
 
@@ -65,7 +65,7 @@ module.exports = async (message, client) => {
                 filtered.forEach(m => {
                     // only keep the results that are a number
                     if (!isNaN(m.content)) {
-                        previousCounter.push({ id: author.id });
+                        previousCounter.push({ id: m.id });
                     }
                 });
 
