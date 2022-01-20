@@ -26,7 +26,7 @@ module.exports = {
             description: `The name of the feature or command`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `xp`, value: `xp` }, { name: `autoyt`, value: `autoyt` }],
+            choices: [{ name: `xp`, value: `xp` }, { name: `autoyt`, value: `autoyt` }, { name: `mcvideos`, value: `mcvideos` }, { name: `mcaudit`, value: `mcaudit` }, { name: `counting`, value: `counting` }],
         }]
     },
     {

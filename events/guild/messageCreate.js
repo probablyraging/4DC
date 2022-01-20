@@ -33,7 +33,7 @@ module.exports = {
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);
         lastLetter(message, client, Discord);
-        countingGame(message, client, Discord);
+        countingGame(message, client);
         rankXP(message, client, Discord);
         modsChoice(message, client);
 
