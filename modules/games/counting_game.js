@@ -32,20 +32,23 @@ module.exports = async (message, client) => {
 
             // if the user doesn't have rank 10 (verified), they need to have atleast 1 save to play
             if (results.length === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
-                return message?.channel.send({
+                message?.channel.send({
                     content: `${author} You must have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`
                 }).then(msg => {
                     setTimeout(() => {
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     }, 10000);
                 });
+
+                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                return;
             }
 
             for (const data of results) {
                 const { saves } = data;
 
                 if (saves === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
-                    return message?.channel.send({
+                    message?.channel.send({
                         content: `${author} You must have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
                         .then(msg => {
@@ -53,6 +56,9 @@ module.exports = async (message, client) => {
                                 msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                             }, 10000);
                         });
+
+                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                        return;
                 }
             }
 
