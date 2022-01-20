@@ -38,8 +38,6 @@ module.exports = {
                     const bumpResults = await timerSchema.find({ searchFor: 'bumpTime' })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                    console.log(results.length)
-
                     if (results.length === 0) {
                         await countingSchema.findOneAndUpdate({
                             userId: member.id,
@@ -55,8 +53,6 @@ module.exports = {
                     } else {
                         await getSaves();
                     }
-
-
 
                     async function getSaves() {
                         const results = await countingSchema.find({ userId: member.id })
