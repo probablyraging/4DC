@@ -10,7 +10,8 @@ const blWords = require('../../modules/blacklist/bl_words');
 const blTwitch = require('../../modules/blacklist/bl_twitch');
 const blSpam = require('../../modules/blacklist/bl_spam');
 const resPost = require('../../modules/misc/resource_post');
-const lastletter = require('../../modules/games/last_letter');
+const lastLetter = require('../../modules/games/last_letter');
+const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const modsChoice = require("../../modules/mods_choice/mods_choice_messages");
 
@@ -31,7 +32,8 @@ module.exports = {
         ckqPost(message);
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);
-        lastletter(message, client, Discord);
+        lastLetter(message, client, Discord);
+        countingGame(message, client);
         rankXP(message, client, Discord);
         modsChoice(message, client);
 

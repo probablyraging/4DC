@@ -4,8 +4,10 @@ const letterSchema = require('../../../schemas/letter-schema');
 const letterRecordSchema = require('../../../schemas/letter-record-schema');
 const letterLBSchema = require('../../../schemas/letter-lb-schema');
 const rankSchema = require('../../../schemas/rank-schema');
+const countingSchema = require('../../../schemas/counting-schema');
 const path = require('path');
 const fetch = require('node-fetch');
+
 
 module.exports = {
     name: `leaderboard`,
@@ -30,6 +32,12 @@ module.exports = {
         description: `View the message count leaderboard`,
         type: `SUB_COMMAND`,
         usage: `/leaderboard messages`,
+    },
+    {
+        name: `counting`,
+        description: `View the counting game's leaderboard`,
+        type: `SUB_COMMAND`,
+        usage: `/leaderboard messages`,
     }],
     /**
      * 
@@ -49,7 +57,7 @@ module.exports = {
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {
-                        const sort = await rankSchema.find({ rank: { $gte: 1, $lt: 11 }}).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                        const sort = await rankSchema.find({ rank: { $gte: 1, $lt: 11 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                         sortArr = [];
                         for (const data of sort) {
@@ -293,6 +301,63 @@ If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, fa
 \`18.\` <@${msgCountArr[17].id}> - **${msgCountArr[17].xp}** messages
 \`19.\` <@${msgCountArr[18].id}> - **${msgCountArr[18].xp}** messages
 \`20.\` <@${msgCountArr[19].id}> - **${msgCountArr[19].xp}** messages`, false)
+
+                    interaction.editReply({
+                        embeds: [response],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+            }
+
+            switch (options.getSubcommand()) {
+                case 'counting': {
+                    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+                    const response = new MessageEmbed()
+                        .setColor('#32BEA6')
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setTimestamp()
+
+                    await mongo().then(async mongoose => {
+                        const sort = await countingSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                        sortArr = [];
+                        for (const data of sort) {
+                            const { userId, counts } = data;
+
+                            sortArr.push({ userId, counts });
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+                    sortArr.sort(function (a, b) {
+                        return b.counts - a.counts;
+                    });
+
+                    function kFormatter(num) {
+                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
+
+                    countArr = [];
+                    for (let i = 0; i < sortArr.length; i++) {
+                        let exists = guild.members.cache.get(sortArr[i].userId);
+
+                        if (exists) {
+                            countkFormat = kFormatter(sortArr[i].counts);
+                            countArr.push({ id: sortArr[i].userId, count: countkFormat });
+                        }
+                    }
+
+                    response.addField(`:trophy: \`CreatorHub Counting Leaderboard\``, `⠀
+🥇 <@${countArr[0]?.id}> - **${countArr[0]?.count}** correct counts
+🥈 <@${countArr[1]?.id}> - **${countArr[1]?.count}** correct counts
+🥉 <@${countArr[2]?.id}> - **${countArr[2]?.count}** correct counts
+\`4.\` <@${countArr[3]?.id}> - **${countArr[3]?.count}** correct counts
+\`5.\` <@${countArr[4]?.id}> - **${countArr[4]?.count}** correct counts
+\`6.\` <@${countArr[5]?.id}> - **${countArr[5]?.count}** correct counts
+\`7.\` <@${countArr[6]?.id}> - **${countArr[6]?.count}** correct counts
+\`8.\` <@${countArr[7]?.id}> - **${countArr[7]?.count}** correct counts
+\`9.\` <@${countArr[8]?.id}> - **${countArr[8]?.count}** correct counts
+\`10.\` <@${countArr[9]?.id}> - **${countArr[9]?.count}** correct counts`, false)
 
                     interaction.editReply({
                         embeds: [response],
