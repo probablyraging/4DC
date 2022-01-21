@@ -2,12 +2,7 @@ require("dotenv").config();
 const path = require("path");
 const mcData = require("./mods_choice_data");
 const {getYoutubeVideoId, attachmentIsImage} = require("./mods_choice_utils");
-
-// Time constants
-const interval = 15 * 60 * 1000;
-const twoDays = 2 * 24 * 60 * 60 * 1000;
-const threeDays = 3 * 24 * 60 * 60 * 1000;
-const oneMonth = 31 * 24 * 60 * 60 * 1000;
+const {interval, twoDays, threeDays, oneMonth} = require("./mods_choice_constants");
 
 /**
  * @param {String[]} messageIds A list of Discord Message.ids to delete

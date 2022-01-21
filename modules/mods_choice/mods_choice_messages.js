@@ -1,12 +1,10 @@
 require("dotenv").config();
-const { MessageEmbed, MessageAttachment } = require("discord.js");
+const {MessageEmbed, MessageAttachment} = require("discord.js");
 const path = require("path");
-const { getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo } = require("./mods_choice_data");
-const { msToHumanTime, getYoutubeVideoId, attachmentIsImage } = require("./mods_choice_utils");
+const {getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo} = require("./mods_choice_data");
+const {msToHumanTime, getYoutubeVideoId, attachmentIsImage} = require("./mods_choice_utils");
+const {delayBetweenVideos} = require("./mods_choice_constants");
 const Canvas = require("canvas");
-
-// Delay of 24 hours between posting videos
-const delayBetweenVideos = 24 * 60 * 60 * 1000;
 
 /**
  * @param {Message} message The Discord Message that was sent
@@ -62,11 +60,11 @@ module.exports = async (message, client) => {
 
                 let proofEmbed = new MessageEmbed()
                     .setColor("#ffa200")
-                    .setAuthor({ name: `${guildMember?.user?.tag}`, iconURL: guildMember?.displayAvatarURL({ dynamic: true }) })
+                    .setAuthor({name: `${guildMember?.user?.tag}`, iconURL: guildMember?.displayAvatarURL({dynamic: true})})
                     .addField(`User`, `${guildMember}`, false)
                     .addField("Number of Videos", `${videosSinceCount}`, false)
                     .addField(`Proof`, `\`\`\`${proofMessage}\`\`\``, false)
-                    .setFooter({ text: `${guild.name}`, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setFooter({text: `${guild.name}`, iconURL: guild.iconURL({dynamic: true})})
                     .setTimestamp();
 
                 const mcLogChannel = guild.channels.cache.get(process.env.MCHOICE_LOG_CHAN);
@@ -74,7 +72,7 @@ module.exports = async (message, client) => {
                 // get all images from the message attachment
                 let imagesArr = [];
                 message.attachments.forEach(img => {
-                    imagesArr.push({ url: img.url, width: img.width, height: img.height });
+                    imagesArr.push({url: img.url, width: img.width, height: img.height});
                 })
 
                 // sort the images by width in descending order - we'll use the largest width as our max canvas width
@@ -111,7 +109,7 @@ module.exports = async (message, client) => {
                 const attachment = new MessageAttachment(canvas.toBuffer(), "proof.png");
 
                 proofEmbed.setImage('attachment://proof.png')
-                await mcLogChannel.send({ embeds: [proofEmbed], files: [attachment] });
+                await mcLogChannel.send({embeds: [proofEmbed], files: [attachment]});
             } else {
                 // No image was found in the message, so we delete it
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
