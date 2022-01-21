@@ -28,7 +28,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, guild, options } = interaction;
+        const { member, guild, client, options } = interaction;
 
         await mongo().then(async mongoose => {
             switch (options.getSubcommand()) {
@@ -36,6 +36,8 @@ module.exports = {
                     const results = await countingSchema.find({ userId: member.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     const bumpResults = await timerSchema.find({ searchFor: 'bumpTime' })
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    const guildResults = await countingSchema.find({ userId: guild.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                     if (results.length === 0) {
@@ -66,9 +68,12 @@ module.exports = {
 
                             for (const data of results) {
                                 const { saves } = data;
+                                for (const guildData of guildResults) {
+                                    const guildSaves = guildData.saves;
 
-                                interaction.reply({
-                                    content: `You currently have \`${saves}/2\` saves for the counting game
+                                    interaction.reply({
+                                        content: `You currently have \`${saves}/2\` saves
+The guild currently has \`${guildSaves + 0.25}/3 saves\`
 
 To earn more saves you must bump the server
 The server can be bumped once every 2 hours, by anyone
@@ -77,8 +82,9 @@ You can bump the server by going to <#${process.env.BUMP_CHAN}> and typing \`!d 
 The server can be bumped again in \`${timeTo}\`
 
 To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from <#${process.env.SELFROLE_CHAN}>`,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                                        ephemeral: true
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                                }
                             }
                         }
                     }
@@ -139,6 +145,10 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                                 }, {
                                     upsert: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                                client.channels.cache.get(process.env.COUNT_CHAN).send({
+                                    content: `${member} donated \`1 personal save\`. The guild now has \`${guildSaves + 0.25}/3 saves\``
+                                })
 
                                 return interaction.reply({
                                     content: `You have donated \`1 personal save\` to the guild
