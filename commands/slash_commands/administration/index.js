@@ -44,11 +44,8 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'welcome': {
                     channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
-                        for (let i = 0; i < 8; i++) {
-                            setTimeout(function () {
-                                webhook.send(index.welcome[i])
-                            }, i * 1000)
-                        }
+                        webhook.send(index.welcome[0])
+                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         setTimeout(() => {
                             webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                         }, 10000);
@@ -64,9 +61,9 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'rules': {
                     channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
-                        webhook.send(rules.img)
                         setTimeout(() => {
-                            webhook.send(`${rules.pre}
+                            webhook.send(`**SERVER RULES**
+${rules.pre}
 
 > **1.** ${rules.rules[0]}
 > 
@@ -80,7 +77,7 @@ module.exports = {
 > 
 > **6.** ${rules.rules[5]}
 > 
-> **7.** ${rules.rules[6]}`)
+> **7.** ${rules.rules[6]}`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         }, 1000);
                         setTimeout(() => {
                             webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
@@ -97,14 +94,14 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'faq': {
                     channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
-                        for (let i = 0; i < 4; i++) {
+                        for (let i = 0; i < index.faq.length; i++) {
                             setTimeout(function () {
                                 webhook.send({
                                     content: `${index.faq[i]}`,
                                     allowedMentions: {
                                         parse: []
                                     }
-                                })
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                             }, i * 1000);
                         }
                         setTimeout(() => {
