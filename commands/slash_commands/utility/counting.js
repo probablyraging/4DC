@@ -97,8 +97,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     const guildResults = await countingSchema.find({ userId: guild.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-                    console.log(results.length)
+                        
                     // if the user isn't in the database
                     if (results.length === 0) {
                         return interaction.reply({

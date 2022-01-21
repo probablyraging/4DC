@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const countingCurrent = mongoose.Schema({
 
     currentCount: {
-        type: String,
+        type: Number,
+        required: true
+    },
+    currentRecord: {
+        type: Number,
         required: true
     },
     searchFor: {

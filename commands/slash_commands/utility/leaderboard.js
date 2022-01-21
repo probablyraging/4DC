@@ -5,8 +5,10 @@ const letterRecordSchema = require('../../../schemas/letter-record-schema');
 const letterLBSchema = require('../../../schemas/letter-lb-schema');
 const rankSchema = require('../../../schemas/rank-schema');
 const countingSchema = require('../../../schemas/counting-schema');
+const countingCurrent = require('../../../schemas/counting-current-schema');
 const path = require('path');
 const fetch = require('node-fetch');
+
 
 
 module.exports = {
@@ -126,7 +128,7 @@ module.exports = {
                             const results = await letterRecordSchema.find({ searchForRecord });
                             for (const info of results) {
                                 const { letterRecord } = info;
-                                const letterChannel = client.channels.cache.get('896069772624683018');
+                                const letterChannel = client.channels.cache.get(process.env.LL_CHAN);
 
                                 letterChannel.messages.fetch({ limit: 1 }).then(async fetched => {
                                     fetched.forEach(msg => {
@@ -313,41 +315,57 @@ If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, fa
                 case 'counting': {
                     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-                    const response = new MessageEmbed()
-                        .setColor('#32BEA6')
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
+                    const countChan = client.channels.cache.get(process.env.COUNT_CHAN);
 
-                    await mongo().then(async mongoose => {
-                        const sort = await countingSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    countChan.messages.fetch({ limit: 1 }).then(async fetched => {
+                        fetched.forEach(msg => {
+                            lastSubmit = msg.author;
+                        });
 
-                        sortArr = [];
-                        for (const data of sort) {
-                            const { userId, counts } = data;
 
-                            sortArr.push({ userId, counts });
+                        const response = new MessageEmbed()
+                            .setColor('#32BEA6')
+                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                            .setTimestamp()
+
+                        await mongo().then(async mongoose => {
+                            const sort = await countingSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                            const results = await countingCurrent.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+                            for (const countData of results) {
+                                const { currentCount, currentRecord } = countData;
+
+                                gotCount = currentCount;
+                                countRecord = currentRecord;
+                            }
+
+                            sortArr = [];
+                            for (const data of sort) {
+                                const { userId, counts } = data;
+
+                                sortArr.push({ userId, counts });
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+                        sortArr.sort(function (a, b) {
+                            return b.counts - a.counts;
+                        });
+
+                        function kFormatter(num) {
+                            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
-                    sortArr.sort(function (a, b) {
-                        return b.counts - a.counts;
-                    });
+                        countArr = [];
+                        for (let i = 0; i < sortArr.length; i++) {
+                            let exists = guild.members.cache.get(sortArr[i].userId);
 
-                    function kFormatter(num) {
-                        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
-
-                    countArr = [];
-                    for (let i = 0; i < sortArr.length; i++) {
-                        let exists = guild.members.cache.get(sortArr[i].userId);
-
-                        if (exists) {
-                            countkFormat = kFormatter(sortArr[i].counts);
-                            countArr.push({ id: sortArr[i].userId, count: countkFormat });
+                            if (exists) {
+                                countkFormat = kFormatter(sortArr[i].counts);
+                                countArr.push({ id: sortArr[i].userId, count: countkFormat });
+                            }
                         }
-                    }
 
-                    response.addField(`:trophy: \`CreatorHub Counting Leaderboard\``, `⠀
+                        response.addField(`:trophy: \`CreatorHub Counting Leaderboard\``, `⠀
 🥇 <@${countArr[0]?.id}> - **${countArr[0]?.count}** correct counts
 🥈 <@${countArr[1]?.id}> - **${countArr[1]?.count}** correct counts
 🥉 <@${countArr[2]?.id}> - **${countArr[2]?.count}** correct counts
@@ -357,12 +375,17 @@ If you played the word \`EQUIVOCAL\` you would get a total of **23** points`, fa
 \`7.\` <@${countArr[6]?.id}> - **${countArr[6]?.count}** correct counts
 \`8.\` <@${countArr[7]?.id}> - **${countArr[7]?.count}** correct counts
 \`9.\` <@${countArr[8]?.id}> - **${countArr[8]?.count}** correct counts
-\`10.\` <@${countArr[9]?.id}> - **${countArr[9]?.count}** correct counts`, false)
+\`10.\` <@${countArr[9]?.id}> - **${countArr[9]?.count}** correct counts
 
-                    interaction.editReply({
-                        embeds: [response],
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+Last submit by: ${lastSubmit}
+Current level: **${gotCount}**
+Record level: **${countRecord}**`, false)
+
+                        interaction.editReply({
+                            embeds: [response],
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    });
                 }
             }
         } catch (err) {

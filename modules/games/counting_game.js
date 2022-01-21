@@ -27,7 +27,8 @@ module.exports = async (message, client) => {
 
             // get the current count from the database
             for (const data2 of results2) {
-                currentCount = parseInt(data2.currentCount);
+                currentCount = data2.currentCount;
+                currentRecord = data2.currentRecord;
             }
 
             // if the user doesn't have rank 10 (verified), they need to have atleast 1 save to play
@@ -90,7 +91,7 @@ module.exports = async (message, client) => {
                     failReason = `${author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${content}\``;
 
                     failed = true
-                    
+
                     await checkForGuildSaves();
                     return;
                 }
@@ -232,10 +233,24 @@ module.exports = async (message, client) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
 
+            // if the current count is higher than the record count, update it
+            async function updateRecord() {
+                if (currentCount >= currentRecord) {
+                    await countingCurrent.findOneAndUpdate({
+                        searchFor: 'currentCount'
+                    }, {
+                        currentRecord: currentCount + 1
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                }
+            }
+
             // regular pass
             async function passedCount() {
                 if (!message.deleted) {
                     await updateCurrentCount();
+                    await updateRecord();
                     await updateUsersCount();
                     message.react(process.env.BOT_CONF)
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
@@ -245,6 +260,7 @@ module.exports = async (message, client) => {
             // if the count was passed, but we needed to use a save first
             async function passedCountWithSave() {
                 if (!message.deleted) {
+                    await updateRecord();
                     message.react(process.env.BOT_DENY)
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
                     message?.channel.send({ content: `${failMessage}` })
