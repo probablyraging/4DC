@@ -49,7 +49,7 @@ module.exports = async (message, client) => {
                 if (resolve && resolve.title.toLowerCase() === username || resolve.title.toLowerCase() === displayName) {
                     member?.send({
                         content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
-                    }).catch(() => {``
+                    }).catch(() => {
                         message?.reply({
                             content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
                             allowedMentions: { repliedUser: true },
@@ -69,7 +69,7 @@ module.exports = async (message, client) => {
         // if the url is a video url, we can check the video author's name in the embed json data and see if it matches the message author's username
         if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
             const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
-            const replace = urlInStr[0].replace('www.', '');``
+            const replace = urlInStr[0].replace('www.', ''); ``
 
             try {
                 const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
