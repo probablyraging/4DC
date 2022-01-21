@@ -13,7 +13,7 @@ module.exports = async (message, client) => {
     let failReason;
 
     if (message?.channel.id === process.env.COUNT_CHAN && !message?.author.bot) {
-        const content = parseInt(message?.content);
+        const content = message?.content;
         const author = message?.author;
 
         // if the message isn't a number we can ignore it
@@ -87,7 +87,7 @@ module.exports = async (message, client) => {
                 }
 
                 // if the new number didn't increase by 1 from the previous number
-                if (!failed && content !== currentCount + 1) {
+                if (!failed && parseInt(content) !== currentCount + 1) {
                     failReason = `${author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${content}\``;
 
                     failed = true
