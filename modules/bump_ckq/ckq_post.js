@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const mongo = require('../../mongo');
-const timerSchema = require('../../schemas/timer-schema');
+const timerSchema = require('../../schemas/misc/timer_schema');
 const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**

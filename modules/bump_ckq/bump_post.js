@@ -1,7 +1,7 @@
 const { Message, MessageEmbed } = require('discord.js');
 const mongo = require('../../mongo');
-const timerSchema = require('../../schemas/timer-schema');
-const countingSchema = require('../../schemas/counting-schema');
+const timerSchema = require('../../schemas/misc/timer_schema');
+const countingSchema = require('../../schemas/counting_game/counting_schema');
 const path = require('path');
 /**
  * 

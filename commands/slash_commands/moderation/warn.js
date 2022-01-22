@@ -1,6 +1,6 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const warnSchema = require('../../../schemas/warn-schema');
+const warnSchema = require('../../../schemas/misc/warn_schema');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');

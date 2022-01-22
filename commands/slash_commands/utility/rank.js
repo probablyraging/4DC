@@ -1,6 +1,6 @@
 const {MessageAttachment} = require("discord.js");
 const mongo = require("../../../mongo");
-const rankSchema = require("../../../schemas/rank-schema");
+const rankSchema = require("../../../schemas/misc/rank_schema");
 const Canvas = require("canvas");
 const path = require("path");
 

@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
 const mongo = require('../../mongo');
-const countingSchema = require('../../schemas/counting-schema');
-const countingCurrent = require('../../schemas/counting-current-schema');
+const countingSchema = require('../../schemas/counting_game/counting_schema');
+const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 /**
  * @param {Message} message 

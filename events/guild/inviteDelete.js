@@ -1,5 +1,5 @@
 const mongo = require('../../mongo');
-const inviteSchema = require('../../schemas/invite-schema');
+const inviteSchema = require('../../schemas/misc/invite_schema');
 const path = require('path');
 
 module.exports = {

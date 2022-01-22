@@ -1,11 +1,11 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const letterSchema = require('../../../schemas/letter-schema');
-const letterRecordSchema = require('../../../schemas/letter-record-schema');
-const letterLBSchema = require('../../../schemas/letter-lb-schema');
-const rankSchema = require('../../../schemas/rank-schema');
-const countingSchema = require('../../../schemas/counting-schema');
-const countingCurrent = require('../../../schemas/counting-current-schema');
+const letterSchema = require('../../../schemas/letter_game/letter_schema');
+const letterRecordSchema = require('../../../schemas/letter_game/letter_record_schema');
+const letterLBSchema = require('../../../schemas/letter_game/letter_lb_schema');
+const rankSchema = require('../../../schemas/misc/rank_schema');
+const countingSchema = require('../../../schemas/counting_game/counting_schema');
+const countingCurrent = require('../../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 const fetch = require('node-fetch');
 

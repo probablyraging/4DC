@@ -1,8 +1,8 @@
 const { Message } = require('discord.js');
 const mongo = require('../../mongo');
-const letterSchema = require('../../schemas/letter-schema');
-const letterRecordSchema = require('../../schemas/letter-record-schema');
-const letterLBSchema = require('../../schemas/letter-lb-schema');
+const letterSchema = require('../../schemas/letter_game/letter_schema');
+const letterRecordSchema = require('../../schemas/letter_game/letter_record_schema');
+const letterLBSchema = require('../../schemas/letter_game/letter_lb_schema');
 const letterVals = require('../../lists/letter-values');
 const fetch = require('node-fetch');
 const path = require('path');

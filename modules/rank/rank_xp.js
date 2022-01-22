@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const mongo = require('../../mongo');
-const rankSchema = require('../../schemas/rank-schema');
+const rankSchema = require('../../schemas/misc/rank_schema');
 const path = require('path');
 const xpLimit = new Set();
 /**

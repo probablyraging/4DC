@@ -1,6 +1,6 @@
 const path = require('path');
 const mongo = require('../../mongo');
-const streamSchema = require('../../schemas/stream-schema');
+const streamSchema = require('../../schemas/misc/stream_schema');
 const cooldown = new Set();
 /**
  * @param {Message} message 

@@ -1,7 +1,7 @@
 const mongo = require('../../mongo');
 const path = require("path");
-const mcVideoModel = require('../../schemas/mods-choice-video-schema');
-const mcProofModel = require('../../schemas/mods-choice-proof-schema');
+const mcVideoModel = require('../../schemas/mods_choice_video_schema');
+const mcProofModel = require('../../schemas/mods_choice_proof_schema');
 
 /**
  * @param {String} authorId The Discord User.id

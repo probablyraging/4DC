@@ -1,6 +1,6 @@
 const { ContextMenuInteraction } = require('discord.js');
 const mongo = require('../../../mongo');
-const ytNotificationSchema = require('../../../schemas/yt-notification-schema');
+const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
 

@@ -1,7 +1,7 @@
 const { ContextMenuInteraction } = require('discord.js');
 const mongo = require('../../../mongo');
 const path = require('path');
-const rankSchema = require('../../../schemas/rank-schema');
+const rankSchema = require('../../../schemas/misc/rank_schema');
 
 module.exports = {
     name: `xp`,

@@ -1,5 +1,5 @@
 const mongo = require('../../mongo');
-const ytNotificationSchema = require('../../schemas/yt-notification-schema');
+const ytNotificationSchema = require('../../schemas/misc/yt_notification_schema');
 const path = require('path');
 const res = new (require('rss-parser'))();
 

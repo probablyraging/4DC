@@ -1,6 +1,6 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const muteSchema = require('../../../schemas/mute-schema');
+const muteSchema = require('../../../schemas/misc/mute_schema');
 const path = require('path');
 
 

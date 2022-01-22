@@ -1,5 +1,5 @@
 const mongo = require("../../mongo");
-const timerSchema = require("../../schemas/timer-schema");
+const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
 
 module.exports = async (client) => {

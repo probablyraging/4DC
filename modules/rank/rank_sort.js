@@ -1,5 +1,5 @@
 const mongo = require('../../mongo');
-const rankSchema = require('../../schemas/rank-schema');
+const rankSchema = require('../../schemas/misc/rank_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
