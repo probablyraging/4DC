@@ -97,7 +97,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     const guildResults = await countingSchema.find({ userId: guild.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                        
+
                     // if the user isn't in the database
                     if (results.length === 0) {
                         return interaction.reply({
@@ -149,12 +149,21 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                                     content: `${member} donated \`1 personal save\`. The guild now has \`${guildSaves + 0.25}/3 saves\``
                                 })
 
-                                return interaction.reply({
-                                    content: `You have donated \`1 personal save\` to the guild
+                                if (guildSaves === 3) {
+                                    return interaction.reply({
+                                        content: `You have donated \`1 personal save\` to the guild
+> You now have \`${saves - 1}/2 personal saves\` left
+> The guild now has \`3/3 saves\``,
+                                        ephemeral: true
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));F
+                                } else {
+                                    return interaction.reply({
+                                        content: `You have donated \`1 personal save\` to the guild
 > You now have \`${saves - 1}/2 personal saves\` left
 > The guild now has \`${guildSaves + 0.25}/3 saves\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                                        ephemeral: true
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                                }
                             }
                         }
                     }
