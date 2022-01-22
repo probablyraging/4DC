@@ -7,17 +7,19 @@ module.exports = (message, client) => {
     /**
      * This blacklist focuses on strict blacklisting in all channels for Discord nitro scam/virus links
      */
-    if (message?.author.id === process.env.OWNER_ID || message?.deleted) return;
+    if (message?.author.id === process.env.OWNER_ID || message?.deleted || message?.author.bot) return;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
     const staffChan = client.channels.cache.get(process.env.STAFF_CHAN);
 
+    const contLow = message?.content.toLowerCase();
+
     const member = message?.member;
 
-    if (!message?.content.toLowerCase().includes('https://discord.com/') && message?.content.toLowerCase().includes('https://') && message?.content.toLowerCase().includes('nitro')
-        || message?.content.toLowerCase().includes('http://') && message?.content.toLowerCase().includes('nitro')
-        || message?.content.toLowerCase().includes('www.') && message?.content.toLowerCase().includes('nitro')) {
+    if (!contLow.includes('https://discord.com/') && !contLow.includes('https://discord.gg/') && contLow.includes('https://') && contLow.includes('nitro')
+        || contLow.includes('http://') && contLow.includes('nitro')
+        || contLow.includes('www.') && contLow.includes('nitro')) {
         member?.send({
             content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timedout until a staff member can verify if this is a mistake or not\``
         }).catch(() => {
