@@ -39,11 +39,13 @@ module.exports = {
      */
     execute(interaction) {
         const { message, channel, client, options } = interaction;
+        
+        const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
         try {
             switch (options.getSubcommand()) {
                 case 'welcome': {
-                    channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
+                    channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
                         webhook.send(index.welcome[0])
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         setTimeout(() => {
@@ -60,7 +62,7 @@ module.exports = {
 
             switch (options.getSubcommand()) {
                 case 'rules': {
-                    channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
+                    channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
                         setTimeout(() => {
                             webhook.send(`**SERVER RULES**
 ${rules.pre}
@@ -93,7 +95,7 @@ ${rules.pre}
 
             switch (options.getSubcommand()) {
                 case 'faq': {
-                    channel.createWebhook(client.user.username, { avatar: `https://cdn.discordapp.com/avatars/${client.user.id}/${client.user.avatar}.png` }).then(webhook => {
+                    channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
                         for (let i = 0; i < index.faq.length; i++) {
                             setTimeout(function () {
                                 webhook.send({

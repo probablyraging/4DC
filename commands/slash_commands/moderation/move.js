@@ -119,6 +119,8 @@ module.exports = {
                     let msgContent = msg.content || " ";
                     let author = msg.author;
 
+                    const avatarURL = author.displayAvatarURL({ format: 'png', size: 256 });
+
                     if (!author) {
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         deletedMessages++;
@@ -133,7 +135,7 @@ module.exports = {
                                 imageArr.push(image.url);
                             });
 
-                            toChannel.createWebhook(authorUsername, { avatar: author.displayAvatarURL() }).then(webhook => {
+                            toChannel.createWebhook(authorUsername, { avatar: avatarUrl }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     files: imageArr,
@@ -147,7 +149,7 @@ module.exports = {
 
                             msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         } else {
-                            toChannel.createWebhook(authorUsername, { avatar: author.displayAvatarURL() }).then(webhook => {
+                            toChannel.createWebhook(authorUsername, { avatar: avatarURL }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     allowedMentions: {

@@ -9,6 +9,7 @@ const blMass = require('../../modules/blacklist/bl_mass');
 const blWords = require('../../modules/blacklist/bl_words');
 const blTwitch = require('../../modules/blacklist/bl_twitch');
 const blSpam = require('../../modules/blacklist/bl_spam');
+const blNitro = require('../../modules/blacklist/bl_nitro');
 const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -29,6 +30,7 @@ module.exports = {
         blWords(message, client, Discord);
         blTwitch(message, client, Discord);
         blSpam(message, client, Discord);
+        blNitro(message, client);
         ckqPost(message);
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);
@@ -54,7 +56,6 @@ module.exports = {
                         msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     }, 5000);
                 });
-
             setTimeout(() => {
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }, 100);
