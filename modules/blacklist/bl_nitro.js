@@ -35,7 +35,7 @@ module.exports = (message, client) => {
 
         setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-        // member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+        member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
         let msgContent = message?.content || ` `;
         if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
