@@ -73,7 +73,7 @@ module.exports = {
 
                                     interaction.reply({
                                         content: `You currently have \`${saves}/2\` saves
-The guild currently has \`${guildSaves + 0.25}/3 saves\`
+The guild currently has \`${guildSaves}/3 saves\`
 
 To earn more saves you must bump the server
 The server can be bumped once every 2 hours, by anyone
