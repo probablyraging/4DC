@@ -1,5 +1,4 @@
 const { Message, MessageEmbed } = require('discord.js');
-const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
  * @param {Message} message 
@@ -8,7 +7,7 @@ module.exports = (message, client) => {
     /**
      * This blacklist focuses on strict blacklisting in all channels for Discord nitro scam/virus links
      */
-    if (message?.deleted) return;
+    if (message?.author.id === process.env.OWNER_ID || message?.deleted) return;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
