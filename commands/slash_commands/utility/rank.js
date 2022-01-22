@@ -142,9 +142,9 @@ module.exports = {
                     if (rankPos === 1) {
                         ctx.drawImage(rankFirst, 820, 50, 70, 70);
                     } else if (rankPos === 2) {
-                        ctx.drawImage(rankSecond, 800, 50, 90, 90);
+                        ctx.drawImage(rankSecond, 820, 50, 70, 70);
                     } else if (rankPos === 3) {
-                        ctx.drawImage(rankThird, 800, 50, 90, 90);
+                        ctx.drawImage(rankThird, 820, 50, 70, 70);
                     } else {
                         ctx.font = "55px grotesk";
                         ctx.fillStyle = "#44eaff";
