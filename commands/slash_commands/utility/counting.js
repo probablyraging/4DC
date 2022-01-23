@@ -71,6 +71,8 @@ module.exports = {
                                 for (const guildData of guildResults) {
                                     const guildSaves = guildData.saves;
 
+                                    if (saves === undefined) saves = 0; 
+
                                     interaction.reply({
                                         content: `You currently have \`${saves}/2\` saves
 The guild currently has \`${guildSaves}/3 saves\`
