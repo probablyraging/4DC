@@ -66,15 +66,15 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
             setTimeout(() => ckqChannel.bulkDelete(10).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
                 .then(ckqChannel.send({
                     embeds: [ckEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))), 100);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))), 5000);
 
             setTimeout(() => ckqRole.members.each(member => {
                 member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-            }), 200);
+            }), 5200);
 
             setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
                 SEND_MESSAGES: true,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 5300);
 
             await mongo().then(async mongoose => {
                 await timerSchema.findOneAndUpdate({

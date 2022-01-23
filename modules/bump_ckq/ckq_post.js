@@ -17,6 +17,30 @@ module.exports = async (message) => {
         const ckqRole = message?.guild.roles.cache.get(process.env.CKQ_ROLE);
         const target = message?.member;
 
+        function detectURLs(message) {
+            var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+            return message.match(urlRegex)
+        }
+
+        // we only allow 1 link per post
+        if (detectURLs(message.content.toLowerCase()).length > 1) {
+            target?.send({
+                content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``
+            }).catch(() => {
+                message?.reply({
+                    content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
+                }).catch(err => {
+                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                }).then(msg => {
+                    setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+                });
+            });
+
+            return setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+        }
+
         ckqChannel.permissionOverwrites.edit(message?.guildId, {
             SEND_MESSAGES: false,
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
@@ -26,7 +50,7 @@ module.exports = async (message) => {
         const myDate = new Date();
         const addTwo = myDate.setHours(myDate.getHours() + 5);
         const timestamp = addTwo;
-        
+
         await mongo().then(async mongoose => {
             const searchFor = 'currentTime';
 
