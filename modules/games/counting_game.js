@@ -186,27 +186,33 @@ module.exports = async (message, client) => {
                 const results = await countingSchema.find({ userId: author.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                // if user doesn't exist in the satabase yet, create an entry for them
-                await countingSchema.findOneAndUpdate({
-                    userId: author.id,
-                }, {
-                    userId: author.id,
-                    counts: 1,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-                for (const data of results) {
-                    const { counts } = data;
-
+                if (results === 0) {
+                    // if user doesn't exist in the satabase yet, create an entry for them
                     await countingSchema.findOneAndUpdate({
-                        userId: author.id
+                        userId: author.id,
                     }, {
-                        counts: counts + 1
+                        userId: author.id,
+                        counts: 1,
+                        saves: 0
                     }, {
                         upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                } else {
+                    for (const data of results) {
+                        const { counts, saves } = data;
+
+                        await countingSchema.findOneAndUpdate({
+                            userId: author.id
+                        }, {
+                            counts: counts + 1,
+                            saves: saves
+                        }, {
+                            upsert: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    }
                 }
+
+
             }
 
             // keep track of the current count

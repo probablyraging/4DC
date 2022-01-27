@@ -1,7 +1,7 @@
 const { ContextMenuInteraction } = require('discord.js');
 const mongo = require('../../../mongo');
 const path = require('path');
-const rankSchema = require('../../../schemas/misc/rank_schema');
+const countingSchema = require('../../../schemas/counting_game/counting_schema');
 
 module.exports = {
     name: `test`,
@@ -18,20 +18,22 @@ module.exports = {
 
         await mongo().then(async mongoose => {
 
-            const results = await rankSchema.find();
+            const results = await countingSchema.find();
 
             for (const data of results) {
-                const { id, rank } = data
+                const { userId, saves } = data
 
-                console.log(data.rank)
+                if (!saves) {
+                    await countingSchema.findOneAndUpdate({
+                        userId
+                    }, {
+                        saves: 0
+                    }, {
+                        upsert: true
+                    })
+                }
 
-                await rankSchema.findOneAndUpdate({
-                    id
-                }, {
-                    rank: parseInt(rank)
-                }, {
-                    upsert: true
-                })
+
             }
         })
 
