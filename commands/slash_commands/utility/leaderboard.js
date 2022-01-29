@@ -9,8 +9,6 @@ const countingCurrent = require('../../../schemas/counting_game/counting_current
 const path = require('path');
 const fetch = require('node-fetch');
 
-
-
 module.exports = {
     name: `leaderboard`,
     description: `View leaderboards for the server ranks, games and others`,
@@ -59,7 +57,7 @@ module.exports = {
                         .setTimestamp()
 
                     await mongo().then(async mongoose => {
-                        const sort = await rankSchema.find({ rank: { $gte: 1, $lt: 11 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                        const sort = await rankSchema.find({ rank: { $gte: 1, $lt: 50 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                         sortArr = [];
                         for (const data of sort) {
