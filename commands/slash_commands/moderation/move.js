@@ -135,7 +135,7 @@ module.exports = {
                                 imageArr.push(image.url);
                             });
 
-                            toChannel.createWebhook(authorUsername, { avatar: avatarUrl }).then(webhook => {
+                            toChannel.createWebhook(authorUsername, { avatar: avatarURL }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     files: imageArr,
