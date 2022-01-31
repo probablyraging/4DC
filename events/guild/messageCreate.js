@@ -1,4 +1,4 @@
-const {Message} = require('discord.js');
+const { Message } = require('discord.js');
 const path = require('path');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
@@ -59,6 +59,31 @@ module.exports = {
             setTimeout(() => {
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }, 100);
+        }
+
+        // NOTE : this can be deleted when this kid stops annoying us lol
+        // check if the video author is ROVB
+        if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
+            const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
+            const replace = urlInStr[0].replace('www.', ''); ``
+
+            try {
+                const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
+                const response = await resolve.json();
+
+                // send the little shit a message
+                if (response && response.author_name.toLowerCase() === rovb) {
+                    message?.member?.send({
+                        content: `${process.env.BOT_DENY} \`Nobody cares mate, go outside and play or do something productive instead\``
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+
+                    // delete his message
+                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+
+                    // ban him :D
+                    message?.member.ban({ days: 0, reason: 'Kid needs a life' }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+                }
+            } catch { }
         }
     }
 };
