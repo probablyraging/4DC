@@ -63,6 +63,11 @@ module.exports = {
 
         // NOTE : this can be deleted when this kid stops annoying us lol
         // check if the video author is ROVB
+        function detectURLs(message) {
+            var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+            return message.match(urlRegex)
+        }
+        
         if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
             const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
             const replace = urlInStr[0].replace('www.', ''); ``
