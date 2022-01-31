@@ -67,10 +67,10 @@ module.exports = {
             var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
             return message.match(urlRegex)
         }
-        
+
         if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
             const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
-            const replace = urlInStr[0].replace('www.', ''); ``
+            const replace = urlInStr[0].replace('www.', '');
 
             try {
                 const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
