@@ -28,24 +28,27 @@ module.exports = {
         await interaction.deferReply({ephemeral: true});
 
         let videosSinceLastProof = await getVideosSinceLastProof(member.id);
+        // Build the main section of the reply
+        let videoReply;
         if (videosSinceLastProof.length === 0) {
-            await interaction.editReply(`No videos were found since you last posted proof.`).catch(err => console.error("There was a problem replying to the interaction: ", err));
+            videoReply = "No videos were found since you last posted proof.";
         } else {
-            let latestVideoTs = await getLatestVideoTs(member.id);
-            let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
-            let timeRemaining = (waitUntil - new Date()).valueOf();
-            let videoReply = `Below are the ${videosSinceLastProof.length} videos that you need to watch since you last posted proof: `;
+            videoReply = `Below are the ${videosSinceLastProof.length} videos that you need to watch since you last posted proof: `;
             let videoNumber = 1;
             videosSinceLastProof.forEach(link => {
                 videoReply = videoReply + `\n> ${videoNumber++}: <` + link + ">";
             });
-            if (timeRemaining > 0) {
-                videoReply = videoReply + `\nYou must wait ${msToHumanTime(timeRemaining)} before posting another video to ${channel}.`
-            } else {
-                videoReply = videoReply + `\nYou can post another video to ${channel}.`
-            }
-            await interaction.editReply(videoReply)
-                .catch(err => console.error("There was a problem replying to the interaction: ", err));
         }
+        // Add the time remaining until the user can post another video
+        let latestVideoTs = await getLatestVideoTs(member.id);
+        let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
+        let timeRemaining = (waitUntil - new Date()).valueOf();
+        if (timeRemaining > 0) {
+            videoReply = videoReply + `\nYou must wait ${msToHumanTime(timeRemaining)} before posting another video to ${channel}.`
+        } else {
+            videoReply = videoReply + `\nYou can post another video to ${channel}.`
+        }
+        await interaction.editReply(videoReply)
+            .catch(err => console.error("There was a problem replying to the interaction: ", err));
     }
 };
