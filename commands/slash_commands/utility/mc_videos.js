@@ -35,8 +35,9 @@ module.exports = {
             let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
             let timeRemaining = (waitUntil - new Date()).valueOf();
             let videoReply = `Below are the ${videosSinceLastProof.length} videos that you need to watch since you last posted proof: `;
+            let videoNumber = 1;
             videosSinceLastProof.forEach(link => {
-                videoReply = videoReply + "\n> <" + link + ">";
+                videoReply = videoReply + `\n> ${videoNumber++}: <` + link + ">";
             });
             if (timeRemaining > 0) {
                 videoReply = videoReply + `\nYou must wait ${msToHumanTime(timeRemaining)} before posting another video to ${channel}.`

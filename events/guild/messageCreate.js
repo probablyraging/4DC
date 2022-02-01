@@ -77,7 +77,7 @@ module.exports = {
                 const response = await resolve.json();
 
                 // send the little shit a message
-                if (response && response.author_name.toLowerCase() === rovb) {
+                if (response && response.author_name.toLowerCase() === "rovb") {
                     message?.member?.send({
                         content: `${process.env.BOT_DENY} \`Nobody cares mate, go outside and play or do something productive instead\``
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
