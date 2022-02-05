@@ -75,7 +75,8 @@ async function checkPreviousModsChoiceMessages(client) {
                 if (videoIdArray != null) {
                     let youtubeVideoId = videoIdArray[1];
                     await mcData.addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId);
-                } else if (message.attachments.size > 0 && message.attachments.every(attachmentIsImage)) {
+                }
+                if (message.attachments.size > 0 && message.attachments.every(attachmentIsImage)) {
                     // Check if this timestamp is before or after the latest proof in the database
                     let latestProofTs = await mcData.getLatestProofTs(authorId);
                     if (!latestProofTs) {
