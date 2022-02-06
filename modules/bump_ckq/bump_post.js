@@ -111,6 +111,17 @@ ${savesMessage}`)
                     setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 10000);
                 });
         }
+    } else {
+        if (message?.content === '!d bump' && !message?.member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author.bot) {
+            message?.reply({
+                content: `${process.env.BOT_DENY} \`You can only use this command in\` <#${process.env.BUMP_CHAN}>`,
+                allowedMentions: { repliedUser: true },
+                failIfNotExists: false
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
+                .then(msg => {
+                    setTimeout(() => msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)), 7000);
+                });
+        }
     }
 
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === process.env.DISBOARD_ID) {
