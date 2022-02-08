@@ -175,8 +175,9 @@ async function setLatestProof(authorId, messageId, messageTimestamp) {
             // Set the proof id and timestamp, and reset the notification flags
             result.proofId = messageId;
             result.proofTs = messageTimestamp;
-            result.userNotified = false;
-            result.staffNotified = false;
+            result.threeDays = false;
+            result.fourDays = false;
+            result.fiveDays = false;
             result.save();
         }
     });
@@ -189,7 +190,7 @@ async function setLatestProof(authorId, messageId, messageTimestamp) {
  */
 async function setFakeProof(authorId, messageId, messageTimestamp) {
     return await mongo().then(async () => {
-        const fakeProof = new mcProofModel({author: authorId, proofId: messageId, proofTs: messageTimestamp, userNotified: true, staffNotified: true, missedCount: 1});
+        const fakeProof = new mcProofModel({author: authorId, proofId: messageId, proofTs: messageTimestamp, threeDays: true, missedCount: 1});
         fakeProof.save(function (err) {
             if (err) {
                 return console.error(`${path.basename(__filename)} There was a problem saving fake proof for user ${authorId} from message ${messageId}: `, err);
@@ -215,11 +216,11 @@ async function getLatestProofTs(authorId) {
 }
 
 /**
- * @return {mcProofModel[]} An array of proof model for users who staff have been notified about
+ * @return {mcProofModel[]} An array of proof model for users who staff have been notified about - i.e. have not posted proof for 3+ days
  */
 async function getWarnedUsersProof() {
     return await mongo().then(async () => {
-        let results = await mcProofModel.find({staffNotified: true}).exec()
+        let results = await mcProofModel.find({threeDays: true}).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching the array of proof for all warned users: `, err));
         if (!results) {
             return [];
@@ -266,16 +267,30 @@ async function getProofBeforeDate(timestamp) {
 
 /**
  * @param {String} authorId The Discord User.id
+ * @param {Number} days The number of days to include in the message
  */
-async function setUserNotified(authorId) {
+async function setWarningLevel(authorId, days) {
     return await mongo().then(async () => {
         let result = await mcProofModel.findOne({author: authorId}).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem finding proof for the user ${authorId}: `, err));
         if (!result) {
-            console.error(`Tried to set a warning on user ${authorId}, but could not find proof in the database.`);
+            console.error(`Tried to set a warning on ${authorId}, but could not find proof in the database.`);
         } else {
-            // Set the proof link and timestamp, and reset the notification flags
-            result.userNotified = true;
+            switch (days) {
+                case 3:
+                    result.threeDays = true;
+                    result.missedCount = (result.missedCount + 1);
+                    break;
+                case 4:
+                    result.fourDays = true;
+                    break;
+                case 5:
+                    result.fiveDays = true;
+                    break;
+                default:
+                    console.error(`${path.basename(__filename)} Did not recognise the action to take for ${days} days missed.`);
+                    return;
+            }
             result.save();
         }
     });
@@ -283,18 +298,44 @@ async function setUserNotified(authorId) {
 
 /**
  * @param {String} authorId The Discord User.id
+ * @return {Boolean} The new setting of whether the user is away
  */
-async function setStaffNotified(authorId) {
+async function toggleAway(authorId) {
     return await mongo().then(async () => {
         let result = await mcProofModel.findOne({author: authorId}).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem finding proof for the user ${authorId}: `, err));
         if (!result) {
-            console.error(`Tried to set staff notified on user ${authorId}, but could not find proof in the database.`);
+            console.error(`Tried to set the user ${authorId} as away, but could not find proof in the database.`);
+            return null;
         } else {
-            // Set the proof link and timestamp, and reset the notification flags
-            result.staffNotified = true;
-            result.missedCount = (result.missedCount + 1);
+            if (result.away) {
+                // When the user comes back from being away, set the latest proof time as now, so they don't get warnings for when they were away
+                result.proofTs = new Date().valueOf();
+                result.away = false;
+            } else {
+                result.away = true;
+            }
             result.save();
+            return result.away;
+        }
+    });
+}
+
+/**
+ * @return {String[]} All Discord User.ids of people who are away
+ */
+async function getAwayUsers() {
+    return await mongo().then(async () => {
+        let results = await mcProofModel.find({away: true}).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+        if (!results || results.length === 0) {
+            return [];
+        } else {
+            let authors = new Set();
+            results.forEach(result => {
+                authors.add(result.author);
+            });
+            return [...authors];
         }
     });
 }
@@ -315,6 +356,7 @@ module.exports = {
     getWarnedUsersProof,
     setLatestProof,
     setFakeProof,
-    setUserNotified,
-    setStaffNotified
+    setWarningLevel,
+    toggleAway,
+    getAwayUsers
 };

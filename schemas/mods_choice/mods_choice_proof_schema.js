@@ -13,12 +13,22 @@ const modsChoiceProofSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    userNotified: {
+    threeDays: {
         type: Boolean,
         required: true,
         default: false
     },
-    staffNotified: {
+    fourDays: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    fiveDays: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    away: {
         type: Boolean,
         required: true,
         default: false

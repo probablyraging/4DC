@@ -2,7 +2,9 @@ require("dotenv").config();
 const path = require("path");
 const mcData = require("./mods_choice_data");
 const {getYoutubeVideoId, attachmentIsImage} = require("./mods_choice_utils");
-const {interval, twoDays, threeDays, oneMonth} = require("./mods_choice_constants");
+const {interval, threeDays, fourDays, fiveDays, oneMonth, ModsChoiceWarningType} = require("./mods_choice_constants");
+const {addWarning} = require("./mods_choice_warning_data");
+const {v4: uuidv4} = require('uuid');
 
 /**
  * @param {String[]} messageIds A list of Discord Message.ids to delete
@@ -25,10 +27,13 @@ async function deleteMessages(messageIds, channel) {
 /**
  * @param {GuildMember} guildMember A Discord Member to notify
  * @param {TextChannel} channel The Discord Channel the user is being notified about
- * @param {String} timeString The time string to include in the notification message
+ * @param {Number} days The number of days to include in the message
  */
-function sendUserNotification(guildMember, channel, timeString) {
-    let notificationMessage = `${guildMember} - you have not posted proof in ${channel} in the last ${timeString}. Users who have not posted in the last 3 days risk being removed from the channel.`;
+function sendUserNotification(guildMember, channel, days) {
+    let notificationMessage = `${guildMember} - you have not posted proof in ${channel} in the last ${days} days. Users who have not posted in the last 3 days risk being removed from the channel.\nIf you are going to be away for an extended period of time, then please contact a member of the CreatorHub Staff.`;
+    if (days === 4 || days === 5) {
+        notificationMessage += `\nPlease use the \`/mcvideos\` command in ${channel} and watch all the videos in the response.`;
+    }
     guildMember.send(notificationMessage)
         .catch(err => {
             console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err);
@@ -41,9 +46,10 @@ function sendUserNotification(guildMember, channel, timeString) {
  * @param {GuildMember} guildMember A Discord Member we are notifying about
  * @param {TextChannel} staffChannel The Discord Channel for staff
  * @param {TextChannel} mcChannel The Discord Channel for mods choice
+ * @param {Number} days The number of days to include in the message
  */
-function sendStaffNotification(guildMember, staffChannel, mcChannel) {
-    let notificationMessage = `${guildMember} has not posted proof in ${mcChannel} in the last 3 days.`;
+function sendStaffNotification(guildMember, staffChannel, mcChannel, days) {
+    let notificationMessage = `${guildMember} has not posted proof in ${mcChannel} in the last ${days} days.`;
     staffChannel.send(notificationMessage)
         .catch(err => {
             console.error(`${path.basename(__filename)} There was a problem sending a staff notification: `, err);
@@ -96,6 +102,59 @@ async function checkPreviousModsChoiceMessages(client) {
 }
 
 /**
+ * @param {Client} client The Discord client
+ * @param {Guild} guild A Discord guild
+ * @param {TextChannel} staffChannel The Discord Channel for staff
+ * @param {TextChannel} mcChannel The Discord Channel for mods choice
+ * @param {Number} days The number of days to include in the message
+ */
+async function warnUsers(client, guild, mcChannel, staffChannel, days) {
+    let timespan;
+    let notifyStaff = false;
+    let warnUser = false;
+    let proofVariable;
+    switch (days) {
+        case 3:
+            timespan = threeDays;
+            proofVariable = "threeDays";
+            notifyStaff = true;
+            break;
+        case 4:
+            timespan = fourDays;
+            proofVariable = "fourDays";
+            warnUser = true;
+            break;
+        case 5:
+            timespan = fiveDays;
+            proofVariable = "fiveDays";
+            notifyStaff = true;
+            warnUser = true;
+            break;
+        default:
+            console.error(`${path.basename(__filename)} Did not recognise the action to take for ${days} days missed.`);
+            return;
+    }
+
+    let beforeDate = new Date(new Date().valueOf() - timespan);
+    let proofArray = await mcData.getProofBeforeDate(beforeDate.valueOf());
+    let usersToWarn = proofArray.filter(proof => !proof[proofVariable] && !proof.away).map(proof => proof.author);
+    await usersToWarn.forEach(user => {
+        let guildMember = guild.members.cache.get(user);
+        if (guildMember) {
+            sendUserNotification(guildMember, mcChannel, days);
+            if (notifyStaff) {
+                sendStaffNotification(guildMember, staffChannel, mcChannel, days);
+            }
+            if (warnUser) {
+                const botId = client.user.id;
+                addWarning(user, uuidv4(), botId, ModsChoiceWarningType.HAS_NOT_POSTED_PROOF.value, null);
+            }
+        }
+        mcData.setWarningLevel(user, days);
+    });
+}
+
+/**
  * @param {Client} client
  */
 async function setupModsChoiceChecks(client) {
@@ -124,35 +183,20 @@ async function setupModsChoiceChecks(client) {
         // Clean up proof from non-members
         await mcData.deleteProofFromNonChannelMembers(allowedMembers);
 
-        // Check if anyone hasn't posted a picture in 2 days, and hasn't been warned
-        let twoDaysAgo = new Date(new Date().valueOf() - twoDays);
-        let proofArray = await mcData.getProofBeforeDate(twoDaysAgo.valueOf());
-        let usersToWarn = proofArray.filter(proof => !proof.userNotified).map(proof => proof.author);
-        await usersToWarn.forEach(user => {
-            let guildMember = guild.members.cache.get(user);
-            if (guildMember) {
-                sendUserNotification(guildMember, mcChannel, "2 days");
-            }
-            mcData.setUserNotified(user);
-        });
+        // Check if anyone hasn't posted a picture in 3 days
+        await warnUsers(client, guild, mcChannel, staffChannel, 3);
 
-        // Check if anyone hasn't posted a picture in 3 days, and staff haven't been notified
-        let threeDaysAgo = new Date(new Date().valueOf() - threeDays);
-        proofArray = await mcData.getProofBeforeDate(threeDaysAgo.valueOf());
-        usersToWarn = proofArray.filter(proof => !proof.staffNotified).map(proof => proof.author);
-        await usersToWarn.forEach(user => {
-            let guildMember = guild.members.cache.get(user);
-            if (guildMember) {
-                sendUserNotification(guildMember, mcChannel, "3 days");
-                sendStaffNotification(guildMember, staffChannel, mcChannel);
-            }
-            mcData.setStaffNotified(user);
-        });
+        // Check if anyone hasn't posted a picture in 4 days
+        await warnUsers(client, guild, mcChannel, staffChannel, 4);
+
+        // Check if anyone hasn't posted a picture in 5 days
+        await warnUsers(client, guild, mcChannel, staffChannel, 5);
 
         // Get members with no proof, but who do have a video posted
         let allProofAuthors = await mcData.getProofAuthors();
         let videosWithoutProof = await mcData.getVideosNotFromUsers(allProofAuthors);
         let users = new Set();
+        let threeDaysAgo = new Date(new Date().valueOf() - threeDays);
         videosWithoutProof.forEach(video => {
             if (threeDaysAgo.valueOf() > video.videoTs) {
                 users.add(video.author);
@@ -162,7 +206,7 @@ async function setupModsChoiceChecks(client) {
         [...users].forEach(user => {
             // For each user, we notify them and set a "fake" proof (which is just the message in the staff channel)
             let guildMember = guild.members.cache.get(user);
-            sendUserNotification(guildMember, mcChannel, "3 days");
+            sendUserNotification(guildMember, mcChannel, 3);
             staffChannel.send(`${guildMember} has never posted proof in ${mcChannel}, and has videos older than 3 days.`)
                 .then(message => {
                     let messageId = message.id;
