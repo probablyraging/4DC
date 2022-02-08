@@ -340,6 +340,18 @@ async function getAwayUsers() {
     });
 }
 
+/**
+ * @param {String} userId The Discord User.id
+ * @return {Boolean} True if the user is set to away, else false
+ */
+async function isAway(userId) {
+    return await mongo().then(async () => {
+        let result = await mcProofModel.findOne({author: userId}).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+        return result ? result.away : false;
+    });
+}
+
 module.exports = {
     addVideo,
     deleteVideosBefore,
@@ -358,5 +370,6 @@ module.exports = {
     setFakeProof,
     setWarningLevel,
     toggleAway,
-    getAwayUsers
+    getAwayUsers,
+    isAway
 };

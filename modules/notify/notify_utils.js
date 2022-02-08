@@ -1,7 +1,8 @@
 const path = require("path");
+const {GuildMember, User, TextChannel} = require("discord.js");
 
 /**
- * @param {GuildMember} member The Discord.GuildMember to notify
+ * @param {GuildMember | User} member The Discord.GuildMember or Discord.User to notify
  * @param {String} message The message to send to the user
  * @param {TextChannel | null} backupChannel A backup channel to send the message to if the user cannot be DM'd, or null
  */

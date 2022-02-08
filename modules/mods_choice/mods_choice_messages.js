@@ -1,9 +1,10 @@
 require("dotenv").config();
 const {MessageEmbed, MessageAttachment} = require("discord.js");
 const path = require("path");
-const {getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo} = require("./mods_choice_data");
+const {getLatestVideoTs, getVideosSince, getLatestProofTs, setLatestProof, addVideo, isAway} = require("./mods_choice_data");
 const {msToHumanTime, getYoutubeVideoId, attachmentIsImage} = require("./mods_choice_utils");
 const {delayBetweenVideos} = require("./mods_choice_constants");
+const {notifyUser} = require("../notify/notify_utils");
 const Canvas = require("canvas");
 
 /**
@@ -26,9 +27,14 @@ module.exports = async (message, client) => {
 
         if (isValidPost) {
             if (hasVideo) {
-                // Check if the user is allowed to post (i.e. 24 hours is up)
+                // Check if the user is allowed to post (i.e. 24 hours is up and they're not away)
                 let latestVideoTs = await getLatestVideoTs(authorId);
-                if (!latestVideoTs || Math.abs(new Date().valueOf() - latestVideoTs) >= delayBetweenVideos) {
+                let away = await isAway(authorId);
+                if (away) {
+                    let notificationMessage = `${author} - you are currently set to away. Please contact a member of the CreatorHub Staff to let them know that you are back before posting a video.`;
+                    notifyUser(author, notificationMessage, null);
+                    message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                } else if (!latestVideoTs || Math.abs(new Date().valueOf() - latestVideoTs) >= delayBetweenVideos) {
                     // The video ID is stored in capture group 1, while the whole link is capture group 0
                     let youtubeVideoId = videoIdArray[1];
                     await addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId);
@@ -36,12 +42,7 @@ module.exports = async (message, client) => {
                     let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
                     let timeRemaining = (waitUntil - new Date()).valueOf();
                     let notificationMessage = `${author} - you must wait ${msToHumanTime(timeRemaining)} before posting another video to ${message.channel}.`;
-                    author.send(notificationMessage)
-                        .catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err);
-                            message.channel.send(notificationMessage)
-                                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a channel message: `, err));
-                        });
+                    notifyUser(author, notificationMessage, message.channel);
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                     return;
                 }
