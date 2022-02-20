@@ -18,7 +18,7 @@ module.exports = (message, client) => {
     const contLow = message?.content.toLowerCase();
 
     let ignore = false;
-    const ignoreArr = ['https://discord.com/', 'discord.com/invite', 'discord.gg/']
+    const ignoreArr = ['https://discord.com/', 'discord.com/invite', 'discord.gg/', 'https://tenor.com/']
     const nitroArr = ['https://', 'http://', 'www'];
 
     for (var i in ignoreArr) {
@@ -28,7 +28,7 @@ module.exports = (message, client) => {
     }
 
     for (var i in nitroArr) {
-        if (!ignore && contLow.includes(nitroArr[i]) && contLow.includes('nitro')) {
+        if (!ignore && contLow.includes(nitroArr[i]) && contLow.includes('nitro') || !ignore && contLow.includes(nitroArr[i]) && contLow.includes('gift') && contLow.includes('everyone')) {
             member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
             
             member?.send({
