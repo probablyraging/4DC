@@ -1,6 +1,6 @@
 require("dotenv").config();
-const {getVideosSinceLastProof, getLatestVideoTs} = require("../../../modules/mods_choice/mods_choice_data");
-const {delayBetweenVideos} = require("../../../modules/mods_choice/mods_choice_constants");
+const {getVideosSinceLastProof, getLatestVideoTs, isAway} = require("../../../modules/mods_choice/mods_choice_data");
+const {delayBetweenVideos, maxMessageLength, maxLengthMessage} = require("../../../modules/mods_choice/mods_choice_constants");
 const {msToHumanTime} = require("../../../modules/mods_choice/mods_choice_utils");
 
 module.exports = {
@@ -33,11 +33,18 @@ module.exports = {
         if (videosSinceLastProof.length === 0) {
             videoReply = "No videos were found since you last posted proof.";
         } else {
-            videoReply = `Below are the ${videosSinceLastProof.length} videos that you need to watch since you last posted proof: `;
-            let videoNumber = 1;
-            videosSinceLastProof.forEach(link => {
-                videoReply = videoReply + `\n> ${videoNumber++}: <` + link + ">";
-            });
+            videoReply = `Below are the videos that you need to watch since you last posted proof: `;
+            for (let i = 0; i < videosSinceLastProof.length; i++) {
+                let link = videosSinceLastProof[i];
+                let toAppend = `\n> ${i + 1}: <` + link + ">";
+                // We remove 120 chars for the message about how much time is left before posting - this is variable length, but below 120 chars
+                if ((videoReply.length + toAppend.length) < (maxMessageLength - maxLengthMessage.length - 120)) {
+                    videoReply += toAppend;
+                } else {
+                    videoReply += maxLengthMessage;
+                    break;
+                }
+            }
         }
         // Add the time remaining until the user can post another video
         let latestVideoTs = await getLatestVideoTs(member.id);

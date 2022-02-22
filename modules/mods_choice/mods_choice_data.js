@@ -59,7 +59,7 @@ async function getVideosSince(messageTimestamp) {
             return [];
         } else {
             let urls = new Set();
-            results.forEach(result => urls.add("https://www.youtube.com/watch?v=" + result.videoId));
+            results.forEach(result => urls.add("https://youtu.be/" + result.videoId));
             return [...urls];
         }
     });

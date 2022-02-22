@@ -10,6 +10,9 @@ const fourDays = 4 * oneDay;
 const fiveDays = 5 * oneDay;
 const oneMonth = 31 * oneDay;
 
+const maxMessageLength = 2000;
+const maxLengthMessage = "\nThis message has exceeded the max length allowed by Discord, and has been truncated.";
+
 class ModsChoiceWarningType {
 
     static LACK_OF_TABS = new ModsChoiceWarningType("Lack of Tabs in Screenshot", "LACK_OF_TABS");
@@ -29,5 +32,7 @@ module.exports = {
     fourDays,
     fiveDays,
     oneMonth,
+    maxMessageLength,
+    maxLengthMessage,
     ModsChoiceWarningType
 };
