@@ -16,12 +16,15 @@ module.exports = async (client) => {
             let memberCount = guild.memberCount;
 
             // format numbers greater than 999
-            function kFormatter(num) {
+            function kFormatter1(num) {
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'K' : Math.sign(num) * Math.abs(num);
+            }
+            function kFormatter2(num) {
                 return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'K' : Math.sign(num) * Math.abs(num);
             }
 
-            let onlineReal = kFormatter(totalOnline);
-            let totalReal = kFormatter(memberCount);
+            let onlineReal = kFormatter2(totalOnline);
+            let totalReal = kFormatter1(memberCount);
 
             const channelOnline = guild.channels.cache.get(process.env.VC_ONLINE);
             const channelTotal = guild.channels.cache.get(process.env.VC_TOTAL);
