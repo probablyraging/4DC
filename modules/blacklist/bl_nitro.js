@@ -28,7 +28,7 @@ module.exports = (message, client) => {
     }
 
     for (var i in nitroArr) {
-        if (!ignore && contLow.includes(nitroArr[i]) && contLow.includes('nitro') || !ignore && contLow.includes(nitroArr[i]) && contLow.includes('gift') && contLow.includes('everyone')) {
+        if (!ignore && contLow.includes(nitroArr[i]) && contLow.includes('nitro') || !ignore && contLow.includes(nitroArr[i]) && contLow.includes('.gift')) {
             member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
             
             member?.send({

@@ -8,7 +8,7 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
         const userUpChan = client.channels.cache.get(process.env.USERUP_CHAN);
-        const botChan = client.channels.cache.get(process.env.BOT_CHAN);
+        // const botChan = client.channels.cache.get(process.env.BOT_CHAN);
         const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
 
         // nickname changes
@@ -41,9 +41,9 @@ module.exports = {
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-            botChan.send({
-                content: `${oName}#${oldMember?.user?.discriminator} is now known as ${nName}#${newMember?.user?.discriminator}`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            // botChan.send({
+            //     content: `${oName}#${oldMember?.user?.discriminator} is now known as ${nName}#${newMember?.user?.discriminator}`
+            // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
         // timeout logs

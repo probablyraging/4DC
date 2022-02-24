@@ -1,7 +1,7 @@
 const { ContextMenuInteraction } = require('discord.js');
-const mongo = require('../../../mongo');
-const path = require('path');
-const countingSchema = require('../../../schemas/counting_game/counting_schema');
+const { Modal, TextInputComponent, showModal } = require('discord-modals');
+
+const discordModals = require('discord-modals');
 
 module.exports = {
     name: `test`,
@@ -14,29 +14,37 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, options } = interaction;
+        const { client } = interaction;
 
-        await mongo().then(async mongoose => {
+        discordModals(client);
 
-            const results = await countingSchema.find();
+        const modal = new Modal()
+            .setCustomId('modal-customid')
+            .setTitle('CreatorHub - Report A User')
+            .addComponents(
+                new TextInputComponent()
+                    .setCustomId('username')
+                    .setLabel('Username')
+                    .setStyle('SHORT')
+                    .setMinLength(1)
+                    .setMaxLength(32)
+                    .setPlaceholder('Enter a username here')
+                    .setRequired(true)
+            )
+            .addComponents(
+                new TextInputComponent()
+                    .setCustomId('reason')
+                    .setLabel('Reason')
+                    .setStyle('LONG')
+                    .setMinLength(1)
+                    .setMaxLength(256)
+                    .setPlaceholder('Enter a reason here')
+                    .setRequired(true)
+            )
 
-            for (const data of results) {
-                const { userId, saves } = data
-
-                if (!saves) {
-                    await countingSchema.findOneAndUpdate({
-                        userId
-                    }, {
-                        saves: 0
-                    }, {
-                        upsert: true
-                    })
-                }
-
-
-            }
-        })
-
-        await interaction.reply({ content: `done`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        showModal(modal, {
+            client: client,
+            interaction: interaction
+        });
     }
 }
