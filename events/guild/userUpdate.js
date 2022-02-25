@@ -6,7 +6,7 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
         const userUpChan = client.channels.cache.get(process.env.USERUP_CHAN);
-        const botChan = client.channels.cache.get(process.env.BOT_CHAN);
+        // const botChan = client.channels.cache.get(process.env.BOT_CHAN);
 
         // log avatar changes
         if (oldUser?.avatar !== newUser?.avatar) {
@@ -49,9 +49,9 @@ Old Avatar**`)
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
-            botChan.send({
-                content: `${oldUser?.tag} is now known as ${newUser?.tag}`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+            // botChan.send({
+            //     content: `${oldUser?.tag} is now known as ${newUser?.tag}`
+            // }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
         }
     }
 }
