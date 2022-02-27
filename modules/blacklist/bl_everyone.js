@@ -20,8 +20,7 @@ module.exports = (message, client) => {
 
     for (var i in pingArr) {
         if (contLow.includes(pingArr[i])) {
-            member?.timeout(30000, 'Everyone/Here ping').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
-            
+                        
             member?.send({
                 content: `${process.env.BOT_DENY} \`Everyone or Here ping detected. You have been timed out for 30 seconds\``
             }).catch(() => {
