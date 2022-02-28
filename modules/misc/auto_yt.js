@@ -12,7 +12,7 @@ module.exports = async (client) => {
     await mongo().then(async mongoose => {
         setInterval(async () => {
             // a quick check to see if we get any errors
-            await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, function (err, resolve) {
+            await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=UCIjouN_iuJswbC6MJltMl_A`, function (err, resolve) {
                 if (err) return console.log(`Unable to fetch AUTOYT feed`);
             });
 
