@@ -28,44 +28,46 @@ module.exports = async (client) => {
                 }
 
                 // parse youtube's RSS XML feed as something we can read
-                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem parsing a url: `, err));
-                const items = resolve.items;
+                await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem parsing a url: `, err))
+                    .then(response => {
+                        const items = response.items;
 
-                items.forEach(async item => {
-                    // remove the XML markup from video IDs
-                    const regex = item.id.replace('yt:video:', '');
+                        items.forEach(async item => {
+                            // remove the XML markup from video IDs
+                            const regex = item.id.replace('yt:video:', '');
 
-                    if (!videoIds.includes(regex)) {
-                        const userTag = guild.members.cache.get(userId).user?.tag;
+                            if (!videoIds.includes(regex)) {
+                                const userTag = guild.members.cache.get(userId).user?.tag;
 
-                        // add the user's new video ID to the database
-                        videoIds.push(regex);
+                                // add the user's new video ID to the database
+                                videoIds.push(regex);
 
-                        await ytNotificationSchema.findOneAndUpdate({
-                            userId: userId,
-                        }, {
-                            userId: userId,
-                            channelId: channelId,
-                            videoIds: videoIds
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                                await ytNotificationSchema.findOneAndUpdate({
+                                    userId: userId,
+                                }, {
+                                    userId: userId,
+                                    channelId: channelId,
+                                    videoIds: videoIds
+                                }, {
+                                    upsert: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                        // send a notification to a specific channel, depending on the user's roles
-                        if (member?.roles?.cache.has(process.env.BOOST_ROLE)) {
-                            boostPromoChan.send({
-                                content: `**${userTag}** just uploaded a new video - ${item.link}`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                        }
+                                // send a notification to a specific channel, depending on the user's roles
+                                if (member?.roles?.cache.has(process.env.BOOST_ROLE)) {
+                                    boostPromoChan.send({
+                                        content: `**${userTag}** just uploaded a new video - ${item.link}`
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                                }
 
-                        if (member?.roles?.cache.has(process.env.STAFF_ROLE) || member?.roles?.cache.has(process.env.MOD_ROLE)) {
-                            staffPromoChan.send({
-                                content: `**${userTag}** just uploaded a new video - ${item.link}`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                        }
-                    }
-                });
+                                if (member?.roles?.cache.has(process.env.STAFF_ROLE) || member?.roles?.cache.has(process.env.MOD_ROLE)) {
+                                    staffPromoChan.send({
+                                        content: `**${userTag}** just uploaded a new video - ${item.link}`
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                                }
+                            }
+                        });
+                    });
             }
         }, 30000);
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
