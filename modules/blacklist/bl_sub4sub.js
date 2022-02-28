@@ -8,7 +8,7 @@ module.exports = (message, client, Discord) => {
     /**
      * This blacklist focuses on deleting specific blacklisted waords
      */
-    if (/*message?.author.id === process.env.OWNER_ID || */message?.deleted || message?.author.bot) return;
+    if (message?.author.id === process.env.OWNER_ID || message?.deleted || message?.author.bot) return;
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);

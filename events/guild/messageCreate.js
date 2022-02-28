@@ -9,7 +9,7 @@ const blMass = require('../../modules/blacklist/bl_mass');
 const blWords = require('../../modules/blacklist/bl_words');
 const blTwitch = require('../../modules/blacklist/bl_twitch');
 const blSpam = require('../../modules/blacklist/bl_spam');
-const blNitro = require('../../modules/blacklist/bl_nitro');
+const blPhishing = require('../../modules/blacklist/bl_phishing');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
 const blSub4Sub = require('../../modules/blacklist/bl_sub4sub');
 const resPost = require('../../modules/misc/resource_post');
@@ -32,7 +32,7 @@ module.exports = {
         blWords(message, client, Discord);
         blTwitch(message, client, Discord);
         blSpam(message, client, Discord);
-        blNitro(message, client);
+        blPhishing(message, client);
         blEveryone(message, client);
         blSub4Sub(message, client);
         ckqPost(message);

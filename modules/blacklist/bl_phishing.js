@@ -1,12 +1,12 @@
 const { Message, MessageEmbed } = require('discord.js');
-const fetch = require('node-fetch');
+const sdp = require('stop-discord-phishing');
 const path = require('path');
 /**
  * @param {Message} message 
  */
 module.exports = async (message, client) => {
     /**
-     * This blacklist focuses on strict blacklisting in all channels for Discord nitro scam/virus links
+     * This blacklist focuses on strict blacklisting in all channels for known phishing links
      */
     if (message?.author.id === process.env.OWNER_ID || message?.deleted || message?.author.bot) return;
 
@@ -18,20 +18,10 @@ module.exports = async (message, client) => {
 
     const contLow = message?.content.toLowerCase();
 
-    const resolve = await fetch('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json');
-    const data = await resolve.json();
+    async function checkMessage(content) {
+        let isPhishing = await sdp.checkMessage(content);
 
-    let ignore = false;
-    const ignoreArr = ['https://discord.com/', 'discord.com/invite', 'discord.gg/', 'https://tenor.com/'];
-
-    for (var i in ignoreArr) {
-        if (contLow.includes(ignoreArr[i])) {
-            ignore = true;
-        }
-    }
-
-    for (var i in data.domains) {
-        if (!ignore && contLow.includes(data.domains[i])) {
+        if (isPhishing) {
             member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
             member?.send({
@@ -80,5 +70,9 @@ ${message?.author} posted a link that looks like a Discord nitro scam/virus. Ple
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a webhook: `, err));
             });
         }
+
+        return isPhishing;
     }
+
+    checkMessage(contLow);
 }
