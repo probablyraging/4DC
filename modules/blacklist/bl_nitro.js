@@ -1,9 +1,10 @@
 const { Message, MessageEmbed } = require('discord.js');
+const fetch = require('node-fetch');
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client) => {
+module.exports = async (message, client) => {
     /**
      * This blacklist focuses on strict blacklisting in all channels for Discord nitro scam/virus links
      */
@@ -17,25 +18,18 @@ module.exports = (message, client) => {
 
     const contLow = message?.content.toLowerCase();
 
-    let ignore = false;
-    const ignoreArr = ['https://discord.com/', 'discord.com/invite', 'discord.gg/', 'https://tenor.com/']
-    const nitroArr = ['https://', 'http://', 'www'];
+    const resolve = await fetch('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json');
+    const data = await resolve.json();
 
-    for (var i in ignoreArr) {
-        if (contLow.includes(ignoreArr[i])) {
-            ignore = true;
-        }
-    }
-
-    for (var i in nitroArr) {
-        if (!ignore && contLow.includes(nitroArr[i]) && contLow.includes('nitro') || !ignore && contLow.includes(nitroArr[i]) && contLow.includes('.gift')) {
+    for (var i in data.domains) {
+        if (contLow.includes(data.domains[i])) {
             member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
-            
+
             member?.send({
-                content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not\``
+                content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``
             }).catch(() => {
                 message?.reply({
-                    content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not\``,
+                    content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -67,7 +61,8 @@ module.exports = (message, client) => {
 
                 staffChan.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
                     webhook.send({
-                        content: `${message?.author} posted a link that looks like a Discord nitro scam/virus. Please review [this message](${m?.url}) if it exists, and ban them if neccassary`,
+                        content: `<@&885919072791973898>
+${message?.author} posted a link that looks like a Discord nitro scam/virus. Please review [this message](${m?.url}) if it exists, and ban them if neccassary`,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
 
                     setTimeout(() => {
