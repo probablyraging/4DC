@@ -11,6 +11,7 @@ const blTwitch = require('../../modules/blacklist/bl_twitch');
 const blSpam = require('../../modules/blacklist/bl_spam');
 const blNitro = require('../../modules/blacklist/bl_nitro');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
+const blSub4Sub = require('../../modules/blacklist/bl_sub4sub');
 const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -33,6 +34,7 @@ module.exports = {
         blSpam(message, client, Discord);
         blNitro(message, client);
         blEveryone(message, client);
+        blSub4Sub(message, client);
         ckqPost(message);
         bumpPost(message, client, Discord);
         resPost(message, client, Discord);

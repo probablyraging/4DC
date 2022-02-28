@@ -8,7 +8,7 @@ module.exports = {
     ],
 
     words: [
-        "abbo", "cum", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "rapist", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "daterape"
+        "abbo", "cum", "jizz", "fag", "fags", "f4g", "f4gs", "gook", "gooks", "jap", "japs", "kike", "kikes", "negress", "nigguh", "nigguhs", "wigger", "wiggers", "negro", "negros", "nigger", "niggers", "n1gga", "niggas", "n1gg3r,", "nigg4", "n1gg4", "faggit", "faggits", "faggot", "faggots", "f4ggit", "f4gg0t", "rape", "rapes", "raped", "raper", "rapist", "r4pe", "rap3", "r4p3", "pedo", "pedos", "nonce", "nonces", "pedophile", "pedophiles", "peadophile", "peadophiles", "pedophilia", "peadophilia", "daterape", "sub4sub", "sub for sub", "s4s", "sub 4 sub", "s 4 s", "follow4follow", "follow for follow", "f4f", "follow 4 follow", "f 4 f", "like4like", "like for like", "l4l", "like 4 like", "l 4 l"
     ],
 
     words2: [

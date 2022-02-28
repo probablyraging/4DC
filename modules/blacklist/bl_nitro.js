@@ -21,8 +21,17 @@ module.exports = async (message, client) => {
     const resolve = await fetch('https://raw.githubusercontent.com/nikolaischunk/discord-phishing-links/main/domain-list.json');
     const data = await resolve.json();
 
+    let ignore = false;
+    const ignoreArr = ['https://discord.com/', 'discord.com/invite', 'discord.gg/', 'https://tenor.com/'];
+
+    for (var i in ignoreArr) {
+        if (contLow.includes(ignoreArr[i])) {
+            ignore = true;
+        }
+    }
+
     for (var i in data.domains) {
-        if (contLow.includes(data.domains[i])) {
+        if (!ignore && contLow.includes(data.domains[i])) {
             member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
             member?.send({
