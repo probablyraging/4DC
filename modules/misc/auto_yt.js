@@ -11,6 +11,11 @@ module.exports = async (client) => {
 
     await mongo().then(async mongoose => {
         setInterval(async () => {
+            // a quick check to see if we get any errors
+            await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, function (err, resolve) {
+                if (err) return console.log(`Unable to fetch AUTOYT feed`);
+            });
+
             const results = await ytNotificationSchema.find({});
 
             for (const data of results) {
@@ -29,8 +34,6 @@ module.exports = async (client) => {
 
                 // parse youtube's RSS XML feed as something we can read
                 await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, function (err, resolve) {
-                    if (err) return console.log(`Unable to fetch AUTOYT feed for ${channelId}`);
-
                     const items = resolve.items;
 
                     items.forEach(async item => {
