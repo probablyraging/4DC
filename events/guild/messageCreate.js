@@ -26,25 +26,26 @@ module.exports = {
      */
     async execute(message, client) {
 
+        // sleep between blacklist checks to avoid checking already deleted messages
         linkCooldown(message, client);
-        await sleep(300);
-        blLinks(message, client);
-        await sleep(300);
-        blPromo(message, client);
-        await sleep(300);
-        blMass(message, client);
-        await sleep(300);
-        blWords(message, client);
-        await sleep(300);
-        blTwitch(message);
-        await sleep(300);
-        blSpam(message, client);
         await sleep(300);
         blPhishing(message, client);
         await sleep(300);
         blEveryone(message, client);
         await sleep(300);
-        blSub4Sub(message, client);
+        blMass(message, client);
+        await sleep(300);
+        blWords(message, client);
+        await sleep(300);
+        blLinks(message, client);
+        await sleep(300);
+        blPromo(message, client);
+        await sleep(300);
+        blTwitch(message);
+        await sleep(300);
+        blSpam(message, client);
+        await sleep(300);
+        blSub4Sub(message, client);        
         ckqPost(message);
         bumpPost(message);
         resPost(message, client);
