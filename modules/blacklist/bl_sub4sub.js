@@ -28,8 +28,8 @@ module.exports = (message, client, Discord) => {
     }
 
     let found = false;
-    for (var e in blacklist.words) {
-        if (blacklist.words.includes(content[e])) found = true;
+    for (var e in blacklist.sub4sub) {
+        if (blacklist.sub4sub.includes(content[e])) found = true;
     }
 
     for (var e in blacklist.allChannels) {

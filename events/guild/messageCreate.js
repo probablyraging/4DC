@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const path = require('path');
+const sleep = require("timers/promises").setTimeout;
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
@@ -17,30 +17,40 @@ const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const modsChoice = require("../../modules/mods_choice/mods_choice_messages");
+const path = require('path');
 
 module.exports = {
     name: `messageCreate`,
     /**
      * @param {Message} message
      */
-    async execute(message, client, Discord) {
+    async execute(message, client) {
 
-        linkCooldown(message, client, Discord);
-        blLinks(message, client, Discord);
-        blPromo(message, client, Discord);
-        blMass(message, client, Discord);
-        blWords(message, client, Discord);
-        blTwitch(message, client, Discord);
-        blSpam(message, client, Discord);
+        linkCooldown(message, client);
+        await sleep(300);
+        blLinks(message, client);
+        await sleep(300);
+        blPromo(message, client);
+        await sleep(300);
+        blMass(message, client);
+        await sleep(300);
+        blWords(message, client);
+        await sleep(300);
+        blTwitch(message);
+        await sleep(300);
+        blSpam(message, client);
+        await sleep(300);
         blPhishing(message, client);
+        await sleep(300);
         blEveryone(message, client);
+        await sleep(300);
         blSub4Sub(message, client);
         ckqPost(message);
-        bumpPost(message, client, Discord);
-        resPost(message, client, Discord);
-        lastLetter(message, client, Discord);
+        bumpPost(message);
+        resPost(message, client);
+        lastLetter(message, client);
         countingGame(message, client);
-        rankXP(message, client, Discord);
+        rankXP(message, client);
         modsChoice(message, client);
 
         // delete posts containing tweets in the insider channel

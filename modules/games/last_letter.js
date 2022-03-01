@@ -11,7 +11,7 @@ let currentCounter = 0;
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client, Discord) => {
+module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     if (message.channel.id === process.env.LL_CHAN && !message.author.bot) {
@@ -233,7 +233,7 @@ module.exports = async (message, client, Discord) => {
              * CHECK FOR CURRENT LEVEL AND UPDATE CHANNEL DESCRIPTION
              */
             // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 20) {
+            if (!failed && parseInt(currentCounter) === 19) {
                 message.channel.send(`**NEW LEVEL** All words must now be more than \`4\` characters long!`)
                 message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 20 - 4 CHARACTER MINIMUM`)
             }
@@ -253,7 +253,7 @@ module.exports = async (message, client, Discord) => {
             }
 
             // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 40) {
+            if (!failed && parseInt(currentCounter) === 39) {
                 message.channel.send(`**NEW LEVEL** All words must now be more than \`5\` characters long!`)
                 message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 40 - 5 CHARACTER MINIMUM`)
             }
@@ -273,7 +273,7 @@ module.exports = async (message, client, Discord) => {
             }
 
             // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 80) {
+            if (!failed && parseInt(currentCounter) === 79) {
                 message.channel.send(`**NEW LEVEL** All words must now be more than \`6\` characters long!`)
                 message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 80 - 6 CHARACTER MINIMUM`)
             }
@@ -293,7 +293,7 @@ module.exports = async (message, client, Discord) => {
             }
 
             // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 100) {
+            if (!failed && parseInt(currentCounter) === 99) {
                 message.channel.send(`**NEW LEVEL** All words must now be more than \`7\` characters long!`)
                 message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 100 - 7 CHARACTER MINIMUM`)
             }
@@ -313,7 +313,7 @@ module.exports = async (message, client, Discord) => {
             }
 
             // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 150) {
+            if (!failed && parseInt(currentCounter) === 149) {
                 message.channel.send(`**NEW LEVEL** All words must now be more than \`8\` characters long!`)
                 message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 150 - 8 CHARACTER MINIMUM`)
             }

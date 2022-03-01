@@ -7,7 +7,7 @@ const path = require('path');
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client, Discord) => {
+module.exports = async (message) => {
     if (message?.channel.id === process.env.BUMP_CHAN && !message?.author.bot) {
         let savesMessage;
 

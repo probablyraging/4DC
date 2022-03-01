@@ -1,11 +1,11 @@
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const cooldown = new Set();
 const path = require('path');
 /**
  * @param {Message} message 
  */
 
-module.exports = (message, client, Discord) => {
+module.exports = (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
 
@@ -48,7 +48,7 @@ module.exports = (message, client, Discord) => {
                     let msgContent = message?.content || ` `;
                     if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
-                    const log = new Discord.MessageEmbed()
+                    const log = new MessageEmbed()
                         .setColor('#fc3c3c')
                         .setAuthor({ name: `${message?.author?.tag}`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
                         .addField("Author", `<@${message?.author?.id}>`, true)

@@ -4,7 +4,7 @@ const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client, Discord) => {
+module.exports = (message, client) => {
     /**
      * This blacklist focuses on deleting specific blacklisted waords
      */

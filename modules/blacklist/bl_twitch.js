@@ -3,7 +3,7 @@ const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client, Discord) => {
+module.exports = (message) => {
     /**
      * This blacklist focuses on deleting links other than twitch.tv links in the twitch promo channel
      */

@@ -1,9 +1,9 @@
-const { Message } = require('discord.js');
+const { Message, MessageEmbed } = require('discord.js');
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client, Discord) => {
+module.exports = (message, client) => {
     /**
      * This blacklist focuses on not allowing mass mention spamming, usually done by server raid bots
      */
@@ -36,7 +36,7 @@ module.exports = (message, client, Discord) => {
         let msgContent = message?.content || ` `;
         if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
-        const blacklistEmbed = new Discord.MessageEmbed()
+        const blacklistEmbed = new MessageEmbed()
             .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
             .setColor("#E04F5F")
             .addField("Author", `<@${message?.author?.id}>`, true)

@@ -4,7 +4,7 @@ const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = async (message, client, Discord) => {
+module.exports = async (message, client) => {
     const resChan = client.channels.cache.get(process.env.RES_CHAN);
 
     if (message?.channel.id === process.env.RES_CHAN && !message?.author.bot) {
