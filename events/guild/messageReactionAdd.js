@@ -32,13 +32,29 @@ module.exports = {
                             // Check if we have the right message from self-roles
                             if (selfRoleClass.messageId === message.id) {
                                 for (let roleIdKey in selfRoleClass.roleIds) {
-                                        let roleId = selfRoleClass.roleIds[roleIdKey];
-                                        if (roleIdKey === emoji.name) {
-                                            member?.roles.add(roleId);
-                                        } else if (selfRoleClass.exclusive) {
-                                            message.reactions.resolve(roleIdKey).users.remove(member?.id);
-                                            member?.roles.remove(roleId);
+                                    let roleId = selfRoleClass.roleIds[roleIdKey];
+                                    if (roleIdKey === emoji.name) {
+                                        if (selfRoleClass.exclusive) {
+                                            if (member?.roles?.cache.has(roleId)) {
+                                                member?.roles.remove(roleId);
+                                                message.reactions.resolve(roleIdKey).users.remove(member?.id)
+                                            } else {
+                                                member?.roles.add(roleId);
+                                                message.reactions.resolve(roleIdKey).users.remove(member?.id)
+                                            }
+                                        } else {
+                                            if (member?.roles?.cache.has(roleId)) {
+                                                member?.roles.remove(roleId);
+                                                message.reactions.resolve(emoji.id).users.remove(member?.id)
+                                            } else {
+                                                member?.roles.add(roleId);
+                                                message.reactions.resolve(emoji.id).users.remove(member?.id)
+                                            }
                                         }
+                                    } else if (selfRoleClass.exclusive) {
+                                        message.reactions.resolve(roleIdKey).users.remove(member?.id);
+                                        member?.roles.remove(roleId);
+                                    }
                                 }
                                 break;
                             }
