@@ -4,7 +4,7 @@ module.exports = {
     pre: `To keep CreatorHub a safe and positive experience for everyone, you are required to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
 
     rules: [
-        "Posts (messages, videos, GIFs etc..), usernames, nicknames, avatars, profiles or linked accounts containing viruses, discriminatory content, or content which is not family friendly has no place in this server. This may result in a ban without warning",
+        "Posts, usernames, avatars, profiles or linked accounts containing viruses, discriminatory, obscene, violent, profane, pornographic, sexually suggestive or nude content has no place in this server. This may result in a ban without warning",
         "Do not spam or flood any channels. This means sending multiple messages rapidly or sending purposeless messages in an attempt to gain XP/Rank",
         "Do not post self promotional content outside of the 'SELF PROMOTE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites or spam",
         `Advertising of other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,
