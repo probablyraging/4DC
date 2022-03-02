@@ -39,15 +39,15 @@ module.exports = {
             description: `Supply a reason for warning the user`,
             type: `STRING`,
             required: true,
-            choices: [{ name: 'rule1', value: 'rule1' },
-            { name: 'rule2', value: 'rule2' },
-            { name: 'rule3', value: 'rule3' },
-            { name: 'rule4', value: 'rule4' },
-            { name: 'rule5', value: 'rule5' },
-            { name: 'rule6', value: 'rule6' },
-            { name: 'rule7', value: 'rule7' },
-            { name: 'lack_of_tabs', value: 'lack_of_tabs' },
-            { name: 'has_not_posted_proof', value: 'has_not_posted_proof' }]
+            choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' }, 
+            { name: 'Rule 2 - spamming and flooding', value: '2' }, 
+            { name: 'Rule 3 - self promotion and unsolicited DMs', value: '3' }, 
+            { name: 'Rule 4 - advertising discord servers and paid services', value: '4' }, 
+            { name: 'Rule 5 - sub4sub type behaviour', value: '5' }, 
+            { name: 'Rule 6 - openly discussing moderator actions', value: '6' }, 
+            { name: 'Rule 7 - messages not in English', value: '7' },
+            { name: 'Lack of tabs in screenshot', value: 'lack_of_tabs' },
+            { name: 'Has not posted proof', value: 'has_not_posted_proof' }]
         }]
     },
     {
@@ -88,13 +88,13 @@ module.exports = {
                     const target = options.getMember('username');
                     let reason = options.getString('reason');
 
-                    if (reason === 'rule1') reason = `${rules[0]}`;
-                    if (reason === 'rule2') reason = `${rules[1]}`;
-                    if (reason === 'rule3') reason = `${rules[2]}`;
-                    if (reason === 'rule4') reason = `${rules[3]}`;
-                    if (reason === 'rule5') reason = `${rules[4]}`;
-                    if (reason === 'rule6') reason = `${rules[5]}`;
-                    if (reason === 'rule7') reason = `${rules[6]}`;
+                    if (reason === '1') reason = `${rules[0]}`;
+                    if (reason === '2') reason = `${rules[1]}`;
+                    if (reason === '3') reason = `${rules[2]}`;
+                    if (reason === '4') reason = `${rules[3]}`;
+                    if (reason === '5') reason = `${rules[4]}`;
+                    if (reason === '6') reason = `${rules[5]}`;
+                    if (reason === '7') reason = `${rules[6]}`;
 
                     const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
 

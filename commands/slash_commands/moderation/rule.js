@@ -11,9 +11,16 @@ module.exports = {
     usage: `/rules [ruleNumber] [@username]`,
     options: [{
         name: `number`,
-        description: `The number of the rule you want to reference`,
-        type: `NUMBER`,
-        required: true
+        description: `The number of the rule you are referencing`,
+        type: `STRING`,
+        required: true,
+        choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' }, 
+        { name: 'Rule 2 - spamming and flooding', value: '2' }, 
+        { name: 'Rule 3 - self promotion and unsolicited DMs', value: '3' }, 
+        { name: 'Rule 4 - advertising discord servers and paid services', value: '4' }, 
+        { name: 'Rule 5 - sub4sub type behaviour', value: '5' }, 
+        { name: 'Rule 6 - openly discussing moderator actions', value: '6' }, 
+        { name: 'Rule 7 - messages not in English', value: '7' }]
     },
     {
         name: `username`,
@@ -28,7 +35,7 @@ module.exports = {
     execute(interaction) {
         const { options } = interaction;
 
-        const number = options.getNumber('number');
+        const number = options.getString('number');
         const target = options.getMember('username');
 
         const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
