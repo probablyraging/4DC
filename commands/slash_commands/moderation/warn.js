@@ -19,7 +19,7 @@ module.exports = {
         name: `add`,
         description: `Add a warning to a specific user`,
         type: `SUB_COMMAND`,
-        usage: `/warn add [type] [username] [reason]`,
+        usage: `/warn add [type] [@username] [reason]`,
         options: [{
             name: `type`,
             description: `The type of warning to add`,

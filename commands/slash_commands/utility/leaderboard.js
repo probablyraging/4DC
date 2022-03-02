@@ -7,7 +7,6 @@ const rankSchema = require('../../../schemas/misc/rank_schema');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const countingCurrent = require('../../../schemas/counting_game/counting_current_schema');
 const path = require('path');
-const fetch = require('node-fetch');
 
 module.exports = {
     name: `leaderboard`,

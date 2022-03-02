@@ -1,5 +1,7 @@
 const { client, CommandInteraction, MessageEmbed } = require('discord.js');
 const cooldowns = new Map();
+const mongo = require('../../mongo');
+const commandCountSchema = require('../../schemas/misc/command_count');
 const path = require('path');
 
 module.exports = {
@@ -9,7 +11,7 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      * @param {client} client 
      */
-    execute(interaction, client, Discord) {
+    async execute(interaction, client, Discord) {
         const { member, channel, user, guild, options } = interaction
 
         let command = client.commands.get(interaction.commandName);
@@ -63,6 +65,33 @@ module.exports = {
             const logChan = client.channels.cache.get(process.env.CMDLOG_CHAN)
 
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
+
+            await mongo().then(async mongoose => {
+                const results = await commandCountSchema.find({ command: command.name })
+
+                if (results.length === 0) {
+                    await commandCountSchema.findOneAndUpdate({
+                        command: command.name
+                    }, {
+                        command: command.name,
+                        uses: 1
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                } else {
+                    for (const data of results) {
+                        let { uses } = data;
+
+                        let usesAdd = uses + 1;
+    
+                        await commandCountSchema.findOneAndUpdate({
+                            command: command.name,
+                        }, {
+                            uses: usesAdd
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    }
+                }
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
             let cmdName = command.name;
             if (options._subcommand) cmdName = `${command.name} > ${options._subcommand}`;

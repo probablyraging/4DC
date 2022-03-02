@@ -26,7 +26,7 @@ module.exports = {
             description: `The name of the feature or command`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `xp`, value: `xp` }, { name: `autoyt`, value: `autoyt` }, { name: `mcvideos`, value: `mcvideos` }, { name: `mcaudit`, value: `mcaudit` }, { name: `counting`, value: `counting` }],
+            choices: [{ name: `xp`, value: `xp` }, { name: `autoyt`, value: `autoyt` }, { name: `mcvideos`, value: `mcvideos` }, { name: `mcaudit`, value: `mcaudit` }, { name: `counting`, value: `counting` }, { name: `commandcount`, value: `commandcount` }, { name: `mcaway`, value: `mcaway` }],
         }]
     },
     {
@@ -106,7 +106,7 @@ module.exports = {
 
                     cmdArr.forEach(cmd => {
                         if (cmd.locked) ownerCmd.push(cmd.name);
-                        if (cmd.permission === 'MANAGE_MESSAGES') modCmds.push(cmd.name);
+                        if (cmd.permission === 'MANAGE_MESSAGES' || cmd.permission === 'MODERATE_MEMBERS') modCmds.push(cmd.name);
                         if (cmd.permission === ``) utilCmds.push(cmd.name);
                     });
 
