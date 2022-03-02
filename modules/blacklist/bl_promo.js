@@ -1,6 +1,7 @@
 const { Message, MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const res = new (require('rss-parser'))();
+const sleep = require("timers/promises").setTimeout;
 const fetch = require('node-fetch');
 
 const path = require('path');
@@ -62,6 +63,7 @@ module.exports = async (message, client) => {
                     });
 
                     setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                    await sleep(300);
                 }
             } catch { }
         }
@@ -91,6 +93,7 @@ module.exports = async (message, client) => {
                     });
 
                     setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                    await sleep(300);
                 }
             } catch { }
         }
@@ -116,6 +119,7 @@ module.exports = async (message, client) => {
                 });
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                await sleep(300);
             }
         }
     }
@@ -161,6 +165,8 @@ module.exports = async (message, client) => {
                 blChan.send({
                     embeds: [blacklistEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+                await sleep(300);
             }
         }
     }

@@ -1,11 +1,12 @@
 const { Message, MessageEmbed } = require('discord.js');
 const cooldown = new Set();
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
  */
 
-module.exports = (message, client) => {
+module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
 
@@ -62,6 +63,8 @@ module.exports = (message, client) => {
                         embeds: [log]
                     }).catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending a log: `, err));
                 });
+
+                await sleep(300);
             } else {
                 cooldown.add(message?.author.id)
 

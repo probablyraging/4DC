@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const sleep = require("timers/promises").setTimeout;
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
@@ -25,86 +24,36 @@ module.exports = {
      * @param {Message} message
      */
     async execute(message, client) {
+        // blacklist checks
+        linkCooldown(message, client);
+        blPhishing(message, client);
+        blPromo(message, client);
+        blWords(message, client);
+        blLinks(message, client);
+        blMass(message, client);
+        blTwitch(message);
+        blSpam(message, client);
+        blEveryone(message, client);
+        blSub4Sub(message, client);
 
+        // bump and ckq checks
         ckqPost(message);
         bumpPost(message);
-        resPost(message, client);
+
+        // game checks
         lastLetter(message, client);
         countingGame(message, client);
+
+        // misc checks
         rankXP(message, client);
         modsChoice(message, client);
-
-        // sleep between blacklist checks to avoid checking already deleted messages
-        linkCooldown(message, client);
-        await sleep(300);
-        blPhishing(message, client);
-        await sleep(300);
-        blPromo(message, client);
-        await sleep(300);
-        blWords(message, client);
-        await sleep(300);
-        blLinks(message, client);
-        await sleep(300);
-        blMass(message, client);
-        await sleep(300);
-        blTwitch(message);
-        await sleep(300);
-        blSpam(message, client);
-        await sleep(300);
-        blEveryone(message, client);
-        await sleep(300);
-        blSub4Sub(message, client);
+        resPost(message, client);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
             if (message?.content.toLowerCase().includes("tweet")) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
-        }
-
-        // remind people to use /rank command
-        if (message?.channel?.id === process.env.BOT_CHAN && message?.content?.toLowerCase().includes("!rank")) {
-            message?.reply({
-                content: `${process.env.BOT_DENY} \`Please use /rank instead\``
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
-                .then(msg => {
-                    setTimeout(() => {
-                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                    }, 5000);
-                });
-            setTimeout(() => {
-                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-            }, 100);
-        }
-
-        // NOTE : this can be deleted when this kid stops annoying us lol
-        // check if the video author is ROVB
-        function detectURLs(message) {
-            var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-            return message.match(urlRegex)
-        }
-
-        if (message?.content?.toLowerCase().includes('youtube.com/watch') || message?.content?.toLowerCase().includes('youtu.be/')) {
-            const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
-            const replace = urlInStr[0].replace('www.', '');
-
-            try {
-                const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
-                const response = await resolve.json();
-
-                // send the little shit a message
-                if (response && response.author_name.toLowerCase() === "rovb") {
-                    message?.member?.send({
-                        content: `${process.env.BOT_DENY} \`Nobody cares mate, go outside and play or do something productive instead\``
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
-
-                    // delete his message
-                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
-
-                    // ban him :D
-                    message?.member.ban({ days: 0, reason: 'Kid needs a life' }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
-                }
-            } catch { }
         }
     }
 };

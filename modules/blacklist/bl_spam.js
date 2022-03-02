@@ -1,5 +1,6 @@
 const { Message } = require('discord.js');
 const repeatedMsg = new Map();
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
@@ -46,6 +47,8 @@ module.exports = async (message, client) => {
                         setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 7000);
                     });
                 });
+
+                await sleep(300);
             } else if (found.author == author && found.count < 4) {
                 repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId: message?.id, count: found.count + 1 });
             }

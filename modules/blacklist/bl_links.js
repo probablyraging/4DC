@@ -1,10 +1,11 @@
 const { Message, MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client) => {
+module.exports = async (message, client) => {
     /**
      * This blacklist focuses on strict blacklisting in all channels for things like discord invites, porn links and onlyfans links
      */
@@ -77,6 +78,8 @@ module.exports = (message, client) => {
                 blChan.send({
                     embeds: [blacklistEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+                await sleep(300);
             }
         }
     }

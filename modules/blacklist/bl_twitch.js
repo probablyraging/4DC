@@ -1,9 +1,10 @@
 const { Message } = require('discord.js');
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message) => {
+module.exports = async (message) => {
     /**
      * This blacklist focuses on deleting links other than twitch.tv links in the twitch promo channel
      */
@@ -27,5 +28,6 @@ module.exports = (message) => {
         });
 
         setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+        await sleep(300);
     }
 }

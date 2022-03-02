@@ -1,5 +1,6 @@
 const { Message, MessageEmbed } = require('discord.js');
 const sdp = require('stop-discord-phishing');
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
@@ -75,4 +76,5 @@ ${message?.author} posted a link that looks like a Discord nitro scam/virus. Ple
     }
 
     checkMessage(contLow);
+    await sleep(300);
 }

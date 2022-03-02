@@ -1,9 +1,10 @@
 const { Message, MessageEmbed } = require('discord.js');
+const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
  * @param {Message} message 
  */
-module.exports = (message, client) => {
+module.exports = async (message, client) => {
     /**
      * This blacklist focuses on delting messages containing everyone and here pings
      */
@@ -52,7 +53,9 @@ module.exports = (message, client) => {
 
             blChan.send({
                 embeds: [blacklistEmbed]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err))
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+            await sleep(300);
         }
     }
 }
