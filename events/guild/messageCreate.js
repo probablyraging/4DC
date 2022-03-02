@@ -26,6 +26,14 @@ module.exports = {
      */
     async execute(message, client) {
 
+        ckqPost(message);
+        bumpPost(message);
+        resPost(message, client);
+        lastLetter(message, client);
+        countingGame(message, client);
+        rankXP(message, client);
+        modsChoice(message, client);
+
         // sleep between blacklist checks to avoid checking already deleted messages
         linkCooldown(message, client);
         await sleep(300);
@@ -45,14 +53,7 @@ module.exports = {
         await sleep(300);
         blEveryone(message, client);
         await sleep(300);
-        blSub4Sub(message, client);        
-        ckqPost(message);
-        bumpPost(message);
-        resPost(message, client);
-        lastLetter(message, client);
-        countingGame(message, client);
-        rankXP(message, client);
-        modsChoice(message, client);
+        blSub4Sub(message, client);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
