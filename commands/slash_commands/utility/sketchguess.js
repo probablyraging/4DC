@@ -90,6 +90,7 @@ async function initGame(user, interaction, channel) {
 
 // fetch the current drawing
 async function fetchDrawing(channel, user, customId, randWord) {
+    console.log("Fetching drawing.");
     const options = {
         renderDelay: 6000,
 
@@ -111,9 +112,13 @@ async function fetchDrawing(channel, user, customId, randWord) {
     };
 
     // fetch the drawing and save it locally
-    webshot(`https://wbo.ophir.dev/boards/${user.username}${customId}`, `${user.username}${customId}.jpg`, options, function (err) {
-        if (err) return;
-        if (!err) {
+    let webshotUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}`;
+    let jpgFilename = `${user.username}${customId}.jpg`;
+    webshot(webshotUrl, jpgFilename, options, function (err) {
+        if (err) {
+            console.error(`Error while using webshot. Url: '${webshotUrl}', Filename: '${jpgFilename}'`, err);
+        } else {
+            console.log("Webshot successful. Uploading drawing.");
             uploadDrawing(channel, user, customId, randWord);
         }
     });
@@ -122,7 +127,9 @@ async function fetchDrawing(channel, user, customId, randWord) {
 // upload the drawing to the Sketch Guess channel
 async function uploadDrawing(channel, user, customId, randWord) {
     // sleep for 5 second to give the image time to be saved locally
-    await sleep(5000)
+    console.log("Waiting for drawing to save locally.");
+    await sleep(5000);
+    console.log("Drawing should be saved locally. Starting guessing phase.");
 
     await mongo().then(async () => {
         const results = await sketchSchema.find({})
