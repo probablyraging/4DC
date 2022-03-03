@@ -114,6 +114,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
     // fetch the drawing and save it locally
     let webshotUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}`;
     let jpgFilename = `${user.username}${customId}.jpg`;
+    console.log(`Webshot Url: '${webshotUrl}', Filename: '${jpgFilename}'`);
     webshot(webshotUrl, jpgFilename, options, function (err) {
         if (err) {
             console.error(`Error while using webshot. Url: '${webshotUrl}', Filename: '${jpgFilename}'`, err);
@@ -122,6 +123,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
             uploadDrawing(channel, user, customId, randWord);
         }
     });
+    console.log(`Finished fetching.`);
 }
 
 // upload the drawing to the Sketch Guess channel
