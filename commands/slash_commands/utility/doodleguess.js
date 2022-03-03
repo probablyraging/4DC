@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageAttachment } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const { words } = require('../../../lists/doodle-words');
 const { v4: uuidv4 } = require("uuid");
@@ -26,19 +26,16 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        // TODO : check to see if game is already running
-        //        check to see if there is already a drawer
-        //        add new drawer to the database
-        //        pick a random word from a list of object
-        //        when a random word is picked, store it in the database
-        //        store the current unique URL in database
-        //        don't let people draw 2 times in a row
+        // TODO : don't let people draw 2 times in a row
+        //        end turn command
+        //        add image to embed and have some hints about the word _ _ _ _
 
         const { channel, user } = interaction;
 
         const customId = uuidv4();
         const canvasUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}#0,0,0.85`;
         const randNum = Math.floor(Math.random() * words.length);
+        const randWord = words[randNum];
 
         // only allow the command to be ran in the Doodle Guess channel
         if (channel.id !== process.env.DOODLE_CHAN) {
@@ -57,6 +54,7 @@ module.exports = {
                 }, {
                     currentWord: 'null',
                     currentDrawer: 'null',
+                    previousDrawer: 'null',
                     urlId: 'null',
                     gameState: false,
                     wasGuessed: false
@@ -66,6 +64,16 @@ module.exports = {
 
                 initGame();
             } else {
+                // disallow a user to draw 2 times in a row
+                // for (const data of results) {
+                //     if (user.id === data.previousDrawer) {
+                //         return interaction.reply({
+                //             content: `You can't draw 2 times in a row. Wait for someone else to draw before trying again`,
+                //             ephemeral: true
+                //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                //     }
+                // }
+
                 initGame();
             }
         }) // catch
@@ -76,7 +84,6 @@ module.exports = {
 
                 for (const data of results) {
                     const gameState = data.gameState;
-                    const wasGuessed = data.wasGuessed;
 
                     // check the current game state to see if there is a game currently in progress or not
                     // if there is a current game in progress
@@ -91,7 +98,7 @@ module.exports = {
                     if (!gameState) {
                         await doodleSchema.findOneAndUpdate({
                         }, {
-                            currentWord: words[randNum],
+                            currentWord: randWord,
                             currentDrawer: user.id,
                             urlId: customId,
                             gameState: true
@@ -101,51 +108,36 @@ module.exports = {
 
                         interaction.reply({
                             content: `*It's your turn to draw!*
-> ✏️ **You have 2 minutes to draw the word \`${words[randNum].toUpperCase()}\`**
-> [Click here to start drawing!](<${canvasUrl}>)`,
+> ✏️ **You have 2 minutes to draw the word \`${randWord.toUpperCase()}\`**
+> [Click here to start drawing!](<${canvasUrl}>)
+
+*warning: do not dismiss this message until you have opened the link above*`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
+                        // sleep for 5 seconds to allow the user time to load the webpage
+                        await sleep(5000)
+
+                        const getReady = await channel.send({
+                            content: `It's ${user}'s turn to draw. They have 2 minutes to draw the word`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }) // catch
 
                         // sleep for 2 minutes and then fetch the drawing
-                        await sleep(60000);
+                        await sleep(3000);
+
+                        const fetch = await channel.messages.fetch(getReady.id) // catch
+                        fetch.delete() // catch
+
                         fetchDrawing();
                     }
                 }
             }) // catch
         }
 
-        async function checkGameState() {
-            await sleep(120000)
-            
-            await mongo().then(async mongoose => {
-                const results = await doodleSchema.find({})
-
-                for (const data of results) {
-                    const wasGuessed = data.wasGuessed;
-
-                    // if the word was guessed then we don't need to do anything else as it should be handled in /games/doodle_game.js
-                    if (wasGuessed) return;
-
-                    // if the word wasn't guessed, we can reset the entries and allow another person to start a round 
-                    if (!wasGuessed) {
-                        await doodleSchema.findOneAndUpdate({
-                        }, {
-                            currentWord: 'null',
-                            currentDrawer: 'null',
-                            urlId: 'null',
-                            gameState: false
-                        }, {
-                            upsert: true
-                        }) // catch
-
-                        // send a message saying the game ended
-                        // no one guessed the drawing, try again with command
-                    }
-                }
-            }) // check
-        }
-
+        // fetch the current drawing
         async function fetchDrawing() {
             const options = {
                 renderDelay: 6000,
@@ -173,12 +165,26 @@ module.exports = {
                     console.log('SCREENSHOT')
                     uploadDrawing();
                 }
-            });
+            }) // catch
         }
 
+        // upload the drawing to the Doodle Guess channel
         async function uploadDrawing() {
-            await sleep(1000)
-            console.log('sending image')
+            // give the image time to be saved locally
+            await sleep(5000)
+            console.log('SENDING SCREENSHOT')
+
+            var hint = ``;
+            for (var i = 0; i < randWord.length; i++) {
+                hint += '\\_ '
+            }
+
+            const dgEmbed = new MessageEmbed()
+                .setAuthor({ name: `${user.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
+                .setColor('#fff47a')
+                .addField(`Category`, `Object`, true)
+                .addField(`Hint`, `${hint}`, true)
+                .setFooter({ text: `you have 1 minute to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
             const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
 
@@ -188,17 +194,90 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
             response.forEach(res => {
-                imgUrl = res.data.link;
+                imgurUrl = res.data.link
+                dgEmbed.setImage(imgurUrl);
             });
 
             fs.unlink(`./${user.username}${customId}.jpg`, function (err) {
                 if (err) return;
             });
 
-            channel.send(imgUrl) // catch
+            channel?.send({
+                embeds: [dgEmbed]
+            }) // catch
 
-            // wait 2 minutes and then check the game state
+            // wait for 40 seconds and then resend the image
+            await sleep(4000)
+
+            await mongo().then(async mongoose => {
+                const results = await doodleSchema.find({})
+
+                for (const data of results) {
+                    const wasGuessed = data.wasGuessed;
+
+                    if (!wasGuessed) {
+                        dgEmbed.setColor('#ff6666')
+                        dgEmbed.setFooter({ text: `you have 20 seconds remaining to guess`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                        channel?.send({
+                            embeds: [dgEmbed]
+                        }) // catch
+                    }
+                }
+            }) // catch
+
             checkGameState();
+        }
+
+        // check on the status of the current game
+        async function checkGameState() {
+            // give the guessers 1 minute to guess the drawing
+            // sed a message explaining this
+
+            await sleep(3000)
+            console.log('UPDATING DATABASE')
+
+            await mongo().then(async mongoose => {
+                const results = await doodleSchema.find({})
+
+                for (const data of results) {
+                    const currentDrawer = data.currentDrawer;
+                    const wasGuessed = data.wasGuessed;
+
+                    // if the word wasn't guessed, we can reset the entries and allow another person to start a round 
+                    if (!wasGuessed) {
+                        await doodleSchema.findOneAndUpdate({
+                        }, {
+                            currentWord: 'null',
+                            currentDrawer: 'null',
+                            previousDrawer: currentDrawer,
+                            urlId: 'null',
+                            gameState: false
+                        }, {
+                            upsert: true
+                        }) // catch
+
+                        channel.send({
+                            content: `${process.env.BOT_DENY} No one guessed correctly. The word was \`${randWord.toUpperCase()}\`
+> Use \`/doodleguess draw\` to start a new round`
+                        }) // catch
+                    }
+
+                    if (wasGuessed) {
+                        await doodleSchema.findOneAndUpdate({
+                        }, {
+                            currentWord: 'null',
+                            currentDrawer: 'null',
+                            previousDrawer: currentDrawer,
+                            urlId: 'null',
+                            gameState: false,
+                            wasGuessed: false
+                        }, {
+                            upsert: true
+                        }) // catch
+                    }
+                }
+            }) // check
         }
     }
 }

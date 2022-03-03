@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
 const mongo = require('../../mongo');
-const path = require('path');
 const doodleSchema = require('../../schemas/doodle_guess/doodle_schema');
+const path = require('path');
 /**
  * @param {Message} message 
  */
@@ -27,13 +27,26 @@ module.exports = async (message, client) => {
             const results = await doodleSchema.find({})
 
             for (const data of results) {
+                const currentDrawer = data.currentDrawer;
                 // if the drawer tries to guess their own drawing, delete the message
-                if (guesser.id === data.currentDrawer) {
-                    return message?.delete() //catch
-                }
+                // if (guesser.id === currentDrawer) {
+                //     return message?.delete() //catch
+                // }
 
-                if (guess === data.currentWord) {
-                    message?.react('🎉');
+                if (guess === data.currentWord.toLowerCase()) {
+                    await doodleSchema.findOneAndUpdate({
+                    }, {
+                        currentWord: 'null',
+                        currentDrawer: 'null',
+                        previousDrawer: currentDrawer,
+                        urlId: 'null',
+                        gameState: false,
+                        wasGuessed: true
+                    }, {
+                        upsert: true
+                    }) // catch
+
+                    message?.react('🎉') // catch
 
                     message?.channel.send({
                         content: `🎉 **Correct!** ${guesser} guessed the word \`${guess.toUpperCase()}\` and won the round!

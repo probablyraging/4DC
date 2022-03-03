@@ -10,6 +10,10 @@ const doodleSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    previousDrawer: {
+        type: String,
+        required: true
+    },
     urlId: {
         type: String,
         required: true
