@@ -1,4 +1,4 @@
-const { Message, MessageAttachment } = require('discord.js');
+const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
@@ -12,7 +12,7 @@ const blPhishing = require('../../modules/blacklist/bl_phishing');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
 const blSub4Sub = require('../../modules/blacklist/bl_sub4sub');
 const resPost = require('../../modules/misc/resource_post');
-const doodleGame = require('../../modules/games/doodle_guess');
+const sketchGame = require('../../modules/games/sketch_guess');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
@@ -42,7 +42,7 @@ module.exports = {
         bumpPost(message);
 
         // game checks
-        doodleGame(message, client);
+        sketchGame(message);
         lastLetter(message, client);
         countingGame(message, client);
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const doodleSchema = mongoose.Schema({
+const sketchSchema = mongoose.Schema({
 
     currentWord: {
         type: String,
@@ -25,8 +25,12 @@ const doodleSchema = mongoose.Schema({
     wasGuessed: {
         type: Boolean,
         required: true
+    },
+    hasEnded: {
+        type: Boolean,
+        required: true
     }
 
 });
 
-module.exports = mongoose.model('doodleguess', doodleSchema)
+module.exports = mongoose.model('sketchguess', sketchSchema)
