@@ -2,12 +2,12 @@ const {ContextMenuInteraction, MessageEmbed} = require('discord.js');
 const mongo = require('../../../mongo');
 const {words} = require('../../../lists/sketch-words');
 const {v4: uuidv4} = require("uuid");
-const webshot = require('node-webshot');
 const {ImgurClient} = require('imgur');
 const fs = require('fs');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
+const puppeteer = require("puppeteer");
 
 async function initGame(user, interaction, channel) {
     await mongo().then(async () => {
@@ -91,38 +91,39 @@ async function initGame(user, interaction, channel) {
 // fetch the current drawing
 async function fetchDrawing(channel, user, customId, randWord) {
     console.log("Fetching drawing.");
-    const options = {
-        renderDelay: 6000,
-
-        defaultWhiteBackground: true,
-
-        screenSize: {
-            width: 2160,
-            height: 1080
-        },
-
-        shotSize: {
-            width: 2160,
-            height: 1080
-        },
-
-        shotOffset: {
-            left: 60,
-        }
-    };
-
     // fetch the drawing and save it locally
     let webshotUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}`;
     let jpgFilename = `${user.username}${customId}.jpg`;
     console.log(`Webshot Url: '${webshotUrl}', Filename: '${jpgFilename}'`);
-    webshot(webshotUrl, jpgFilename, options, function (err) {
-        if (err) {
-            console.error(`Error while using webshot. Url: '${webshotUrl}', Filename: '${jpgFilename}'`, err);
-        } else {
-            console.log("Webshot successful. Uploading drawing.");
-            uploadDrawing(channel, user, customId, randWord);
-        }
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+
+    // Set our viewport
+    await page.setViewport({
+        width: 2160,
+        height: 1080
+    })
+
+    console.log(`Going to ${webshotUrl}`);
+    await page.goto(webshotUrl, {
+        waitUntil: 'networkidle0'
     });
+    console.log(`Taking screenshot.`);
+    await page.screenshot({
+        path: jpgFilename,
+        type: 'jpeg',
+        clip: {
+            x: 60,
+            y: 0,
+            width: 2100,
+            height: 1080
+        }
+    }).then(() => {
+        uploadDrawing(channel, user, customId, randWord);
+    });
+
+    // Close browser and cleanup
+    await browser.close();
     console.log(`Finished fetching.`);
 }
 
