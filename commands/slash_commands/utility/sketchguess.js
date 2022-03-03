@@ -72,14 +72,14 @@ module.exports = {
                         initGame();
                     } else {
                         // disallow a user to draw 2 times in a row
-                        // for (const data of results) {
-                        //     if (user.id === data.previousDrawer) {
-                        //         return interaction.reply({
-                        //             content: `You can't draw 2 times in a row. Wait for someone else to draw before trying again`,
-                        //             ephemeral: true
-                        //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        //     }
-                        // }
+                        for (const data of results) {
+                            if (user.id === data.previousDrawer) {
+                                return interaction.reply({
+                                    content: `You can't draw 2 times in a row. Wait for someone else to draw before trying again`,
+                                    ephemeral: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                            }
+                        }
 
                         initGame();
                     }
