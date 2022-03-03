@@ -90,11 +90,8 @@ async function initGame(user, interaction, channel) {
 
 // fetch the current drawing
 async function fetchDrawing(channel, user, customId, randWord) {
-    console.log("Fetching drawing.");
-    // fetch the drawing and save it locally
-    let webshotUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}`;
-    let jpgFilename = `${user.username}${customId}.jpg`;
-    console.log(`Webshot Url: '${webshotUrl}', Filename: '${jpgFilename}'`);
+    // Fetch the drawing from the website
+    let websiteUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}`;
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
@@ -104,11 +101,11 @@ async function fetchDrawing(channel, user, customId, randWord) {
         height: 1080
     })
 
-    console.log(`Going to ${webshotUrl}`);
-    await page.goto(webshotUrl, {
+    await page.goto(websiteUrl, {
         waitUntil: 'networkidle0'
     });
-    console.log(`Taking screenshot.`);
+
+    // Get the image as a base64 string, so we don't need to save it locally
     await page.screenshot({
         encoding: "base64",
         clip: {
@@ -118,20 +115,15 @@ async function fetchDrawing(channel, user, customId, randWord) {
             height: 1080
         }
     }).then(imageBase64 => {
-        uploadDrawing(channel, user, customId, randWord, imageBase64);
+        uploadDrawing(channel, user, randWord, imageBase64);
     });
 
     // Close browser and cleanup
     await browser.close();
-    console.log(`Finished fetching.`);
 }
 
 // upload the drawing to the Sketch Guess channel
-async function uploadDrawing(channel, user, customId, randWord, imageBase64) {
-    // sleep for 5 second to give the image time to be saved locally
-    console.log("Waiting for drawing to save locally.");
-    // await sleep(5000);
-    console.log("Drawing should be saved locally. Starting guessing phase.");
+async function uploadDrawing(channel, user, randWord, imageBase64) {
 
     await mongo().then(async () => {
         const results = await sketchSchema.find({})
@@ -152,7 +144,6 @@ async function uploadDrawing(channel, user, customId, randWord, imageBase64) {
                 .addField(`Hint`, `${hint}`, true)
                 .setFooter({text: `you have 1 minute to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'})
 
-
             // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
             const imgur = new ImgurClient({clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET});
 
@@ -166,11 +157,6 @@ async function uploadDrawing(channel, user, customId, randWord, imageBase64) {
                 imgurUrl = res.data.link
                 dgEmbed.setImage(imgurUrl);
             });
-
-            // delete the local drawing file when we are finished with it
-            /*fs.unlink(`./${user?.username}${customId}.jpg`, function (err) {
-                if (err) return;
-            });*/
 
             // if the drawing was guessed or if the round has ended, we can stop here
             if (wasGuessed || hasEnded) return;
