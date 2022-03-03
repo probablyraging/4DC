@@ -1,8 +1,8 @@
-const {ContextMenuInteraction, MessageEmbed} = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const {words} = require('../../../lists/sketch-words');
-const {v4: uuidv4} = require("uuid");
-const {ImgurClient} = require('imgur');
+const { words } = require('../../../lists/sketch-words');
+const { v4: uuidv4 } = require("uuid");
+const { ImgurClient } = require('imgur');
 const fs = require('fs');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -43,7 +43,7 @@ async function initGame(user, interaction, channel) {
 
                 interaction.reply({
                     content: `*It's your turn to draw!*
-> ✏️ **You have 60 seconds to draw the word \`${randWord.toUpperCase()}\`**
+> ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`**
 > [Click here to start drawing!](<${canvasUrl}>)
 
 *Do not dismiss this message until you have opened the link above*
@@ -66,20 +66,19 @@ async function initGame(user, interaction, channel) {
                 const gameState = data.gameState;
 
                 if (gameState) {
-                    const getReady = await channel?.send({
-                        content: `✏️ ${user} has started drawing!
-> They have 60 seconds to draw their word. Check back soon to guess their drawing`,
-                        allowedMentions: {
-                            parse: []
-                        }
+                    const dgEmbed = new MessageEmbed()
+                        .setAuthor({ name: `It's ${user?.tag}'s turn to draw`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                        .setColor('#a2ff91')
+                        .setDescription(`${user} has 3 minutes to draw you their word`)
+                        .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                        .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                    channel?.send({
+                        embeds: [dgEmbed]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-
-                    // sleep for 60 seconds and then fetch the drawing
-                    await sleep(60000);
-
-                    const fetch = await channel?.messages?.fetch(getReady?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));
-                    fetch.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    // sleep for 3 minutes and then fetch the drawing
+                    await sleep(180000);
                 }
             }
 
@@ -138,14 +137,14 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
             }
 
             const dgEmbed = new MessageEmbed()
-                .setAuthor({name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png'})
+                .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
                 .setColor('#fff47a')
                 .addField(`Category`, `Object`, true)
                 .addField(`Hint`, `${hint}`, true)
-                .setFooter({text: `you have 1 minute to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'})
+                .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
             // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
-            const imgur = new ImgurClient({clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET});
+            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
 
             const response = await imgur.upload({
                 image: imageBase64,
@@ -165,38 +164,7 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
                 embeds: [dgEmbed]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-            // wait for 40 seconds and then resend the image
-            await sleep(40000)
-
-            const results = await sketchSchema.find({})
-
-            for (const data of results) {
-                const wasGuessed = data.wasGuessed;
-                const hasEnded = data.hasEnded;
-
-                // if the drawing was guessed or if the round has ended, we can stop here
-                if (wasGuessed || hasEnded) return;
-
-                let hint = ``;
-                for (let i = 0; i < randWord.length; i++) {
-                    hint += '\\_ '
-                }
-
-                const dgEmbed = new MessageEmbed()
-                    .setAuthor({name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png'})
-                    .setColor('#fff47a')
-                    .addField(`Category`, `Object`, true)
-                    .addField(`Hint`, `${hint}`, true)
-                    .setFooter({text: `you have 1 minute to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'})
-                    .setImage(imgurUrl)
-
-                dgEmbed.setColor('#ff6666')
-                dgEmbed.setFooter({text: `you have 20 seconds remaining to guess`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'})
-
-                channel?.send({
-                    embeds: [dgEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-            }
+            // TODO : message collector - when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
         }
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
@@ -205,8 +173,9 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
 
 // check on the status of the current game
 async function checkGameState(channel, user, randWord) {
+    // TODO : maybe add a skip command - if X amount of people elect to skip a bad drawing we can start a new round
     // give the guessers another 20 seconds to guess the drawing
-    await sleep(20000)
+    await sleep(30000)
 
     await mongo().then(async () => {
         const results = await sketchSchema.find({})
@@ -214,34 +183,9 @@ async function checkGameState(channel, user, randWord) {
         for (const data of results) {
             const currentDrawer = data.currentDrawer;
             const wasGuessed = data.wasGuessed;
-            const gameState = data.gameState;
-
-            // if nobody guessed the drawing, we can reset the entries and allow another person to start a round
-            if (!wasGuessed) {
-                await sketchSchema.findOneAndUpdate({}, {
-                    currentWord: 'null',
-                    currentDrawer: 'null',
-                    previousDrawer: currentDrawer,
-                    urlId: 'null',
-                    gameState: false,
-                    hasEnded: false
-                }, {
-                    upsert: true
-                }) // catch
-
-                if (gameState) {
-                    channel?.send({
-                        content: `${process.env.BOT_DENY} **Unlucky!** No one guessed the word. The word was \`${randWord.toUpperCase()}\`
-> Use \`/sketchguess draw\` to start a new round`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                }
-
-                // set the channel permissions so that the drawer can send message
-                channel.permissionOverwrites.delete(user?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
-            }
 
             // if the drawing was guessed, we can reset the entries and allow another person to start a round
-            // this is also handled in /games/doodle_guess.js - not sure if needed in both
+            // this is also handled in /games/sketch_games.js - not sure if needed in both
             if (wasGuessed) {
                 await sketchSchema.findOneAndUpdate({}, {
                     currentWord: 'null',
@@ -274,20 +218,18 @@ module.exports = {
         type: `SUB_COMMAND`,
         usage: `/sketchguess draw`,
     },
-        {
-            name: `end`,
-            description: `End your turn`,
-            type: `SUB_COMMAND`,
-            usage: `/sketchguess end`,
-        }],
+    {
+        name: `end`,
+        description: `End your turn`,
+        type: `SUB_COMMAND`,
+        usage: `/sketchguess end`,
+    }],
     /**
      *
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        // TODO : consider removing the timer for guessing and just allow people the guess as they please
-
-        const {channel, user, member, options} = interaction;
+        const { channel, user, member, options } = interaction;
 
         switch (options.getSubcommand()) {
             case 'draw': {
@@ -328,11 +270,13 @@ module.exports = {
                                 }
                             }
                         }
+
                         initGame(user, interaction, channel);
                     }
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                 break;
             }
+
             case 'end': {
                 // allow a user to end their turn early for whatever reason
                 // only allow the command to be ran in the Sketch Guess channel
@@ -363,12 +307,14 @@ module.exports = {
                                 upsert: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
+                            const dgEmbed = new MessageEmbed()
+                                .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/5553/5553850.png' })
+                                .setColor('#ff8a8a')
+                                .setDescription(`${user?.tag} has ended the round early`)
+                                .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
                             interaction.reply({
-                                content: `${process.env.BOT_INFO} **Hmm!** ${user} ended their round early
-> Use \`/sketchguess draw\` to start a new round`,
-                                allowedMentions: {
-                                    parse: []
-                                }
+                                embeds: [dgEmbed]
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                             // set the channel permissions so that the drawer can send message
@@ -386,12 +332,14 @@ module.exports = {
                                 upsert: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
+                            const dgEmbed = new MessageEmbed()
+                                .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/5553/5553850.png' })
+                                .setColor('#ff8a8a')
+                                .setDescription(`A staff member has ended the round early`)
+                                .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
                             interaction.reply({
-                                content: `${process.env.BOT_INFO} **Hmm!** A staff member ended the round early
-> Use \`/sketchguess draw\` to start a new round`,
-                                allowedMentions: {
-                                    parse: []
-                                }
+                                embeds: [dgEmbed]
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                             // set the channel permissions so that the drawer can send message
