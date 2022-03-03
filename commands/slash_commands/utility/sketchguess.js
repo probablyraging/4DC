@@ -110,16 +110,15 @@ async function fetchDrawing(channel, user, customId, randWord) {
     });
     console.log(`Taking screenshot.`);
     await page.screenshot({
-        path: jpgFilename,
-        type: 'jpeg',
+        encoding: "base64",
         clip: {
             x: 60,
             y: 0,
             width: 2100,
             height: 1080
         }
-    }).then(() => {
-        uploadDrawing(channel, user, customId, randWord);
+    }).then(imageBase64 => {
+        uploadDrawing(channel, user, customId, randWord, imageBase64);
     });
 
     // Close browser and cleanup
@@ -128,10 +127,10 @@ async function fetchDrawing(channel, user, customId, randWord) {
 }
 
 // upload the drawing to the Sketch Guess channel
-async function uploadDrawing(channel, user, customId, randWord) {
+async function uploadDrawing(channel, user, customId, randWord, imageBase64) {
     // sleep for 5 second to give the image time to be saved locally
     console.log("Waiting for drawing to save locally.");
-    await sleep(5000);
+    // await sleep(5000);
     console.log("Drawing should be saved locally. Starting guessing phase.");
 
     await mongo().then(async () => {
@@ -158,8 +157,8 @@ async function uploadDrawing(channel, user, customId, randWord) {
             const imgur = new ImgurClient({clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET});
 
             const response = await imgur.upload({
-                image: fs.createReadStream(`./${user?.username}${customId}.jpg`),
-                type: 'stream',
+                image: imageBase64,
+                type: 'base64',
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
             let imgurUrl;
@@ -169,9 +168,9 @@ async function uploadDrawing(channel, user, customId, randWord) {
             });
 
             // delete the local drawing file when we are finished with it
-            fs.unlink(`./${user?.username}${customId}.jpg`, function (err) {
+            /*fs.unlink(`./${user?.username}${customId}.jpg`, function (err) {
                 if (err) return;
-            });
+            });*/
 
             // if the drawing was guessed or if the round has ended, we can stop here
             if (wasGuessed || hasEnded) return;
