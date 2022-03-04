@@ -130,7 +130,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
     // });
 
     // Get the image as a base64 string, so we don't need to save it locally
-    setTimeout(() => {
+    setTimeout(async () => {
         await page.screenshot({
             encoding: "base64",
             clip: {
