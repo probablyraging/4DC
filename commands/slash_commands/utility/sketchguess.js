@@ -78,7 +78,7 @@ async function initGame(user, interaction, channel) {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                     // sleep for 3 minutes and then fetch the drawing
-                    await sleep(140000);
+                    await sleep(110000);
                 }
             }
 
@@ -116,7 +116,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
     }, selector)
 
     // give the canvas time to load - may need to be adjusted in the future
-    await sleep(15000);
+    await sleep(30000);
 
     // using this to get rid of annoying pop-up that covers part of the canvas
     // page.mouse.click(1950, 570, {
@@ -400,7 +400,7 @@ module.exports = {
                             }
 
                             interaction.reply({
-                                content: `Your drawing has been sumbitted and will appear soon, this may take up to 15 seconds..`,
+                                content: `Your drawing has been sumbitted and will appear soon, this may take up to 30 seconds..`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
