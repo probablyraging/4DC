@@ -83,7 +83,7 @@ async function initGame(user, interaction, channel) {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                     // sleep for 3 minutes and then fetch the drawing
-                    await sleep(180000);
+                    await sleep(150000);
                 }
             }
 
@@ -110,7 +110,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
     });
 
     // give the canvas time to load - may need to be adjusted in the future
-    await sleep(5000);
+    await sleep(10000);
 
     // using this to get rid of annoying pop-up that covers part of the canvas
     page.mouse.click(1950, 570, {
