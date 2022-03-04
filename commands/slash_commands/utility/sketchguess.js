@@ -105,15 +105,15 @@ async function fetchDrawing(channel, user, customId, randWord) {
     });
 
     // remove tooltips that obstruct the canvas
-    // let selector = '.tooltip';
+    let selector = '.tooltip';
 
-    // await page.evaluate((s) => {
-    //     var elements = document.querySelectorAll(s);
+    await page.evaluate((s) => {
+        var elements = document.querySelectorAll(s);
 
-    //     for (var i = 0; i < elements.length; i++) {
-    //         elements[i].parentNode.removeChild(elements[i]);
-    //     }
-    // }, selector)
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].parentNode.removeChild(elements[i]);
+        }
+    }, selector)
 
     // give the canvas time to load - may need to be adjusted in the future
     // await sleep(7000);
@@ -137,7 +137,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
                 x: 35,
                 y: 40,
                 width: 1875,
-                height: 1065
+                height: 1020
             }
         }).then(imageBase64 => {
             uploadDrawing(channel, user, randWord, imageBase64);
@@ -145,7 +145,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
     
         // Close browser and cleanup
         await browser.close();
-    }, 10000);
+    }, 20000);
 }
 
 // upload the drawing to the Sketch Guess channel
