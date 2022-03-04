@@ -25,6 +25,8 @@ module.exports = async (message) => {
                         previousDrawer: currentDrawer,
                         urlId: 'null',
                         gameState: false,
+                        voteSkip: 0,
+                        hasVoted: [],
                         wasGuessed: true
                     }, {
                         upsert: true

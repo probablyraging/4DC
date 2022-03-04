@@ -22,6 +22,18 @@ const sketchSchema = mongoose.Schema({
         type: Boolean,
         required: true
     },
+    voteSkip: {
+        type: Number,
+        required: true
+    },
+    hasVoted: {
+        type: Array,
+        required: true
+    },
+    isSubmitted: {
+        type: Boolean,
+        required: true
+    },
     wasGuessed: {
         type: Boolean,
         required: true
