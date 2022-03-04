@@ -55,11 +55,6 @@ async function initGame(user, interaction, channel) {
 *You can end your turn early with \`/sketchguess end\`*`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-                // set the channel permissions so that the drawer can't send messages
-                channel.permissionOverwrites.edit(user?.id, {
-                    SEND_MESSAGES: false
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
             }
 
             // sleep for 3 seconds to allow the user time to load the webpage
@@ -83,7 +78,7 @@ async function initGame(user, interaction, channel) {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                     // sleep for 3 minutes and then fetch the drawing
-                    await sleep(150000);
+                    await sleep(140000);
                 }
             }
 
@@ -109,19 +104,30 @@ async function fetchDrawing(channel, user, customId, randWord) {
         waitUntil: 'networkidle0'
     });
 
+    // remove tooltips that obstruct the canvas
+    let selector = '.tooltip';
+
+    await page.evaluate((s) => {
+        var elements = document.querySelectorAll(s);
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].parentNode.removeChild(elements[i]);
+        }
+    }, selector)
+
     // give the canvas time to load - may need to be adjusted in the future
-    await sleep(10000);
+    await sleep(15000);
 
     // using this to get rid of annoying pop-up that covers part of the canvas
-    page.mouse.click(1950, 570, {
-        delay: 200,
-        clickCount: 2
-    });
-    await sleep(1000);
-    page.mouse.click(1940, 577, {
-        delay: 200,
-        clickCount: 2
-    });
+    // page.mouse.click(1950, 570, {
+    //     delay: 200,
+    //     clickCount: 2
+    // });
+    // await sleep(1000);
+    // page.mouse.click(1940, 577, {
+    //     delay: 200,
+    //     clickCount: 2
+    // });
 
     // Get the image as a base64 string, so we don't need to save it locally
     await page.screenshot({
@@ -187,6 +193,11 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
+            // set the channel permissions so that the drawer can't send messages
+            channel.permissionOverwrites.edit(user?.id, {
+                SEND_MESSAGES: false
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+
             // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
             const collector = channel.createMessageCollector();
 
@@ -200,7 +211,7 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
                     const wasGuessed = data.wasGuessed;
                     const hasEnded = data.hasEnded;
 
-                    if (wasGuessed || hasEnded) return;
+                    if (wasGuessed || hasEnded) return collector.stop();
 
                     count++;
 
@@ -223,37 +234,37 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
 }
 
 // check on the status of the current game
-async function checkGameState(channel, user, randWord) {
-    await mongo().then(async () => {
-        const results = await sketchSchema.find({})
+// async function checkGameState(channel, user, randWord) {
+//     await mongo().then(async () => {
+//         const results = await sketchSchema.find({})
 
-        for (const data of results) {
-            const currentDrawer = data.currentDrawer;
-            const wasGuessed = data.wasGuessed;
+//         for (const data of results) {
+//             const currentDrawer = data.currentDrawer;
+//             const wasGuessed = data.wasGuessed;
 
-            // if the drawing was guessed, we can reset the entries and allow another person to start a round
-            // this is also handled in /games/sketch_games.js - not sure if needed in both
-            if (wasGuessed) {
-                await sketchSchema.findOneAndUpdate({}, {
-                    currentWord: 'null',
-                    currentDrawer: 'null',
-                    previousDrawer: currentDrawer,
-                    urlId: 'null',
-                    gameState: false,
-                    voteSkip: 0,
-                    hasVoted: [],
-                    wasGuessed: false,
-                    hasEnded: false
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+//             // if the drawing was guessed, we can reset the entries and allow another person to start a round
+//             // this is also handled in /games/sketch_games.js - not sure if needed in both
+//             if (wasGuessed) {
+//                 await sketchSchema.findOneAndUpdate({}, {
+//                     currentWord: 'null',
+//                     currentDrawer: 'null',
+//                     previousDrawer: currentDrawer,
+//                     urlId: 'null',
+//                     gameState: false,
+//                     voteSkip: 0,
+//                     hasVoted: [],
+//                     wasGuessed: false,
+//                     hasEnded: false
+//                 }, {
+//                     upsert: true
+//                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                // set the channel permissions so that the drawer can send message
-                channel.permissionOverwrites.delete(user?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
-            }
-        }
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-}
+//                 // set the channel permissions so that the drawer can send message
+//                 channel.permissionOverwrites.delete(user?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
+//             }
+//         }
+//     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+// }
 
 module.exports = {
     name: `sketchguess`,
@@ -338,7 +349,7 @@ module.exports = {
                         }, {
                             upsert: true
                         }) // catch
-                        
+
                         // disallow a user to draw 2 times in a row - though staff is allowed do this
                         if (!member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             for (const data of results) {
@@ -389,7 +400,7 @@ module.exports = {
                             }
 
                             interaction.reply({
-                                content: `Your drawing has been sumbitted and will appear soon`,
+                                content: `Your drawing has been sumbitted and will appear soon, this may take up to 15 seconds..`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
