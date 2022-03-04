@@ -191,6 +191,8 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
                     if (count >= 12) {
                         count = 0;
 
+                        dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
                         channel?.send({
                             embeds: [dgEmbed]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
@@ -200,8 +202,8 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
         }
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
-    await sleep(30000);
-    checkGameState(channel, user, randWord);
+    // await sleep(30000);
+    // checkGameState(channel, user, randWord);
 }
 
 // check on the status of the current game
