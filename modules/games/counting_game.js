@@ -32,7 +32,7 @@ module.exports = async (message, client) => {
             }
 
             // if the user doesn't have rank 5 or higher, they need to have atleast 1 save to play
-            if (results.length === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) || results.length === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
+            if (results.length === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && results.length === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
                 message?.channel.send({
                     content: `${author} You must be \`rank 5\` OR have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`
                 }).then(msg => {
@@ -48,7 +48,7 @@ module.exports = async (message, client) => {
             for (const data of results) {
                 const { saves } = data;
 
-                if (saves === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) || saves === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
+                if (saves === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && saves === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
                     message?.channel.send({
                         content: `${author} You must be \`rank 5\` OR have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
