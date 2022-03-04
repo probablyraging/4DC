@@ -200,13 +200,12 @@ async function uploadDrawing(channel, user, randWord, imageBase64) {
         }
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
+    await sleep(30000);
     checkGameState(channel, user, randWord);
 }
 
 // check on the status of the current game
 async function checkGameState(channel, user, randWord) {
-    await sleep(30000)
-
     await mongo().then(async () => {
         const results = await sketchSchema.find({})
 
