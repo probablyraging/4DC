@@ -45,10 +45,11 @@ async function initGame(user, interaction, channel) {
 
                 interaction.reply({
                     content: `*It's your turn to draw!*
-> ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`** or you can submit it early with \`/sketchguess submit\`
+> ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`**
 > [Click here to start drawing!](<${canvasUrl}>)
 
 *Do not dismiss this message until you have opened the link above*
+*You can submit it early with \`/sketchguess submit\`*
 *You can end your turn early with \`/sketchguess end\`*`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
