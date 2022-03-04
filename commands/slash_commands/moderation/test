@@ -1,0 +1,17 @@
+const { ContextMenuInteraction } = require('discord.js');
+
+module.exports = {
+    name: `test`,
+    description: `dummy command for testing stuff`,
+    permission: `MANAGE_MESSAGES`,
+    cooldown: 30,
+    type: `CHAT_INPUT`,
+    /**
+     * 
+     * @param {ContextMenuInteraction} interaction 
+     */
+    async execute(interaction) {
+        const { } = interaction;
+
+    }
+}

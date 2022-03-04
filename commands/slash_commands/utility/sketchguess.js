@@ -10,8 +10,9 @@ const puppeteer = require("puppeteer");
 
 async function initGame(user, interaction, channel) {
     await mongo().then(async () => {
-        const customId = uuidv4();
-        const canvasUrl = `https://wbo.ophir.dev/boards/${user.username}${customId}#0,0,0.85`;
+        // unique room code can only be 24 chars long
+        const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18);
+        const canvasUrl = `https://aggie.io/${customId}`;
         const randNum = Math.floor(Math.random() * words.length);
         const randWord = words[randNum];
         const results = await sketchSchema.find({});
@@ -38,7 +39,8 @@ async function initGame(user, interaction, channel) {
                     voteSkip: 0,
                     hasVoted: [],
                     isSubmitted: false,
-                    hasEnded: false
+                    hasEnded: false,
+                    wasGuess: false
                 }, {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
@@ -72,7 +74,7 @@ async function initGame(user, interaction, channel) {
                     const dgEmbed = new MessageEmbed()
                         .setAuthor({ name: `Drawing Phase`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
                         .setColor('#a2ff91')
-                        .setDescription(`${user} has **3 minutes** to draw you their word`)
+                        .setDescription(`${user} has **3 minutes** to draw their word`)
                         .setImage('https://i.imgur.com/LA0Rzpk.jpg')
                         .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
@@ -93,7 +95,7 @@ async function initGame(user, interaction, channel) {
 // fetch the current drawing
 async function fetchDrawing(channel, user, customId, randWord) {
     // Fetch the drawing from the website
-    let websiteUrl = `https://wbo.ophir.dev/boards/${user?.username}${customId}`;
+    let websiteUrl = `https://aggie.io/${customId}`;
     const browser = await puppeteer.launch()
     const page = await browser.newPage()
 
@@ -107,14 +109,28 @@ async function fetchDrawing(channel, user, customId, randWord) {
         waitUntil: 'networkidle0'
     });
 
+    // give the canvas time to load - may need to be adjusted in the future
+    await sleep(5000);
+
+    // using this to get rid of annoying pop-up that covers part of the canvas
+    page.mouse.click(1950, 570, {
+        delay: 200,
+        clickCount: 2
+    });
+    await sleep(1000);
+    page.mouse.click(1940, 577, {
+        delay: 200,
+        clickCount: 2
+    });
+
     // Get the image as a base64 string, so we don't need to save it locally
     await page.screenshot({
         encoding: "base64",
         clip: {
-            x: 60,
-            y: 0,
-            width: 2100,
-            height: 1080
+            x: 35,
+            y: 40,
+            width: 1875,
+            height: 1065
         }
     }).then(imageBase64 => {
         uploadDrawing(channel, user, randWord, imageBase64);
@@ -313,6 +329,16 @@ module.exports = {
                         }) // catch
                         initGame(user, interaction, channel);
                     } else {
+                        await sketchSchema.findOneAndUpdate({}, {
+                            voteSkip: 0,
+                            hasVoted: [],
+                            isSubmitted: false,
+                            wasGuessed: false,
+                            hasEnded: false
+                        }, {
+                            upsert: true
+                        }) // catch
+                        
                         // disallow a user to draw 2 times in a row - though staff is allowed do this
                         if (!member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             for (const data of results) {
@@ -390,7 +416,7 @@ module.exports = {
                     for (const data of results) {
                         const currentDrawer = data.currentDrawer;
                         const customId = data.urlId;
-                        const canvasUrl = `https://wbo.ophir.dev/boards/${user?.username}${customId}`
+                        const canvasUrl = `https://aggie.io/${customId}`
 
                         // only allow the current drawer to retrieve the link
                         if (user?.id === currentDrawer) {
