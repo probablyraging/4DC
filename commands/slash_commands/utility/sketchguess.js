@@ -78,7 +78,7 @@ async function initGame(user, interaction, channel) {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                     // sleep for 3 minutes and then fetch the drawing
-                    await sleep(110000);
+                    await sleep(150000);
                 }
             }
 
@@ -105,18 +105,18 @@ async function fetchDrawing(channel, user, customId, randWord) {
     });
 
     // remove tooltips that obstruct the canvas
-    let selector = '.tooltip';
+    // let selector = '.tooltip';
 
-    await page.evaluate((s) => {
-        var elements = document.querySelectorAll(s);
+    // await page.evaluate((s) => {
+    //     var elements = document.querySelectorAll(s);
 
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].parentNode.removeChild(elements[i]);
-        }
-    }, selector)
+    //     for (var i = 0; i < elements.length; i++) {
+    //         elements[i].parentNode.removeChild(elements[i]);
+    //     }
+    // }, selector)
 
     // give the canvas time to load - may need to be adjusted in the future
-    await sleep(30000);
+    // await sleep(7000);
 
     // using this to get rid of annoying pop-up that covers part of the canvas
     // page.mouse.click(1950, 570, {
@@ -130,20 +130,22 @@ async function fetchDrawing(channel, user, customId, randWord) {
     // });
 
     // Get the image as a base64 string, so we don't need to save it locally
-    await page.screenshot({
-        encoding: "base64",
-        clip: {
-            x: 35,
-            y: 40,
-            width: 1875,
-            height: 1065
-        }
-    }).then(imageBase64 => {
-        uploadDrawing(channel, user, randWord, imageBase64);
-    });
-
-    // Close browser and cleanup
-    await browser.close();
+    setTimeout(() => {
+        await page.screenshot({
+            encoding: "base64",
+            clip: {
+                x: 35,
+                y: 40,
+                width: 1875,
+                height: 1065
+            }
+        }).then(imageBase64 => {
+            uploadDrawing(channel, user, randWord, imageBase64);
+        });
+    
+        // Close browser and cleanup
+        await browser.close();
+    }, 10000);
 }
 
 // upload the drawing to the Sketch Guess channel
