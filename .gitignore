@@ -4,3 +4,4 @@ node_modules
 templates
 *.test
 .env.prod
+res/pptr_cache
