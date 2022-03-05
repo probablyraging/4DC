@@ -55,32 +55,32 @@ async function initGame(user, interaction, channel) {
 *You can end your turn early with \`/sketchguess end\`*`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
 
-            // sleep for 3 seconds to allow the user time to load the webpage
-            await sleep(3000)
+                // sleep for 3 seconds to allow the user time to load the webpage
+                await sleep(3000)
 
-            const results = await sketchSchema.find({})
+                const results = await sketchSchema.find({})
 
-            for (const data of results) {
-                const gameState = data.gameState;
+                for (const data of results) {
+                    const gameState = data.gameState;
 
-                if (gameState) {
-                    const dgEmbed = new MessageEmbed()
-                        .setAuthor({ name: `Drawing Phase`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
-                        .setColor('#a2ff91')
-                        .setDescription(`${user} has **3 minutes** to draw their word`)
-                        .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                        .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                    if (gameState) {
+                        const dgEmbed = new MessageEmbed()
+                            .setAuthor({ name: `Drawing Phase`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                            .setColor('#a2ff91')
+                            .setDescription(`${user} has **3 minutes** to draw their word`)
+                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
-                    channel?.send({
-                        embeds: [dgEmbed]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        channel?.send({
+                            embeds: [dgEmbed]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    // sleep for 3 minutes and then fetch the drawing
-                    await sleep(150000);
+                        // sleep for 3 minutes and then fetch the drawing
+                        await sleep(150000);
 
-                    fetchDrawing(channel, user, customId, randWord);
+                        fetchDrawing(channel, user, customId, randWord);
+                    }
                 }
             }
         }

@@ -37,7 +37,7 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));;
 
         const target = options.getMember("username") || member;
         const targetId = target?.user?.id || member?.id;
