@@ -121,6 +121,9 @@ async function fetchDrawing(channel, user, customId, randWord) {
     await sleep(500);
     await page.click('button[title="Fit on screen [Home]"]')
 
+    // sleep to allow page to load
+    await sleep(7000);
+
     // Get the image as a base64 string, so we don't need to save it locally
     setTimeout(async () => {
         await page.screenshot({
@@ -160,7 +163,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
                         image: image,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
-                    response.forEach(res => {
+                    await response.forEach(res => {
                         const imgurUrl = res.data.link
                         dgEmbed.setImage(imgurUrl);
                     });

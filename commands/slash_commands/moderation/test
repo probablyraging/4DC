@@ -129,7 +129,7 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
             console.timeEnd('upload to imgur')
 
-            response.forEach(res => {
+            await response.forEach(res => {
                 const imgurUrl = res.data.link;
                 dgEmbed.setImage(imgurUrl);
             });
