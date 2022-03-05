@@ -79,10 +79,10 @@ async function initGame(user, interaction, channel) {
 
                     // sleep for 3 minutes and then fetch the drawing
                     await sleep(150000);
+
+                    fetchDrawing(channel, user, customId, randWord);
                 }
             }
-
-            fetchDrawing(channel, user, customId, randWord);
         }
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
@@ -119,15 +119,15 @@ async function fetchDrawing(channel, user, customId, randWord) {
     // await sleep(7000);
 
     // using this to get rid of annoying pop-up that covers part of the canvas
-    // page.mouse.click(1950, 570, {
-    //     delay: 200,
-    //     clickCount: 2
-    // });
-    // await sleep(1000);
-    // page.mouse.click(1940, 577, {
-    //     delay: 200,
-    //     clickCount: 2
-    // });
+    page.mouse.click(1950, 570, {
+        delay: 200,
+        clickCount: 2
+    });
+    await sleep(1000);
+    page.mouse.click(1940, 577, {
+        delay: 200,
+        clickCount: 2
+    });
 
     // Get the image as a base64 string, so we don't need to save it locally
     setTimeout(async () => {
@@ -142,7 +142,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
         }).then(imageBase64 => {
             uploadDrawing(channel, user, randWord, imageBase64);
         });
-    
+
         // Close browser and cleanup
         await browser.close();
     }, 20000);
