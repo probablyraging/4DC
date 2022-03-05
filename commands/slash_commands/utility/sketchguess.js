@@ -6,7 +6,7 @@ const { ImgurClient } = require('imgur');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
-const puppeteer = require("puppeteer");
+const { webkit } = require('playwright');
 
 async function initGame(user, interaction, channel) {
     await mongo().then(async () => {
@@ -75,14 +75,14 @@ async function initGame(user, interaction, channel) {
                         channel?.send({
                             embeds: [dgEmbed]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                        // sleep for 3 minutes and then fetch the drawing
-                        await sleep(150000);
-
-                        fetchDrawing(channel, user, customId, randWord);
                     }
                 }
             }
+
+            // sleep for 3 minutes and then fetch the drawing
+            await sleep(150000);
+
+            fetchDrawing(channel, user, customId, randWord);
         }
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
@@ -91,56 +91,128 @@ async function initGame(user, interaction, channel) {
 async function fetchDrawing(channel, user, customId, randWord) {
     // Fetch the drawing from the website
     let websiteUrl = `https://aggie.io/${customId}`;
-    const browser = await puppeteer.launch()
+    const browser = await webkit.launch()
     const page = await browser.newPage()
 
     // Set our viewport
-    await page.setViewport({
-        width: 2160,
+    await page.setViewportSize({
+        width: 1920,
         height: 1080
     })
 
-    await page.goto(websiteUrl, {
-        waitUntil: 'networkidle0'
-    });
+    await page.goto(websiteUrl);
 
     // remove tooltips that obstruct the canvas
     let selector = '.tooltip';
-
     await page.evaluate((s) => {
         var elements = document.querySelectorAll(s);
 
         for (var i = 0; i < elements.length; i++) {
             elements[i].parentNode.removeChild(elements[i]);
         }
-    }, selector)
+    }, selector);
 
-    // give the canvas time to load - may need to be adjusted in the future
-    // await sleep(7000);
+    await sleep(500);
 
-    // using this to get rid of annoying pop-up that covers part of the canvas
-    page.mouse.click(1950, 570, {
-        delay: 200,
-        clickCount: 2
-    });
-    await sleep(1000);
-    page.mouse.click(1940, 577, {
-        delay: 200,
-        clickCount: 2
-    });
+    // center canvas on the page
+    await page.click('button[title="Fit on screen [Home]"]')
+    await sleep(500);
+    await page.click('button[title="Zoom out [-]"]')
+    await sleep(500);
+    await page.click('button[title="Fit on screen [Home]"]')
 
     // Get the image as a base64 string, so we don't need to save it locally
     setTimeout(async () => {
         await page.screenshot({
-            encoding: "base64",
+            type: 'jpeg',
+            quality: 10,
+            timeout: 120000,
             clip: {
-                x: 35,
-                y: 40,
-                width: 1875,
-                height: 1020
+                x: 90, // top
+                y: 130, // left
+                width: 1530,
+                height: 865
             }
-        }).then(imageBase64 => {
-            uploadDrawing(channel, user, randWord, imageBase64);
+        }).then(async image => {
+
+            await mongo().then(async () => {
+                const results = await sketchSchema.find({})
+
+                for (const data of results) {
+                    const wasGuessed = data.wasGuessed;
+                    const hasEnded = data.hasEnded;
+                    const isSubmitted = data.isSubmitted;
+
+                    const prehint = randWord.replace(/\S/g, '\\_ ');
+                    const hint = prehint.replace(/\s/g, '⠀')
+
+                    const dgEmbed = new MessageEmbed()
+                        .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
+                        .setColor('#fff47a')
+                        .addField(`Category`, `Object`, false)
+                        .addField(`Hint`, `${hint}`, false)
+                        .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                    // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
+                    const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+
+                    const response = await imgur.upload({
+                        image: image,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+
+                    response.forEach(res => {
+                        const imgurUrl = res.data.link
+                        dgEmbed.setImage(imgurUrl);
+                    });
+
+                    // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
+                    if (wasGuessed || hasEnded || isSubmitted) return;
+
+                    await channel?.send({
+                        embeds: [dgEmbed]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+                    await sketchSchema.findOneAndUpdate({}, {
+                        isSubmitted: true
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                    // set the channel permissions so that the drawer can't send messages
+                    channel.permissionOverwrites.edit(user?.id, {
+                        SEND_MESSAGES: false
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+
+                    // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
+                    const collector = channel.createMessageCollector();
+
+                    let count = 0;
+
+                    collector.on('collect', async () => {
+                        await sleep(3000)
+                        const results = await sketchSchema.find({})
+
+                        for (const data of results) {
+                            const wasGuessed = data.wasGuessed;
+                            const hasEnded = data.hasEnded;
+
+                            if (wasGuessed || hasEnded) return collector.stop();
+
+                            count++;
+
+                            if (count >= 12) {
+                                count = 0;
+
+                                dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                                channel?.send({
+                                    embeds: [dgEmbed]
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                            }
+                        }
+                    });
+                }
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
         });
 
         // Close browser and cleanup
@@ -150,86 +222,86 @@ async function fetchDrawing(channel, user, customId, randWord) {
 
 // upload the drawing to the Sketch Guess channel
 async function uploadDrawing(channel, user, randWord, imageBase64) {
-    await mongo().then(async () => {
-        const results = await sketchSchema.find({})
+    // await mongo().then(async () => {
+    //     const results = await sketchSchema.find({})
 
-        for (const data of results) {
-            const wasGuessed = data.wasGuessed;
-            const hasEnded = data.hasEnded;
-            const isSubmitted = data.isSubmitted;
+    //     for (const data of results) {
+    //         const wasGuessed = data.wasGuessed;
+    //         const hasEnded = data.hasEnded;
+    //         const isSubmitted = data.isSubmitted;
 
-            const prehint = randWord.replace(/\S/g, '\\_ ');
-            const hint = prehint.replace(/\s/g, '⠀')
+    //         const prehint = randWord.replace(/\S/g, '\\_ ');
+    //         const hint = prehint.replace(/\s/g, '⠀')
 
-            const dgEmbed = new MessageEmbed()
-                .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
-                .setColor('#fff47a')
-                .addField(`Category`, `Object`, false)
-                .addField(`Hint`, `${hint}`, false)
-                .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+    //         const dgEmbed = new MessageEmbed()
+    //             .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
+    //             .setColor('#fff47a')
+    //             .addField(`Category`, `Object`, false)
+    //             .addField(`Hint`, `${hint}`, false)
+    //             .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
-            // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
-            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+    //         // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
+    //         const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
 
-            const response = await imgur.upload({
-                image: imageBase64,
-                type: 'base64',
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+    //         const response = await imgur.upload({
+    //             image: imageBase64,
+    //             type: 'base64',
+    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
-            let imgurUrl;
-            response.forEach(res => {
-                imgurUrl = res.data.link
-                dgEmbed.setImage(imgurUrl);
-            });
+    //         let imgurUrl;
+    //         response.forEach(res => {
+    //             imgurUrl = res.data.link
+    //             dgEmbed.setImage(imgurUrl);
+    //         });
 
-            // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
-            if (wasGuessed || hasEnded || isSubmitted) return;
+    //         // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
+    //         if (wasGuessed || hasEnded || isSubmitted) return;
 
-            await channel?.send({
-                embeds: [dgEmbed]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+    //         await channel?.send({
+    //             embeds: [dgEmbed]
+    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-            await sketchSchema.findOneAndUpdate({}, {
-                isSubmitted: true
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+    //         await sketchSchema.findOneAndUpdate({}, {
+    //             isSubmitted: true
+    //         }, {
+    //             upsert: true
+    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-            // set the channel permissions so that the drawer can't send messages
-            channel.permissionOverwrites.edit(user?.id, {
-                SEND_MESSAGES: false
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+    //         // set the channel permissions so that the drawer can't send messages
+    //         channel.permissionOverwrites.edit(user?.id, {
+    //             SEND_MESSAGES: false
+    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-            // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-            const collector = channel.createMessageCollector();
+    //         // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
+    //         const collector = channel.createMessageCollector();
 
-            let count = 0;
+    //         let count = 0;
 
-            collector.on('collect', async () => {
-                await sleep(3000)
-                const results = await sketchSchema.find({})
+    //         collector.on('collect', async () => {
+    //             await sleep(3000)
+    //             const results = await sketchSchema.find({})
 
-                for (const data of results) {
-                    const wasGuessed = data.wasGuessed;
-                    const hasEnded = data.hasEnded;
+    //             for (const data of results) {
+    //                 const wasGuessed = data.wasGuessed;
+    //                 const hasEnded = data.hasEnded;
 
-                    if (wasGuessed || hasEnded) return collector.stop();
+    //                 if (wasGuessed || hasEnded) return collector.stop();
 
-                    count++;
+    //                 count++;
 
-                    if (count >= 12) {
-                        count = 0;
+    //                 if (count >= 12) {
+    //                     count = 0;
 
-                        dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+    //                     dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
-                        channel?.send({
-                            embeds: [dgEmbed]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                    }
-                }
-            });
-        }
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+    //                     channel?.send({
+    //                         embeds: [dgEmbed]
+    //                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
     // await sleep(30000);
     // checkGameState(channel, user, randWord);

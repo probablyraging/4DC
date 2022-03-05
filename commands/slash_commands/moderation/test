@@ -18,183 +18,129 @@ module.exports = {
     async execute(interaction) {
         const { channel } = interaction;
 
-        const { firefox } = require('playwright');
+        const { webkit } = require('playwright');
 
-        (async () => {
-            const browser = await firefox.launch();
-            
-            const page = await browser.newPage();
-            await page.goto('https://aggie.io/89adsf89fdaf89fd');
+        await sleep(1000)
 
-            await sleep(5000)
+        console.time('total time')
+        interaction.deferReply();
 
-            await page.screenshot({ path: 'screenshot.png' });
+        console.time('create and deliver custom URL')
+        const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18);
 
-            await browser.close();
-        })();
+        // Fetch the drawing from the website
+        let websiteUrl = `https://aggie.io/f98sd89f89fds89f`;
 
-        //         await sleep(1000)
+        channel.send({
+            content: `<${websiteUrl}>`
+        })
+        console.timeEnd('create and deliver custom URL')
 
-        //         console.time('total time')
-        //         interaction.deferReply();
+        console.time('launch browser')
+        const browser = await webkit.launch();
+        console.timeEnd('launch browser')
 
-        //         console.time('create and deliver custom URL')
-        //         const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18);
+        console.time('open new page')
+        const page = await browser.newPage(); // i think this is redundant because 'page.goto()' opens a new page for us
+        console.timeEnd('open new page')
 
-        //         // Fetch the drawing from the website
-        //         let websiteUrl = `https://aggie.io/f98sd89f89fds89f`;
+        console.time('set the viewport')
+        // Set our viewport
+        await page.setViewportSize({
+            width: 1920,
+            height: 1080
+        })
+        console.timeEnd('set the viewport')
 
-        //         channel.send({
-        //             content: `<${websiteUrl}>`
-        //         })
-        //         console.timeEnd('create and deliver custom URL')
+        // block 3rd party scripts
+        // const blocked_domains = [
+        //     'googlesyndication.com',
+        //     'adservice.google.com',
+        // ];
 
-        //         const minimal_args = [
-        //             '--autoplay-policy=user-gesture-required',
-        //             '--disable-background-networking',
-        //             '--disable-background-timer-throttling',
-        //             '--disable-backgrounding-occluded-windows',
-        //             '--disable-breakpad',
-        //             '--disable-client-side-phishing-detection',
-        //             '--disable-component-update',
-        //             '--disable-default-apps',
-        //             '--disable-dev-shm-usage',
-        //             '--disable-domain-reliability',
-        //             '--disable-extensions',
-        //             '--disable-features=AudioServiceOutOfProcess',
-        //             '--disable-hang-monitor',
-        //             '--disable-ipc-flooding-protection',
-        //             '--disable-notifications',
-        //             '--disable-offer-store-unmasked-wallet-cards',
-        //             '--disable-popup-blocking',
-        //             '--disable-print-preview',
-        //             '--disable-prompt-on-repost',
-        //             '--disable-renderer-backgrounding',
-        //             '--disable-setuid-sandbox',
-        //             '--disable-speech-api',
-        //             '--disable-sync',
-        //             '--hide-scrollbars',
-        //             '--ignore-gpu-blacklist',
-        //             '--metrics-recording-only',
-        //             '--mute-audio',
-        //             '--no-default-browser-check',
-        //             '--no-first-run',
-        //             '--no-pings',
-        //             '--no-sandbox',
-        //             '--no-zygote',
-        //             '--password-store=basic',
-        //             '--use-gl=swiftshader',
-        //             '--use-mock-keychain',
-        //           ];
+        // await page.setRequestInterception(true);
+        // page.on('request', request => {
+        //     const url = request.url()
+        //     if (blocked_domains.some(domain => url.includes(domain))) {
+        //         request.abort();
+        //     } else {
+        //         request.continue();
+        //     }
+        // });
 
-        //         console.time('launch browser')
-        //         const browser = await puppeteer.launch({
-        //             userDataDir: './res/pptr_cache',
-        //             arg: minimal_args
-        //         });
-        //         console.timeEnd('launch browser')
+        console.time('go to the custom URL')
+        await page.goto(websiteUrl);
+        console.timeEnd('go to the custom URL')
 
-        //         console.time('open new page')
-        //         const page = await browser.newPage(); // i think this is redundant because 'page.goto()' opens a new page for us
-        //         console.timeEnd('open new page')
+        // await sleep(3000)
 
-        //         console.time('set the viewport')
-        //         // Set our viewport
-        //         await page.setViewport({
-        //             width: 1920,
-        //             height: 1080
-        //         })
-        //         console.timeEnd('set the viewport')
+        // console.time('wait for div')
+        // await page.waitForSelector('div[class="editor-long-task"]', {
+        //     hidden: true
+        // })
+        // console.timeEnd('wait for div')
 
-        //         // block 3rd party scripts
-        //         const blocked_domains = [
-        //             'googlesyndication.com',
-        //             'adservice.google.com',
-        //         ];
+        // await sleep(5000);
 
-        //         await page.setRequestInterception(true);
-        //         page.on('request', request => {
-        //             const url = request.url()
-        //             if (blocked_domains.some(domain => url.includes(domain))) {
-        //                 request.abort();
-        //             } else {
-        //                 request.continue();
-        //             }
-        //         });
+        // remove tooltips that obstruct the canvas
+        let selector = '.tooltip';
+        await page.evaluate((s) => {
+            var elements = document.querySelectorAll(s);
 
-        //         console.time('go to the custom URL')
-        //         await page.goto(websiteUrl);
-        //         console.timeEnd('go to the custom URL')
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].parentNode.removeChild(elements[i]);
+            }
+        }, selector);
 
-        //         // await sleep(3000)
+        await sleep(500);
 
-        //         // console.time('wait for div')
-        //         // await page.waitForSelector('div[class="editor-long-task"]', {
-        //         //     hidden: true
-        //         // })
-        //         // console.timeEnd('wait for div')
+        await page.click('button[title="Fit on screen [Home]"]')
+        await sleep(500);
+        await page.click('button[title="Zoom out [-]"]')
+        await sleep(500);
+        await page.click('button[title="Fit on screen [Home]"]')
 
-        //         await sleep(180000)
-        // ;
+        console.time('sleep for 15 secs')
+        await sleep(7000);
+        console.timeEnd('sleep for 15 secs')
 
-        //         // remove tooltips that obstruct the canvas
-        //         // let selector = '.tooltip';
-        //         // await page.evaluate((s) => {
-        //         //     var elements = document.querySelectorAll(s);
+        console.time('take a screenshot')
+        // Get the image as a base64 string, so we don't need to save it locally
+        await page.screenshot({
+            type: 'jpeg',
+            quality: 10,
+            timeout: 60000,
+            clip: {
+                x: 90, // top
+                y: 130, // left
+                width: 1530,
+                height: 865
+            }
+        }).then(async image => {
+            console.timeEnd('take a screenshot')
+            const dgEmbed = new MessageEmbed()
 
-        //         //     for (var i = 0; i < elements.length; i++) {
-        //         //         elements[i].parentNode.removeChild(elements[i]);
-        //         //     }
-        //         // }, selector);
+            // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
+            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
 
-        //         // await sleep(10000);
+            console.time('upload to imgur')
+            const response = await imgur.upload({
+                image: image
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+            console.timeEnd('upload to imgur')
 
-        //         // await page.click('button[title="Fit on screen [Home]"]')
-        //         // await sleep(500);
-        //         // await page.click('button[title="Zoom out [-]"]')
-        //         // await sleep(500);
-        //         // await page.click('button[title="Fit on screen [Home]"]')
+            response.forEach(res => {
+                const imgurUrl = res.data.link;
+                dgEmbed.setImage(imgurUrl);
+            });
 
-        //         // console.time('sleep for 15 secs')
-        //         // await sleep(15000);
-        //         // console.timeEnd('sleep for 15 secs')
+            interaction.editReply({
+                embeds: [dgEmbed]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+        });
 
-        //         console.time('take a screenshot')
-        //         // Get the image as a base64 string, so we don't need to save it locally
-        //         await page.screenshot({
-        //             type: 'jpeg',
-        //             quality: 10
-        //             // clip: {
-        //             //     x: 90, // top
-        //             //     y: 130, // left
-        //             //     width: 1530,
-        //             //     height: 865
-        //             // }
-        //         }).then(async image => {
-        //             console.timeEnd('take a screenshot')
-        //             const dgEmbed = new MessageEmbed()
-
-        //             // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
-        //             const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
-
-        //             console.time('upload to imgur')
-        //             const response = await imgur.upload({
-        //                 image: image
-        //             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
-        //             console.timeEnd('upload to imgur')
-
-        //             response.forEach(res => {
-        //                 const imgurUrl = res.data.link;
-        //                 dgEmbed.setImage(imgurUrl);
-        //             });
-
-        //             interaction.editReply({
-        //                 embeds: [dgEmbed]
-        //             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-        //         });
-
-        //         // Close browser and cleanup
-        //         // await browser.close();
-        //         console.timeEnd('total time')
+        // Close browser and cleanup
+        await browser.close();
+        console.timeEnd('total time')
     }
 }
