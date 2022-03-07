@@ -180,7 +180,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                     break;
                 }
 
-                // allow the drawer to submit their drawing manually
+                // allow the drawer to resend their drawing in case it was broken or missing
                 case 'resend': {
                     const results = await sketchSchema.find({})
 
@@ -271,7 +271,6 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                 }
 
 
-
                 // allow users to vote to skip the current round - we can skip with 3 unique votes
                 case 'skip': {
                     const results = await sketchSchema.find({});
@@ -326,7 +325,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                                 .setColor('#ff8a8a')
                                 .setDescription(`We received 3 votes to skip the current round
 The word was \`${currentWord.toUpperCase()}\``)
-                                .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• /sketchguess draw - start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             interaction.reply({
                                 embeds: [dgEmbed]
@@ -345,7 +344,7 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 .setAuthor({ name: `Vote To Skip`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1536/1536966.png' })
                                 .setColor('#ff8a8a')
                                 .setDescription(`There are currently \`${voteSkip}/3\` votes to skip the current round`)
-                                .setFooter({ text: `use '/sketchguess voteskip' to vote`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• /sketchguess skip - vote to skip`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             interaction.reply({
                                 embeds: [dgEmbed]
@@ -392,7 +391,7 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/5553/5553850.png' })
                                 .setColor('#ff8a8a')
                                 .setDescription(`${user} has ended the round early`)
-                                .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• /sketchguess draw - start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             interaction.reply({
                                 embeds: [dgEmbed]
@@ -420,7 +419,7 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/5553/5553850.png' })
                                 .setColor('#ff8a8a')
                                 .setDescription(`A staff member has ended the round early`)
-                                .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• /sketchguess draw - start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             interaction.reply({
                                 embeds: [dgEmbed]
@@ -523,7 +522,7 @@ async function initGame(user, interaction, channel) {
                                 .setColor('#a2ff91')
                                 .setDescription(`${user} has **6 minutes** to draw her word (because she's special)`)
                                 .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                                .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             channel?.send({
                                 embeds: [dgEmbed]
@@ -534,7 +533,7 @@ async function initGame(user, interaction, channel) {
                                 .setColor('#a2ff91')
                                 .setDescription(`${user} has **3 minutes** to draw their word`)
                                 .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                                .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({ text: `• check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             channel?.send({
                                 embeds: [dgEmbed]
@@ -672,7 +671,6 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                 }
 
 
-
                 dgEmbed.setImage('attachment://sketch.jpg')
 
                 await channel?.send({
@@ -680,7 +678,10 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                     files: [attachment]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
                     .then(async m => {
-                        console.log(m);
+                        m.embeds.forEach(embed => {
+                            console.log(embed);
+                        });
+
                         previousEmbed = m.id;
                     });
             }
