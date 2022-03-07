@@ -9,11 +9,10 @@ module.exports = async (message) => {
     if (message?.channel.id === process.env.SKETCH_CHAN && !message?.author.bot) {
 
         // delete any links in this channel
-        const linkArr = ['https://', 'http://', 'www.'];
         const guess = message?.content.toLowerCase();
         const guesser = message?.author;
 
-        if (linkArr.includes(message?.content.toLowerCase())) {
+        if (guess.includes('https://') || guess.includes('http://') || guess.includes('www.')) {
             if (message?.deleted) return;
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }

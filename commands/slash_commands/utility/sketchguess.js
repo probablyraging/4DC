@@ -1,9 +1,8 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed, MessageAttachment } = require('discord.js');
 const mongo = require('../../../mongo');
 const { words } = require('../../../lists/sketch-words');
 const { v4: uuidv4 } = require("uuid");
 const { webkit } = require('playwright');
-const { ImgurClient } = require('imgur');
 const sleep = require("timers/promises").setTimeout;
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
 const path = require('path');
@@ -186,6 +185,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         const customId = data.urlId;
                         const gameState = data.gameState;
                         const randWord = data.currentWord;
+                        const wasGuessed = data.wasGuessed;
 
                         // if there is no current active game
                         if (!gameState) {
@@ -206,21 +206,19 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             }
 
                             interaction.reply({
-                                content: `Your drawing has been sumbitted and will appear soon, this may take a few second..`,
+                                content: `Resending your drawing. The current image will be replaced with the new one`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                            // the canvas can take a few seconds to update for others so we compendate for this
+                            // the canvas can take a few seconds to update for others so we compensate for this
                             await sleep(5000);
 
-                            if (previousEmbed != undefined) {
-                                channel.messages.fetch(previousEmbed).then(m => {
-                                    m.delete()
-                                })
-                            }
+                            if (wasGuessed) return;
+
+                            const resending = true;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord);
+                            fetchDrawing(channel, user, customId, randWord, resending);
 
                         } else {
                             interaction.reply({
@@ -513,6 +511,7 @@ async function initGame(user, interaction, channel) {
                 }
 
                 // sleep for 3 minutes and then fetch the drawing
+                if (user?.id === '325963234597142538') await sleep(360000);
                 await sleep(180000);
 
                 const results2 = await sketchSchema.find({});
@@ -535,13 +534,11 @@ async function initGame(user, interaction, channel) {
 /**
  * FETCH THE DRAWING
  */
-async function fetchDrawing(channel, user, customId, randWord) {
+async function fetchDrawing(channel, user, customId, randWord, resending) {
     // if the drawing is in the process of being fetched, we should stop here
     if (fetchInProgress) return;
     fetchInProgress = true;
 
-    console.time('>> total time')
-    console.time('go to webpage')
     // fetch the drawing from the website
     let websiteUrl = `https://aggie.io/${customId}`;
     const browser = await webkit.launch();
@@ -555,9 +552,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
 
     // go to the website
     await page.goto(websiteUrl);
-    console.timeEnd('go to webpage')
 
-    console.time('wait for loading')
     // wait for the canvas to load
     await page.waitForSelector('div[class="editor-canvas"]', {
         hidden: false
@@ -570,17 +565,8 @@ async function fetchDrawing(channel, user, customId, randWord) {
 
         await browser.close();
 
-        // we can probably just reload the page here instead of restarting the function?
-        console.log('PAGE FAILED TO LOAD')
-        console.timeEnd('wait for loading')
-        console.timeEnd('>> total time')
-
         return fetchDrawing(channel, user, customId, randWord);
     }
-
-    // await page.waitForSelector('div[class="editor-long-task"]', {
-    //     hidden: true
-    // })
 
     // center and resize the canvas so we can see it all
     await page.locator('button[command="zoom-out"]').click();
@@ -597,9 +583,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
             elements[i].parentNode.removeChild(elements[i]);
         }
     }, selector);
-    console.timeEnd('wait for loading')
 
-    console.time('take the screenshot')
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
         clip: {
@@ -609,11 +593,9 @@ async function fetchDrawing(channel, user, customId, randWord) {
             height: 865
         }
     }).then(async image => {
-        console.timeEnd('take the screenshot')
         // close browser and cleanup
         await browser.close();
 
-        console.time('upload and send')
         await mongo().then(async () => {
             // transform our word into underscores
             const prehint = randWord.replace(/\S/g, '\\_ ');
@@ -622,31 +604,50 @@ async function fetchDrawing(channel, user, customId, randWord) {
             const dgEmbed = new MessageEmbed()
                 .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
                 .setColor('#fff47a')
-                .addField(`Hint`, `${hint}`, true)
-                .setFooter({ text: `terrible drawing? vote to skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-            // upload the screenshot to imgur
-            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
-
-            const response = await imgur.upload({
-                image: image,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
-
-            // attach screenshot to embed and send the embed
-            await response.forEach(res => {
-                const imgurUrl = res.data.link
-                dgEmbed.setImage(imgurUrl);
-            });
+                .addField(`Hint *(${randWord.length} letters)*`, `${hint}`, true)
+                .setFooter({
+                    text: `• /sketchguess skip - vote to skip the current drawing
+• /sketchguess resend - fix a broken drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
+                })
 
             // sometimes images aren't being attached to embed properly - hoping this solves that?
             await sleep(1000);
 
-            await channel?.send({
-                embeds: [dgEmbed]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
-                .then(async m => {
-                    previousEmbed = m.id;
-                });
+            const results = await sketchSchema.find({});
+
+            for (const data of results) {
+                const wasGuessed = data.wasGuessed;
+
+                if (wasGuessed) return;
+
+                // if the resend command was ran, we edit the old embed with the new image
+                if (resending) {
+                    await channel.messages.fetch(previousEmbed).then(fetched => {
+                        const embed = fetched?.embeds[0];
+
+                        if (!embed) return;
+
+                        const attachment = new MessageAttachment(image, "sketch.jpg");
+
+                        embed.setImage('attachment://sketch.jpg');
+                        
+                        fetched.edit({ embeds: [embed], files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                    });
+                    return;
+                }
+
+                const attachment = new MessageAttachment(image, "sketch.jpg");
+
+                dgEmbed.setImage('attachment://sketch.jpg')
+
+                await channel?.send({
+                    embeds: [dgEmbed],
+                    files: [attachment]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
+                    .then(async m => {
+                        previousEmbed = m.id;
+                    });
+            }
 
             // update the database so we know the screenshot has already been submitted
             await sketchSchema.findOneAndUpdate({}, {
@@ -654,12 +655,6 @@ async function fetchDrawing(channel, user, customId, randWord) {
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-            // set the channel permissions so that the drawer can't send messages
-            // channel.permissionOverwrites.edit(user?.id, {
-            //     SEND_MESSAGES: false
-            // }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
-            console.timeEnd('upload and send')
 
             // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
             const collector = channel.createMessageCollector();
@@ -691,6 +686,5 @@ async function fetchDrawing(channel, user, customId, randWord) {
 
         // the drawing has been fetching process is complete, we can reset this
         fetchInProgress = false;
-        console.timeEnd('>> total time')
     });
 }
