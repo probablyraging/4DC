@@ -7,6 +7,7 @@ const sleep = require("timers/promises").setTimeout;
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
 const path = require('path');
 
+const collector = channel.createMessageCollector();
 let fetchInProgress = false;
 let previousEmbed;
 
@@ -461,8 +462,11 @@ async function initGame(user, interaction, channel) {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
 
-            // if there is not current game in progress
+            // if there is no current game in progress
             if (!gameState) {
+                // stop the collector because we're starting a new round
+                collector.stop();
+
                 await sketchSchema.findOneAndUpdate({}, {
                     currentWord: randWord,
                     currentDrawer: user?.id,
@@ -671,6 +675,7 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                     files: [attachment]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
                     .then(async m => {
+                        console.log(m);
                         previousEmbed = m.id;
                     });
             }
@@ -683,7 +688,6 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
             // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-            const collector = channel.createMessageCollector();
             let count = 0;
 
             collector.on('collect', async () => {
@@ -703,7 +707,8 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                         count = 0;
 
                         channel?.send({
-                            embeds: [dgEmbed]
+                            embeds: [dgEmbed],
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
                     }
                 }
