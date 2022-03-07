@@ -477,16 +477,29 @@ async function initGame(user, interaction, channel) {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                interaction.reply({
-                    content: `*It's your turn to draw!*
+                if (user?.id === '325963234597142538') {
+                    interaction.reply({
+                        content: `*It's your turn to draw!*
+> ✏️ **You has 6 minutes to draw the word (because you're special) \`${randWord.toUpperCase()}\`**
+> [Click here to start drawing!](<${canvasUrl}>)
+
+*Do not dismiss this message until you have opened the link above*
+*You can end your turn early with \`/sketchguess end\`*
+*If you drawing fails to send, or has another issue, user \`/sketchguess resend\`*`,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                } else {
+                    interaction.reply({
+                        content: `*It's your turn to draw!*
 > ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`**
 > [Click here to start drawing!](<${canvasUrl}>)
 
 *Do not dismiss this message until you have opened the link above*
 *You can end your turn early with \`/sketchguess end\`*
 *If you drawing fails to send, or has another issue, user \`/sketchguess resend\`*`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
 
                 // sleep for 3 seconds before officially starting the round to allow the drawer time to load the webpage
                 await sleep(3000);
@@ -497,7 +510,19 @@ async function initGame(user, interaction, channel) {
                     const gameState = data.gameState;
 
                     if (gameState) {
-                        const dgEmbed = new MessageEmbed()
+                        if (user?.id === '325963234597142538') {
+                            const dgEmbed = new MessageEmbed()
+                            .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                            .setColor('#a2ff91')
+                            .setDescription(`${user} has **6 minutes** to draw her word (because she's special)`)
+                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                        channel?.send({
+                            embeds: [dgEmbed]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        } else {
+                            const dgEmbed = new MessageEmbed()
                             .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
                             .setColor('#a2ff91')
                             .setDescription(`${user} has **3 minutes** to draw their word`)
@@ -507,6 +532,7 @@ async function initGame(user, interaction, channel) {
                         channel?.send({
                             embeds: [dgEmbed]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        }
                     }
                 }
 
@@ -630,7 +656,7 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                         const attachment = new MessageAttachment(image, "sketch.jpg");
 
                         embed.setImage('attachment://sketch.jpg');
-                        
+
                         fetched.edit({ embeds: [embed], files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                     });
                     return;
