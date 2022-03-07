@@ -3,12 +3,12 @@
 
 [![CreatorHub](https://img.shields.io/discord/820889004055855144?color=5865F2&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/creatorhub)
 [![Language](https://img.shields.io/github/languages/top/ProbablyRaging/CreatorBot?color=f0db4f&logoColor=white&style=for-the-badge)]()
-[![Library](https://img.shields.io/badge/library-discord.js-5865f2?style=for-the-badge)](https://youtube.com/channel/UCIjouN_iuJswbC6MJltMl_A)
+[![Library](https://img.shields.io/badge/library-discord.js-5865f2?style=for-the-badge)](https://www.npmjs.com/package/discord.js)
 [![DiscordJS](https://img.shields.io/npm/v/discord.js.svg?maxAge=3600&style=for-the-badge)](https://www.npmjs.com/package/discord.js)
 
 CreatorBot is a multipurpose discord.js v13 bot created for the <a href="https://discord.gg/creatorhub">**CreatorHub**</a> Discord server.
 
-With over 30 useful slash command and some notable features including; moderation (mute/mass delete/move/blacklist), phishing scam detection ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), warning system, rank and xp economy, custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), youtube upload notifications, custom games, command help menu, reporting system plus many more..
+With over 30 useful slash commands and other notable features including; moderation (mute/mass delete/move/blacklist), phishing scam detection ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), warning system, rank and xp economy, custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), youtube upload notifications, custom games, command help menu, reporting system plus many more..
 
 CreatorBot is actively being maintained and updated to include the newest discord.js features and Discord API integration.
 
