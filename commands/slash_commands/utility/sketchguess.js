@@ -7,9 +7,9 @@ const sleep = require("timers/promises").setTimeout;
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
 const path = require('path');
 
-const collector = channel.createMessageCollector();
 let fetchInProgress = false;
 let previousEmbed;
+let collector;
 
 module.exports = {
     name: `sketchguess`,
@@ -59,6 +59,9 @@ module.exports = {
      */
     async execute(interaction) {
         const { channel, user, member, options } = interaction;
+
+        collector = channel.createMessageCollector();
+
         // only allow the command to be ran in the Sketch Guess channel
         if (channel?.id !== process.env.SKETCH_CHAN) {
             return interaction.reply({
@@ -516,26 +519,26 @@ async function initGame(user, interaction, channel) {
                     if (gameState) {
                         if (user?.id === '325963234597142538') {
                             const dgEmbed = new MessageEmbed()
-                            .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
-                            .setColor('#a2ff91')
-                            .setDescription(`${user} has **6 minutes** to draw her word (because she's special)`)
-                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                                .setColor('#a2ff91')
+                                .setDescription(`${user} has **6 minutes** to draw her word (because she's special)`)
+                                .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                                .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
-                        channel?.send({
-                            embeds: [dgEmbed]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            channel?.send({
+                                embeds: [dgEmbed]
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         } else {
                             const dgEmbed = new MessageEmbed()
-                            .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
-                            .setColor('#a2ff91')
-                            .setDescription(`${user} has **3 minutes** to draw their word`)
-                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                                .setColor('#a2ff91')
+                                .setDescription(`${user} has **3 minutes** to draw their word`)
+                                .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                                .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
-                        channel?.send({
-                            embeds: [dgEmbed]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            channel?.send({
+                                embeds: [dgEmbed]
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
                     }
                 }
@@ -626,6 +629,8 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
         // close browser and cleanup
         await browser.close();
 
+        const attachment = new MessageAttachment(image, "sketch.jpg");
+
         await mongo().then(async () => {
             // transform our word into underscores
             const prehint = randWord.replace(/\S/g, '\\_ ');
@@ -666,7 +671,7 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                     return;
                 }
 
-                const attachment = new MessageAttachment(image, "sketch.jpg");
+
 
                 dgEmbed.setImage('attachment://sketch.jpg')
 
