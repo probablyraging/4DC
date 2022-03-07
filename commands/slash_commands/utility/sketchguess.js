@@ -1,353 +1,21 @@
-const { ContextMenuInteraction, MessageEmbed, MessageCollector } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const { words } = require('../../../lists/sketch-words');
 const { v4: uuidv4 } = require("uuid");
+const { webkit } = require('playwright');
 const { ImgurClient } = require('imgur');
 const sleep = require("timers/promises").setTimeout;
-const path = require('path');
 const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
-const { webkit } = require('playwright');
+const path = require('path');
 
-async function initGame(user, interaction, channel) {
-    await mongo().then(async () => {
-        // unique room code can only be 24 chars long
-        const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18);
-        const canvasUrl = `https://aggie.io/${customId}`;
-        const randNum = Math.floor(Math.random() * words.length);
-        const randWord = words[randNum];
-        const results = await sketchSchema.find({});
-
-        for (const data of results) {
-            const gameState = data.gameState;
-
-            // check the current game state to see if there is a game currently in progress or not
-            // if there is a current game in progress
-            if (gameState) {
-                return interaction.reply({
-                    content: `There is currently a game of Sketch Guess in progress, join in <#${process.env.SKETCH_CHAN}>, or wait for the round to end`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-
-            // if there is not current game in progress
-            if (!gameState) {
-                await sketchSchema.findOneAndUpdate({}, {
-                    currentWord: randWord,
-                    currentDrawer: user?.id,
-                    urlId: customId,
-                    gameState: true,
-                    voteSkip: 0,
-                    hasVoted: [],
-                    isSubmitted: false,
-                    hasEnded: false,
-                    wasGuess: false
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-                interaction.reply({
-                    content: `*It's your turn to draw!*
-> ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`**
-> [Click here to start drawing!](<${canvasUrl}>)
-
-*Do not dismiss this message until you have opened the link above*
-*You can submit it early with \`/sketchguess submit\`*
-*You can end your turn early with \`/sketchguess end\`*`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-                // sleep for 3 seconds to allow the user time to load the webpage
-                await sleep(3000)
-
-                const results = await sketchSchema.find({})
-
-                for (const data of results) {
-                    const gameState = data.gameState;
-
-                    if (gameState) {
-                        const dgEmbed = new MessageEmbed()
-                            .setAuthor({ name: `Drawing Phase`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
-                            .setColor('#a2ff91')
-                            .setDescription(`${user} has **3 minutes** to draw their word`)
-                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
-                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-                        channel?.send({
-                            embeds: [dgEmbed]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                    }
-                }
-            }
-
-            // sleep for 3 minutes and then fetch the drawing
-            await sleep(150000);
-
-            fetchDrawing(channel, user, customId, randWord);
-        }
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-}
-
-// fetch the current drawing
-async function fetchDrawing(channel, user, customId, randWord) {
-    // Fetch the drawing from the website
-    let websiteUrl = `https://aggie.io/${customId}`;
-    const browser = await webkit.launch()
-    const page = await browser.newPage()
-
-    // Set our viewport
-    await page.setViewportSize({
-        width: 1920,
-        height: 1080
-    })
-
-    await page.goto(websiteUrl);
-
-    // remove tooltips that obstruct the canvas
-    let selector = '.tooltip';
-    await page.evaluate((s) => {
-        var elements = document.querySelectorAll(s);
-
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].parentNode.removeChild(elements[i]);
-        }
-    }, selector);
-
-    await sleep(500);
-
-    // center canvas on the page
-    await page.click('button[title="Fit on screen [Home]"]')
-    await sleep(500);
-    await page.click('button[title="Zoom out [-]"]')
-    await sleep(500);
-    await page.click('button[title="Fit on screen [Home]"]')
-
-    // sleep to allow page to load
-    await sleep(7000);
-
-    // Get the image as a base64 string, so we don't need to save it locally
-    setTimeout(async () => {
-        await page.screenshot({
-            type: 'jpeg',
-            quality: 10,
-            timeout: 120000,
-            clip: {
-                x: 90, // top
-                y: 130, // left
-                width: 1530,
-                height: 865
-            }
-        }).then(async image => {
-
-            await mongo().then(async () => {
-                const results = await sketchSchema.find({})
-
-                for (const data of results) {
-                    const wasGuessed = data.wasGuessed;
-                    const hasEnded = data.hasEnded;
-                    const isSubmitted = data.isSubmitted;
-
-                    const prehint = randWord.replace(/\S/g, '\\_ ');
-                    const hint = prehint.replace(/\s/g, '⠀')
-
-                    const dgEmbed = new MessageEmbed()
-                        .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
-                        .setColor('#fff47a')
-                        .addField(`Category`, `Object`, false)
-                        .addField(`Hint`, `${hint}`, false)
-                        .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-                    // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
-                    const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
-
-                    const response = await imgur.upload({
-                        image: image,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
-
-                    await response.forEach(res => {
-                        const imgurUrl = res.data.link
-                        dgEmbed.setImage(imgurUrl);
-                    });
-
-                    // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
-                    if (wasGuessed || hasEnded || isSubmitted) return;
-
-                    await channel?.send({
-                        embeds: [dgEmbed]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-                    await sketchSchema.findOneAndUpdate({}, {
-                        isSubmitted: true
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-                    // set the channel permissions so that the drawer can't send messages
-                    channel.permissionOverwrites.edit(user?.id, {
-                        SEND_MESSAGES: false
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
-
-                    // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-                    const collector = channel.createMessageCollector();
-
-                    let count = 0;
-
-                    collector.on('collect', async () => {
-                        await sleep(3000)
-                        const results = await sketchSchema.find({})
-
-                        for (const data of results) {
-                            const wasGuessed = data.wasGuessed;
-                            const hasEnded = data.hasEnded;
-
-                            if (wasGuessed || hasEnded) return collector.stop();
-
-                            count++;
-
-                            if (count >= 12) {
-                                count = 0;
-
-                                dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-                                channel?.send({
-                                    embeds: [dgEmbed]
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                            }
-                        }
-                    });
-                }
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-        });
-
-        // Close browser and cleanup
-        await browser.close();
-    }, 20000);
-}
-
-// upload the drawing to the Sketch Guess channel
-async function uploadDrawing(channel, user, randWord, imageBase64) {
-    // await mongo().then(async () => {
-    //     const results = await sketchSchema.find({})
-
-    //     for (const data of results) {
-    //         const wasGuessed = data.wasGuessed;
-    //         const hasEnded = data.hasEnded;
-    //         const isSubmitted = data.isSubmitted;
-
-    //         const prehint = randWord.replace(/\S/g, '\\_ ');
-    //         const hint = prehint.replace(/\s/g, '⠀')
-
-    //         const dgEmbed = new MessageEmbed()
-    //             .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
-    //             .setColor('#fff47a')
-    //             .addField(`Category`, `Object`, false)
-    //             .addField(`Hint`, `${hint}`, false)
-    //             .setFooter({ text: `take your time to guess the drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-    //         // upload the local drawing file to IMGUR and then upload it to the Sketch Guess channel
-    //         const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
-
-    //         const response = await imgur.upload({
-    //             image: imageBase64,
-    //             type: 'base64',
-    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
-
-    //         let imgurUrl;
-    //         response.forEach(res => {
-    //             imgurUrl = res.data.link
-    //             dgEmbed.setImage(imgurUrl);
-    //         });
-
-    //         // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
-    //         if (wasGuessed || hasEnded || isSubmitted) return;
-
-    //         await channel?.send({
-    //             embeds: [dgEmbed]
-    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-    //         await sketchSchema.findOneAndUpdate({}, {
-    //             isSubmitted: true
-    //         }, {
-    //             upsert: true
-    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-    //         // set the channel permissions so that the drawer can't send messages
-    //         channel.permissionOverwrites.edit(user?.id, {
-    //             SEND_MESSAGES: false
-    //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
-
-    //         // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-    //         const collector = channel.createMessageCollector();
-
-    //         let count = 0;
-
-    //         collector.on('collect', async () => {
-    //             await sleep(3000)
-    //             const results = await sketchSchema.find({})
-
-    //             for (const data of results) {
-    //                 const wasGuessed = data.wasGuessed;
-    //                 const hasEnded = data.hasEnded;
-
-    //                 if (wasGuessed || hasEnded) return collector.stop();
-
-    //                 count++;
-
-    //                 if (count >= 12) {
-    //                     count = 0;
-
-    //                     dgEmbed.setFooter({ text: `terrible drawing? skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
-
-    //                     channel?.send({
-    //                         embeds: [dgEmbed]
-    //                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-
-    // await sleep(30000);
-    // checkGameState(channel, user, randWord);
-}
-
-// check on the status of the current game
-// async function checkGameState(channel, user, randWord) {
-//     await mongo().then(async () => {
-//         const results = await sketchSchema.find({})
-
-//         for (const data of results) {
-//             const currentDrawer = data.currentDrawer;
-//             const wasGuessed = data.wasGuessed;
-
-//             // if the drawing was guessed, we can reset the entries and allow another person to start a round
-//             // this is also handled in /games/sketch_games.js - not sure if needed in both
-//             if (wasGuessed) {
-//                 await sketchSchema.findOneAndUpdate({}, {
-//                     currentWord: 'null',
-//                     currentDrawer: 'null',
-//                     previousDrawer: currentDrawer,
-//                     urlId: 'null',
-//                     gameState: false,
-//                     voteSkip: 0,
-//                     hasVoted: [],
-//                     wasGuessed: false,
-//                     hasEnded: false
-//                 }, {
-//                     upsert: true
-//                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-//                 // set the channel permissions so that the drawer can send message
-//                 channel.permissionOverwrites.delete(user?.id).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a channel's permissions: `, err));
-//             }
-//         }
-//     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-// }
+let fetchInProgress = false;
+let previousEmbed;
 
 module.exports = {
     name: `sketchguess`,
     description: `Command menu for the Sketch Guess game`,
     permission: ``,
-    cooldown: 5,
+    cooldown: 10,
     type: `CHAT_INPUT`,
     options: [{
         name: `draw`,
@@ -357,9 +25,15 @@ module.exports = {
     },
     {
         name: `submit`,
-        description: `Submit your drawing manually`,
+        description: `Submit your drawing early`,
         type: `SUB_COMMAND`,
         usage: `/sketchguess submit`,
+    },
+    {
+        name: `resend`,
+        description: `Resend your drawing if there was an error`,
+        type: `SUB_COMMAND`,
+        usage: `/sketchguess resend`,
     },
     {
         name: `link`,
@@ -368,10 +42,10 @@ module.exports = {
         usage: `/sketchguess link`,
     },
     {
-        name: `voteskip`,
+        name: `skip`,
         description: `Vote to skip the current drawing`,
         type: `SUB_COMMAND`,
-        usage: `/sketchguess voteskip`,
+        usage: `/sketchguess skip`,
     },
     {
         name: `end`,
@@ -393,11 +67,11 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem : `, err));
         }
 
-        switch (options.getSubcommand()) {
-            // initialize the game
-            case 'draw': {
-                await mongo().then(async () => {
-                    const results = await sketchSchema.find({})
+        await mongo().then(async () => {
+            switch (options.getSubcommand()) {
+                // initialize the game
+                case 'draw': {
+                    const results = await sketchSchema.find({});
 
                     // if there is no data about the game, we should add some
                     if (results.length === 0) {
@@ -414,7 +88,8 @@ module.exports = {
                             hasEnded: false
                         }, {
                             upsert: true
-                        }) // catch
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
                         initGame(user, interaction, channel);
                     } else {
                         await sketchSchema.findOneAndUpdate({}, {
@@ -425,9 +100,9 @@ module.exports = {
                             hasEnded: false
                         }, {
                             upsert: true
-                        }) // catch
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                        // disallow a user to draw 2 times in a row - though staff is allowed do this
+                        // disallow a user to draw 2 times in a row - though staff are allowed to do this
                         if (!member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             for (const data of results) {
                                 if (user.id === data.previousDrawer) {
@@ -438,17 +113,13 @@ module.exports = {
                                 }
                             }
                         }
-
                         initGame(user, interaction, channel);
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    break;
+                }
 
-                break;
-            }
-
-            // allow the drawer to submit their drawing manually
-            case 'submit': {
-                await mongo().then(async mongoose => {
+                // allow the drawer to submit their drawing manually
+                case 'submit': {
                     const results = await sketchSchema.find({})
 
                     for (const data of results) {
@@ -458,7 +129,7 @@ module.exports = {
                         const randWord = data.currentWord;
                         const isSubmitted = data.isSubmitted;
 
-                        // if there is not currently active game
+                        // if there is no current active game
                         if (!gameState) {
                             return interaction.reply({
                                 content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
@@ -467,19 +138,31 @@ module.exports = {
                         }
 
                         // only allow the current drawer to submit their drawing
-                        if (user?.id === currentDrawer) {
+                        if (user?.id === currentDrawer || member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             // if the drawing has already been submitted
-                            if (isSubmitted) {
+                            if (isSubmitted && !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                                 return interaction.reply({
-                                    content: `Your drawing has already been submitted`,
+                                    content: `Your drawing has already been submitted
+If there was an error with the first embed, use \`/sketchguess resend\``,
+                                    ephemeral: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                            }
+
+                            // if the drawing is in the process of being fetched
+                            if (fetchInProgress) {
+                                return interaction.reply({
+                                    content: `Your drawing is already being fetched and should appear soon`,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                             }
 
                             interaction.reply({
-                                content: `Your drawing has been sumbitted and will appear soon, this may take up to 30 seconds..`,
+                                content: `Your drawing has been sumbitted and will appear soon, this may take a few second..`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                            // the canvas can take a few seconds to update for others so we compendate for this
+                            await sleep(5000);
 
                             // fetch the drawing
                             fetchDrawing(channel, user, customId, randWord);
@@ -491,20 +174,81 @@ module.exports = {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    break;
+                }
 
-                break;
-            }
-
-            // allow the drawer request their link again - the chance that they closed the initial reply to early
-            case 'link': {
-                await mongo().then(async mongoose => {
+                // allow the drawer to submit their drawing manually
+                case 'resend': {
                     const results = await sketchSchema.find({})
 
                     for (const data of results) {
                         const currentDrawer = data.currentDrawer;
                         const customId = data.urlId;
-                        const canvasUrl = `https://aggie.io/${customId}`
+                        const gameState = data.gameState;
+                        const randWord = data.currentWord;
+
+                        // if there is no current active game
+                        if (!gameState) {
+                            return interaction.reply({
+                                content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        // only allow the current drawer to submit their drawing
+                        if (user?.id === currentDrawer || member?.roles?.cache.has(process.env.STAFF_ROLE)) {
+                            // if the drawing is in the process of being fetched
+                            if (fetchInProgress) {
+                                return interaction.reply({
+                                    content: `Your drawing is already being fetched and should appear soon`,
+                                    ephemeral: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                            }
+
+                            interaction.reply({
+                                content: `Your drawing has been sumbitted and will appear soon, this may take a few second..`,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                            // the canvas can take a few seconds to update for others so we compendate for this
+                            await sleep(5000);
+
+                            if (previousEmbed != undefined) {
+                                channel.messages.fetch(previousEmbed).then(m => {
+                                    m.delete()
+                                })
+                            }
+
+                            // fetch the drawing
+                            fetchDrawing(channel, user, customId, randWord);
+
+                        } else {
+                            interaction.reply({
+                                content: `You can't submit a drawing as you're not the current drawer`,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+                    }
+                    break;
+                }
+
+                // allow the drawer request their link again - incase they closed the initial reply too early
+                case 'link': {
+                    const results = await sketchSchema.find({});
+
+                    for (const data of results) {
+                        const currentDrawer = data.currentDrawer;
+                        const customId = data.urlId;
+                        const gameState = data.gameState;
+                        const canvasUrl = `https://aggie.io/${customId}`;
+
+                        // if there is no current active game
+                        if (!gameState) {
+                            return interaction.reply({
+                                content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
 
                         // only allow the current drawer to retrieve the link
                         if (user?.id === currentDrawer) {
@@ -521,19 +265,28 @@ module.exports = {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    break;
+                }
 
-                break;
-            }
 
-            // allow users to vote to skip the current round - we can skip with 3 unique votes
-            case 'voteskip': {
-                await mongo().then(async mongoose => {
-                    const results = await sketchSchema.find({})
+
+                // allow users to vote to skip the current round - we can skip with 3 unique votes
+                case 'skip': {
+                    const results = await sketchSchema.find({});
 
                     for (const data of results) {
                         const hasVoted = data.hasVoted;
                         const currentDrawer = data.currentDrawer;
+                        const gameState = data.gameState;
+                        const currentWord = data.currentWord;
+
+                        // if there is no current active game
+                        if (!gameState) {
+                            return interaction.reply({
+                                content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
 
                         // disallow a user to vote more than once
                         if (hasVoted.includes(user?.id)) {
@@ -569,7 +322,8 @@ module.exports = {
                             const dgEmbed = new MessageEmbed()
                                 .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1536/1536966.png' })
                                 .setColor('#ff8a8a')
-                                .setDescription(`We received 3 votes to skip the current round`)
+                                .setDescription(`We received 3 votes to skip the current round
+The word was \`${currentWord.toUpperCase()}\``)
                                 .setFooter({ text: `use '/sketchguess draw' to start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                             interaction.reply({
@@ -596,18 +350,24 @@ module.exports = {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    break;
+                }
 
-                break;
-            }
-
-            // allow a user to end their turn early for whatever reason
-            case 'end': {
-                await mongo().then(async () => {
+                // allow a user to end their turn early for whatever reason
+                case 'end': {
                     const results = await sketchSchema.find({})
 
                     for (const data of results) {
                         const currentDrawer = data.currentDrawer;
+                        const gameState = data.gameState;
+
+                        // if there is no current active game
+                        if (!gameState) {
+                            return interaction.reply({
+                                content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
 
                         // only allow the current drawer or a staff member to end the turn early
                         if (user?.id === currentDrawer) {
@@ -673,8 +433,264 @@ module.exports = {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                }
+            }
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+    }
+}
+
+/**
+ * INITIATE THE GAME
+ */
+async function initGame(user, interaction, channel) {
+    await mongo().then(async () => {
+        const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18); // unique room code can only be 24 chars long
+        const canvasUrl = `https://aggie.io/${customId}`;
+        const randNum = Math.floor(Math.random() * words.length);
+        const randWord = words[randNum]; // pick a random word from the list
+
+        const results = await sketchSchema.find({});
+
+        for (const data of results) {
+            const gameState = data.gameState;
+
+            // check the current game state to see if there is a game currently in progress or not
+            // if there is a current game in progress
+            if (gameState) {
+                return interaction.reply({
+                    content: `There is currently a game of Sketch Guess in progress, join in <#${process.env.SKETCH_CHAN}>, or wait for the round to end`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
+
+            // if there is not current game in progress
+            if (!gameState) {
+                await sketchSchema.findOneAndUpdate({}, {
+                    currentWord: randWord,
+                    currentDrawer: user?.id,
+                    urlId: customId,
+                    gameState: true,
+                    voteSkip: 0,
+                    hasVoted: [],
+                    isSubmitted: false,
+                    hasEnded: false,
+                    wasGuess: false
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                interaction.reply({
+                    content: `*It's your turn to draw!*
+> ✏️ **You have 3 minutes to draw the word \`${randWord.toUpperCase()}\`**
+> [Click here to start drawing!](<${canvasUrl}>)
+
+*Do not dismiss this message until you have opened the link above*
+*You can end your turn early with \`/sketchguess end\`*
+*If you drawing fails to send, or has another issue, user \`/sketchguess resend\`*`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                // sleep for 3 seconds before officially starting the round to allow the drawer time to load the webpage
+                await sleep(3000);
+
+                const results = await sketchSchema.find({});
+
+                for (const data of results) {
+                    const gameState = data.gameState;
+
+                    if (gameState) {
+                        const dgEmbed = new MessageEmbed()
+                            .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
+                            .setColor('#a2ff91')
+                            .setDescription(`${user} has **3 minutes** to draw their word`)
+                            .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                            .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                        channel?.send({
+                            embeds: [dgEmbed]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
+                }
+
+                // sleep for 3 minutes and then fetch the drawing
+                await sleep(180000);
+
+                const results2 = await sketchSchema.find({});
+
+                for (const data of results2) {
+                    const wasGuessed = data.wasGuessed;
+                    const hasEnded = data.hasEnded;
+                    const isSubmitted = data.isSubmitted;
+
+                    // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
+                    if (wasGuessed || hasEnded || isSubmitted || fetchInProgress) return;
+
+                    fetchDrawing(channel, user, customId, randWord);
+                }
             }
         }
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+}
+
+/**
+ * FETCH THE DRAWING
+ */
+async function fetchDrawing(channel, user, customId, randWord) {
+    // if the drawing is in the process of being fetched, we should stop here
+    if (fetchInProgress) return;
+    fetchInProgress = true;
+
+    console.time('>> total time')
+    console.time('go to webpage')
+    // fetch the drawing from the website
+    let websiteUrl = `https://aggie.io/${customId}`;
+    const browser = await webkit.launch();
+    const page = await browser.newPage();
+
+    // set our viewport
+    await page.setViewportSize({
+        width: 1920,
+        height: 1080
+    });
+
+    // go to the website
+    await page.goto(websiteUrl);
+    console.timeEnd('go to webpage')
+
+    console.time('wait for loading')
+    // wait for the canvas to load
+    await page.waitForSelector('div[class="editor-canvas"]', {
+        hidden: false
+    });
+
+    // if the page is stuck on 'loading', restart the function
+    const divLoading = await page.locator('div[class="editor-long-task"]').count();
+    if (divLoading === 1) {
+        fetchInProgress = false;
+
+        await browser.close();
+
+        // we can probably just reload the page here instead of restarting the function?
+        console.log('PAGE FAILED TO LOAD')
+        console.timeEnd('wait for loading')
+        console.timeEnd('>> total time')
+
+        return fetchDrawing(channel, user, customId, randWord);
     }
+
+    // await page.waitForSelector('div[class="editor-long-task"]', {
+    //     hidden: true
+    // })
+
+    // center and resize the canvas so we can see it all
+    await page.locator('button[command="zoom-out"]').click();
+    await sleep(300);
+    await page.locator('button[command="fit-on-screen"]').click();
+    await sleep(1000);
+
+    // remove tooltips that obstruct the canvas
+    let selector = '.tooltip';
+    await page.evaluate((s) => {
+        var elements = document.querySelectorAll(s);
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].parentNode.removeChild(elements[i]);
+        }
+    }, selector);
+    console.timeEnd('wait for loading')
+
+    console.time('take the screenshot')
+    // take a screenshot of the page and crop what we don't need
+    await page.screenshot({
+        clip: {
+            x: 90, // top
+            y: 130, // left
+            width: 1530,
+            height: 865
+        }
+    }).then(async image => {
+        console.timeEnd('take the screenshot')
+        // close browser and cleanup
+        await browser.close();
+
+        console.time('upload and send')
+        await mongo().then(async () => {
+            // transform our word into underscores
+            const prehint = randWord.replace(/\S/g, '\\_ ');
+            const hint = prehint.replace(/\s/g, '⠀');
+
+            const dgEmbed = new MessageEmbed()
+                .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
+                .setColor('#fff47a')
+                .addField(`Hint`, `${hint}`, true)
+                .setFooter({ text: `terrible drawing? vote to skip it with '/sketchguess skip'`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+            // upload the screenshot to imgur
+            const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+
+            const response = await imgur.upload({
+                image: image,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+
+            // attach screenshot to embed and send the embed
+            await response.forEach(res => {
+                const imgurUrl = res.data.link
+                dgEmbed.setImage(imgurUrl);
+            });
+
+            // sometimes images aren't being attached to embed properly - hoping this solves that?
+            await sleep(1000);
+
+            await channel?.send({
+                embeds: [dgEmbed]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
+                .then(async m => {
+                    previousEmbed = m.id;
+                });
+
+            // update the database so we know the screenshot has already been submitted
+            await sketchSchema.findOneAndUpdate({}, {
+                isSubmitted: true
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            // set the channel permissions so that the drawer can't send messages
+            // channel.permissionOverwrites.edit(user?.id, {
+            //     SEND_MESSAGES: false
+            // }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+            console.timeEnd('upload and send')
+
+            // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
+            const collector = channel.createMessageCollector();
+            let count = 0;
+
+            collector.on('collect', async () => {
+                await sleep(1000)
+
+                const results = await sketchSchema.find({});
+
+                for (const data of results) {
+                    const wasGuessed = data.wasGuessed;
+                    const hasEnded = data.hasEnded;
+
+                    if (wasGuessed || hasEnded) return collector.stop();
+
+                    count++;
+
+                    if (count >= 12) {
+                        count = 0;
+
+                        channel?.send({
+                            embeds: [dgEmbed]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                    }
+                }
+            });
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+
+        // the drawing has been fetching process is complete, we can reset this
+        fetchInProgress = false;
+        console.timeEnd('>> total time')
+    });
 }

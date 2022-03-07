@@ -7,8 +7,16 @@ const path = require('path');
  */
 module.exports = async (message) => {
     if (message?.channel.id === process.env.SKETCH_CHAN && !message?.author.bot) {
+
+        // delete any links in this channel
+        const linkArr = ['https://', 'http://', 'www.'];
         const guess = message?.content.toLowerCase();
         const guesser = message?.author;
+
+        if (linkArr.includes(message?.content.toLowerCase())) {
+            if (message?.deleted) return;
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
 
         await mongo().then(async mongoose => {
             const results = await sketchSchema.find({})
