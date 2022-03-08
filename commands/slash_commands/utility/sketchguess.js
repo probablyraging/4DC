@@ -128,6 +128,9 @@ module.exports = {
                                 }
                             }
                         }
+                        // stop the collector because we're starting a new round
+                        collector.stop();
+
                         initGame(user, interaction, channel);
                     }
                     break;
@@ -377,8 +380,10 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                                 .setAuthor({ name: `Hint Used`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1378/1378629.png' })
                                 .setColor('#a6e7ff')
                                 .addField(`Hint *(${currentWord.length} letters)*`, `${hintFinal}`, false)
-                                .setFooter({ text: `• hints remaining: ${hintsLeft}
-• /sketchguess skip - vote to skip`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({
+                                    text: `• hints remaining: ${hintsLeft}
+• /sketchguess skip - vote to skip`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
+                                })
 
                             await sketchSchema.findOneAndUpdate({}, {
                                 hintsLeft: hintsLeft,
@@ -399,8 +404,10 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                                 .setAuthor({ name: `Hint Used`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1378/1378629.png' })
                                 .setColor('#a6e7ff')
                                 .addField(`Hint *(${currentWord.length} letters)*`, `${hint}`, false)
-                                .setFooter({ text: `• hints remaining: ${hintsLeft}
-• /sketchguess hint - for another hint`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                                .setFooter({
+                                    text: `• hints remaining: ${hintsLeft}
+• /sketchguess hint - for another hint`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
+                                })
 
                             await sketchSchema.findOneAndUpdate({}, {
                                 hintsLeft: hintsLeft,
@@ -488,6 +495,9 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         voteSkip++;
 
                         if (voteSkip >= 3) {
+                            // stop the collector because we skipped the round
+                            collector.stop();
+
                             // we reached the amount of votes needed to skip the round - we can clear reset the entries
                             await sketchSchema.findOneAndUpdate({}, {
                                 currentWord: 'null',
@@ -556,6 +566,9 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
+
+                        // stop the collector because we're starting a new round
+                        collector.stop();
 
                         // only allow the current drawer or a staff member to end the turn early
                         if (user?.id === currentDrawer) {
@@ -866,7 +879,6 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                     return;
                 }
 
-
                 dgEmbed.setImage('attachment://sketch.jpg')
 
                 await channel?.send({
@@ -904,6 +916,7 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                     if (wasGuessed || hasEnded) return collector.stop();
 
                     count++;
+                    console.log(count)
 
                     if (count >= 12) {
                         count = 0;
