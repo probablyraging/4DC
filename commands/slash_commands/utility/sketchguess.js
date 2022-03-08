@@ -8,6 +8,7 @@ const sketchSchema = require('../../../schemas/sketch_guess/sketch_schema');
 const path = require('path');
 
 let fetchInProgress = false;
+let resending = false;
 let previousEmbed;
 let collector;
 
@@ -234,10 +235,10 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
 
                             if (wasGuessed) return;
 
-                            const resending = true;
+                            resending = true;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord, resending);
+                            fetchDrawing(channel, user, customId, randWord);
 
                         } else {
                             interaction.reply({
@@ -675,6 +676,8 @@ async function initGame(user, interaction, channel) {
                 // stop the collector because we're starting a new round
                 // collector.stop();
 
+                previousEmbed = null;
+
                 await sketchSchema.findOneAndUpdate({}, {
                     currentWord: randWord,
                     currentDrawer: user?.id,
@@ -775,7 +778,7 @@ async function initGame(user, interaction, channel) {
 /**
  * FETCH THE DRAWING
  */
-async function fetchDrawing(channel, user, customId, randWord, resending) {
+async function fetchDrawing(channel, user, customId, randWord) {
     // if the drawing is in the process of being fetched, we should stop here
     if (fetchInProgress) return;
     fetchInProgress = true;
@@ -902,7 +905,7 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
             // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-            let count = 0;
+            // let count = 0;
 
             // collector.on('collect', async () => {
             //     await sleep(1000)
