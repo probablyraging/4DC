@@ -22,6 +22,18 @@ const sketchSchema = mongoose.Schema({
         type: Boolean,
         required: true
     },
+    hintsLeft: {
+        type: Number,
+        required: true
+    },
+    usedLetters: {
+        type: Array,
+        required: true
+    },
+    sentHints: {
+        type: Array,
+        required: true
+    },
     voteSkip: {
         type: Number,
         required: true

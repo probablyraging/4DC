@@ -42,6 +42,12 @@ module.exports = {
         usage: `/sketchguess link`,
     },
     {
+        name: `hint`,
+        description: `Get a hint for the current word`,
+        type: `SUB_COMMAND`,
+        usage: `/sketchguess hint`,
+    },
+    {
         name: `skip`,
         description: `Vote to skip the current drawing`,
         type: `SUB_COMMAND`,
@@ -84,6 +90,9 @@ module.exports = {
                             previousDrawer: 'null',
                             urlId: 'null',
                             gameState: false,
+                            hintsLeft: 2,
+                            usedLetters: [],
+                            sentHints: [],
                             voteSkip: 0,
                             hasVoted: [],
                             isSubmitted: false,
@@ -96,6 +105,9 @@ module.exports = {
                         initGame(user, interaction, channel);
                     } else {
                         await sketchSchema.findOneAndUpdate({}, {
+                            hintsLeft: 2,
+                            usedLetters: [],
+                            sentHints: [],
                             voteSkip: 0,
                             hasVoted: [],
                             isSubmitted: false,
@@ -234,6 +246,178 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                     break;
                 }
 
+                // allow players to receive 2 hints per round
+                case 'hint': {
+                    const results = await sketchSchema.find({});
+
+                    for (const data of results) {
+                        const currentDrawer = data.currentDrawer;
+                        const gameState = data.gameState;
+                        const currentWord = data.currentWord;
+                        const usedLetters = data.usedLetters;
+                        const sentHints = data.sentHints;
+                        const isSubmitted = data.isSubmitted;
+                        let hintsLeft = data.hintsLeft;
+
+                        // if there is no current active game
+                        if (!gameState) {
+                            return interaction.reply({
+                                content: `There is no active game currently. Start a new game with \`/skecthguess draw\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        // users need to wait until the drawing has been submitted before they can request a hint
+                        if (!isSubmitted) {
+                            return interaction.reply({
+                                content: `Please wait until you see the drawing before requesting a hint`,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        // if no hints remaining
+                        if (hintsLeft === 0) {
+                            return interaction.reply({
+                                content: `All hints have been used for this round`,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        // if the user is the current drawer, we don't allow them to get hints
+                        if (user?.id === currentDrawer) {
+                            return interaction.reply({
+                                content: `You can't request a hint as you're the current drawer`,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        const word = currentWord;
+                        const str = word.split('').join(' ');
+
+                        // pick a random letter from the word
+                        function randLetter(str) {
+                            const rand = str[Math.floor(Math.random() * str.length)];
+
+                            // if the letter has already been used for a hint, we will try a different letter
+                            if (usedLetters.includes(rand)) return randLetter(str);
+
+                            return rand;
+                        }
+                        let rand = randLetter(str);
+
+                        // if rand is a whitespace
+                        while (rand === ' ') {
+                            rand = randLetter(str);
+                        }
+
+                        // add the random letter to our array so we don't use it again
+                        usedLetters.push(rand);
+
+                        // count the occurences of the random letter in the word - we need a number between 0 and the number of occurences
+                        const strLength = str.split(rand).length;
+                        let randNum = Math.floor(Math.random() * strLength);
+                        if (randNum != 0) randNum -= 1;
+
+                        // replace the randNum occurence of the random letter with '.'
+                        const regex = new RegExp(`((?:.*?${rand}.*?){${randNum}})${rand}`);
+                        const prehint = str.replace(regex, '$1.');
+
+                        // replaces all chars except '.' with '_'
+                        const regex2 = new RegExp(`(?![.])\\S`, 'g');
+                        const prehint2 = prehint.replace(regex2, '\\_');
+
+                        // replace '.' with 'rand'
+                        const regex3 = new RegExp(`\\.`, 'g');
+                        const hint = prehint2.replace(regex3, rand);
+
+                        // add the hint to an array in case we need to merge it with a new hint later
+                        sentHints.push(hint);
+
+                        // if we've already sent a hint, merge the new and old hint together
+                        if (hintsLeft <= 1) {
+                            hintsLeft -= 1;
+
+                            const hint1 = sentHints[0];
+                            const hint2 = sentHints[1];
+
+                            let newHint;
+
+                            let hints = [];
+
+                            const regex = /[a-z]/;
+                            const str1Index = hint1.match(regex).index + 1
+                            const str2Index = hint2.match(regex).index + 1
+
+                            // we need to push the hints to a new array in order of which hint has a letter visible first
+                            if (str1Index < str2Index) {
+                                hints.push(hint1)
+                                hints.push(hint2)
+                            } else {
+                                hints.push(hint2)
+                                hints.push(hint1)
+                            }
+
+                            // merge the two hints so the we overwrite any changes between them
+                            for (let i = 0; i < hints[0].length; i++) {
+                                if (hints[0].charAt(i) != hints[1].charAt(i)) {
+
+                                    newHint = setCharAt(hints[0], i, hints[1].charAt(i))
+
+                                    function setCharAt(str, pos, char) {
+                                        if (pos > str.length - 1) return str;
+                                        return str.substring(0, pos) + char + str.substring(pos + 1);
+                                    }
+                                }
+                            }
+
+                            const hintPost = newHint.replace(/\\/g, '');
+                            const hintFinal = hintPost.replace(/_/g, '\\_');
+
+                            const hintEmbed = new MessageEmbed()
+                                .setAuthor({ name: `Hint Used`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1378/1378629.png' })
+                                .setColor('#a6e7ff')
+                                .addField(`Hint *(${currentWord.length} letters)*`, `${hintFinal}`, false)
+                                .setFooter({ text: `• hints remaining: ${hintsLeft}
+• /sketchguess skip - vote to skip`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                            await sketchSchema.findOneAndUpdate({}, {
+                                hintsLeft: hintsLeft,
+                                usedLetters: usedLetters,
+                                sentHints: sentHints
+                            }, {
+                                upsert: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                            interaction.reply({
+                                embeds: [hintEmbed]
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                        } else {
+                            hintsLeft -= 1;
+
+                            const hintEmbed = new MessageEmbed()
+                                .setAuthor({ name: `Hint Used`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1378/1378629.png' })
+                                .setColor('#a6e7ff')
+                                .addField(`Hint *(${currentWord.length} letters)*`, `${hint}`, false)
+                                .setFooter({ text: `• hints remaining: ${hintsLeft}
+• /sketchguess hint - for another hint`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+
+                            await sketchSchema.findOneAndUpdate({}, {
+                                hintsLeft: hintsLeft,
+                                usedLetters: usedLetters,
+                                sentHints: sentHints
+                            }, {
+                                upsert: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                            interaction.reply({
+                                embeds: [hintEmbed]
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+                    }
+                    break;
+                }
+
                 // allow the drawer request their link again - incase they closed the initial reply too early
                 case 'link': {
                     const results = await sketchSchema.find({});
@@ -311,6 +495,9 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
                                 gameState: false,
+                                hintsLeft: 2,
+                                usedLetters: [],
+                                sentHints: [],
                                 voteSkip: 0,
                                 hasVoted: [],
                                 isSubmitted: false,
@@ -378,6 +565,9 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
                                 gameState: false,
+                                hintsLeft: 2,
+                                usedLetters: [],
+                                sentHints: [],
                                 voteSkip: 0,
                                 hasVoted: [],
                                 isSubmitted: false,
@@ -406,6 +596,9 @@ The word was \`${currentWord.toUpperCase()}\``)
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
                                 gameState: false,
+                                hintsLeft: 2,
+                                usedLetters: [],
+                                sentHints: [],
                                 voteSkip: 0,
                                 hasVoted: [],
                                 isSubmitted: false,
@@ -474,6 +667,9 @@ async function initGame(user, interaction, channel) {
                     currentDrawer: user?.id,
                     urlId: customId,
                     gameState: true,
+                    hintsLeft: 2,
+                    usedLetters: [],
+                    sentHints: [],
                     voteSkip: 0,
                     hasVoted: [],
                     isSubmitted: false,
@@ -640,7 +836,8 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                 .setColor('#fff47a')
                 .addField(`Hint *(${randWord.length} letters)*`, `${hint}`, true)
                 .setFooter({
-                    text: `• /sketchguess skip - vote to skip the current drawing
+                    text: `• /sketchguess hint - get a hint
+• /sketchguess skip - vote to skip the current drawing
 • /sketchguess resend - fix a broken drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
                 })
 

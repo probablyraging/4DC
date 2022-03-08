@@ -32,6 +32,9 @@ module.exports = async (message) => {
                         previousDrawer: currentDrawer,
                         urlId: 'null',
                         gameState: false,
+                        hintsLeft: 2,
+                        usedLetters: [],
+                        sentHints: [],
                         voteSkip: 0,
                         hasVoted: [],
                         wasGuessed: true
