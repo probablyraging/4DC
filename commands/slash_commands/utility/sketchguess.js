@@ -837,7 +837,6 @@ async function fetchDrawing(channel, user, customId, randWord, resending) {
                 .addField(`Hint *(${randWord.length} letters)*`, `${hint}`, true)
                 .setFooter({
                     text: `• /sketchguess hint - get a hint
-• /sketchguess skip - vote to skip the current drawing
 • /sketchguess resend - fix a broken drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
                 })
 
