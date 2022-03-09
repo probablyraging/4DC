@@ -10,7 +10,6 @@ const path = require('path');
 let fetchInProgress = false;
 let resending = false;
 let previousEmbed;
-let collector;
 
 module.exports = {
     name: `sketchguess`,
@@ -127,8 +126,6 @@ module.exports = {
                                 }
                             }
                         }
-                        // stop the collector because we're starting a new round
-                        // collector.stop();
 
                         initGame(user, interaction, channel);
                     }
@@ -180,6 +177,8 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
 
                             // the canvas can take a few seconds to update for others so we compendate for this
                             await sleep(5000);
+
+                            resending = false;
 
                             // fetch the drawing
                             fetchDrawing(channel, user, customId, randWord);
@@ -494,8 +493,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         voteSkip++;
 
                         if (voteSkip >= 3) {
-                            // stop the collector because we skipped the round
-                            // collector.stop();
+                            resending = false;
 
                             // we reached the amount of votes needed to skip the round - we can clear reset the entries
                             await sketchSchema.findOneAndUpdate({}, {
@@ -566,9 +564,6 @@ The word was \`${currentWord.toUpperCase()}\``)
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
 
-                        // stop the collector because we're starting a new round
-                        // collector.stop();
-
                         // only allow the current drawer or a staff member to end the turn early
                         if (user?.id === currentDrawer) {
                             await sketchSchema.findOneAndUpdate({}, {
@@ -588,6 +583,8 @@ The word was \`${currentWord.toUpperCase()}\``)
                             }, {
                                 upsert: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                            resending = false;
 
                             const dgEmbed = new MessageEmbed()
                                 .setAuthor({ name: `Game Over`, iconURL: 'https://cdn-icons-png.flaticon.com/512/5553/5553850.png' })
@@ -671,10 +668,9 @@ async function initGame(user, interaction, channel) {
 
             // if there is no current game in progress
             if (!gameState) {
-                // stop the collector because we're starting a new round
-                // collector.stop();
 
                 previousEmbed = null;
+                resending = false;
 
                 await sketchSchema.findOneAndUpdate({}, {
                     currentWord: randWord,
@@ -903,34 +899,6 @@ async function fetchDrawing(channel, user, customId, randWord) {
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-            // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-            // let count = 0;
-
-            // collector.on('collect', async () => {
-            //     await sleep(1000)
-
-            //     const results = await sketchSchema.find({});
-
-            //     for (const data of results) {
-            //         const wasGuessed = data.wasGuessed;
-            //         const hasEnded = data.hasEnded;
-
-            //         if (wasGuessed || hasEnded) return collector.stop();
-
-            //         count++;
-            //         console.log(count)
-
-            //         if (count >= 12) {
-            //             count = 0;
-
-            //             channel?.send({
-            //                 embeds: [dgEmbed],
-            //                 files: [attachment]
-            //             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-            //         }
-            //     }
-            // });
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
         // the drawing has been fetching process is complete, we can reset this

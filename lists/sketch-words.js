@@ -518,7 +518,6 @@ module.exports = {
         'earmuffs',
         'earring',
         'ears',
-        'earser',
         'earth',
         'earwax',
         'east',
