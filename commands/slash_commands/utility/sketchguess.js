@@ -877,6 +877,8 @@ async function fetchDrawing(channel, user, customId, randWord) {
 
                         fetched.edit({ embeds: [embed], files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                     });
+
+                    resending = false;
                     return;
                 }
 
