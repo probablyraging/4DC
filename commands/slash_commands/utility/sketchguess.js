@@ -67,8 +67,6 @@ module.exports = {
     async execute(interaction) {
         const { channel, user, member, options } = interaction;
 
-        collector = channel.createMessageCollector();
-
         // only allow the command to be ran in the Sketch Guess channel
         if (channel?.id !== process.env.SKETCH_CHAN) {
             return interaction.reply({
