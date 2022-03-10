@@ -28,6 +28,7 @@ module.exports = async (message) => {
                     await sketchSchema.findOneAndUpdate({
                     }, {
                         currentWord: 'null',
+                        category: 'null',
                         currentDrawer: 'null',
                         previousDrawer: currentDrawer,
                         urlId: 'null',
@@ -87,6 +88,10 @@ module.exports = async (message) => {
 
                                 if (count >= 12) {
                                     count = 0;
+
+                                    collector.stop()
+
+                                    collector = message?.channel.createMessageCollector();
 
                                     setTimeout(() => {
                                         m?.channel.messages.fetch(drawingEmbed).then(fetched => {

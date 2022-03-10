@@ -1,6 +1,8 @@
 const { ContextMenuInteraction, MessageEmbed, MessageAttachment } = require('discord.js');
 const mongo = require('../../../mongo');
-const { words } = require('../../../lists/sketch-words');
+const { countries } = require('../../../lists/sketchguess_words/countries');
+const { objects } = require('../../../lists/sketchguess_words/objects');
+const { pokemon  } = require('../../../lists/sketchguess_words/pokemon');
 const { v4: uuidv4 } = require("uuid");
 const { webkit } = require('playwright');
 const sleep = require("timers/promises").setTimeout;
@@ -21,7 +23,14 @@ module.exports = {
         name: `draw`,
         description: `Elect yourself to draw`,
         type: `SUB_COMMAND`,
-        usage: `/sketchguess draw`,
+        usage: `/sketchguess draw [category]`,
+        options: [{
+            name: `category`,
+            description: `Pick a category to draw a word from`,
+            type: `STRING`,
+            required: true,
+            choices: [{ name: 'Objects (easy - medium)', value: 'objects' },  { name: 'Pokemon (easy - medium)', value: 'pokemon' }, { name: 'Countries (medium - hard)', value: 'countries' }]
+        }]
     },
     {
         name: `submit`,
@@ -84,6 +93,7 @@ module.exports = {
                     if (results.length === 0) {
                         await sketchSchema.findOneAndUpdate({}, {
                             currentWord: 'null',
+                            category: 'null',
                             currentDrawer: 'null',
                             previousDrawer: 'null',
                             urlId: 'null',
@@ -100,9 +110,10 @@ module.exports = {
                             upsert: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                        initGame(user, interaction, channel);
+                        initGame(user, interaction, channel, options);
                     } else {
                         await sketchSchema.findOneAndUpdate({}, {
+                            category: 'null',
                             hintsLeft: 2,
                             usedLetters: [],
                             sentHints: [],
@@ -127,7 +138,7 @@ module.exports = {
                             }
                         }
 
-                        initGame(user, interaction, channel);
+                        initGame(user, interaction, channel, options);
                     }
                     break;
                 }
@@ -142,6 +153,7 @@ module.exports = {
                         const gameState = data.gameState;
                         const randWord = data.currentWord;
                         const isSubmitted = data.isSubmitted;
+                        const categoryChoice = data.category;
 
                         // if there is no current active game
                         if (!gameState) {
@@ -181,7 +193,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             resending = false;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord);
+                            fetchDrawing(channel, user, customId, randWord, categoryChoice);
 
                         } else {
                             interaction.reply({
@@ -203,6 +215,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         const gameState = data.gameState;
                         const randWord = data.currentWord;
                         const wasGuessed = data.wasGuessed;
+                        const categoryChoice = data.category;
 
                         // if there is no current active game
                         if (!gameState) {
@@ -235,7 +248,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             resending = true;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord);
+                            fetchDrawing(channel, user, customId, randWord, categoryChoice);
 
                         } else {
                             interaction.reply({
@@ -498,6 +511,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             // we reached the amount of votes needed to skip the round - we can clear reset the entries
                             await sketchSchema.findOneAndUpdate({}, {
                                 currentWord: 'null',
+                                category: 'null',
                                 currentDrawer: 'null',
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
@@ -568,6 +582,7 @@ The word was \`${currentWord.toUpperCase()}\``)
                         if (user?.id === currentDrawer) {
                             await sketchSchema.findOneAndUpdate({}, {
                                 currentWord: 'null',
+                                category: 'null',
                                 currentDrawer: 'null',
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
@@ -601,6 +616,7 @@ The word was \`${currentWord.toUpperCase()}\``)
                         } else if (member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             await sketchSchema.findOneAndUpdate({}, {
                                 currentWord: 'null',
+                                category: 'null',
                                 currentDrawer: 'null',
                                 previousDrawer: currentDrawer,
                                 urlId: 'null',
@@ -645,12 +661,14 @@ The word was \`${currentWord.toUpperCase()}\``)
 /**
  * INITIATE THE GAME
  */
-async function initGame(user, interaction, channel) {
+async function initGame(user, interaction, channel, options) {
     await mongo().then(async () => {
+        const categoryChoice = options.getString('category');
+        const category = eval(categoryChoice);
         const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18); // unique room code can only be 24 chars long
         const canvasUrl = `https://aggie.io/${customId}`;
-        const randNum = Math.floor(Math.random() * words.length);
-        const randWord = words[randNum]; // pick a random word from the list
+        const randNum = Math.floor(Math.random() * category.length); // random number
+        const randWord = category[randNum]; // pick a random word from the list
 
         const results = await sketchSchema.find({});
 
@@ -674,6 +692,7 @@ async function initGame(user, interaction, channel) {
 
                 await sketchSchema.findOneAndUpdate({}, {
                     currentWord: randWord,
+                    category: categoryChoice,
                     currentDrawer: user?.id,
                     urlId: customId,
                     gameState: true,
@@ -762,7 +781,7 @@ async function initGame(user, interaction, channel) {
                     // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
                     if (wasGuessed || hasEnded || isSubmitted || fetchInProgress) return;
 
-                    fetchDrawing(channel, user, customId, randWord);
+                    fetchDrawing(channel, user, customId, randWord, categoryChoice);
                 }
             }
         }
@@ -772,7 +791,7 @@ async function initGame(user, interaction, channel) {
 /**
  * FETCH THE DRAWING
  */
-async function fetchDrawing(channel, user, customId, randWord) {
+async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
     // if the drawing is in the process of being fetched, we should stop here
     if (fetchInProgress) return;
     fetchInProgress = true;
@@ -844,6 +863,7 @@ async function fetchDrawing(channel, user, customId, randWord) {
             const dgEmbed = new MessageEmbed()
                 .setAuthor({ name: `${user?.tag}'s drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/4229/4229137.png' })
                 .setColor('#fff47a')
+                .addField(`Category`, `${categoryChoice.charAt(0).toUpperCase() + categoryChoice.slice(1)}`, true)
                 .addField(`Hint *(${randWord.length} letters)*`, `${hint}`, true)
                 .setFooter({
                     text: `• /sketchguess hint - get a hint
@@ -885,10 +905,6 @@ async function fetchDrawing(channel, user, customId, randWord) {
                     files: [attachment]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
                     .then(async m => {
-                        m.embeds.forEach(embed => {
-                            console.log(embed);
-                        });
-
                         previousEmbed = m.id;
                     });
             }

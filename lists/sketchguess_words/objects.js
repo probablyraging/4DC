@@ -1,5 +1,5 @@
 module.exports = {
-    words: [
+    objects: [
         'abba',
         'acdc',
         'ace',
@@ -356,7 +356,6 @@ module.exports = {
         'college',
         'comb',
         'comet',
-        'comfy',
         'comic',
         'commercial',
         'compass',

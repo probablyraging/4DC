@@ -6,6 +6,10 @@ const sketchSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    category: {
+        type: String,
+        required: true
+    },
     currentDrawer: {
         type: String,
         required: true
