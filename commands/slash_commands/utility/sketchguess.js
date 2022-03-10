@@ -11,6 +11,7 @@ const path = require('path');
 
 let fetchInProgress = false;
 let resending = false;
+let categoryChoice;
 let previousEmbed;
 
 module.exports = {
@@ -153,7 +154,6 @@ module.exports = {
                         const gameState = data.gameState;
                         const randWord = data.currentWord;
                         const isSubmitted = data.isSubmitted;
-                        const categoryChoice = data.category;
 
                         // if there is no current active game
                         if (!gameState) {
@@ -193,7 +193,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             resending = false;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord, categoryChoice);
+                            fetchDrawing(channel, user, customId, randWord);
 
                         } else {
                             interaction.reply({
@@ -215,7 +215,6 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         const gameState = data.gameState;
                         const randWord = data.currentWord;
                         const wasGuessed = data.wasGuessed;
-                        const categoryChoice = data.category;
 
                         // if there is no current active game
                         if (!gameState) {
@@ -248,7 +247,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             resending = true;
 
                             // fetch the drawing
-                            fetchDrawing(channel, user, customId, randWord, categoryChoice);
+                            fetchDrawing(channel, user, customId, randWord);
 
                         } else {
                             interaction.reply({
@@ -663,7 +662,7 @@ The word was \`${currentWord.toUpperCase()}\``)
  */
 async function initGame(user, interaction, channel, options) {
     await mongo().then(async () => {
-        const categoryChoice = options.getString('category');
+        categoryChoice = options.getString('category');
         const category = eval(categoryChoice);
         const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18); // unique room code can only be 24 chars long
         const canvasUrl = `https://aggie.io/${customId}`;
@@ -781,7 +780,7 @@ async function initGame(user, interaction, channel, options) {
                     // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
                     if (wasGuessed || hasEnded || isSubmitted || fetchInProgress) return;
 
-                    fetchDrawing(channel, user, customId, randWord, categoryChoice);
+                    fetchDrawing(channel, user, customId, randWord);
                 }
             }
         }
@@ -791,7 +790,7 @@ async function initGame(user, interaction, channel, options) {
 /**
  * FETCH THE DRAWING
  */
-async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
+async function fetchDrawing(channel, user, customId, randWord) {
     // if the drawing is in the process of being fetched, we should stop here
     if (fetchInProgress) return;
     fetchInProgress = true;
