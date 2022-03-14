@@ -15,6 +15,7 @@
     "ascii-table": "^0.0.9",
     "canvas": "^2.8.0",
     "cluster": "^0.7.7",
+    "console-stamp": "^3.0.4",
     "cron": "^1.8.2",
     "discord-api-types": "^0.25.2",
     "discord-modals": "^1.2.4",
