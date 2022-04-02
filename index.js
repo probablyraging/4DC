@@ -1,6 +1,9 @@
 require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client({ partials: ["CHANNEL"], intents: 32767 });
+require('console-stamp')(console, {
+    format: ':date(yyyy-mm-dd HH:MM:ss.l Z,true) :label'
+});
 
 client.setMaxListeners(0);
 client.commands = new Discord.Collection();

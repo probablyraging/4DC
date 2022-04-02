@@ -30,7 +30,7 @@ module.exports = async (client, Discord) => {
 
         table.addRow(command.name, `SUCCESSFULLY LOADED!`);
     });
-    console.log(table.toString()); // use to check if commands loaded without error
+    console.log('\n' + table.toString()); // use to check if commands loaded without error
 
     // permissions check
     client.on('ready', async () => {
