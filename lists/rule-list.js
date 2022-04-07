@@ -7,7 +7,7 @@ module.exports = {
         "Posts, usernames, avatars, profiles or linked accounts containing viruses, discriminatory, obscene, violent, profane, pornographic, sexually suggestive or nude content has no place in this server. This may result in a ban without warning",
         "Do not spam or flood any channels. This means sending multiple messages rapidly or sending purposeless messages in an attempt to gain XP/Rank",
         "Do not post self promotional content outside of the 'SELF PROMOTE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites or spam",
-        `Advertising of other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,
+        `Advertising of other discord servers, offering or requesting paid services and products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,
         "We do not condone sub4sub type behaviour anywhere on the server, including the 'SELF PROMOTE' section. This is also against [YouTube's ToS](<https://support.google.com/youtube/answer/3399767?hl=en>)",
         "Do not openly discuss or ask staff about other member's bans, mutes, message deletions, or other moderating actions",
         "For moderating purposes, please keep your messages in English"
