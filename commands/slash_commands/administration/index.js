@@ -85,7 +85,9 @@ ${rules.pre}
 > 
 > **6.** ${rules.rules[5]}
 > 
-> **7.** ${rules.rules[6]}`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+> **7.** ${rules.rules[6]}
+
+*last updated: 08/04/2022*`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         }, 1000);
                         setTimeout(() => {
                             webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
