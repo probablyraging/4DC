@@ -79,7 +79,7 @@ The guild currently has \`${guildSaves}/3 saves\`
 
 To earn more saves you must bump the server
 The server can be bumped once every 2 hours, by anyone
-You can bump the server by going to <#${process.env.BUMP_CHAN}> and typing \`!d bump\` when it is ready to be bumped
+You can bump the server by going to <#${process.env.BUMP_CHAN}> and typing \`/bump\` when it is ready to be bumped
 
 The server can be bumped again in \`${timeTo}\`
 
