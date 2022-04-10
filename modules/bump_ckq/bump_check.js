@@ -27,7 +27,7 @@ module.exports = async (client) => {
                     SEND_MESSAGES: true,
                 }).then(() => {
                     return bumpChan.send({
-                        content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again!`
+                        content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the \`/bump\` command!`
                     });
                 }).then(async () => {
                     await timerSchema.findOneAndUpdate({
