@@ -22,7 +22,7 @@ module.exports = async (message) => {
             message?.channel.messages.fetch(message?.id).then(async fetched => {
                 let embed = fetched?.embeds[0];
 
-                if (embed.description.toLowerCase().includes('i am a bot')) {
+                if (embed.description.toLowerCase().includes('bump done!')) {
                     message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
 
