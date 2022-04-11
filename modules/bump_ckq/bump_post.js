@@ -108,7 +108,7 @@ module.exports = async (message) => {
                             .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/server/820889004055855144)
         
 ${savesMessage}`)
-                            .setImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/81z2HgQ.jpg')
+                            .setImage('https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHbump.png')
 
                         message?.channel.send({
                             embeds: [bumpConfirm]
