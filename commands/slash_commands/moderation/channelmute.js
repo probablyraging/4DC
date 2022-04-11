@@ -72,7 +72,7 @@ module.exports = {
                     const target = options.getMember('username');
                     const targetChan = options.getChannel('channel');
                     const reason = options.getString('reason');
-                    const duration = options.getString('duration') || `0`;
+                    let duration = options.getString('duration') || `0`;
 
                     if (reason && reason.length > 1024) {
                         return interaction.reply({
@@ -87,7 +87,8 @@ module.exports = {
                         SEND_MESSAGES: false,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
-                    if (duration) {
+                    if (duration > 0) {
+                        console.log('true')
                         const myDate = new Date();
                         const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
 
@@ -110,12 +111,18 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                     }
 
+                    if (duration === '0') {
+                        duration = 'permanent';
+                    } else {
+                        duration = `${duration} hours`;
+                    }
+
                     const log = new MessageEmbed()
                         .setColor('#E04F5F')
                         .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                         .addField(`Channel`, `${targetChan}`, true)
                         .addField(`By`, `<@${member.id}>`, false)
-                        .addField(`Druation`, `${duration} hours`, true)
+                        .addField(`Druation`, `${duration}`, true)
                         .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
                         .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp()

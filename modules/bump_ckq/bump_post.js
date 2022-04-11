@@ -15,6 +15,7 @@ module.exports = async (message) => {
         }
 
         // replace disboard reply with our own embed and do counting save stuff
+        console.log(message)
         const bumpUser =  message?.interaction?.user.id;
         let savesMessage;
 
@@ -103,7 +104,7 @@ module.exports = async (message) => {
 
                         const bumpConfirm = new MessageEmbed()
                             .setColor('#32B9FF')
-                            .setTitle(`<@${bumpUser}>`)
+                            .setTitle(`${message?.interaction?.user.username}`)
                             .setURL('https://disboard.org/server/820889004055855144')
                             .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/server/820889004055855144)
         
@@ -114,11 +115,8 @@ ${savesMessage}`)
                             embeds: [bumpConfirm]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-
-
                 }
             });
-
         }
     }
 
