@@ -102,8 +102,8 @@ module.exports = async (message) => {
                         }
 
                         const bumpConfirm = new MessageEmbed()
-                            .setColor('#32BEA6')
-                            .setTitle(`THANKS FOR BUMPING!`)
+                            .setColor('#32B9FF')
+                            .setTitle(`<@${bumpUser}>`)
                             .setURL('https://disboard.org/server/820889004055855144')
                             .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/server/820889004055855144)
         
