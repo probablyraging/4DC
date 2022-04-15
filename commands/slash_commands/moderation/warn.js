@@ -39,15 +39,22 @@ module.exports = {
             description: `Supply a reason for warning the user`,
             type: `STRING`,
             required: true,
-            choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' }, 
-            { name: 'Rule 2 - spamming and flooding', value: '2' }, 
-            { name: 'Rule 3 - self promotion and unsolicited DMs', value: '3' }, 
-            { name: 'Rule 4 - advertising discord servers and paid services', value: '4' }, 
-            { name: 'Rule 5 - sub4sub type behaviour', value: '5' }, 
-            { name: 'Rule 6 - openly discussing moderator actions', value: '6' }, 
+            choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' },
+            { name: 'Rule 2 - spamming and flooding', value: '2' },
+            { name: 'Rule 3 - self promotion and unsolicited DMs', value: '3' },
+            { name: 'Rule 4 - advertising discord servers and paid services', value: '4' },
+            { name: 'Rule 5 - sub4sub type behaviour', value: '5' },
+            { name: 'Rule 6 - openly discussing moderator actions', value: '6' },
             { name: 'Rule 7 - messages not in English', value: '7' },
+            { name: 'Custom', value: 'Custom' },
             { name: 'Lack of tabs in screenshot', value: 'lack_of_tabs' },
             { name: 'Has not posted proof', value: 'has_not_posted_proof' }]
+        },
+        {
+            name: `custom`,
+            description: `Supply a reason for warning the user when selecting custom`,
+            type: `STRING`,
+            required: false
         }]
     },
     {
@@ -87,6 +94,7 @@ module.exports = {
                     const type = options.getString('type');
                     const target = options.getMember('username');
                     let reason = options.getString('reason');
+                    const custom = options.getString('custom');
 
                     if (reason === '1') reason = `${rules[0]}`;
                     if (reason === '2') reason = `${rules[1]}`;
@@ -95,6 +103,14 @@ module.exports = {
                     if (reason === '5') reason = `${rules[4]}`;
                     if (reason === '6') reason = `${rules[5]}`;
                     if (reason === '7') reason = `${rules[6]}`;
+                    if (reason === 'Custom') reason = `${custom}`;
+
+                    if (reason === 'null') {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`You must provide custom reason when selecting the 'Custom' option\``,
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    }
 
                     const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
 
