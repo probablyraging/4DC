@@ -1,17 +1,67 @@
 const { ContextMenuInteraction } = require('discord.js');
+const fetch = require('node-fetch');
 const path = require('path');
 
 module.exports = {
-    name: `test`,
-    description: `dummy command for testing stuff`,
-    permission: `MANAGE_MESSAGES`,
-    cooldown: 30,
-    type: 'CHAT_INPUT',
-    /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
-     */
-    async execute(interaction) {
-        const { options, client, channel } = interaction;
-    }
+	name: `test`,
+	description: `dummy command for testing stuff`,
+	permission: `MANAGE_MESSAGES`,
+	cooldown: 30,
+	type: 'CHAT_INPUT',
+	options: [{
+		name: `start`,
+		description: `Pick a game to start`,
+		type: `STRING`,
+		required: true,
+		choices: [{ name: 'YouTube Together', value: '880218394199220334' }]
+	}],
+	/**
+	 * 
+	 * @param {ContextMenuInteraction} interaction 
+	 */
+	async execute(interaction) {
+		const { options } = interaction;
+		/**
+		"youtube_together": "880218394199220334",
+		"watch_together_dev": "880218832743055411",
+		"fishington": "814288819477020702",
+		"chess_in_the_park": "832012774040141894",
+		"chess_in_the_park_dev": "832012586023256104",
+		"betrayal": "773336526917861400",
+		"doodlecrew": "878067389634314250",
+		"wordsnacks": "879863976006127627",
+		"lettertile": "879863686565621790",
+		"poker_night": "755827207812677713"
+		 */
+
+		const game = options.getString('start');
+		
+		// add these to ENV
+		if (game === '880218394199220334') channelId = '964822154677981194'; // YouTube Together
+
+		// create an application channel invite 
+		let resolve = await fetch(`https://discord.com/api/v9/channels/${channelId}/invites`, {
+			method: 'POST',
+			body: JSON.stringify({
+				max_age: 0,
+				max_uses: 0,
+				target_application_id: game,
+				target_type: 2,
+				temporary: false,
+				validate: null
+			}),
+			headers: {
+				"Authorization": `Bot ${process.env.BOT_TOKEN}`,
+				"Content-Type": "application/json"
+			}
+		});
+
+		const data = await resolve.json();
+
+		interaction.reply({
+			content: `[Click here](https://discord.gg/${data.code}) to join`
+		})
+
+
+	}
 }

@@ -38,6 +38,12 @@ module.exports = {
         description: `Embeds for the self roles channel`,
         type: `SUB_COMMAND`,
         usage: `/index selfroles`,
+    },
+    {
+        name: `yttogether`,
+        description: `Embeds for the YouTube Together channel`,
+        type: `SUB_COMMAND`,
+        usage: `/index yttogether`,
     }],
     /**
      * 
@@ -146,7 +152,7 @@ ${rules.pre}
 
             switch (options.getSubcommand()) {
                 case 'selfroles': {
-                    interaction.deferReply({ephemeral: true});
+                    interaction.deferReply({ ephemeral: true });
 
                     const response1 = new MessageEmbed()
                         .setColor('#32BEA6')
@@ -229,6 +235,40 @@ ${rules.pre}
                     interaction.editReply({
                         content: `${process.env.BOT_CONF} \`Done\``,
                         ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+            }
+
+            const { MessageActionRow, MessageButton } = require('discord.js');
+
+            switch (options.getSubcommand()) {
+                case 'yttogether': {
+                    await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+                    const newSession = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setEmoji('837083090441994240')
+                            .setLabel(' Start A New Session')
+                            .setStyle('LINK')
+                            .setURL('https://discord.gg/B4cmdHXNyj')
+                    );
+
+                    interaction.editReply({
+                        content: `**Starting a YouTube Together session**
+\`1.\` If a video is already playing, you can join the <#964822154677981194> channel to watch along.
+\`2.\` If a video is not currently playing, you can create a new session by clicking the '[Start A New Session](<https://discord.gg/B4cmdHXNyj>)' button below.
+\`3.\` Wait for the YouTube app to load, use the search bar to find a video to watch, and press the '+' button next to the video to add it to the queue.
+- If you wish to share the remote to other users, toggle the remote sharing in the bottom left of the YouTube app.
+
+**Note**
+This is a Discord application, you may need to authorize it on first use 
+You're welcome to play your own or anyone else's content
+Playing inappropriate content that breaks the server's or Discord's rules/ToS will result in an immediate ban`,
+                        components: [newSession],
+                        files: [{
+                            attachment: 'https://i.imgur.com/66rTsif.gif',
+                            name: 'yttogether.gif'
+                        }]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
