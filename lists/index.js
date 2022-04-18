@@ -14,7 +14,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 > <#838060518832472124> If you need help with anything, just ask
 
 **RANKED PROMOTIONAL CHANNELS**
-> <#859076562053365780>
+> <#859076562053365780> <-- new members start here
 > <#856719763187302441>
 > <#859076776064057411>
 > <#859076732727328789> 

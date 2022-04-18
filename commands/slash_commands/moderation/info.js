@@ -104,7 +104,7 @@ module.exports = {
 
                     interaction.reply({
                         content: `*Information for ${target}:*
-> ${process.env.BOT_DOC} Search Engine Optimization (SEO) is the practice of using good keywords, thumbnails, titles and descriptions to improves the chances of YouTube and Google recommending your content to others, by choosing your content to fill their search results when someone makes search request uings keywords that you've used
+> ${process.env.BOT_DOC} Search Engine Optimization (SEO) is the practice of using good keywords, thumbnails, titles and descriptions to improve the chances of YouTube and Google recommending your content to others, by choosing your content to fill their search results when someone makes search request uings keywords that you've used
 > 
 > To get you started with some general SEO, take a look at the following links. We also recommend you put some time aside to do your own research, as SEO is one of the more important aspects of content creation. The content itself is super important, but you can make awesome content and no one will find it because of poor SEO
 > 
