@@ -8,7 +8,7 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules
 > <#898611031146889286> Get answers to frequently asked questions
-> <#821193720372002817> Give your profile some flair
+> <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to the community
 > <#851707143873626134> Find some useful tips & tricks
 > <#838060518832472124> If you need help with anything, just ask
