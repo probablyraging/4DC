@@ -6,7 +6,6 @@ const {msToHumanTime} = require("../../../modules/mods_choice/mods_choice_utils"
 module.exports = {
     name: `mcaudit`,
     description: `Get an audit of the Mods Choice channel`,
-    permission: `MODERATE_MEMBERS`,
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/mcaudit`,

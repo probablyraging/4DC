@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `info`,
     description: `Information regarding individual topics`,
-    permission: `MODERATE_MEMBERS`,
     cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{

@@ -1,7 +1,5 @@
 const mongo = require('../../mongo');
 const cronjob = require('cron').CronJob;
-const moment = require('moment');
-const date = new Date();
 const path = require('path');
 const Canvas = require("canvas");
 const memberCounter = require('../../modules/misc/member_counter');
@@ -19,11 +17,11 @@ module.exports = {
     name: 'ready',
     once: true,
     async execute(message, client, Discord) {
-        console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, `Client is online!`);
+        console.log('Client is online!');
 
         await mongo().then(mongoose => {
             try {
-                console.log(`\x1b[36m%s\x1b[0m`, `${moment(date).format('D MMM YYYY hh:mm')}`, 'Connected to database');
+                console.log('Connected to database');
             } catch (err) {
                 console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err);
             }

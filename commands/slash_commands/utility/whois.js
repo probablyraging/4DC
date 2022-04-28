@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `whois`,
     description: `Get detailed information about a user`,
-    permission: ``,
     cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/whois (@username)`,

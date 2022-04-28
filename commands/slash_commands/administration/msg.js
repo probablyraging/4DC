@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `msg`,
     description: `Send a direct message as the bot`,
-    locked: true,
     cooldown: 0,
     type: `CHAT_INPUT`,
     usage: `/msg (@username) (message) (imageURL)`,

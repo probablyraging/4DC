@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `boost`,
     description: `Provides information about the current server booster perks`,
-    permission: ``,
     cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/boost`,

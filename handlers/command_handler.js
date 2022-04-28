@@ -16,46 +16,48 @@ module.exports = async (client, Discord) => {
             return table.addRow(file.split('/')[7], `FAILED!`, `Missing command name`);
 
         if (command.type !== 'CHAT_INPUT' && command.type !== 'USER' && command.type !== 'MESSAGE' && !command.description)
-            return table.addRow(command.name, `FAILED!`, `Missing command description`);
+            return table.addRow(command.name, `FAILED!`, `Missing command type or command description`);
 
-        if (command.permission) {
-            if (perms.includes(command.permission))
-                command.defaultPermission = false;
-            else
-                return table.addRow(command.name, `FAILED!`, `Invalid or missing permission`);
-        }
+        // if (command.permission) {
+        //     if (perms.includes(command.permission))
+        //         command.defaultPermission = false;
+        //     else
+        //         return table.addRow(command.name, `FAILED!`, `Invalid or missing permission`);
+        // }
 
         client.commands.set(command.name, command);
         commandsArr.push(command);
 
         table.addRow(command.name, `SUCCESSFULLY LOADED!`);
     });
-    console.log('\n' + table.toString()); // use to check if commands loaded without error
 
-    // permissions check
+    // console.log('\n' + table.toString()); // use to check if commands loaded without error
+
+    // permissions check and set
     client.on('ready', async () => {
         const mainGuild = await client.guilds.cache.get(process.env.GUILD_ID);
+        mainGuild.commands.set(commandsArr)
 
-        mainGuild.commands.set(commandsArr).then(async (command) => {
-            const Roles = (commandName) => {
-                const cmdPerms = commandsArr.find(c => c.name === commandName).permission;
-                if (!cmdPerms) return null;
+        // mainGuild.commands.set(commandsArr).then(async (command) => {
+        //     const Roles = (commandName) => {
+        //         const cmdPerms = commandsArr.find(c => c.name === commandName).permission;
+        //         if (!cmdPerms) return null;
 
-                return mainGuild.roles.cache.filter(r => r.permissions.has(cmdPerms));
-            }
+        //         return mainGuild.roles.cache.filter(r => r.permissions.has(cmdPerms));
+        //     }
 
-            const fullPermissions = command.reduce((accumulator, r) => {
-                const roles = Roles(r.name);
-                if (!roles) return accumulator;
+            // const fullPermissions = command.reduce((accumulator, r) => {
+            //     const roles = Roles(r.name);
+            //     if (!roles) return accumulator;
 
-                const permissions = roles.reduce((a, r) => {
-                    return [...a, { id: r.id, type: 'ROLE', permission: true }]
-                }, []);
+            //     const permissions = roles.reduce((a, r) => {
+            //         return [...a, { id: r.id, type: 'ROLE', permission: true }]
+            //     }, []);
 
-                return [...accumulator, { id: r.id, permissions }]
-            }, []);
+            //     return [...accumulator, { id: r.id, permissions }]
+            // }, []);
 
-            await mainGuild.commands.permissions.set({ fullPermissions });
-        });
+            // await mainGuild.commands.permissions.set({ fullPermissions });
+        // });
     });
 }

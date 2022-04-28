@@ -5,7 +5,6 @@ const path = require('path');
 module.exports = {
     name: `serverinfo`,
     description: `Get information and stats about the server`,
-    permission: ``,
     cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/serverinfo`,

@@ -4,7 +4,6 @@ const mcData = require("../../../modules/mods_choice/mods_choice_data");
 module.exports = {
     name: `mcaway`,
     description: `Toggle the away staus of users for mods choice, or list currently away users`,
-    permission: `MODERATE_MEMBERS`,
     cooldown: 10,
     type: `CHAT_INPUT`,
     options: [

@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `avatar`,
     description: `Fetch a user's avatar and display it in an embed`,
-    permission: ``,
     cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/avatar (@username)`,

@@ -41,7 +41,6 @@ function buildResponse(warnings) {
 module.exports = {
     name: `mcwarn`,
     description: `Add, remove or list warnings for mods-choice members`,
-    permission: `MODERATE_MEMBERS`,
     cooldown: 10,
     type: `CHAT_INPUT`,
     options: [

@@ -11,7 +11,6 @@ function kFormatter(num) {
 module.exports = {
     name: `rank`,
     description: `Fetch your, or someone else's rank`,
-    permission: ``,
     cooldown: 60,
     type: `CHAT_INPUT`,
     usage: `/rank`,

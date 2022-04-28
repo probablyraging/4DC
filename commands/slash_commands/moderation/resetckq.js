@@ -6,7 +6,6 @@ const path = require('path');
 module.exports = {
     name: `resetckq`,
     description: `Resets the content king/queen channel`,
-    permission: `MODERATE_MEMBERS`,
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/resetckq`,

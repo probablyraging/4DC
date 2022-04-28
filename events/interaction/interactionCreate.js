@@ -17,13 +17,13 @@ module.exports = {
         let command = client.commands.get(interaction.commandName);
 
         // owner only commands
-        if (command.locked) {
-            if (member.id !== process.env.OWNER_ID)
-                return interaction.reply({
-                    content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // if (command.locked) {
+        //     if (member.id !== process.env.OWNER_ID)
+        //         return interaction.reply({
+        //             content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
+        //             ephemeral: true
+        //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // }
 
         // check for cooldown
         if (!cooldowns.has(command.name)) {

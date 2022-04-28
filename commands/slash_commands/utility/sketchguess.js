@@ -17,7 +17,6 @@ let previousEmbed;
 module.exports = {
     name: `sketchguess`,
     description: `Command menu for the Sketch Guess game`,
-    permission: ``,
     cooldown: 10,
     type: `CHAT_INPUT`,
     options: [{
