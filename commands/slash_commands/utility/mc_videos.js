@@ -17,12 +17,12 @@ module.exports = {
         const modsChoiceChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
 
         // make sure we only use this command in the #mods-choice channel
-        if (channel.id !== process.env.MCHOICE_CHAN && !member.permissions.has("MANAGE_MESSAGES")) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You can only use this command in\` ${modsChoiceChannel}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // if (channel.id !== process.env.MCHOICE_CHAN && !member.permissions.has("MANAGE_MESSAGES")) {
+        //     return interaction.reply({
+        //         content: `${process.env.BOT_DENY} \`You can only use this command in\` ${modsChoiceChannel}`,
+        //         ephemeral: true
+        //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // }
 
         await interaction.deferReply({ephemeral: true});
 

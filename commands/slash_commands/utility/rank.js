@@ -29,12 +29,12 @@ module.exports = {
         const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
 
         // make sure we only use this command in the #bot-spam channel
-        if (channel.id !== process.env.BOT_CHAN && !member.permissions.has("MANAGE_MESSAGES")) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You can only use this command in\` ${botChan}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // if (channel.id !== process.env.BOT_CHAN && !member.permissions.has("MANAGE_MESSAGES")) {
+        //     return interaction.reply({
+        //         content: `${process.env.BOT_DENY} \`You can only use this command in\` ${botChan}`,
+        //         ephemeral: true
+        //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // }
 
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));;
 
