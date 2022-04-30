@@ -1,66 +1,143 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, Guild } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 
 module.exports = {
-	name: `test`,
-	description: `dummy command for testing stuff`,
+	name: `serverbooster`,
+	description: `Edit your custom server booster role - you must be in the role to edit it`,
 	cooldown: 30,
 	type: 'CHAT_INPUT',
 	options: [{
-		name: `start`,
-		description: `Pick a game to start`,
+		name: `edit`,
+		description: `Choose which role data you would like to edit - you must be in the role to edit it`,
 		type: `STRING`,
 		required: true,
-		choices: [{ name: 'YouTube Together', value: '880218394199220334' }]
+		choices: [{ name: 'name', value: 'name' },
+		{ name: 'color', value: 'color' },
+		{ name: 'icon', value: 'icon' }]
+	},
+	{
+		name: `old`,
+		description: `The role you would like to edit - you must be in the role to edit it`,
+		type: `ROLE`,
+		required: true
+	},
+	{
+		name: `new`,
+		description: `The new name, color (example: red, green, blue or HEX code), or iconURL`,
+		type: `STRING`,
+		required: true
 	}],
 	/**
 	 * 
 	 * @param {ContextMenuInteraction} interaction 
 	 */
 	async execute(interaction) {
-		const { options } = interaction;
-		/**
-		"youtube_together": "880218394199220334",
-		"watch_together_dev": "880218832743055411",
-		"fishington": "814288819477020702",
-		"chess_in_the_park": "832012774040141894",
-		"chess_in_the_park_dev": "832012586023256104",
-		"betrayal": "773336526917861400",
-		"doodlecrew": "878067389634314250",
-		"wordsnacks": "879863976006127627",
-		"lettertile": "879863686565621790",
-		"poker_night": "755827207812677713"
-		 */
+		const { options, guild, member } = interaction;
 
-		const game = options.getString('start');
-		
-		// add these to ENV
-		if (game === '880218394199220334') channelId = '964822154677981194'; // YouTube Together
+		// check if user is a server booster
 
-		// create an application channel invite 
-		let resolve = await fetch(`https://discord.com/api/v9/channels/${channelId}/invites`, {
-			method: 'POST',
-			body: JSON.stringify({
-				max_age: 0,
-				max_uses: 0,
-				target_application_id: game,
-				target_type: 2,
-				temporary: false,
-				validate: null
-			}),
-			headers: {
-				"Authorization": `Bot ${process.env.BOT_TOKEN}`,
-				"Content-Type": "application/json"
-			}
-		});
+		const choice = options.getString('edit')
+		const currentRoleData = options.getRole('old')
+		const changedRoleData = options.getString('new')
 
-		const data = await resolve.json();
+		const roleToEdit = guild.roles.cache.find(r => r.id === currentRoleData.id)
 
-		interaction.reply({
-			content: `[Click here](https://discord.gg/${data.code}) to join`
-		})
+		// disallow editing certain roles where the user may be the only user in the role
+		const uneditableRolesArr = ['839527054465826867', '878229140992589906', '821876910253670442']
+
+		if (uneditableRolesArr.includes(currentRoleData.id)) {
+			return console.log(`you can't edit this role`)
+		}
+
+		// check if the user is the only person in the role - if not, it's likely not a custom role so we shouldn't let them edit it
+		if (roleToEdit?.members?.size > 1) {
+			return console.log('not a custom role')
+		}
+
+		// the user must be in the role to edit it
+		if (!member?.roles?.cache.has(currentRoleData.id)) {
+			return console.log(`you are not in this role`)
+		}
+
+		// edit the name
+		if (choice === 'name') {
+			guild.roles.edit(roleToEdit, { name: changedRoleData }) // catch
+		}
+
+		// edit the color
+		if (choice === 'color') {
+			guild.roles.edit(roleToEdit, { color: changedRoleData.toUpperCase() }) // catch
+		}
+
+		// edit the icon
+		if (choice === 'icon') {
+
+		}
+
+
+
+
+
+
+
+
+
+		// const currentRoleName = options.getString('currentrolename')
+		// const newRoleName = options.getString('newrolename')
+
+		// const roleToEdit = guild.roles.cache.find(r => r.name === currentRoleName).id
+
+		// guild.roles.edit(roleToEdit, { name: newRoleName })
 
 
 	}
 }
+
+
+
+
+
+
+
+// const { options } = interaction;
+// /**
+// "youtube_together": "880218394199220334",
+// "watch_together_dev": "880218832743055411",
+// "fishington": "814288819477020702",
+// "chess_in_the_park": "832012774040141894",
+// "chess_in_the_park_dev": "832012586023256104",
+// "betrayal": "773336526917861400",
+// "doodlecrew": "878067389634314250",
+// "wordsnacks": "879863976006127627",
+// "lettertile": "879863686565621790",
+// "poker_night": "755827207812677713"
+//  */
+
+// const game = options.getString('start');
+
+// // add these to ENV
+// if (game === '880218394199220334') channelId = '964822154677981194'; // YouTube Together
+
+// // create an application channel invite
+// let resolve = await fetch(`https://discord.com/api/v9/channels/${channelId}/invites`, {
+// 	method: 'POST',
+// 	body: JSON.stringify({
+// 		max_age: 0,
+// 		max_uses: 0,
+// 		target_application_id: game,
+// 		target_type: 2,
+// 		temporary: false,
+// 		validate: null
+// 	}),
+// 	headers: {
+// 		"Authorization": `Bot ${process.env.BOT_TOKEN}`,
+// 		"Content-Type": "application/json"
+// 	}
+// });
+
+// const data = await resolve.json();
+
+// interaction.reply({
+// 	content: `[Click here](https://discord.gg/${data.code}) to join`
+// })

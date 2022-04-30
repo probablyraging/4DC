@@ -15,7 +15,6 @@ module.exports = async (message) => {
         }
 
         // replace disboard reply with our own embed and do counting save stuff
-        console.log(message)
         const bumpUser =  message?.interaction?.user.id;
         let savesMessage;
 

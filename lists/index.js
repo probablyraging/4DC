@@ -1,9 +1,9 @@
 module.exports = {
         welcome: [
                 `**WELCOME TO CREATORHUB**
-CreatorHub is a growing community of content creators and gamers alike. The main goal of this Discord server is to connect like-minded people from all around the world together in a friendly and welcoming environment. We are all about sharing advice, providing constructive feedback, and growing our online presence.
+CreatorHub is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
 
-So if you are a youtuber, streamer, game developer, casual gamer, or social media influencer, you are in the right place!
+So if you're a youtuber, streamer, game developer, musician, or if you're just looking for somewhere to meet new people, you are in the right place!
 
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules
@@ -12,16 +12,6 @@ So if you are a youtuber, streamer, game developer, casual gamer, or social medi
 > <#820889004055855147> Introduce yourself to the community
 > <#851707143873626134> Find some useful tips & tricks
 > <#838060518832472124> If you need help with anything, just ask
-
-**RANKED PROMOTIONAL CHANNELS**
-> <#859076562053365780> <-- new members start here
-> <#856719763187302441>
-> <#859076776064057411>
-> <#859076732727328789> 
-> <#859117794779987978>
-> <#841568782992277524>
-
-Promotional channels are available to everyone, but you can also earn new ranks by chatting and being active on the server. As you rank up you will unlock new channels, and the higher you rank, the less competitive the promotional channels will be. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
 
 **YOUR AGREEMENT**
 By participating in this server, you agree to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
