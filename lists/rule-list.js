@@ -10,6 +10,7 @@ module.exports = {
         `Advertising of other discord servers, offering or requesting paid services and products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,
         "We do not allow sub4sub type posts anywhere on the server, including the 'CONTENT SHARE' section. This is also against [YouTube's ToS](<https://support.google.com/youtube/answer/3399767?hl=en>)",
         "Do not openly discuss or ask staff about other member's bans, mutes, message deletions, or other moderating actions",
-        "For moderating purposes, please keep your messages in English"
+        "For moderating purposes, please keep your messages in English",
+        `*last updated: 01/05/2022*`
     ]
 }
