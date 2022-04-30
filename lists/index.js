@@ -12,6 +12,7 @@ So if you're a youtuber, streamer, game developer, musician, or if you're just l
 > <#820889004055855147> Introduce yourself to the community
 > <#851707143873626134> Find some useful tips & tricks
 > <#838060518832472124> If you need help with anything, just ask
+> <#856719763187302441> Share your channels, videos, projects & hobbies
 
 **YOUR AGREEMENT**
 By participating in this server, you agree to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
