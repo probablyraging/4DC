@@ -12,8 +12,7 @@ module.exports = (client) => {
     const boostRole = guild.roles.cache.get(process.env.BOOST_ROLE);
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
 
-    const staffPromoChan = guild.channels.cache.get(process.env.STAFF_PROMO);
-    const boostPromoChan = guild.channels.cache.get(process.env.BOOST_PROMO);
+    const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
     const twitchPromoChan = guild.channels.cache.get(process.env.TWITCH_PROMO);
 
     function filterArr(value, index, self) {
@@ -54,9 +53,6 @@ module.exports = (client) => {
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                     if (!cooldown.has(liveStaffArr[i]?.id)) {
-                        staffPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
                         twitchPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 

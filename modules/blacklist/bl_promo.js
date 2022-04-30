@@ -10,7 +10,7 @@ const path = require('path');
  */
 module.exports = async (message, client) => {
     /**
-     * This blacklist focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "SELF PROMOTE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
+     * This blacklist focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "CONTENT SHARE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
     if (message?.deleted) return;
 

@@ -36,10 +36,10 @@ module.exports = async (message, client) => {
     for (var e in blacklist.allChannels) {
         if (found && hasUrl && message?.channel.id === blacklist.allChannels[e]) {
             member?.send({
-                content: `${process.env.BOT_DENY} \`Rule 5 - We do not condone sub4sub type behaviour anywhere on the server, including the ‘SELF PROMOTE’ section. This is also against YouTube's ToS\``
+                content: `${process.env.BOT_DENY} \`Rule 5 - We do not condone sub4sub type behaviour anywhere on the server, including the ‘CONTENT SHARE’ section. This is also against YouTube's ToS\``
             }).catch(() => {
                 message?.reply({
-                    content: `${process.env.BOT_DENY} \`Rule 5 - We do not condone sub4sub type behaviour anywhere on the server, including the ‘SELF PROMOTE’ section. This is also against YouTube's ToS\``,
+                    content: `${process.env.BOT_DENY} \`Rule 5 - We do not condone sub4sub type behaviour anywhere on the server, including the ‘CONTENT SHARE’ section. This is also against YouTube's ToS\``,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {

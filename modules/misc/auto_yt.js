@@ -6,8 +6,7 @@ const res = new (require('rss-parser'))();
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
-    const staffPromoChan = guild.channels.cache.get(process.env.STAFF_PROMO);
-    const boostPromoChan = guild.channels.cache.get(process.env.BOOST_PROMO);
+    const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
 
     await mongo().then(async mongoose => {
         setInterval(async () => {
@@ -59,12 +58,6 @@ module.exports = async (client) => {
                             // send a notification to a specific channel, depending on the user's roles
                             if (member?.roles?.cache.has(process.env.BOOST_ROLE)) {
                                 boostPromoChan.send({
-                                    content: `**${userTag}** just uploaded a new video - ${item.link}`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            }
-
-                            if (member?.roles?.cache.has(process.env.STAFF_ROLE) || member?.roles?.cache.has(process.env.MOD_ROLE)) {
-                                staffPromoChan.send({
                                     content: `**${userTag}** just uploaded a new video - ${item.link}`
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                             }

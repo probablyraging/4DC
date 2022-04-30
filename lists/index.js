@@ -19,17 +19,17 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 
         faq: [
                 `**FREQUENTLY ASKED QUESTIONS**
-**When/how can I self promote?**
-> All self-promotion channels can be found under the 'SELF PROMOTE' section. Self-promotion channels are unlocked at Rank 0. Reaching higher ranks allows you to self-promote in less competitive channels, allowing your content to be seen easier by others. You can bypass rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
+**When/how can I share my content?**
+> Content share channels can be found under the 'CONTENT SHARE' section. Content share channels are unlocked at Rank 5. You can bypass these rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`
 
-**Can I promote my own server or paid service?**
+**Can I advertise my own server or paid service?**
 > Advertising, as well as looking for other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
 
 **What does server boosting do?**
 > Server boosting is a fun way to support CreatorHub by helping us unlock awesome server perks. On top of that, becoming a **Server Booster** allows you to bypass most of the rank requirements on the server and you also get some extra perks which you can find by typing \`/boost\`
 
 **How do I rank up?**
-> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, less competitive promotional channels, game channels, permission to post links outside of the 'SELF PROMOTE' section. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`. *You will not gain XP for posting links in the SELF PROMOTE section!*
+> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, content share channels, game channels, permission to post links outside of the 'CONTENT SHARE' section, etc. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and typing \`/rank\`. *You will not gain XP for posting messages in the CONTENT SHARE section!*
 ⠀`,
 
                 `**How do I link my channels/socials?**
