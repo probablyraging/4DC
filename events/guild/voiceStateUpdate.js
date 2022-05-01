@@ -30,7 +30,7 @@ module.exports = {
                     CONNECT: true,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a voice channel's permissions: `, err));
 
-                // disallow the user from join the hub again. this prevents creating multiple unique vc channels
+                // disallow the user from joining the hub again. this prevents creating multiple unique vc channels
                 vcHub.permissionOverwrites.edit(newState?.member, {
                     CONNECT: false
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a voice channel's permissions: `, err));
@@ -55,10 +55,8 @@ module.exports = {
                 channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a voice channel: `, err));
             });
 
-            // reallow the user to join the vc_hub again
-            vcHub.permissionOverwrites.edit(newState?.member, {
-                CONNECT: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a voice channel's permissions: `, err));
+            // allow the user to join the vc hub again
+            vcHub.permissionOverwrites.delete(newState?.member).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a voice channel's permissions: `, err));
         }
     }
 }
