@@ -6,7 +6,6 @@ const blLinks = require('../../modules/blacklist/bl_links');
 const blPromo = require('../../modules/blacklist/bl_promo');
 const blMass = require('../../modules/blacklist/bl_mass');
 const blWords = require('../../modules/blacklist/bl_words');
-const blTwitch = require('../../modules/blacklist/bl_twitch');
 const blSpam = require('../../modules/blacklist/bl_spam');
 const blPhishing = require('../../modules/blacklist/bl_phishing');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
@@ -31,7 +30,6 @@ module.exports = {
         blWords(message, client);
         blLinks(message, client);
         blMass(message, client);
-        blTwitch(message);
         blSpam(message, client);
         blEveryone(message, client);
         blSub4Sub(message, client);
