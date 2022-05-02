@@ -2,9 +2,6 @@ const { ContextMenuInteraction, Guild } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 
-const mongo = require('../../../mongo');
-const infoSchema = require('../../../schemas/misc/info_schema');
-
 module.exports = {
 	name: `dbupdate`,
 	description: `Information regarding individual topics`,
