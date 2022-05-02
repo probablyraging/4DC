@@ -2,34 +2,39 @@ const { ContextMenuInteraction, Guild } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 
+const mongo = require('../../../mongo');
+const infoSchema = require('../../../schemas/misc/info_schema');
+
 module.exports = {
-	name: `test`,
+	name: `dbupdate`,
 	description: `Information regarding individual topics`,
-	cooldown: 30,
+	cooldown: 0,
 	type: 'CHAT_INPUT',
 	usage: `/info [category] [@username]`,
-	options: [{
-		name: `select`,
-		description: `Select`,
-		type: `STRING`,
-		required: true,
-		choices: [{ name: 'review', value: 'review' },
-		{ name: 'connections', value: 'connections' },
-		{ name: 'seo', value: 'seo' }]
-	},
-	{
-		name: `username`,
-		description: `Username`,
-		type: `USER`,
-		required: true
-	}],
 	/**
 	 * 
 	 * @param {ContextMenuInteraction} interaction 
 	 */
 	async execute(interaction) {
+		const { options, member } = interaction;
 
+		member.send({ content: `Thanks for boosting CreatorHub ${member?.user.username},
+You've unlocked some additional perks to better your experience on the server, you can read more about them below;
+
+**CREATORHUB SERVER BOOSTER PERKS <:booster:931461963517685801>**
+<:minidot:923683258871472248> The unique **Server Booster** role
+<:minidot:923683258871472248> Access to the less competitive <#859117794779987978> content share channel
+<:minidot:923683258871472248> Bypass the rank requirements for most of the locked channels
+<:minidot:923683258871472248> <:twitch:837083090283003964> Automatic **Live Now** role when streaming on Twitch *
+<:minidot:923683258871472248> <:twitch:837083090283003964> Automatically post your Twitch channel link to the <#859117794779987978> content share channel every time you go live on Twitch
+<:minidot:923683258871472248> <:youtube:837083090441994240> Automatically post your YouTube video links to the <#859117794779987978> content share channel every time you upload new content to YouTube *
+<:minidot:923683258871472248> Unlimited nickname changes while boosting
+<:minidot:923683258871472248> Custom role, role icon and role color of your choosing *
+<:minidot:923683258871472248> Custom sticker and emoji of your choosing *
 		
+* *To claim any of these perks, please contact a staff member*` })
+
+
 	}
 }
 
