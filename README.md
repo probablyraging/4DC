@@ -14,13 +14,14 @@ CreatorBot is actively being maintained and updated to include the newest discor
 
 # CreatorHub Discord Server
 
-CreatorHub is a growing community of content creators and gamers alike. The main goal of this Discord server is to connect like-minded people from all around the world together in a friendly and welcoming environment. We are all about sharing advice, providing constructive feedback, and growing our online presence.
+CreatorHub is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
 
-So if you are a youtuber, streamer, game developer, casual gamer, or social media influencer, come check out **[CreatorHub](https://discord.gg/creatorhub)**
+So if you're a youtuber, streamer, game developer, musician, or if you're just looking for somewhere to meet new people, come check us out at **[CreatorHub](https://discord.gg/creatorhub)**
 
 # Note
 - While this project and all of it's code is free to use and modify, it was created soley to run on a specific server and would not work elsewhere without some heavy modifying beforehand
 - This project is a WIP and you will likely encounter issues if you use it
+- The CreatorHub Discord server isn't for support for this project. Please DM me privately if you have any questions ProbablyRaging#7080
 
 # License
 CreatorBot is licensed under the **[GPL-3.0 License](./LICENSE)**
