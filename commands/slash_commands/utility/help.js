@@ -6,7 +6,7 @@ const path = require('path');
 
 module.exports = {
     name: `help`,
-    description: `Information about CreatorBot and it's commands and features`,
+    description: `Information about CreatorBot's commands and features`,
     access: '',
     cooldown: 3,
     type: `CHAT_INPUT`,
@@ -15,18 +15,25 @@ module.exports = {
         description: `Get information about a specific command`,
         type: `SUB_COMMAND`,
         options: [{
-            name: `list1`,
-            description: `The name of the feature or command`,
+            name: `owner`,
+            description: `A list of owner commands`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `about`, value: `about` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `embed`, value: `embed` }, { name: `help`, value: `help` }, { name: `info`, value: `info` }, { name: `move`, value: `move` }, { name: `resetckq`, value: `resetckq` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, { name: `menu`, value: `menu` }, { name: `invite`, value: `invite` }, { name: `livenow`, value: `livenow` }, { name: `say`, value: `say` }, { name: `index`, value: `index` }, { name: `modschoice`, value: `modschoice` }, { name: `lockdown`, value: `lockdown` }, { name: `leaderboard`, value: `leaderboard` }, { name: `boost`, value: `boost` }, { name: `rank`, value: `rank` }],
+            choices: [{ name: `commandcount`, value: `commandcount` }, { name: `embed`, value: `embed` }, { name: `index`, value: `index` }, { name: `say`, value: `say` }],
         },
         {
-            name: `list2`,
-            description: `The name of the feature or command`,
+            name: `staff`,
+            description: `A list of staff commands`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `xp`, value: `xp` }, { name: `autoyt`, value: `autoyt` }, { name: `mcvideos`, value: `mcvideos` }, { name: `mcaudit`, value: `mcaudit` }, { name: `counting`, value: `counting` }, { name: `commandcount`, value: `commandcount` }, { name: `mcaway`, value: `mcaway` }],
+            choices: [{ name: `autoyt`, value: `autoyt` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `info`, value: `info` }, { name: `lockdown`, value: `lockdown` }, { name: `mcaudit`, value: `mcaudit` }, { name: `mcaway`, value: `mcaway` }, { name: `modschoice`, value: `modschoice` }, { name: `move`, value: `move` }, { name: `resetspotlight`, value: `resetspotlight` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `xp`, value: `xp` }, ],
+        },
+        {
+            name: `other`,
+            description: `A list of everyone commands`,
+            type: `STRING`,
+            required: false,
+            choices: [{ name: `about`, value: `about` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `boost`, value: `boost` }, { name: `counting`, value: `counting` }, { name: `help`, value: `help` }, { name: `invite`, value: `invite` }, { name: `leaderboard`, value: `leaderboard` }, { name: `livenow`, value: `livenow` }, { name: `mcvideos`, value: `mcvideos` }, { name: `rank`, value: `rank` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, ],
         }]
     },
     {
@@ -45,10 +52,11 @@ module.exports = {
         try {
             switch (options.getSubcommand()) {
                 case 'command': {
-                    const choice = options.getString('list1');
-                    const choice2 = options.getString('list2');
+                    const ownerCommands = options.getString('owner');
+                    const staffCommands = options.getString('staff');
+                    const otherCommands = options.getString('other');
 
-                    if (!choice && !choice2) {
+                    if (!ownerCommands && !staffCommands && !otherCommands) {
                         return interaction.reply({
                             content: `${process.env.BOT_DENY} \`You did not include a command name\``,
                             ephemeral: true
@@ -65,7 +73,7 @@ module.exports = {
                         if (file.includes('utility')) cmdArr.push({ command, access: 'Utility' });
                     });
 
-                    const cmd = cmdArr.find(c => c.command.name === choice) || cmdArr.find(c => c.command.name === choice2);
+                    const cmd = cmdArr.find(c => c.command.name === ownerCommands) || cmdArr.find(c => c.command.name === staffCommands) || cmdArr.find(c => c.command.name === otherCommands);
 
                     const response = new MessageEmbed()
                         .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)

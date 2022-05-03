@@ -4,12 +4,12 @@ const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
 
 module.exports = {
-    name: `resetckq`,
+    name: `resetspotlight`,
     description: `Resets the content spotlight channel`,
     access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
-    usage: `/resetckq`,
+    usage: `/resetspotlight`,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
