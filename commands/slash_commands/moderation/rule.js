@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
     name: `rule`,
     description: `Remind a user to not be an a-hole`,
+    access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/rules [ruleNumber] [@username]`,

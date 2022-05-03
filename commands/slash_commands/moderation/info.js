@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
 	name: `info`,
 	description: `Information regarding individual topics`,
+    access: 'staff',
 	cooldown: 3,
 	type: 'CHAT_INPUT',
     usage: `/info [topic] [@username]`,

@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     name: `commandcount`,
     description: `A log of how many times each command has been used`,
+    access: 'owner',
     cooldown: 0,
     type: `CHAT_INPUT`,
     usage: `/msg (@username) (message) (imageURL)`,

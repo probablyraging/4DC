@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     name: `resetckq`,
     description: `Resets the content spotlight channel`,
+    access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/resetckq`,

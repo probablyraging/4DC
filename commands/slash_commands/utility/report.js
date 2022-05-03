@@ -27,6 +27,7 @@ function isChunkImage(imageChunk) {
 module.exports = {
     name: "report",
     description: "Report a user to the CreatorHub staff",
+    access: '',
     cooldown: 60,
     type: `CHAT_INPUT`,
     usage: `/report [@username] [reason] (imageURL)`,

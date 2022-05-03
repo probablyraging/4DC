@@ -7,6 +7,7 @@ const path = require('path');
 module.exports = {
     name: `help`,
     description: `Information about CreatorBot and it's commands and features`,
+    access: '',
     cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{
@@ -70,9 +71,9 @@ module.exports = {
                         .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
                         .setDescription(`${cmd.command.description}`)
 
-                    if (cmd.command.locked) response.addField(`Required Permissions`, `\`Owner\``, false), response.setColor('#87ecff');
-                    if (cmd.command.permission === `MANAGE_MESSAGES`) response.addField(`Required Permissions`, `\`Staff\``, false), response.setColor('#fff766');
-                    if (cmd.command.permission === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#ffa116');
+                    if (cmd.command.access === 'owner') response.addField(`Required Permissions`, `\`Owner\``, false), response.setColor('#87ecff');
+                    if (cmd.command.access === `staff`) response.addField(`Required Permissions`, `\`Staff\``, false), response.setColor('#fff766');
+                    if (cmd.command.access === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#ffa116');
 
                     if (!cmd.command.usage) {
                         cmd.command.options.forEach(option => {
@@ -104,9 +105,9 @@ module.exports = {
                     utilCmds = [];
 
                     cmdArr.forEach(cmd => {
-                        if (cmd.locked) ownerCmd.push(cmd.name);
-                        if (cmd.permission === 'MANAGE_MESSAGES' || cmd.permission === 'MODERATE_MEMBERS') modCmds.push(cmd.name);
-                        if (cmd.permission === ``) utilCmds.push(cmd.name);
+                        if (cmd.access === 'owner') ownerCmd.push(cmd.name);
+                        if (cmd.access === 'staff') modCmds.push(cmd.name);
+                        if (cmd.access === ``) utilCmds.push(cmd.name);
                     });
 
                     const response = new MessageEmbed()

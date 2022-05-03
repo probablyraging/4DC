@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `about`,
     description: `Information about CreatorBot`,
+    access: '',
     cooldown: 5,
     type: `CHAT_INPUT`,
     usage: `/about`,

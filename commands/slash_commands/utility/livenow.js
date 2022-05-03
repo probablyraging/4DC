@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `livenow`,
     description: `Shows a list of all server members who are currently streaming`,
+    access: '',
     cooldown: 10,
     type: `CHAT_INPUT`,
     usage: `/livenow`,

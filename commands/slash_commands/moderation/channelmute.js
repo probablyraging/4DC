@@ -7,6 +7,7 @@ const path = require('path');
 module.exports = {
     name: `channelmute`,
     description: `Mute a user in a specific channel`,
+    access: 'staff',
     cooldown: 5,
     type: `CHAT_INPUT`,
     options: [{

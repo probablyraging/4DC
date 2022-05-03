@@ -6,6 +6,7 @@ const {msToHumanTime} = require("../../../modules/mods_choice/mods_choice_utils"
 module.exports = {
     name: `mcvideos`,
     description: `Get Mods Choice videos that have been posted since you last posted a proof picture`,
+    access: '',
     cooldown: 60,
     type: `CHAT_INPUT`,
     usage: `/mcvideos`,

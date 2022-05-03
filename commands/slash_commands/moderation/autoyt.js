@@ -7,6 +7,7 @@ const path = require('path');
 module.exports = {
     name: `autoyt`,
     description: `Add or remove a user from the AUTOYT list`,
+    access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{

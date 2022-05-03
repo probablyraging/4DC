@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
 	name: `index`,
     description: `Pre-written content for specific channels`,
+    access: 'owner',
 	cooldown: 0,
 	type: 'CHAT_INPUT',
 	options: [{

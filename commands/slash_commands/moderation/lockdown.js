@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `lockdown`,
     description: `Prevent everyone from sending messages in all channels`,
+    access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
     options: [{

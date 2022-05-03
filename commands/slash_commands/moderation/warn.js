@@ -12,6 +12,7 @@ const path = require('path');
 module.exports = {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
+    access: 'staff',
     cooldown: 10,
     type: `CHAT_INPUT`,
     options: [{

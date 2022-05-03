@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `modschoice`,
     description: `Add a user to the mod's choice role`,
+    access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
     usage: `/modschoice [@username]`,

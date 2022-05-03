@@ -8,6 +8,7 @@ const path = require('path');
 module.exports = {
     name: `counting`,
     description: `Information about the counting game`,
+    access: '',
     cooldown: 5,
     type: `CHAT_INPUT`,
     options: [{

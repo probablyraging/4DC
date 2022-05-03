@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `apply`,
     description: `Apply for a staff role`,
+    access: '',
     cooldown: 86400,
     type: `CHAT_INPUT`,
     usage: `/apply [age] [country] [reason]`,
