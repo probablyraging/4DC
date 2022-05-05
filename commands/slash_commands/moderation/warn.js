@@ -159,8 +159,8 @@ module.exports = {
                                         target.send({
                                             content: `${process.env.BOT_DENY} \`You have been permanently banned from ${guild.name}\`
                                                                                     
-    **Reason**
-    > Warning threshold reached`
+**Reason**
+> Warning threshold reached`
                                         }).catch(() => dmFail = true);
 
                                         let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
@@ -194,7 +194,7 @@ module.exports = {
 
                                         interaction.reply({
                                             content: `${replyMsg}
-    ${banMsg}`,
+${banMsg}`,
                                             ephemeral: true
                                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                     } else {
@@ -203,8 +203,8 @@ module.exports = {
                                         target.send({
                                             content: `${process.env.BOT_DENY} \`You received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!\`
                                                                                     
-    **Reason**
-    > ${reason}`
+**Reason**
+> ${reason}`
                                         }).catch(() => dmFail = true);
 
                                         let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
