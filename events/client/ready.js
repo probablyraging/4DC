@@ -64,7 +64,7 @@ module.exports = {
 
         // log uncaught exceptions to a log channel
         process.on('uncaughtException', async function (err) {
-            const errLog = client.channels.cache.get(process.env.TEST_CHAN);
+            const errLog = client.channels.cache.get(process.env.BL_CHAN);
 
             let errStack = err.stack || ` `;
             if (errStack.length > 1000) errStack = errStack.slice(0, 1000) + '...' || ` `;
