@@ -1,6 +1,5 @@
 const mongo = require('../../mongo');
 const cronjob = require('cron').CronJob;
-const { MessageEmbed } = require('discord.js');
 const path = require('path');
 const Canvas = require("canvas");
 const memberCounter = require('../../modules/misc/member_counter');
@@ -61,26 +60,5 @@ module.exports = {
         autoYT(client);
         rankSort(client);
         setupModsChoiceChecks(client);
-
-        // log uncaught exceptions to a log channel
-        process.on('uncaughtException', async function (err) {
-            const errLog = client.channels.cache.get(process.env.BL_CHAN);
-
-            let errStack = err.stack || ` `;
-            if (errStack.length > 1000) errStack = errStack.slice(0, 1000) + '...' || ` `;
-
-            const errorEmbed = new MessageEmbed()
-                .setColor('#E04F5F')
-                .addField(`Error`, `${err}`, true)
-                .addField(`Stack`, `\`\`\`${errStack}\`\`\``)
-                .setTimestamp()
-
-            await errLog.send({
-                embeds: [errorEmbed]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
-            console.log(err.stack);
-            process.exit(1);
-        });
     }
 };

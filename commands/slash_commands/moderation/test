@@ -12,7 +12,5 @@ module.exports = {
 	async execute(interaction) {
 		const { options } = interaction;
 
-		console.log(testing)
-
 	}
 }
