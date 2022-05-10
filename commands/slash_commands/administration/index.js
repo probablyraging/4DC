@@ -17,7 +17,7 @@ module.exports = {
 		choices: [{ name: 'welcome', value: 'welcome' },
 		{ name: 'rules', value: 'rules' },
 		{ name: 'faq', value: 'faq' },
-		{ name: 'modschoice', value: 'modschoice' },
+		{ name: 'creatorcrew', value: 'creatorcrew' },
 		{ name: 'selfroles', value: 'selfroles' }]
 	}],
     /**
@@ -112,12 +112,12 @@ ${rules.rules[7]}`).catch(err => console.error(`${path.basename(__filename)} The
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 
-			// MODS CHOICE
+			// CREATOR CREW
 			switch (options.getString('data')) {
-				case 'modschoice': {
+				case 'creatorcrew': {
 					const response = new MessageEmbed()
 						.setColor('#32BEA6')
-						.setDescription(`${index.modschoice}`)
+						.setDescription(`${index.creatorcrew}`)
 
 					channel.send({
 						embeds: [response]

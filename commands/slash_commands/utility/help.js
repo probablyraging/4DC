@@ -26,14 +26,14 @@ module.exports = {
             description: `A list of staff commands`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `autoyt`, value: `autoyt` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `info`, value: `info` }, { name: `lockdown`, value: `lockdown` }, { name: `mcaudit`, value: `mcaudit` }, { name: `mcaway`, value: `mcaway` }, { name: `modschoice`, value: `modschoice` }, { name: `move`, value: `move` }, { name: `resetspotlight`, value: `resetspotlight` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `xp`, value: `xp` }, ],
+            choices: [{ name: `autoyt`, value: `autoyt` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `info`, value: `info` }, { name: `lockdown`, value: `lockdown` }, { name: `ccaudit`, value: `ccaudit` }, { name: `ccaway`, value: `ccaway` }, { name: `ccadd`, value: `ccadd` }, { name: `move`, value: `move` }, { name: `resetspotlight`, value: `resetspotlight` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `xp`, value: `xp` }, ],
         },
         {
             name: `other`,
             description: `A list of everyone commands`,
             type: `STRING`,
             required: false,
-            choices: [{ name: `about`, value: `about` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `boost`, value: `boost` }, { name: `counting`, value: `counting` }, { name: `help`, value: `help` }, { name: `invite`, value: `invite` }, { name: `leaderboard`, value: `leaderboard` }, { name: `livenow`, value: `livenow` }, { name: `mcvideos`, value: `mcvideos` }, { name: `rank`, value: `rank` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, ],
+            choices: [{ name: `about`, value: `about` }, { name: `apply`, value: `apply` }, { name: `avatar`, value: `avatar` }, { name: `boost`, value: `boost` }, { name: `counting`, value: `counting` }, { name: `help`, value: `help` }, { name: `invite`, value: `invite` }, { name: `leaderboard`, value: `leaderboard` }, { name: `livenow`, value: `livenow` }, { name: `ccvideos`, value: `ccvideos` }, { name: `rank`, value: `rank` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, ],
         }]
     },
     {

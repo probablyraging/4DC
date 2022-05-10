@@ -1,21 +1,21 @@
 require("dotenv").config();
-const {getVideosSinceLastProof, getLatestVideoTs, isAway} = require("../../../modules/mods_choice/mods_choice_data");
-const {delayBetweenVideos, maxMessageLength, maxLengthMessage} = require("../../../modules/mods_choice/mods_choice_constants");
-const {msToHumanTime} = require("../../../modules/mods_choice/mods_choice_utils");
+const { getVideosSinceLastProof, getLatestVideoTs, isAway } = require("../../../modules/mods_choice/mods_choice_data");
+const { delayBetweenVideos, maxMessageLength, maxLengthMessage } = require("../../../modules/mods_choice/mods_choice_constants");
+const { msToHumanTime } = require("../../../modules/mods_choice/mods_choice_utils");
 
 module.exports = {
-    name: `mcvideos`,
-    description: `Get Mods Choice videos that have been posted since you last posted a proof picture`,
+    name: `ccvideos`,
+    description: `Get Creator Crew videos that have been posted since you last posted a proof picture`,
     access: '',
     cooldown: 60,
     type: `CHAT_INPUT`,
-    usage: `/mcvideos`,
+    usage: `/ccvideos`,
     /**
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const {guild, channel, member} = interaction;
-        const modsChoiceChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
+        const { channel, member } = interaction;
+        // const modsChoiceChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
 
         // make sure we only use this command in the #mods-choice channel
         // if (channel.id !== process.env.MCHOICE_CHAN && !member.permissions.has("MANAGE_MESSAGES")) {
@@ -25,7 +25,7 @@ module.exports = {
         //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         // }
 
-        await interaction.deferReply({ephemeral: true});
+        await interaction.deferReply({ ephemeral: true });
 
         let videosSinceLastProof = await getVideosSinceLastProof(member.id);
         // Build the main section of the reply

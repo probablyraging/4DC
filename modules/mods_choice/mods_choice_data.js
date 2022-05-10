@@ -89,7 +89,7 @@ async function getAllVideoMessageIds() {
 async function getVideosNotFromUsers(users) {
     return await mongo().then(async () => {
         let results = await mcVideoModel.find({author: {$nin: users}}).exec()
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from non-mods-choice members: `, err));
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from non-Creator Crew members: `, err));
         if (!results || results.length === 0) {
             return [];
         } else {
@@ -139,7 +139,7 @@ async function deleteVideosFromNonChannelMembers(users) {
                 ids.push(video._id);
             });
             await mcVideoModel.deleteMany({_id: {$in: ids}}).exec()
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-mods-choice members: `, err));
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
             return messageIds;
         }
     });
@@ -151,7 +151,7 @@ async function deleteVideosFromNonChannelMembers(users) {
 async function deleteProofFromNonChannelMembers(users) {
     return await mongo().then(async () => {
         await mcProofModel.deleteMany({author: {$nin: users}}).exec()
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting proof from non-mods-choice members: `, err));
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting proof from non-Creator Crew members: `, err));
     });
 }
 

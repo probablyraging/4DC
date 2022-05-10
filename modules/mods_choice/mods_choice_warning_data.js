@@ -26,7 +26,7 @@ async function getWarnings(userId) {
         // If we have a userId, find the warnings for the user - else find all warnings
         let query = userId ? mcWarnModel.find({userId: userId}) : mcWarnModel.find();
         let results = await query.sort('timestamp').exec()
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all mods choice warnings: `, err));
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all Creator Crew warnings: `, err));
         if (!results || results.length === 0) {
             return [];
         } else {
@@ -41,7 +41,7 @@ async function getWarnings(userId) {
 async function deleteWarning(warnId) {
     await mongo().then(async () => {
         mcWarnModel.deleteOne({warnId: warnId}).exec()
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-mods-choice members: `, err));
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
     });
 }
 

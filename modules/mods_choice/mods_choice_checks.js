@@ -32,7 +32,7 @@ async function deleteMessages(messageIds, channel) {
 function sendUserNotification(guildMember, channel, days) {
     let notificationMessage = `${guildMember} - you have not posted proof in ${channel} in the last ${days} days. Users who have not posted in the last 3 days risk being removed from the channel.\nIf you are going to be away for an extended period of time, then please contact a member of the CreatorHub Staff.`;
     if (days === 4 || days === 5) {
-        notificationMessage += `\nPlease use the \`/mcvideos\` command in ${channel} and watch all the videos in the response.`;
+        notificationMessage += `\nPlease use the \`/ccvideos\` command in ${channel} and watch all the videos in the response.`;
     }
     guildMember.send(notificationMessage)
         .catch(err => {
@@ -60,7 +60,7 @@ function sendStaffNotification(guildMember, staffChannel, mcChannel, days) {
  * @param {Client} client
  */
 async function checkPreviousModsChoiceMessages(client) {
-    console.log("Checking previously posted messages in mods choice.");
+    console.log("Checking previously posted messages in Creator Crew.");
     let startTime = new Date();
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const mcChannel = guild.channels.cache.get(process.env.MCHOICE_CHAN);
@@ -96,9 +96,9 @@ async function checkPreviousModsChoiceMessages(client) {
                 }
             }
         });
-    }).catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in mods-choice: `, err));
+    }).catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in Creator Crew: `, err));
 
-    console.log(`Processed previous messages in mods choice in ${(new Date - startTime).valueOf()}ms.`)
+    console.log(`Processed previous messages in Creator Crew in ${(new Date - startTime).valueOf()}ms.`)
 }
 
 /**

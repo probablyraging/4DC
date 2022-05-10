@@ -26,7 +26,7 @@ module.exports = {
             type: `STRING`,
             required: true,
             choices: [{ name: 'regular', value: 'regular' },
-            { name: 'modschoice', value: 'modschoice' }]
+            { name: 'creatorcrew', value: 'creatorcrew' }]
         },
         {
             name: `username`,
@@ -241,11 +241,11 @@ ${banMsg}`,
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                     }
 
-                    if (type === 'modschoice') {
+                    if (type === 'creatorcrew') {
                         const warnedBy = user.id;
 
-                        if (reason === 'lack_of_tabs') message = `The mods choice proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/mcvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
-                        if (reason === 'has_not_posted_proof') message = `You have not posted to mods choice recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/mcvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+                        if (reason === 'lack_of_tabs') message = `The Creator Crew proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+                        if (reason === 'has_not_posted_proof') message = `You have not posted to Creator Crew recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
 
                         await addWarning(userId, warnId, warnedBy, reason);
 
@@ -298,7 +298,7 @@ ${banMsg}`,
                             if (results2.length >= 1) {
                                 const log = new MessageEmbed()
                                     .setColor('#32BEA6')
-                                    .setAuthor({ name: `${user.tag} deleted a mods choice warning`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                                    .setAuthor({ name: `${user.tag} deleted a Creator Crew warning`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                                     .addField(`Removed From`, `<@${gotUserId}>`, true)
                                     .addField(`Removed By`, `<@${user.id}>`, true)
                                     .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
@@ -363,12 +363,12 @@ Warning ID`, `\`\`\`${warnId}\`\`\``, false)
                             }
                         }
 
-                        // mods choice warnings
+                        // creator crew warnings
                         const results2 = await mcWarnSchema.find({ userId });
 
                         let mcWarningEmbed = new MessageEmbed()
                             .setColor('#bdeb34')
-                            .setAuthor({ name: `Mods Choice Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                            .setAuthor({ name: `Creator Crew Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                             .setTimestamp()
 

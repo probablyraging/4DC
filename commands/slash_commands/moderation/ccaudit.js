@@ -4,12 +4,12 @@ const {getWarnings} = require("../../../modules/mods_choice/mods_choice_warning_
 const {msToHumanTime} = require("../../../modules/mods_choice/mods_choice_utils");
 
 module.exports = {
-    name: `mcaudit`,
-    description: `Get an audit of the Mods Choice channel`,
+    name: `ccaudit`,
+    description: `Get an audit of the Creator Crew channel`,
     access: 'staff',
     cooldown: 3,
     type: `CHAT_INPUT`,
-    usage: `/mcaudit`,
+    usage: `/ccaudit`,
     /**
      * @param {ContextMenuInteraction} interaction
      */

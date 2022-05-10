@@ -53,15 +53,15 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 > To make a report, you can use the \`/report\` command and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles`
         ],
 
-        modschoice: [
-                `**What Is Mod's Choice**
-Mod's Choice is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
+        creatorcrew: [
+                `**What Is Creator Crew?**
+Creator Crew is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
 ⠀
 This channel is a based mainly on a trust system. Most of the members in here have been doing this for a long time and are trusted without a doubt. If you are new to the channel, you will be watched closely, and we trust that you will do what is required to remain in the channel, or you risk being removed permanently.
 ⠀
 **How It Works**
 Every member of the channel is required to support all other members, the easiest way to do this is;
-\`1.\` Use the \`/mcvideos\` command to fetch all unwatched videos since your last proof screenshot
+\`1.\` Use the \`/ccvideos\` command to fetch all unwatched videos since your last proof screenshot
 \`2.\` Open each video in a new tab and give each video a like
 \`3.\` Take a screenshot of the browser tabs and upload it to the channel
 \`4.\` Leave the tabbed videos playing in the background for 10 minutes minimum, while you do some other stuff

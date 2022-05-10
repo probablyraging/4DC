@@ -14,7 +14,7 @@ const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
-const modsChoice = require("../../modules/mods_choice/mods_choice_messages");
+const creatorCrew = require("../../modules/mods_choice/mods_choice_messages");
 const path = require('path');
 
 module.exports = {
@@ -44,7 +44,7 @@ module.exports = {
 
         // misc checks
         rankXP(message, client);
-        modsChoice(message, client);
+        creatorCrew(message, client);
         resPost(message, client);
 
         // delete posts containing tweets in the insider channel

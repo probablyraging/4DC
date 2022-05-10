@@ -2,8 +2,8 @@ const {ContextMenuInteraction} = require('discord.js');
 const mcData = require("../../../modules/mods_choice/mods_choice_data");
 
 module.exports = {
-    name: `mcaway`,
-    description: `Toggle the away staus of users for mods choice, or list currently away users`,
+    name: `ccaway`,
+    description: `Toggle the away staus of users for Creator Crew, or list currently away users`,
     access: 'staff',
     cooldown: 10,
     type: `CHAT_INPUT`,
@@ -12,7 +12,7 @@ module.exports = {
             name: `toggle`,
             description: `Toggle the user's away status`,
             type: `SUB_COMMAND`,
-            usage: `/mcaway toggle [username]`,
+            usage: `/ccaway toggle [username]`,
             options: [
                 {
                     name: `username`,
@@ -26,7 +26,7 @@ module.exports = {
             name: `list`,
             description: `List all users who are currently away`,
             type: `SUB_COMMAND`,
-            usage: `/mcaway list`
+            usage: `/ccaway list`
         }
     ],
     /**
