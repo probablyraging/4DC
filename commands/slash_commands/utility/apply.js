@@ -71,7 +71,7 @@ Region: ${region}
 Comments: ${comments}\`\`\``, true)
 
                 channel.send({
-                    content: `test`,
+                    content: `<@&${process.env.STAFF_ROLE}>`,
                     embeds: [response]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
