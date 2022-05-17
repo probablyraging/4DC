@@ -1,28 +1,8 @@
 require("dotenv").config();
-const {MessageEmbed} = require("discord.js");
-const {v4: uuidv4} = require("uuid");
-const {addCooldown, hasCooldown, removeCooldown} = require("../../../modules/misc/report_cooldown");
+const { MessageEmbed, ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require("discord.js");
+const { v4: uuidv4 } = require("uuid");
+const { addCooldown, hasCooldown, removeCooldown } = require("../../../modules/misc/report_cooldown");
 const path = require("path");
-const https = require("https");
-
-const imageHex = {
-    jpg1: "ffd8ffe0",
-    jpg2: "ffd8ffee",
-    jpg3: "ffd8ffe1",
-    png: "89504e47",
-    gif: "47494638"
-};
-
-function isChunkImage(imageChunk) {
-    if (imageChunk) {
-        return imageChunk === imageHex.png ||
-            imageChunk === imageHex.jpg1 ||
-            imageChunk === imageHex.jpg2 ||
-            imageChunk === imageHex.jpg3 ||
-            imageChunk === imageHex.gif;
-    }
-    return false;
-}
 
 module.exports = {
     name: "report",
@@ -33,119 +13,129 @@ module.exports = {
     usage: `/report [@username] [reason] (imageURL)`,
     options: [
         {
-            name: "username",
-            description: "The user to report",
-            type: "USER",
+            name: "proof",
+            description: "Provide proof of your report",
+            type: 11,
             required: true
-        },
-        {
-            name: "reason",
-            description: "Why the user is being reported",
-            type: "STRING",
-            required: true
-        },
-        {
-            name: "image",
-            description: "Include an optional image URL in your report (png, jpg, gif) - e.g. a screenshot of DMs",
-            type: "STRING",
-            required: false
         }
     ],
+    /**
+     * 
+     * @param {ContextMenuInteraction} interaction 
+     */
     async execute(interaction) {
-        await interaction.deferReply({ephemeral: true});
+        const { client, options, user, guild } = interaction;
 
-        const guild = interaction.client.guilds.cache.get(process.env.GUILD_ID);
-        const staffChannel = interaction.client.channels.cache.get(process.env.STAFF_CHAN);
-        const reportId = uuidv4();
-        const {user, options} = interaction;
+        const attachment = options.getAttachment('proof')
 
-        const target = options.getMember("username");
-        const reason = options.getString("reason");
-        const imageUrl = options.getString("image");
+        const modal = new Modal()
+            .setTitle('Report Form')
+            .setCustomId('report-modal')
 
-        if (reason && reason.length > 1024) {
-            await interaction.editReply({
-                content: `${process.env.BOT_DENY} \`Reason cannot exceeds 1024 characters\``
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            return;
-        }
+        const input1 = new TextInputComponent()
+            .setCustomId('input1')
+            .setLabel('Username')
+            .setStyle(1)
+            .setPlaceholder('Username and tag (e.g: ProbablyRaging#0001')
+            .setMinLength(1)
+            .setMaxLength(54)
+            .setRequired(true)
 
-        if (!hasCooldown(user.id)) {
-            let reportEmbed = new MessageEmbed()
-                .setColor("#E04F5F")
-                .setAuthor({name: `${user?.tag}`, iconURL: user?.displayAvatarURL({dynamic: true})})
-                .addField(`Reported User`, `<@${target.id}>`, false)
-                .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                .setFooter({text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({dynamic: true})})
-                .setTimestamp();
+        const input2 = new TextInputComponent()
+            .setCustomId('input2')
+            .setLabel('Reason')
+            .setStyle(2)
+            .setPlaceholder('Please include a reason for your report..')
+            .setMinLength(1)
+            .setMaxLength(1024)
+            .setRequired(true)
 
-            const reactionMessage = await staffChannel.send({embeds: [reportEmbed]}).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+        const row1 = new MessageActionRow().addComponents([input1]);
+        const row2 = new MessageActionRow().addComponents([input2]);
 
-            if (imageUrl) {
-                try {
-                    await https.get(imageUrl, response => {
-                        response.on("readable", () => {
-                            // From the first 4 bytes we can work out if the file is an image: https://en.wikipedia.org/wiki/List_of_file_signatures
-                            let chunk = response.read(4);
-                            let isImage = isChunkImage(chunk.toString('hex', 0, 4));
-                            response.destroy();
-                            if (isImage) {
-                                const imageEmbed = new MessageEmbed(reportEmbed)
-                                    .setImage(imageUrl);
-                                reactionMessage.edit({embeds: [imageEmbed]});
-                            } else {
-                                const urlEmbed = new MessageEmbed(reportEmbed)
-                                    .addField("Linked Url", imageUrl);
-                                reactionMessage.edit({embeds: [urlEmbed]});
-                            }
-                        });
-                    });
-                } catch (err) {
-                    console.error(`${path.basename(__filename)} Failed to resolve the image URL '${imageUrl}': `, err)
-                }
-            }
+        modal.addComponents(row1, row2);
 
-            await reactionMessage.react("⛔").catch(err => console.error(`Could not react to message '${reportId}': `, err));
+        await interaction.showModal(modal);
 
-            const filter = (reaction, user) => {
-                return guild.members.cache.find((member) => member.id === user.id).permissions.has("MANAGE_MESSAGES");
-            };
+        client.on('interactionCreate', async (interaction) => {
+            if (interaction.customId === 'report-modal') {
+                let target = interaction.fields.getTextInputValue('input1');
+                const reason = interaction.fields.getTextInputValue('input2');
 
-            const collector = reactionMessage.createReactionCollector({filter, dispose: true});
+                // try to match the modal's username input to an actual member
+                guild.members.cache.forEach(member => {
+                    const split = target.toLowerCase().split('#');
 
-            collector.on("collect", (reaction, closingUser) => {
-                if (!closingUser.bot && reaction.emoji.name === "⛔") {
-                    const closedEmbed = new MessageEmbed(reportEmbed)
-                        .addField(`Closed By`, `${closingUser}`, false)
-                        .setColor("#32BEA6");
-                    reactionMessage.edit({embeds: [closedEmbed]});
-                    reactionMessage.reactions.resolve("⛔").remove("⛔");
+                    if (member.user.username.toLowerCase() === split[0] && member.user.discriminator === split[1]) {
+                        target = `<@${member.id}>`;
+                    }
+                });
 
-                    const replyEmbed = new MessageEmbed()
-                        .setColor("#32BEA6")
-                        .setTitle(`CreatorHub Report`)
-                        .setAuthor({name: `${user?.tag}`, iconURL: user?.displayAvatarURL({dynamic: true})})
-                        .setDescription(`Your report's status has been updated to \`CLOSED\``)
-                        .addField(`Report Message`, `\`\`\`${reason}\`\`\``, false)
-                        .addField(`Closed By`, `${closingUser}`, false)
-                        .setFooter({text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({dynamic: true})})
+                const reportId = uuidv4();
+                const staffChannel = interaction.client.channels.cache.get(process.env.STAFF_CHAN);
+
+                if (!hasCooldown(user.id)) {
+                    let reportEmbed = new MessageEmbed()
+                        .setColor("#E04F5F")
+                        .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                        .addField(`Reported User`, `${target}`, false)
+                        .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
+                        .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
                         .setTimestamp();
 
-                    user.send({embeds: [replyEmbed]}).catch(err => {
-                        console.error("There was a problem sending a DM to the user: ", err);
+                    if (attachment) {
+                        reportEmbed.setImage(attachment.url)
+                    }
+
+                    const reactionMessage = await staffChannel.send({ embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+
+                    await reactionMessage.react("⛔").catch(err => console.error(`Could not react to message '${reportId}': `, err));
+
+                    const filter = (reaction, user) => {
+                        return guild.members.cache.find((member) => member.id === user.id).permissions.has("MANAGE_MESSAGES");
+                    };
+
+                    const collector = reactionMessage.createReactionCollector({ filter, dispose: true });
+
+                    collector.on("collect", (reaction, closingUser) => {
+                        if (!closingUser.bot && reaction.emoji.name === "⛔") {
+                            const closedEmbed = new MessageEmbed(reportEmbed)
+                                .addField(`Closed By`, `${closingUser}`, false)
+                                .setColor("#32BEA6");
+                            reactionMessage.edit({ embeds: [closedEmbed] });
+                            reactionMessage.reactions.resolve("⛔").remove("⛔");
+
+                            const replyEmbed = new MessageEmbed()
+                                .setColor("#32BEA6")
+                                .setTitle(`CreatorHub Report`)
+                                .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                                .setDescription(`Your report's status has been updated to \`CLOSED\``)
+                                .addField(`Report Message`, `\`\`\`${reason}\`\`\``, false)
+                                .addField(`Closed By`, `${closingUser}`, false)
+                                .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
+                                .setTimestamp();
+
+                            if (attachment) {
+                                replyEmbed.setImage(attachment.url)
+                            }
+
+                            user.send({ embeds: [replyEmbed] }).catch(err => {
+                                console.error("There was a problem sending a DM to the user: ", err);
+                            });
+                        }
                     });
+
+                    addCooldown(user.id);
+
+                    setTimeout(() => {
+                        removeCooldown(user.id);
+                    }, 60000);
+
+                    await interaction.reply({ content: `${process.env.BOT_CONF} \`Your report has been submitted\`` }).catch(err => console.error("There was a problem replying to the interaction: ", err));
+                } else {
+                    await interaction.reply({ content: `${process.env.BOT_DENY} \`You must wait 60 seconds between reports\`` }).catch(err => console.error("There was a problem replying to the interaction: ", err));
                 }
-            });
-
-            addCooldown(user.id);
-
-            setTimeout(() => {
-                removeCooldown(user.id);
-            }, 60000);
-
-            await interaction.editReply({content: `${process.env.BOT_CONF} \`Your report has been submitted\``}).catch(err => console.error("There was a problem replying to the interaction: ", err));
-        } else {
-            await interaction.editReply({content: `${process.env.BOT_DENY} \`You must wait 60 seconds between reports\``}).catch(err => console.error("There was a problem replying to the interaction: ", err));
-        }
+            }
+        });
     }
 };

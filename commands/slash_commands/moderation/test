@@ -1,16 +1,19 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { MessageEmbed, ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require('discord.js');
+const { addCooldown, hasCooldown, removeCooldown } = require("../../../modules/misc/report_cooldown");
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = {
-	name: `testing`,
-    description: `dummy command`,
+	name: `test`,
+	description: `dummy command`,
 	cooldown: 0,
 	type: 'CHAT_INPUT',
 	/**
 	 * 
 	 * @param {ContextMenuInteraction} interaction 
 	 */
-	async execute(interaction) {
-		const { options } = interaction;
+	async execute(interaction, client) {
+		const { options, member, guild } = interaction;
+
 
 	}
 }

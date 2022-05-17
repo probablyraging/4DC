@@ -25,31 +25,36 @@ module.exports = {
         //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         // }
 
-        // check for cooldown
-        if (!cooldowns.has(command.name)) {
-            cooldowns.set(command.name, new Discord.Collection());
-        }
-
-        const current_time = Date.now();
-        const time_stamps = cooldowns.get(command.name);
-        const cooldown_amount = (command.cooldown) * 1000;
-
-        if (!member.permissions.has("ADMINISTRATOR")) {
-            if (time_stamps.has(member.id)) {
-                const expiration_time = time_stamps.get(member.id) + cooldown_amount;
-                const time_left = (expiration_time - current_time) / 1000;
-
-                if (current_time < expiration_time) {
-                    return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`Cooldown: ${time_left.toFixed(0)} seconds\``,
-                        ephemeral: true
-                    })
-                }
+        // we can ignore modal submits here
+        if (!interaction.isModalSubmit()) {
+            // check for cooldown
+            if (!cooldowns.has(command.name)) {
+                cooldowns.set(command.name, new Discord.Collection());
             }
-            time_stamps.set(member.id, current_time);
 
-            setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
+            const current_time = Date.now();
+            const time_stamps = cooldowns.get(command.name);
+            const cooldown_amount = (command.cooldown) * 1000;
+
+            if (!member.permissions.has("ADMINISTRATOR")) {
+                if (time_stamps.has(member.id)) {
+                    const expiration_time = time_stamps.get(member.id) + cooldown_amount;
+                    const time_left = (expiration_time - current_time) / 1000;
+
+                    if (current_time < expiration_time) {
+                        return interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Cooldown: ${time_left.toFixed(0)} seconds\``,
+                            ephemeral: true
+                        })
+                    }
+                }
+                time_stamps.set(member.id, current_time);
+
+                setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
+            }
         }
+
+
 
         // handle and execute commands
         if (interaction.isCommand() || interaction.isContextMenu()) {
@@ -83,7 +88,7 @@ module.exports = {
                         let { uses } = data;
 
                         let usesAdd = uses + 1;
-    
+
                         await commandCountSchema.findOneAndUpdate({
                             command: command.name,
                         }, {
