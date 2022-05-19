@@ -2,6 +2,8 @@ const { client, CommandInteraction, MessageEmbed } = require('discord.js');
 const cooldowns = new Map();
 const mongo = require('../../mongo');
 const commandCountSchema = require('../../schemas/misc/command_count');
+const applyModal = require('../../commands/slash_commands/utility/modals/apply_modal');
+const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
 const path = require('path');
 
 module.exports = {
@@ -25,9 +27,9 @@ module.exports = {
         //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         // }
 
-        // we can ignore modal submits here
+        // We can ignore cooldowns for modal submits
         if (!interaction.isModalSubmit()) {
-            // check for cooldown
+            // Check for cooldown
             if (!cooldowns.has(command.name)) {
                 cooldowns.set(command.name, new Discord.Collection());
             }
@@ -52,9 +54,10 @@ module.exports = {
 
                 setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
             }
+        } else {            
+            applyModal(interaction);
+            reportModal(interaction);
         }
-
-
 
         // handle and execute commands
         if (interaction.isCommand() || interaction.isContextMenu()) {
