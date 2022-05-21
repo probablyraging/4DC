@@ -9,6 +9,10 @@ const warnSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
     warnId: {
         type: String,
         required: true,

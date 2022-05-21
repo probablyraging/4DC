@@ -1,0 +1,49 @@
+const { MessageEmbed, MessageSelectMenu, ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require('discord.js');
+const { addCooldown, hasCooldown, removeCooldown } = require("../../../modules/misc/report_cooldown");
+const { v4: uuidv4 } = require("uuid");
+const warnSchema = require('../../../schemas/misc/warn_schema');
+const mongo = require('../../../mongo');
+
+module.exports = {
+	name: `test`,
+	description: `dummy command`,
+	cooldown: 0,
+	type: 'CHAT_INPUT',
+	/**
+	 * 
+	 * @param {ContextMenuInteraction} interaction 
+	 */
+	async execute(interaction, client) {
+		const { options, member, guild } = interaction;
+
+		await mongo().then(async (mongoose) => {
+
+			const results = await warnSchema.find();
+
+			results.forEach(async result => {
+				let exists = guild.members.cache.get(result.userId);
+
+				if (exists) {
+
+					console.log(exists.user.id)
+
+					const usernameDiscrim = `${exists.user.username}#${exists.user.discriminator}`
+					
+					await warnSchema.findOneAndUpdate({
+						userId: result.userId
+					},{
+						username: usernameDiscrim
+					},{
+						upsert: true
+					})
+				}
+			})
+
+
+
+		});
+
+		interaction.reply({ content: 'done', ephemeral: true })
+
+	}
+}

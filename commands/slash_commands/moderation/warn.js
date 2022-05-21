@@ -116,6 +116,7 @@ module.exports = {
 
                     const guildId = guild.id;
                     const userId = target.id;
+                    const username = target.user.tag;
                     const authorTag = member.user.tag;
                     const warnId = uuidv4();
                     const author = member.id;
@@ -125,16 +126,11 @@ module.exports = {
                         await mongo().then(async mongoose => {
                             try {
                                 await warnSchema.findOneAndUpdate({
-                                    guildId,
-                                    userId,
-                                    warnId,
-                                    author,
-                                    authorTag,
-                                    timestamp,
-                                    reason
+                                    userId
                                 }, {
                                     guildId,
                                     userId,
+                                    username,
                                     warnId,
                                     author,
                                     authorTag,
