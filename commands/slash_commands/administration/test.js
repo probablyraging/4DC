@@ -2,7 +2,10 @@ const { MessageEmbed, MessageSelectMenu, ContextMenuInteraction, MessageActionRo
 const { addCooldown, hasCooldown, removeCooldown } = require("../../../modules/misc/report_cooldown");
 const { v4: uuidv4 } = require("uuid");
 const warnSchema = require('../../../schemas/misc/warn_schema');
+const { resArr } = require('../../../lists/rule-list');
 const mongo = require('../../../mongo');
+const ruleSchema = require('../../../schemas/misc/rule_schema');
+const { getRules } = require('../../../lists/rule-list');
 
 module.exports = {
 	name: `test`,
@@ -16,34 +19,11 @@ module.exports = {
 	async execute(interaction, client) {
 		const { options, member, guild } = interaction;
 
-		await mongo().then(async (mongoose) => {
+		const replace = '\` '
 
-			const results = await warnSchema.find();
-
-			results.forEach(async result => {
-				let exists = guild.members.cache.get(result.userId);
-
-				if (exists) {
-
-					console.log(exists.user.id)
-
-					const usernameDiscrim = `${exists.user.username}#${exists.user.discriminator}`
-					
-					await warnSchema.findOneAndUpdate({
-						userId: result.userId
-					},{
-						username: usernameDiscrim
-					},{
-						upsert: true
-					})
-				}
-			})
-
-
-
+		getRules().then(rule => {
+			
 		});
-
-		interaction.reply({ content: 'done', ephemeral: true })
 
 	}
 }

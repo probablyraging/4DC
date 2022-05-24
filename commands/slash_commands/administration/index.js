@@ -1,12 +1,13 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { getRules } = require('../../../lists/rule-list');
 const index = require('../../../lists/index');
-const rules = require('../../../lists/rule-list');
 const path = require('path');
+const nowDate = new Date();
 
 module.exports = {
 	name: `index`,
-    description: `Pre-written content for specific channels`,
-    access: 'owner',
+	description: `Pre-written content for specific channels`,
+	access: 'owner',
 	cooldown: 0,
 	type: 'CHAT_INPUT',
 	options: [{
@@ -20,12 +21,12 @@ module.exports = {
 		{ name: 'creatorcrew', value: 'creatorcrew' },
 		{ name: 'selfroles', value: 'selfroles' }]
 	}],
-    /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
-     */
-    async execute(interaction) {
-        const { channel, client, options } = interaction;
+	/**
+	 * 
+	 * @param {ContextMenuInteraction} interaction 
+	 */
+	async execute(interaction) {
+		const { channel, client, options } = interaction;
 
 		const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
@@ -42,46 +43,49 @@ module.exports = {
 					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 				}
 
-				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
-					ephemeral: true
-				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+					interaction.reply({
+						content: `${process.env.BOT_CONF} \`Done\``,
+						ephemeral: true
+					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 
 			// RULES
 			switch (options.getString('data')) {
 				case 'rules': {
-					channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
-						setTimeout(() => {
-							webhook.send(`**SERVER RULES**
-${rules.pre}
+					getRules().then(rule => {
+						channel.createWebhook(client.user.username, { avatar: avatarURL }).then(async webhook => {
+							setTimeout(async () => {
+								webhook.send(`**SERVER RULES**
+To keep CreatorHub a safe and positive experience for everyone, you are required to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
 
-> **1.** ${rules.rules[0]}
+> **1.** ${rule[0]}
 > 
-> **2.** ${rules.rules[1]}
+> **2.** ${rule[1]}
 > 
-> **3.** ${rules.rules[2]}
+> **3.** ${rule[2]}
 > 
-> **4.** ${rules.rules[3]}
+> **4.** ${rule[3].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}
 > 
-> **5.** ${rules.rules[4]}
+> **5.** ${rule[4]}
 > 
-> **6.** ${rules.rules[5]}
+> **6.** ${rule[5]}
 > 
-> **7.** ${rules.rules[6]}
+> **7.** ${rule[6]}
 
-${rules.rules[7]}`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-						}, 1000);
-						setTimeout(() => {
-							webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-						}, 10000);
-					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+*last updated: ${nowDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}*`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+							}, 1000);
+							setTimeout(() => {
+								webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+							}, 10000);
+						}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+					});
+
 				}
 
-				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
-					ephemeral: true
-				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+					interaction.reply({
+						content: `${process.env.BOT_CONF} \`Done\``,
+						ephemeral: true
+					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 
 			// FAQ
@@ -106,10 +110,10 @@ ${rules.rules[7]}`).catch(err => console.error(`${path.basename(__filename)} The
 					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 				}
 
-				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
-					ephemeral: true
-				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+					interaction.editReply({
+						content: `${process.env.BOT_CONF} \`Done\``,
+						ephemeral: true
+					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 
 			// CREATOR CREW
@@ -124,10 +128,10 @@ ${rules.rules[7]}`).catch(err => console.error(`${path.basename(__filename)} The
 					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 				}
 
-				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
-					ephemeral: true
-				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+					interaction.reply({
+						content: `${process.env.BOT_CONF} \`Done\``,
+						ephemeral: true
+					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 
 			// SELF ROLES
@@ -214,13 +218,13 @@ ${rules.rules[7]}`).catch(err => console.error(`${path.basename(__filename)} The
 					await res6.react("📣").catch(err => console.error(`Could not react to message: `, err));
 				}
 
-				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
-					ephemeral: true
-				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+					interaction.editReply({
+						content: `${process.env.BOT_CONF} \`Done\``,
+						ephemeral: true
+					}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
 		} catch (err) {
 			console.error(err);
 		}
-    }
+	}
 }
