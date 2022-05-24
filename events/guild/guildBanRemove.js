@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const mongo = require("../../mongo");
-const banUnbanSchema = require('../../schemas/dashboard_logs/ban_unban_schema');
+const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const path = require('path');
 
 module.exports = {

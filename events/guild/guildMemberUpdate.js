@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const mongo = require("../../mongo");
-const muteTimeoutSchema = require('../../schemas/dashboard_logs/mute_timeout_schema');
+const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
 const path = require('path');
 
 module.exports = {
@@ -106,26 +106,6 @@ module.exports = {
                     type: 'Timeout'
                 });
             });
-
-        } else if (oldMember?.communicationDisabledUntilTimestamp === null) {
-            const fetchedLogs = await guild.fetchAuditLogs({
-                limit: 1,
-                action: 'MEMBER_UPDATE'
-            });
-
-            const muteLog = fetchedLogs.entries.first();
-            const { executor } = muteLog;
-
-            const log = new MessageEmbed()
-                .setColor('#32BEA6')
-                .addField(`Removed By`, `${executor}`, false)
-                .setAuthor({ name: `Timeout removed from ${oldMember?.user.tag}`, iconURL: oldMember?.user.displayAvatarURL({ dynamic: true }) })
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                .setTimestamp()
-
-            mutesChan.send({
-                embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
         }
     }
 }

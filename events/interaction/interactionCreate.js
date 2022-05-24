@@ -2,6 +2,7 @@ const { client, CommandInteraction, MessageEmbed } = require('discord.js');
 const cooldowns = new Map();
 const mongo = require('../../mongo');
 const commandCountSchema = require('../../schemas/misc/command_count');
+const commandUsageSchema = require('../../schemas/database_logs/command_usage');
 const applyModal = require('../../commands/slash_commands/utility/modals/apply_modal');
 const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
 const path = require('path');
@@ -54,7 +55,7 @@ module.exports = {
 
                 setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
             }
-        } else {            
+        } else {
             applyModal(interaction);
             reportModal(interaction);
         }
@@ -128,6 +129,19 @@ module.exports = {
             logChan.send({
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+            const logTimestamp = new Date().getTime();
+
+            await mongo().then(async mongoose => {
+                await commandUsageSchema.create({
+                    userId: user?.id,
+                    username: user?.tag,
+                    command: cmdName,
+                    input: input,
+                    timestamp: logTimestamp,
+                    type: 'Command Usage'
+                });
+            });
         }
     }
 }

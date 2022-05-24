@@ -16,6 +16,8 @@ module.exports = {
     async execute(interaction) {
         const { guild } = interaction;
 
+        await interaction.deferReply({ ephemeral: true });
+
         let activityTypes = ["STREAMING", "PLAYING", "WATCHING", "COMPETING", "CUSTOM"];
 
         activityArr = [];
@@ -69,7 +71,19 @@ module.exports = {
                 vanityURL = `https://discord.gg/${guild.vanityURLCode}`;
             }
 
-            var createdAt = new Date(guild.createdTimestamp).toUTCString()
+            function converTimestampToSimpleFormat(timestamp) {
+                const t = new Date(timestamp);
+                const date = ('0' + t.getDate()).slice(-2);
+                const month = ('0' + (t.getMonth() + 1)).slice(-2);
+                const year = t.getFullYear();
+                const hours = ('0' + t.getHours()).slice(-2);
+                const minutes = ('0' + t.getMinutes()).slice(-2);
+                const seconds = ('0' + t.getSeconds()).slice(-2);
+                const time = `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+                return time;
+            }
+
+            var createdAt = converTimestampToSimpleFormat(new Date(guild.createdTimestamp).getTime());
 
             const response = new MessageEmbed()
                 .setColor('#32BEA6') // GREEN
@@ -98,7 +112,7 @@ module.exports = {
                 .addField(`Competing:`, `${competing}`, true)
                 .addField(`Total Members:`, `${guild.memberCount}`, false)
 
-            interaction.reply({
+            interaction.editReply({
                 embeds: [response, response2],
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

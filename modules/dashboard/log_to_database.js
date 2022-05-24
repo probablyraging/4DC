@@ -1,5 +1,5 @@
 const mongo = require("../../mongo");
-const blacklistSchema = require('../../schemas/dashboard_logs/blacklist_schema');
+const blacklistSchema = require('../../schemas/database_logs/blacklist_schema');
 
 async function logToDatabase(userId, username, channel, reason, message, timestamp, type) {
     await mongo().then(async mongoose => {
