@@ -5,11 +5,11 @@ const bumpPost = require('../../modules/bump_ckq/bump_post');
 const blLinks = require('../../modules/blacklist/bl_links');
 const blPromo = require('../../modules/blacklist/bl_promo');
 const blMass = require('../../modules/blacklist/bl_mass');
-const blWords = require('../../modules/blacklist/bl_words');
+// const blWords = require('../../modules/blacklist/bl_words');
 const blSpam = require('../../modules/blacklist/bl_spam');
 const blPhishing = require('../../modules/blacklist/bl_phishing');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
-const blSub4Sub = require('../../modules/blacklist/bl_sub4sub');
+// const blSub4Sub = require('../../modules/blacklist/bl_sub4sub');
 const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -27,12 +27,12 @@ module.exports = {
         linkCooldown(message, client);
         blPhishing(message, client);
         blPromo(message, client);
-        blWords(message, client);
+        // blWords(message, client);
         blLinks(message, client);
         blMass(message, client);
         blSpam(message, client);
         blEveryone(message, client);
-        blSub4Sub(message, client);
+        // blSub4Sub(message, client);
 
         // bump and ckq checks
         ckqPost(message);

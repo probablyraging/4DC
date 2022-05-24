@@ -1,4 +1,6 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const mongo = require('../../../mongo');
+const muteTimeoutSchema = require('../../../schemas/dashboard_logs/mute_timeout_schema');
 const path = require('path');
 
 module.exports = {
@@ -34,6 +36,21 @@ module.exports = {
         mutesChan.send({
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+        // Log to database for dashboard
+        const logTimestamp = new Date().getTime();
+
+        await mongo().then(async mongoose => {
+            await muteTimeoutSchema.create({
+                userId: target?.id,
+                username: target?.tag,
+                author: member?.id,
+                authorTag: `${member?.user.tag}`,
+                reason: reason,
+                timestamp: logTimestamp,
+                type: 'Channel Mute'
+            });
+        });
 
         let dmFail = false;
 

@@ -1,4 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
+const { logToDatabase } = require('../dashboard/log_to_database');
 const blacklist = require('../../lists/blacklist');
 const res = new (require('rss-parser'))();
 const sleep = require("timers/promises").setTimeout;
@@ -16,6 +17,8 @@ module.exports = async (message, client) => {
 
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const blChan = client.channels.cache.get(process.env.BL_CHAN);
+    const reason = 'Contains Link';
+    const timestamp = new Date().getTime();
 
     const member = message?.member;
 
@@ -157,7 +160,7 @@ module.exports = async (message, client) => {
                     .setColor('#E04F5F')
                     .addField(`Author`, `<@${message?.author?.id}>`, true)
                     .addField(`Channel`, `${message?.channel}`, true)
-                    .addField(`Reason`, `Contains link`, true)
+                    .addField(`Reason`, `${reason}`, true)
                     .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
                     .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp()
@@ -165,6 +168,8 @@ module.exports = async (message, client) => {
                 blChan.send({
                     embeds: [blacklistEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+
+                logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
 
                 await sleep(300);
             }
