@@ -96,7 +96,7 @@ module.exports = {
                     let reason = options.getString('reason');
                     const custom = options.getString('custom');
 
-                    getRules().then(rule => {
+                    await getRules().then(async rule => {
                         if (reason === '1') reason = `${rule[0]}`;
                         if (reason === '2') reason = `${rule[1]}`;
                         if (reason === '3') reason = `${rule[2]}`;
