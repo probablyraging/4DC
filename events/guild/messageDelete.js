@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const mongo = require('../../mongo');
 const timerSchema = require('../../schemas/misc/timer_schema');
+const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
 
 
@@ -12,6 +13,7 @@ module.exports = {
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const msgDelChan = client.channels.cache.get(process.env.MSGDEL_CHAN);
+        const timestamp = new Date().getTime();
 
         let content = message?.content || ` `;
         if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
@@ -27,6 +29,7 @@ module.exports = {
             .setTimestamp()
 
         let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
+        let attachmentToImgur;
 
         if (msgAttachment) {
             // create a new imgur client
@@ -38,13 +41,27 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
             response.forEach(res => {
-                log.setImage(res.data.link)
+                log.setImage(res.data.link);
+                attachmentToImgur = res.data.link;
             });
         }
 
         msgDelChan.send({
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+        // Log to database for dashboard
+        await mongo().then(async mongoose => {
+            await messageDeleteSchema.create({
+                userId: message?.author.id,
+                username: message?.author.tag,
+                channel: message?.channel.name,
+                message: content,
+                attachment: attachmentToImgur,
+                timestamp: timestamp,
+                type: 'Message Delete'
+            });
+        });
 
         // if a user deletes there post in CKQ before the timer is up, open the channel to be reposted in
         if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {
