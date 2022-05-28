@@ -36,8 +36,9 @@ module.exports = async (message, client) => {
                 await rankSchema.findOneAndUpdate({
                     rank: 0,
                     id: message?.author?.id,
-                    username: message.author.username,
-                    discrim: message.author.discriminator,
+                    username: message?.author.username,
+                    discrim: message?.author.discriminator,
+                    avatar: message?.author.avatar,
                     level: 0,
                     msgCount: 0,
                     xp: 0,
@@ -46,8 +47,9 @@ module.exports = async (message, client) => {
                 }, {
                     rank: 0,
                     id: message?.author?.id,
-                    username: message.author.username,
-                    discrim: message.author.discriminator,
+                    username: message?.author.username,
+                    discrim: message?.author.discriminator,
+                    avatar: message?.author.avatar,
                     level: 0,
                     msgCount: 0,
                     xp: 0,
@@ -95,6 +97,7 @@ module.exports = async (message, client) => {
                     rank: rankPos,
                     username: newUsername,
                     discrim: newDiscrim,
+                    avatar: message?.author.avatar,
                     xp: xpMath,
                     xxp: xxpMath
                 }, {
