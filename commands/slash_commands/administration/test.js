@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { resArr } = require('../../../lists/rule-list');
 const mongo = require('../../../mongo');
-const lllb = require('../../../schemas/letter_game/letter_lb_schema');
+const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const { getRules } = require('../../../lists/rule-list');
 const fetch = require('node-fetch');
 
@@ -21,14 +21,12 @@ module.exports = {
 		const { options, member, guild } = interaction;
 
 		await mongo().then(async mongoose => {
-			const results = await lllb.find();
+			const results = await countingSchema.find();
 
 			for (const data of results) {
 				const { userId } = data;
 
 				const exists = guild.members?.cache.get(userId)
-
-				console.log(exists)
 
 				let newAvatar = exists?.user.avatar
 				let username = exists?.user.username
@@ -38,7 +36,7 @@ module.exports = {
 
 				if (newAvatar === null) newAvatar = '0'
 
-				await lllb.findOneAndUpdate({
+				await countingSchema.findOneAndUpdate({
 					userId: userId
 				}, {
 					avatar: newAvatar,

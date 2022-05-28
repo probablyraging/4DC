@@ -192,6 +192,9 @@ module.exports = async (message, client) => {
                         userId: author.id,
                     }, {
                         userId: author.id,
+                        username: author.username,
+                        discriminator: author.discriminator,
+                        avatar: author.avatar,
                         counts: 1,
                         saves: 0
                     }, {
@@ -204,6 +207,9 @@ module.exports = async (message, client) => {
                         await countingSchema.findOneAndUpdate({
                             userId: author.id
                         }, {
+                            username: author.username,
+                            discriminator: author.discriminator,
+                            avatar: author.avatar,
                             counts: counts + 1,
                             saves: saves
                         }, {
