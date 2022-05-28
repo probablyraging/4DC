@@ -386,17 +386,21 @@ module.exports = async (message, client) => {
 
                             await letterLBSchema.findOneAndUpdate({
                                 userId,
+                                username: message.author.username,
+                                discriminator: message.author.discriminator,
+                                avatar: message.author.avatar,
                                 correctCount,
                                 searchFor
-                            },
-                                {
-                                    userId,
-                                    correctCount,
-                                    searchFor
-                                },
-                                {
-                                    upsert: true
-                                });
+                            }, {
+                                userId,
+                                username: message.author.username,
+                                discriminator: message.author.discriminator,
+                                avatar: message.author.avatar,
+                                correctCount,
+                                searchFor
+                            }, {
+                                upsert: true
+                            });
                         } else if (results.length > 0) {
                             const results = await letterLBSchema.find({ userId });
 
@@ -456,10 +460,16 @@ module.exports = async (message, client) => {
                                 await letterLBSchema.findOneAndUpdate({
                                     userId,
                                     correctCount: totalPoints,
+                                    username: message.author.username,
+                                    discriminator: message.author.discriminator,
+                                    avatar: message.author.avatar,
                                     searchFor
                                 }, {
                                     userId,
                                     correctCount: totalPoints,
+                                    username: message.author.username,
+                                    discriminator: message.author.discriminator,
+                                    avatar: message.author.avatar,
                                     searchFor
                                 }, {
                                     upsert: true

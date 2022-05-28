@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require("uuid");
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { resArr } = require('../../../lists/rule-list');
 const mongo = require('../../../mongo');
-const rankSchema = require('../../../schemas/misc/rank_schema');
+const lllb = require('../../../schemas/letter_game/letter_lb_schema');
 const { getRules } = require('../../../lists/rule-list');
 const fetch = require('node-fetch');
 
@@ -21,32 +21,50 @@ module.exports = {
 		const { options, member, guild } = interaction;
 
 		await mongo().then(async mongoose => {
-			const results = await rankSchema.find();
+			const results = await lllb.find();
 
 			for (const data of results) {
-				const { id, avatar } = data;
+				const { userId } = data;
 
-				if (!avatar) {
-					const getting = guild.members.cache.get(id)
+				const exists = guild.members?.cache.get(userId)
 
-					if (!avatar) {
-						if (getting) {
-							console.log(id)
-							
-							let newAvatar = getting.user.avatar
+				console.log(exists)
 
-							if (newAvatar === null) newAvatar = 'https://cdn.discordapp.com/embed/avatars/0.png'
+				let newAvatar = exists?.user.avatar
+				let username = exists?.user.username
+				let discrim = exists?.user.discriminator
 
-							await rankSchema.findOneAndUpdate({
-								id: id
-							}, {
-								avatar: newAvatar
-							}, {
-								upsert: true
-							})
-						}
-					}
-				}
+				console.log(newAvatar, username, discrim)
+
+				if (newAvatar === null) newAvatar = '0'
+
+				await lllb.findOneAndUpdate({
+					userId: userId
+				}, {
+					avatar: newAvatar,
+					username: username,
+					discriminator: discrim
+				}, {
+					upsert: true
+				})
+
+
+
+				// const exists = guild.members?.fetch(id).catch(err => console.log(id))
+
+				// if (avatar === 'https://cdn.discordapp.com/embed/avatars/0.png') {
+				// 	console.log(id)
+				// 	await rankSchema.findOneAndUpdate({
+				// 		id: id
+				// 	}, {
+				// 		avatar: '0'
+				// 	}, {
+				// 		upsert: true
+				// 	})
+				// }
+
+
+
 			}
 		})
 

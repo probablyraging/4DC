@@ -6,6 +6,18 @@ const letterLBSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    username: {
+        type: String,
+        required: true
+    },
+    discriminator: {
+        type: String,
+        required: true
+    },
+    avatar: {
+        type: String,
+        required: true
+    },
     correctCount: {
         type: String,
         required: true
