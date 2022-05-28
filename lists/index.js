@@ -11,7 +11,7 @@ So if you're a youtuber, streamer, game developer, musician, or if you're just l
 > <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to the community
 > <#851707143873626134> Find some useful tips & tricks
-> <#838060518832472124> If you need help with anything, just ask
+> <#978553334854205450> If you need help with anything, just ask
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
 **YOUR AGREEMENT**
