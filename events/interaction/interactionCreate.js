@@ -5,6 +5,7 @@ const commandCountSchema = require('../../schemas/misc/command_count');
 const commandUsageSchema = require('../../schemas/database_logs/command_usage');
 const applyModal = require('../../commands/slash_commands/utility/modals/apply_modal');
 const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
+const massbanModal = require('../../commands/slash_commands/moderation/modals/massban_modal');
 const path = require('path');
 
 module.exports = {
@@ -58,6 +59,7 @@ module.exports = {
         } else {
             applyModal(interaction);
             reportModal(interaction);
+            massbanModal(interaction);
         }
 
         // handle and execute commands

@@ -27,6 +27,7 @@ class ModsChoiceWarningType {
 module.exports = {
     delayBetweenVideos,
     interval,
+    oneDay,
     twoDays,
     threeDays,
     fourDays,
