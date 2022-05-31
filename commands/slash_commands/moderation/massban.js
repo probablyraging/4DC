@@ -100,7 +100,7 @@ async function approveMassBan(interaction) {
  * @param {ContextMenuInteraction} interaction
  */
 async function denyMassBan(interaction) {
-    let {options} = interaction;
+    let {options, member, guild} = interaction;
     let id = options.getString('id');
 
     let result = await massbanSchema.findOne({id: id}).exec()
@@ -108,6 +108,18 @@ async function denyMassBan(interaction) {
     if (result && result.state === "PENDING") {
         result.state = "DENIED";
         result.save();
+
+        const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
+
+        const staffEmbed = new MessageEmbed()
+            .setColor('#ff8400')
+            .setAuthor({name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({dynamic: true})})
+            .setDescription(`Mass Ban Request Denied`)
+            .addField("Request ID", id)
+
+        staffChannel.send({
+            embeds: [staffEmbed]
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         interaction.reply({
             content: `${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been denied.\``,
