@@ -7,19 +7,24 @@ module.exports = async (interaction) => {
     const {member, guild} = interaction
 
     if (interaction.customId === 'massban-modal') {
-        const userListString = interaction.fields.getTextInputValue('user-list');
-        const reason = interaction.fields.getTextInputValue('reason');
-        const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
+        let userListString = interaction.fields.getTextInputValue('user-list');
+        let trimmedList = userListString.split(/\r?\n/).map(element => {
+            return element.trim();
+        });
+        let trimmedListString = trimmedList.join("\n");
+
+        let reason = interaction.fields.getTextInputValue('reason');
+        let staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
         let id = uuidv4();
 
         let authorTag = member?.user.tag;
-        const staffEmbed = new MessageEmbed()
+        let staffEmbed = new MessageEmbed()
             .setColor('#ff0000')
             .setAuthor({name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({dynamic: true})})
             .setDescription(`Mass Ban Request Needs Approval - use \`\/massban approve [id]\` or \`\/massban deny [id]\``)
             .addField("Request ID", id)
             .addField("Reason", reason)
-            .addField("User List to Ban", userListString, true);
+            .addField("User List to Ban", trimmedListString, true);
 
         staffChannel.send({
             content: `<@&${process.env.STAFF_ROLE}>`,
@@ -30,7 +35,7 @@ module.exports = async (interaction) => {
             id: id,
             author: authorTag,
             timestamp: new Date().valueOf(),
-            users: userListString,
+            users: trimmedListString,
             reason: reason
         });
 
