@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
-const { logToDatabase } = require('../dashboard/log_to_database');
+const { logToDatabase } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {

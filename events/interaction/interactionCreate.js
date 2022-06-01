@@ -3,7 +3,6 @@ const cooldowns = new Map();
 const mongo = require('../../mongo');
 const commandCountSchema = require('../../schemas/misc/command_count');
 const commandUsageSchema = require('../../schemas/database_logs/command_usage');
-const applyModal = require('../../commands/slash_commands/utility/modals/apply_modal');
 const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
 const massbanModal = require('../../commands/slash_commands/moderation/modals/massban_modal');
 const path = require('path');

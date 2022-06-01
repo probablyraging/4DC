@@ -65,6 +65,7 @@ module.exports = async (client) => {
                     });
                 });
             }
+            console.log('Ran AUTOYT')
         }, 300000);
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 }
