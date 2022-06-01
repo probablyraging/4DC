@@ -114,8 +114,6 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
-                    const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
-
                     const guildId = guild.id;
                     const userId = target.id;
                     const username = target.user.tag;
@@ -177,19 +175,6 @@ module.exports = {
                                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                         }
 
-                                        const log = new MessageEmbed()
-                                            .setColor('#E04F5F')
-                                            .setAuthor({ name: `${target?.user?.tag} has been warned`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
-                                            .addField(`Warned By`, `<@${member.id}>`, true)
-                                            .addField(`Warning Count`, `${warnCount}`, true)
-                                            .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                                            .setTimestamp()
-
-                                        warnChan.send({
-                                            embeds: [log]
-                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
                                         interaction.reply({
                                             content: `${replyMsg}
 ${banMsg}`,
@@ -213,19 +198,6 @@ ${banMsg}`,
                                                 ephemeral: true
                                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                                         }
-
-                                        const log = new MessageEmbed()
-                                            .setColor('#E04F5F')
-                                            .setAuthor({ name: `${target?.user?.tag} has been warned`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                                            .addField(`Warned By`, `<@${member.id}>`, true)
-                                            .addField(`Warning Count`, `${warnCount}`, true)
-                                            .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                            .setFooter({ text: `${guild.name} • Warning ID ${warnId}`, iconURL: guild.iconURL({ dynamic: true }) })
-                                            .setTimestamp()
-
-                                        warnChan.send({
-                                            embeds: [log]
-                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                                         interaction.reply({
                                             content: `${replyMsg}`,
@@ -254,8 +226,6 @@ ${banMsg}`,
 
             switch (options.getSubcommand()) {
                 case 'remove': {
-                    const warnChan = client.channels.cache.get(process.env.WARN_CHAN);
-
                     const warning = options.getString('warning');
 
                     await mongo().then(async mongoose => {
@@ -267,19 +237,6 @@ ${banMsg}`,
                         }
 
                         if (results.length >= 1) {
-                            const log = new MessageEmbed()
-                                .setColor('#32BEA6')
-                                .setAuthor({ name: `${user.tag} deleted a regular warning`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
-                                .addField(`Removed From`, `<@${gotUserId}>`, true)
-                                .addField(`Removed By`, `<@${user.id}>`, true)
-                                .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
-                                .setFooter({ text: `${guild.name} • Warning ID ${warning}`, iconURL: guild.iconURL({ dynamic: true }) })
-                                .setTimestamp()
-
-                            warnChan.send({
-                                embeds: [log]
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
                             await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                 content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                 ephemeral: true
@@ -294,19 +251,6 @@ ${banMsg}`,
                             }
 
                             if (results2.length >= 1) {
-                                const log = new MessageEmbed()
-                                    .setColor('#32BEA6')
-                                    .setAuthor({ name: `${user.tag} deleted a Creator Crew warning`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
-                                    .addField(`Removed From`, `<@${gotUserId}>`, true)
-                                    .addField(`Removed By`, `<@${user.id}>`, true)
-                                    .addField(`Warning Id`, `\`\`\`${warning}\`\`\``, false)
-                                    .setFooter({ text: `${guild.name} • Warning ID ${warning}`, iconURL: guild.iconURL({ dynamic: true }) })
-                                    .setTimestamp()
-
-                                warnChan.send({
-                                    embeds: [log]
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
-
                                 await mcWarnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                     content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                     ephemeral: true

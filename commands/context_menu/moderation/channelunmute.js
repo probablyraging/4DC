@@ -15,23 +15,8 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = await fetchMsg.author;
-        const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
-        const reason = `None - command ran via context menu`;
 
         channel.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-
-        const log = new MessageEmbed()
-            .setColor('#32BEA6')
-            .setAuthor({ name: `${target?.tag} has been unmuted`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
-            .addField(`Channel:`, `${channel}`, true)
-            .addField(`By:`, `<@${member.id}>`, false)
-            .addField(`Reason:`, `\`\`\`${reason}\`\`\``, false)
-            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-            .setTimestamp()
-
-        mutesChan.send({
-            embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
         let dmFail = false;
 

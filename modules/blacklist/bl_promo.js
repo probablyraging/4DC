@@ -14,21 +14,13 @@ module.exports = async (message, client) => {
      * This blacklist focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "CONTENT SHARE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
     if (message?.deleted) return;
-
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const blChan = client.channels.cache.get(process.env.BL_CHAN);
+    
     const reason = 'Contains Link';
     const timestamp = new Date().getTime();
 
     const member = message?.member;
 
     let found = false;
-
-    // TODO : remove below lines if checking if message.deleted works as expected
-    // ignore links from the 'links' array to not cause double messages
-    // for (var i in blacklist.links) {
-    //     if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
-    // }
 
     // if a message contains a youtube channel url, get the channel id and see if the channel's name is the same as the author's
     // this is for the movies-tv-music and memes-and-media channel only, as they allow all ranks to post links unchecked
@@ -154,20 +146,6 @@ module.exports = async (message, client) => {
 
                 let msgContent = message?.content || ` `;
                 if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
-
-                const blacklistEmbed = new MessageEmbed()
-                    .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-                    .setColor('#E04F5F')
-                    .addField(`Author`, `<@${message?.author?.id}>`, true)
-                    .addField(`Channel`, `${message?.channel}`, true)
-                    .addField(`Reason`, `${reason}`, true)
-                    .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                    .setTimestamp()
-
-                blChan.send({
-                    embeds: [blacklistEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                 logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
 

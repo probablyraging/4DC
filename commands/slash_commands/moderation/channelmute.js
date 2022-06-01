@@ -82,8 +82,6 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
-                    const mutesChan = client.channels.cache.get(process.env.MUTES_CHAN);
-
                     targetChan.permissionOverwrites.edit(target.id, {
                         SEND_MESSAGES: false,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
@@ -117,20 +115,6 @@ module.exports = {
                     } else {
                         duration = `${duration} hours`;
                     }
-
-                    const log = new MessageEmbed()
-                        .setColor('#E04F5F')
-                        .setAuthor({ name: `${target?.user.tag} has been muted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                        .addField(`Channel`, `${targetChan}`, true)
-                        .addField(`By`, `<@${member?.id}>`, false)
-                        .addField(`Druation`, `${duration}`, true)
-                        .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
-
-                    mutesChan.send({
-                        embeds: [log]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                     // Log to database for dashboard
                     const logTimestamp = new Date().getTime();
@@ -168,18 +152,6 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'remove': {
                     targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-
-                    const log = new MessageEmbed()
-                        .setColor('#32BEA6')
-                        .setAuthor({ name: `${target?.user.tag} has been unmuted`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                        .addField(`Channel`, `${targetChan}`, true)
-                        .addField(`By`, `<@${member.id}>`, false)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
-
-                    mutesChan.send({
-                        embeds: [log]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
                     let dmFail = false;
 

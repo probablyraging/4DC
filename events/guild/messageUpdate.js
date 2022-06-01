@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
+const { logToDatabase } = require('../dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {
@@ -34,7 +35,6 @@ module.exports = {
          * blacklists for when a message is updated/edited
          */
         // ------- same as bl_links.js
-        const blChan = client.channels.cache.get(process.env.BL_CHAN);
         const member = newMessage?.member;
 
         let found = false;
@@ -46,6 +46,9 @@ module.exports = {
         }
 
         for (var e in blacklist.allChannels) {
+            const reason = 'Blacklisted Link';
+            const timestamp = new Date().getTime();
+
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
@@ -67,19 +70,7 @@ module.exports = {
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
-                    const blacklistEmbed = new MessageEmbed()
-                        .setAuthor({ name: `${newMessage?.user?.tag}'s message was deleted`, iconURL: newMessage?.user?.displayAvatarURL({ dynamic: true }) })
-                        .setColor('#E04F5F')
-                        .addField(`Author`, `<@${newMessage?.author?.id}>`, true)
-                        .addField(`Channel`, `${newMessage?.channel}`, true)
-                        .addField(`Reason`, `Blacklisted link`, true)
-                        .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
-
-                    blChan.send({
-                        embeds: [blacklistEmbed]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+                    logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
                 }
             }
         }
@@ -95,6 +86,9 @@ module.exports = {
         }
 
         for (var e in blacklist.noLinkChannels) {
+            const reason = 'Contains Link';
+            const timestamp = new Date().getTime();
+
             if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                     member?.send({
@@ -114,19 +108,7 @@ module.exports = {
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
-                    const blacklistEmbed = new MessageEmbed()
-                        .setAuthor({ name: `${newMessage?.author.tag}'s message was deleted`, iconURL: newMessage?.author.displayAvatarURL({ dynamic: true }) })
-                        .setColor('#E04F5F')
-                        .addField(`Author`, `<@${newMessage?.author?.id}>`, true)
-                        .addField(`Channel`, `${newMessage?.channel}`, true)
-                        .addField(`Reason`, `Contains link`, true)
-                        .addField(`Message`, `\`\`\`${msgContent}\`\`\``)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
-
-                    blChan.send({
-                        embeds: [blacklistEmbed]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
+                    logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
                 }
             }
         }

@@ -1,4 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
+const { logToDatabase } = require('../dashboard/log_to_database');
 const cooldown = new Set();
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -7,8 +8,8 @@ const path = require('path');
  */
 
 module.exports = async (message, client) => {
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const blChan = client.channels.cache.get(process.env.BL_CHAN);
+    const reason = 'Link Cooldown';
+    const timestamp = new Date().getTime();
 
     const author = message?.author;
 
@@ -49,19 +50,7 @@ module.exports = async (message, client) => {
                     let msgContent = message?.content || ` `;
                     if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
 
-                    const log = new MessageEmbed()
-                        .setColor('#fc3c3c')
-                        .setAuthor({ name: `${message?.author?.tag}`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-                        .addField("Author", `<@${message?.author?.id}>`, true)
-                        .addField("Channel", `${message?.channel}`, true)
-                        .addField("Reason", `Link cooldown`, true)
-                        .addField('Message', `\`\`\`${msgContent}\`\`\``)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                        .setTimestamp()
-
-                    blChan.send({
-                        embeds: [log]
-                    }).catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending a log: `, err));
+                    logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
                 });
 
                 await sleep(300);

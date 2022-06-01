@@ -73,8 +73,6 @@ module.exports = {
             command.execute(interaction, client)
 
             // log command usage
-            const logChan = client.channels.cache.get(process.env.CMDLOG_CHAN)
-
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
 
             await mongo().then(async mongoose => {
@@ -126,11 +124,7 @@ module.exports = {
             })
 
             let input = cmdOptions.join('\n') || 'None';
-            log.addField(`Input`, `\`\`\`${input}\`\`\``, false)
-
-            logChan.send({
-                embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            log.addField(`Input`, `\`\`\`${input}\`\`\``, false);
 
             const logTimestamp = new Date().getTime();
 

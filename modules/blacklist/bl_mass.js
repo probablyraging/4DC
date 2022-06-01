@@ -10,9 +10,7 @@ module.exports = async (message, client) => {
      * This blacklist focuses on not allowing mass mention spamming, usually done by server raid bots
      */
     if (message?.deleted) return;
-
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const blChan = client.channels.cache.get(process.env.BL_CHAN);
+    
     const reason = 'Mess Mentions';
     const timestamp = new Date().getTime();
 
@@ -39,20 +37,6 @@ module.exports = async (message, client) => {
 
         let msgContent = message?.content || ` `;
         if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
-
-        const blacklistEmbed = new MessageEmbed()
-            .setAuthor({ name: `${message?.author?.tag}'s message was deleted`, iconURL: message?.author?.displayAvatarURL({ dynamic: true }) })
-            .setColor("#E04F5F")
-            .addField("Author", `<@${message?.author?.id}>`, true)
-            .addField("Channel", `${message?.channel}`, true)
-            .addField("Reason", `${reason}`, true)
-            .addField('Message', `\`\`\`${msgContent}\`\`\``)
-            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-            .setTimestamp()
-
-        blChan.send({
-            embeds: [blacklistEmbed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a log: `, err));
 
         logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
 

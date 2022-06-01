@@ -12,7 +12,6 @@ module.exports = {
         if (message?.author.bot) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const msgDelChan = client.channels.cache.get(process.env.MSGDEL_CHAN);
         const timestamp = new Date().getTime();
 
         let content = message?.content || ` `;
@@ -45,10 +44,6 @@ module.exports = {
                 attachmentToImgur = res.data.link;
             });
         }
-
-        msgDelChan.send({
-            embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
         // Log to database for dashboard
         await mongo().then(async mongoose => {

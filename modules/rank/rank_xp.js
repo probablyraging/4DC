@@ -11,7 +11,7 @@ module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
 
-    const disableXP = [process.env.YOUTUBE_PROMO, process.env.TWITCH_PROMO, process.env.BOT_CHAN]
+    const disableXP = [process.env.CONTENT_SHARE, process.env.BOT_CHAN]
 
     if (!message?.author?.bot && !xpLimit.has(message?.author?.id)) {
         await mongo().then(async mongoose => {

@@ -13,7 +13,7 @@ module.exports = (client) => {
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
 
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
-    const twitchPromoChan = guild.channels.cache.get(process.env.TWITCH_PROMO);
+    const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
 
     function filterArr(value, index, self) {
         return self.indexOf(value) === index;
@@ -53,7 +53,7 @@ module.exports = (client) => {
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                     if (!cooldown.has(liveStaffArr[i]?.id)) {
-                        twitchPromoChan.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
+                        contentShare.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                         // we only allow the bot to send one notification every 6 hours
@@ -103,7 +103,7 @@ module.exports = (client) => {
                         boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                        twitchPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                        contentShare.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
                             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                         // we only allow the bot to send one notification every 6 hours
