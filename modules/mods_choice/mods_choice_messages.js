@@ -25,6 +25,8 @@ module.exports = async (message, client) => {
         let isStaffPost = message.member?.roles.cache.some(role => role.id === process.env.STAFF_ROLE);
         let isValidPost = hasVideo || hasAttachment || isStaffPost;
 
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
         if (isValidPost) {
             if (hasVideo) {
                 // Check if the user is allowed to post (i.e. 24 hours is up and they're not away)
@@ -37,7 +39,7 @@ module.exports = async (message, client) => {
                 } else if (!latestVideoTs || Math.abs(new Date().valueOf() - latestVideoTs) >= delayBetweenVideos) {
                     // The video ID is stored in capture group 1, while the whole link is capture group 0
                     let youtubeVideoId = videoIdArray[1];
-                    await addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId);
+                    await addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId, guild);
                 } else {
                     let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
                     let timeRemaining = (waitUntil - new Date()).valueOf();
@@ -58,7 +60,6 @@ module.exports = async (message, client) => {
                     await setLatestProof(authorId, messageId, timestamp.valueOf());
 
                     // Post a link to the image over in a hidden channel, and include how many videos this proof was for
-                    const guild = client.guilds.cache.get(process.env.GUILD_ID);
                     let guildMember = guild.members.cache.get(authorId);
                     let proofMessage;
                     if (videosSinceCount === 0) {

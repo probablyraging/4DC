@@ -2,6 +2,7 @@ const mongo = require('../../mongo');
 const path = require("path");
 const mcVideoModel = require('../../schemas/mods_choice/mods_choice_video_schema');
 const mcProofModel = require('../../schemas/mods_choice/mods_choice_proof_schema');
+const ccVideoQueue = require('../../schemas/mods_choice/video_queue');
 
 /**
  * @param {String} authorId The Discord User.id
@@ -9,14 +10,39 @@ const mcProofModel = require('../../schemas/mods_choice/mods_choice_proof_schema
  * @param {Number} messageTimestamp The timestamp that the video message was sent
  * @param {String} videoId The YouTube video ID numbers/letters
  */
-async function addVideo(authorId, messageId, messageTimestamp, videoId) {
+async function addVideo(authorId, messageId, messageTimestamp, videoId, guild) {
     await mongo().then(async () => {
-        const newVideo = new mcVideoModel({author: authorId, videoMessageId: messageId, videoId: videoId, videoTs: messageTimestamp});
+        const newVideo = new mcVideoModel({ author: authorId, videoMessageId: messageId, videoId: videoId, videoTs: messageTimestamp });
         newVideo.save(function (err) {
             if (err) {
                 return console.error(`${path.basename(__filename)} There was a problem adding video ${videoId} for author ${authorId} from message ${messageId}: `, err);
             }
         });
+    });
+    // For dashboard creator crew queue
+    const getAllCCMembers = guild.roles.cache.get('841580486517063681');
+    await getAllCCMembers.members.forEach(async member => {
+        const userVideoQueue = await ccVideoQueue.find({ userId: member.user.id });
+        // If user doesn't exist, create them
+        if (!userVideoQueue || userVideoQueue.length < 1) {
+            await ccVideoQueue.create({
+                userId: member.user.id,
+                videoQueue: [`${videoId}`]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+        } else {
+            // If user exists, fetch their current video queue and add the new video id to it
+            for (const users of userVideoQueue) {
+                const videoQueue = users.videoQueue;
+                videoQueue.push(videoId);
+                await ccVideoQueue.findOneAndUpdate({
+                    userId: member.user.id
+                }, {
+                    videoQueue: videoQueue
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            }
+        }
     });
 }
 
@@ -26,7 +52,7 @@ async function addVideo(authorId, messageId, messageTimestamp, videoId) {
  */
 async function getLatestVideoTs(authorId) {
     return await mongo().then(async () => {
-        let result = await mcVideoModel.findOne({author: authorId}, 'videoTs').sort('-videoTs').exec()
+        let result = await mcVideoModel.findOne({ author: authorId }, 'videoTs').sort('-videoTs').exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching the latest video timestamp from author ${authorId}: `, err));
         if (!result) {
             return null;
@@ -52,7 +78,7 @@ async function getVideosSinceLastProof(authorId) {
 async function getVideosSince(messageTimestamp) {
     return await mongo().then(async () => {
         // If we have a timestamp, find videos greater than that. If not, then find all videos
-        let query = messageTimestamp ? mcVideoModel.find({videoTs: {$gt: messageTimestamp}}) : mcVideoModel.find();
+        let query = messageTimestamp ? mcVideoModel.find({ videoTs: { $gt: messageTimestamp } }) : mcVideoModel.find();
         let results = await query.sort('videoTs').exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all videos since ${messageTimestamp}: `, err));
         if (!results || results.length === 0) {
@@ -88,7 +114,7 @@ async function getAllVideoMessageIds() {
  */
 async function getVideosNotFromUsers(users) {
     return await mongo().then(async () => {
-        let results = await mcVideoModel.find({author: {$nin: users}}).exec()
+        let results = await mcVideoModel.find({ author: { $nin: users } }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from non-Creator Crew members: `, err));
         if (!results || results.length === 0) {
             return [];
@@ -104,7 +130,7 @@ async function getVideosNotFromUsers(users) {
  */
 async function deleteVideosBefore(messageTimestamp) {
     return await mongo().then(async () => {
-        let videosToDelete = await mcVideoModel.find({videoTs: {$lt: messageTimestamp}}).exec()
+        let videosToDelete = await mcVideoModel.find({ videoTs: { $lt: messageTimestamp } }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from before ${messageTimestamp}: `, err));
         if (!videosToDelete || videosToDelete.length === 0) {
             return [];
@@ -115,7 +141,7 @@ async function deleteVideosBefore(messageTimestamp) {
                 messageIds.push(video.videoMessageId);
                 ids.push(video._id);
             });
-            await mcVideoModel.deleteMany({_id: {$in: ids}}).exec()
+            await mcVideoModel.deleteMany({ _id: { $in: ids } }).exec()
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos before ${messageTimestamp}: `, err));
             return messageIds;
         }
@@ -138,7 +164,7 @@ async function deleteVideosFromNonChannelMembers(users) {
                 messageIds.push(video.videoMessageId);
                 ids.push(video._id);
             });
-            await mcVideoModel.deleteMany({_id: {$in: ids}}).exec()
+            await mcVideoModel.deleteMany({ _id: { $in: ids } }).exec()
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
             return messageIds;
         }
@@ -150,7 +176,7 @@ async function deleteVideosFromNonChannelMembers(users) {
  */
 async function deleteProofFromNonChannelMembers(users) {
     return await mongo().then(async () => {
-        await mcProofModel.deleteMany({author: {$nin: users}}).exec()
+        await mcProofModel.deleteMany({ author: { $nin: users } }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting proof from non-Creator Crew members: `, err));
     });
 }
@@ -162,10 +188,10 @@ async function deleteProofFromNonChannelMembers(users) {
  */
 async function setLatestProof(authorId, messageId, messageTimestamp) {
     return await mongo().then(async () => {
-        let result = await mcProofModel.findOne({author: authorId}).exec()
+        let result = await mcProofModel.findOne({ author: authorId }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching proof for user ${authorId}: `, err));
         if (!result) {
-            const newProof = new mcProofModel({author: authorId, proofId: messageId, proofTs: messageTimestamp});
+            const newProof = new mcProofModel({ author: authorId, proofId: messageId, proofTs: messageTimestamp });
             newProof.save(function (err) {
                 if (err) {
                     return console.error(`${path.basename(__filename)} There was a problem saving proof for the user ${authorId} from message ${messageId}: `, err);
@@ -190,7 +216,7 @@ async function setLatestProof(authorId, messageId, messageTimestamp) {
  */
 async function setFakeProof(authorId, messageId, messageTimestamp) {
     return await mongo().then(async () => {
-        const fakeProof = new mcProofModel({author: authorId, proofId: messageId, proofTs: messageTimestamp, threeDays: true, missedCount: 1});
+        const fakeProof = new mcProofModel({ author: authorId, proofId: messageId, proofTs: messageTimestamp, threeDays: true, missedCount: 1 });
         fakeProof.save(function (err) {
             if (err) {
                 return console.error(`${path.basename(__filename)} There was a problem saving fake proof for user ${authorId} from message ${messageId}: `, err);
@@ -205,7 +231,7 @@ async function setFakeProof(authorId, messageId, messageTimestamp) {
  */
 async function getLatestProofTs(authorId) {
     return await mongo().then(async () => {
-        let result = await mcProofModel.findOne({author: authorId}).exec()
+        let result = await mcProofModel.findOne({ author: authorId }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching the latest proof timestamp for ${authorId}: `, err));
         if (!result) {
             return null;
@@ -220,7 +246,7 @@ async function getLatestProofTs(authorId) {
  */
 async function getWarnedUsersProof() {
     return await mongo().then(async () => {
-        let results = await mcProofModel.find({threeDays: true}).exec()
+        let results = await mcProofModel.find({ threeDays: true }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching the array of proof for all warned users: `, err));
         if (!results) {
             return [];
@@ -255,7 +281,7 @@ async function getProofAuthors() {
  */
 async function getProofBeforeDate(timestamp) {
     return await mongo().then(async () => {
-        let results = await mcProofModel.find({proofTs: {$lt: timestamp}}).exec()
+        let results = await mcProofModel.find({ proofTs: { $lt: timestamp } }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all proof before ${timestamp}: `, err));
         if (!results) {
             return [];
@@ -271,7 +297,7 @@ async function getProofBeforeDate(timestamp) {
  */
 async function setWarningLevel(authorId, days) {
     return await mongo().then(async () => {
-        let result = await mcProofModel.findOne({author: authorId}).exec()
+        let result = await mcProofModel.findOne({ author: authorId }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem finding proof for the user ${authorId}: `, err));
         if (!result) {
             console.error(`Tried to set a warning on ${authorId}, but could not find proof in the database.`);
@@ -302,7 +328,7 @@ async function setWarningLevel(authorId, days) {
  */
 async function toggleAway(authorId) {
     return await mongo().then(async () => {
-        let result = await mcProofModel.findOne({author: authorId}).exec()
+        let result = await mcProofModel.findOne({ author: authorId }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem finding proof for the user ${authorId}: `, err));
         if (!result) {
             console.error(`Tried to set the user ${authorId} as away, but could not find proof in the database.`);
@@ -326,7 +352,7 @@ async function toggleAway(authorId) {
  */
 async function getAwayUsers() {
     return await mongo().then(async () => {
-        let results = await mcProofModel.find({away: true}).exec()
+        let results = await mcProofModel.find({ away: true }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
         if (!results || results.length === 0) {
             return [];
@@ -346,7 +372,7 @@ async function getAwayUsers() {
  */
 async function isAway(userId) {
     return await mongo().then(async () => {
-        let result = await mcProofModel.findOne({author: userId}).exec()
+        let result = await mcProofModel.findOne({ author: userId }).exec()
             .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
         return result ? result.away : false;
     });
