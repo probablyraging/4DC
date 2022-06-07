@@ -87,7 +87,6 @@ module.exports = {
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                     if (duration > 0) {
-                        console.log('true')
                         const myDate = new Date();
                         const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
 

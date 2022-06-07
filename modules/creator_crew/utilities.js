@@ -1,0 +1,239 @@
+const mongo = require('../../mongo');
+const ccVideoModel = require('../../schemas/creator_crew/video_schema');
+const ccProofModel = require('../../schemas/creator_crew/proof_schema');
+const ccWarnModel = require('../../schemas/creator_crew/warn_schema');
+
+function msToHumanTime(milliseconds) {
+    let hours = milliseconds / (1000 * 60 * 60);
+    let hoursFloor = Math.floor(hours);
+
+    let minutes = (hours - hoursFloor) * 60;
+    let minutesFloor = Math.floor(minutes);
+
+    let seconds = (minutes - minutesFloor) * 60;
+    let secondFloor = Math.floor(seconds);
+
+    return hoursFloor + " hours, " + minutesFloor + " minutes and " + secondFloor + " seconds";
+}
+
+function convertTimestampToRelativeTime(dateToConvert) {
+    const msPerMinute = 60;
+    const msPerHour = msPerMinute * 60;
+    const msPerDay = msPerHour * 24;
+    const msPerMonth = msPerDay * 30;
+    const myDate = new Date();
+    const nowDate = myDate.setSeconds(myDate.getSeconds() + 1).toString().slice(0, 10);
+    const elapsed = nowDate - dateToConvert.toString().slice(0, 10);
+    if (elapsed < msPerMonth) {
+        if (Math.round(elapsed / msPerDay) >= 3 && Math.round(elapsed / msPerDay) < 4) {
+            return 3 || undefined;
+        } else if (Math.round(elapsed / msPerDay) >= 5) {
+            return 5 || undefined;
+        }
+    }
+}
+
+async function getLatestVideoTs(authorId) {
+    return await mongo().then(async () => {
+        let result = await ccVideoModel.findOne({ author: authorId }, 'videoTs').sort('-videoTs').exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching the latest video timestamp from author ${authorId}: `, err));
+        if (!result) {
+            return null;
+        } else {
+            return result.videoTs;
+        }
+    });
+}
+
+async function addVideo(authorId, messageId, messageTimestamp, videoId, guild) {
+    await mongo().then(async () => {
+        const newVideo = new ccVideoModel({ author: authorId, videoMessageId: messageId, videoId: videoId, videoTs: messageTimestamp });
+        newVideo.save(function (err) {
+            if (err) {
+                return console.error(`${path.basename(__filename)} There was a problem adding video ${videoId} for author ${authorId} from message ${messageId}: `, err);
+            }
+        });
+    });
+}
+
+async function isAway(userId) {
+    return await mongo().then(async () => {
+        let result = await ccProofModel.findOne({ author: userId }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+        return result ? result.away : false;
+    });
+}
+
+function getYoutubeVideoId(string) {
+    // Match http/https and youtu.be/youtube.com URLs, along with youtube.com/shorts/
+    let regExp = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/|be\.com\/shorts\/)([\w\-_]*)(&(amp;)[\w=]*)?/;
+    // The execution of this regex returns the first YouTube video ID, or null
+    return regExp.exec(string);
+}
+
+function notifyUser(member, message, backupChannel) {
+    member.send(message)
+        .catch(err => {
+            console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err);
+            if (backupChannel) {
+                backupChannel.send(message)
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a channel message: `, err));
+            }
+        });
+}
+
+async function getAllVideoMessageIds() {
+    return await mongo().then(async () => {
+        let results = await ccVideoModel.find().exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all video message IDs: `, err));
+        if (!results || results.length === 0) {
+            return [];
+        } else {
+            let ids = new Set();
+            results.forEach(result => ids.add(result.videoMessageId));
+            return [...ids];
+        }
+    });
+}
+
+async function deleteVideosFromNonChannelMembers(users) {
+    return await mongo().then(async () => {
+        let videosToDelete = await getVideosNotFromUsers(users);
+        if (!videosToDelete || videosToDelete.length === 0) {
+            return [];
+        } else {
+            let messageIds = [];
+            let ids = [];
+            videosToDelete.forEach(video => {
+                messageIds.push(video.videoMessageId);
+                ids.push(video._id);
+            });
+            await ccVideoModel.deleteMany({ _id: { $in: ids } }).exec()
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
+            return messageIds;
+        }
+    });
+}
+
+async function deleteVideosBefore(messageTimestamp) {
+    return await mongo().then(async () => {
+        let videosToDelete = await ccVideoModel.find({ videoTs: { $lt: messageTimestamp } }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from before ${messageTimestamp}: `, err));
+        if (!videosToDelete || videosToDelete.length === 0) {
+            return [];
+        } else {
+            let messageIds = [];
+            let ids = [];
+            videosToDelete.forEach(video => {
+                messageIds.push(video.videoMessageId);
+                ids.push(video._id);
+            });
+            await ccVideoModel.deleteMany({ _id: { $in: ids } }).exec()
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos before ${messageTimestamp}: `, err));
+            return messageIds;
+        }
+    });
+}
+
+async function getVideosNotFromUsers(users) {
+    return await mongo().then(async () => {
+        let results = await ccVideoModel.find({ author: { $nin: users } }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching videos from non-Creator Crew members: `, err));
+        if (!results || results.length === 0) {
+            return [];
+        } else {
+            return results;
+        }
+    });
+}
+
+function attachmentIsImage(attachment) {
+    let url = attachment.url.toLowerCase();
+    return url.endsWith("png") || url.endsWith("jpg") || url.endsWith("gif");
+}
+
+async function toggleAway(authorId) {
+    return await mongo().then(async () => {
+        let result = await ccProofModel.findOne({ author: authorId }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem finding proof for the user ${authorId}: `, err));
+        if (!result) {
+            console.error(`Tried to set the user ${authorId} as away, but could not find proof in the database.`);
+            return null;
+        } else {
+            if (result.away) {
+                // When the user comes back from being away, set the latest proof time as now, so they don't get warnings for when they were away
+                result.proofTs = new Date().valueOf();
+                result.away = false;
+            } else {
+                result.away = true;
+            }
+            result.save();
+            return result.away;
+        }
+    });
+}
+
+async function getAwayUsers() {
+    return await mongo().then(async () => {
+        let results = await ccProofModel.find({ away: true }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+        if (!results || results.length === 0) {
+            return [];
+        } else {
+            let authors = new Set();
+            results.forEach(result => {
+                authors.add(result.author);
+            });
+            return [...authors];
+        }
+    });
+}
+
+async function addWarning(userId, warnId, warnedBy, reason, messageUrl) {
+    await mongo().then(async () => {
+        let timestamp = new Date().valueOf();
+        const newWarning = new ccWarnModel({ userId: userId, warnId: warnId, warnedBy: warnedBy, timestamp: timestamp, reason: reason, messageUrl: messageUrl });
+        await newWarning.save().catch(err => console.error(`${path.basename(__filename)} There was a problem saving the warning ${warnId} for user ${userId}: `, err));
+    });
+}
+
+async function getWarnings(userId) {
+    return await mongo().then(async () => {
+        // If we have a userId, find the warnings for the user - else find all warnings
+        let query = userId ? ccWarnModel.find({ userId: userId }) : ccWarnModel.find();
+        let results = await query.sort('timestamp').exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all Creator Crew warnings: `, err));
+        if (!results || results.length === 0) {
+            return [];
+        } else {
+            return results;
+        }
+    });
+}
+
+async function deleteWarning(warnId) {
+    await mongo().then(async () => {
+        ccWarnModel.deleteOne({ warnId: warnId }).exec()
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
+    });
+}
+
+module.exports = {
+    msToHumanTime,
+    convertTimestampToRelativeTime,
+    getLatestVideoTs,
+    addVideo,
+    isAway,
+    getYoutubeVideoId,
+    notifyUser,
+    getAllVideoMessageIds,
+    deleteVideosFromNonChannelMembers,
+    deleteVideosBefore,
+    getVideosNotFromUsers,
+    attachmentIsImage,
+    toggleAway,
+    getAwayUsers,
+    addWarning,
+    getWarnings,
+    deleteWarning
+}

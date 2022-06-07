@@ -1,6 +1,5 @@
 const {ContextMenuInteraction, Modal, TextInputComponent, MessageActionRow} = require('discord.js');
 const massbanSchema = require('../../../schemas/misc/mass_ban_schema');
-const {oneDay} = require('../../../modules/mods_choice/mods_choice_constants')
 const path = require('path');
 const {MessageEmbed} = require('discord.js');
 
@@ -13,6 +12,8 @@ const {MessageEmbed} = require('discord.js');
  */
 async function banUsers(interaction, users, reason) {
     let {guild} = interaction;
+
+    const oneDay = 24 * 60 * 60 * 1000;
 
     const userList = users.split(/\r?\n/);
     let fetchedMemberArrays = await guild.members.fetch();

@@ -2,7 +2,7 @@ const { ContextMenuInteraction } = require('discord.js');
 const mongo = require('../../../mongo');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const timerSchema = require('../../../schemas/misc/timer_schema');
-const { msToHumanTime } = require("../../../modules/mods_choice/mods_choice_utils");
+const { msToHumanTime } = require("../../../modules/creator_crew/utilities");
 const path = require('path');
 
 module.exports = {

@@ -1,9 +1,9 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const { deleteWarning, getWarnings, addWarning } = require('../../../modules/mods_choice/mods_choice_warning_data');
-const { notifyUser } = require('../../../modules/notify/notify_utils');
+const { deleteWarning, getWarnings, addWarning } = require('../../../modules/creator_crew/utilities');
+const { notifyUser } = require('../../../modules/creator_crew/utilities');
 const warnSchema = require('../../../schemas/misc/warn_schema');
-const mcWarnSchema = require('../../../schemas/mods_choice/mods_choice_warn_schema');
+const ccWarnModel = require('../../../schemas/creator_crew/warn_schema');
 const { getRules } = require('../../../lists/rule-list');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
@@ -243,7 +243,7 @@ ${banMsg}`,
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
 
                         } else {
-                            const results2 = await mcWarnSchema.find({ warnId: warning });
+                            const results2 = await ccWarnModel.find({ warnId: warning });
 
                             for (const data of results2) {
                                 var { warnedBy } = data
@@ -251,7 +251,7 @@ ${banMsg}`,
                             }
 
                             if (results2.length >= 1) {
-                                await mcWarnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
+                                await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                     content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
@@ -306,7 +306,7 @@ Warning ID`, `\`\`\`${warnId}\`\`\``, false)
                         }
 
                         // creator crew warnings
-                        const results2 = await mcWarnSchema.find({ userId });
+                        const results2 = await ccWarnModel.find({ userId });
 
                         let mcWarningEmbed = new MessageEmbed()
                             .setColor('#bdeb34')

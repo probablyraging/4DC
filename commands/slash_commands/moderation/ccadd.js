@@ -23,8 +23,8 @@ module.exports = {
 
         const target = options.getMember('username');
 
-        const mcChan = guild.channels.cache.get(process.env.MCHOICE_CHAN);
-        const mcRole = guild.roles.cache.get(process.env.MCHOICE_ROLE);
+        const mcChan = guild.channels.cache.get(process.env.CCREW_CHAN);
+        const mcRole = guild.roles.cache.get(process.env.CCREW_ROLE);
 
         target.roles.add(mcRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 

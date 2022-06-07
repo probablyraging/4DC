@@ -33,7 +33,6 @@ module.exports = async (interaction) => {
                 .setTimestamp();
 
             const attachment = getAttachment(1);
-            console.log(attachment)
 
             if (attachment) {
                 reportEmbed.setImage(attachment)

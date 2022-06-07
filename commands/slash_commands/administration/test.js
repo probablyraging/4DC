@@ -1,13 +1,4 @@
-const { MessageEmbed, MessageSelectMenu, ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require('discord.js');
-const { addCooldown, hasCooldown, removeCooldown } = require("../../../modules/misc/report_cooldown");
-const { v4: uuidv4 } = require("uuid");
-const warnSchema = require('../../../schemas/misc/warn_schema');
-const { resArr } = require('../../../lists/rule-list');
-const mongo = require('../../../mongo');
-const countingSchema = require('../../../schemas/counting_game/counting_schema');
-const { getRules } = require('../../../lists/rule-list');
-const fetch = require('node-fetch');
-const ccVideoQueue = require('../../../schemas/mods_choice/video_queue');
+const ccVideoQueue = require('../../../schemas/creator_crew/video_queue');
 
 module.exports = {
 	name: `test`,
@@ -21,6 +12,26 @@ module.exports = {
 	async execute(interaction, client) {
 		const { options, member, guild } = interaction;
 
+		
+
 		interaction.reply({ content: 'done', ephemeral: true });
+	}
+}
+
+
+function convertTimestampToRelativeTime(dateToConvert) {
+	const msPerMinute = 60;
+	const msPerHour = msPerMinute * 60;
+	const msPerDay = msPerHour * 24;
+	const msPerMonth = msPerDay * 30;
+	const myDate = new Date();
+	const nowDate = myDate.setSeconds(myDate.getSeconds() + 1).toString().slice(0, 10);
+	const elapsed = nowDate - dateToConvert.toString().slice(0, 10);
+	if (elapsed < msPerMonth) {
+		if (Math.round(elapsed / msPerDay) >= 3 && Math.round(elapsed / msPerDay) < 4) {
+			return 3 || undefined;
+		} else if (Math.round(elapsed / msPerDay) >= 5) {
+			return 5 || undefined;
+		}
 	}
 }

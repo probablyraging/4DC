@@ -5,9 +5,21 @@ const ccVideoQueue = mongoose.Schema({
         type: String,
         required: true
     },
-    videoQueue: {
-        type: Array,
+    videoId: {
+        type: String,
         required: true
+    },
+    timestamp: {
+        type: String,
+        required: true
+    },
+    notified3: {
+        type: Boolean,
+        required: false
+    },
+    notified5: {
+        type: Boolean,
+        required: false
     }
 });
 
