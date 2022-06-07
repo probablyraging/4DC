@@ -50,7 +50,7 @@ module.exports = async (message, client) => {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
                         }
                     });
-                    // await addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId, guild);
+                    await addVideo(authorId, messageId, timestamp.valueOf(), youtubeVideoId, guild);
                 } else {
                     let waitUntil = new Date(latestVideoTs + delayBetweenVideos);
                     let timeRemaining = (waitUntil - new Date()).valueOf();
