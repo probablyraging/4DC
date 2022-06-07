@@ -58,7 +58,7 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 Creator Crew is a channel for supporting your fellow content creators in a few different ways, such as views, likes and watch time. These analytics can help with having YouTube recommend your content more, and getting your content featured on the home pages of others. If you'd like to join the group, please DM a staff member
 ⠀
 **How It Works**
-\`1.\` Use the \`/ccvideos\` command or visit **https://www.creatorhub.info/creatorcrew**
+\`1.\` Visit the [**CreatorHub Dashboard**](https://www.creatorhub.info/creatorcrew) and sign in
 \`2.\` Press play on all, or as many videos as you want
 \`3.\` Press the like button below all the videos you're watching
 \`4.\` Leave the videos to play for 10 minutes - the status indicator will turn green when successfully completed (liked and watched)
