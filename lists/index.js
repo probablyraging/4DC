@@ -55,25 +55,20 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 
         creatorcrew: [
                 `**What Is Creator Crew?**
-Creator Crew is a channel for the server's more active and supportive members, this is not a sub4sub channel and it's a lot more than just another promo channel. The main focus is to show your fellow content creators a few different types of support, which can boost their stats and help with YouTube recommending their content. In return, they will do the same for you.
-⠀
-This channel is a based mainly on a trust system. Most of the members in here have been doing this for a long time and are trusted without a doubt. If you are new to the channel, you will be watched closely, and we trust that you will do what is required to remain in the channel, or you risk being removed permanently.
+Creator Crew is a channel for supporting your fellow content creators in a few different ways, such as views, likes and watch time. These analytics can help with having YouTube recommend your content more, and getting your content featured on the home pages of others. If you'd like to join the group, please DM a staff member
 ⠀
 **How It Works**
-Every member of the channel is required to support all other members, the easiest way to do this is;
-\`1.\` Use the \`/ccvideos\` command to fetch all unwatched videos since your last proof screenshot
-\`2.\` Open each video in a new tab and give each video a like
-\`3.\` Take a screenshot of the browser tabs and upload it to the channel
-\`4.\` Leave the tabbed videos playing in the background for 10 minutes minimum, while you do some other stuff
+\`1.\` Use the \`/ccvideos\` command or visit **https://www.creatorhub.info/creatorcrew**
+\`2.\` Press play on all, or as many videos as you want
+\`3.\` Press the like button below all the videos you're watching
+\`4.\` Leave the videos to play for 10 minutes - the status indicator will turn green when successfully completed (liked and watched)
 \`5. (optional)\` If you actually enjoy someone's content, consider leaving a comment with something relating to the video
 ⠀
-**Rules - *not following these rules may get you removed from the channel***
+**Please Note**
 \`1.\` You can only post one link every 24 hours
-\`2.\` Post proof screenshots as frequently as possible, try to aim for once per day
-\`3.\` After 3 days of not posting proof screenshot, the staff will be notified and you may be removed
-\`4.\` You must tab all the videos since your last proof screenshot
-\`5.\` Try to only post proof screenshots with a maximum of 10 tabs per screenshot, a couple more or less is fine though
-\`6.\` Contact a staff member if you can't keep up with the requirements, we can make exception`
+\`2.\` You must watch your video queue at least once every 3 days, if a video is only than 3 days, staff will be notified
+\`4.\` Contact a staff member if you need to be set as away
+\`5.\` Click the INFORMATION button on the Creator Crew dashboard for more information`
         ]
 }
 
