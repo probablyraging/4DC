@@ -71,16 +71,25 @@ async function setupChecks(client) {
         messageIds = await deleteVideosFromNonChannelMembers(allowedMembers);
         await deleteMessages(messageIds, ccChannel);
 
-        // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
         const getUsersVideoQueue = await ccVideoQueue.find();
 
         for (const data of getUsersVideoQueue) {
             const { userId, videoId, timestamp, notified3, notified5 } = data;
             const ccMember = guild.members.cache.get(userId);
-            const isUserAway = await isAway(userId);
-            // If user isn't set as away, check there timestamps and warn if needed
-            if (!isUserAway) {
+            const away = await isAway(userId);
+
+            // Check if member is no longer in Creator Crew and remove their queue
+            const checkUserRoles = guild.members.cache.get(userId)._roles;
+            if (!checkUserRoles.includes(process.env.CCREW_ROLE)) {
+                ccVideoQueue.findOneAndRemove({
+                    userId: userId,
+                    videoId: videoId
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            }
+
+            // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
+            if (!away) {
                 if (convertTimestampToRelativeTime(timestamp) != undefined) {
                     if (convertTimestampToRelativeTime(timestamp) === 3) {
                         if (!notified3) {

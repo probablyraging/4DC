@@ -40,9 +40,10 @@ module.exports = async (message, client) => {
                     let youtubeVideoId = videoIdArray[1];
                     const ccUsers = guild.roles.cache.get(process.env.CCREW_ROLE);
                     ccUsers.members.forEach(async member => {
-                        // Check if the video is already in the user's queue
+                        // Check if the video is already in the user's queue. Don't add videos to a user's queue if they are set as away
                         const isAlreadyInQueue = (await ccVideoQueue.find({ userId: member.user.id, videoId: youtubeVideoId })).length;
-                        if (isAlreadyInQueue < 1) {
+                        const away = await isAway(member.user.id);
+                        if (!away && isAlreadyInQueue < 1) {
                             await ccVideoQueue.create({
                                 userId: member.user.id,
                                 videoId: youtubeVideoId,
