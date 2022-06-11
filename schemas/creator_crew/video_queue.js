@@ -9,6 +9,10 @@ const ccVideoQueue = mongoose.Schema({
         type: String,
         required: true
     },
+    videoAuthor: {
+        type: String,
+        required: true
+    },
     timestamp: {
         type: String,
         required: true

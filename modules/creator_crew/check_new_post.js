@@ -47,6 +47,7 @@ module.exports = async (message, client) => {
                             await ccVideoQueue.create({
                                 userId: member.user.id,
                                 videoId: youtubeVideoId,
+                                videoAuthor: author.id,
                                 timestamp: timestamp.valueOf()
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
                         }
