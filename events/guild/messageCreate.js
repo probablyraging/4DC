@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const chartData = require('../../schemas/database_logs/chart_data');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
@@ -49,6 +50,37 @@ module.exports = {
         if (message?.channel.id === process.env.INSIDER_CHAN) {
             if (message?.content.toLowerCase().includes("tweet")) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            }
+        }
+
+        // Database charts
+        const nowTimestamp = new Date().valueOf();
+        const tsToDate = new Date(nowTimestamp);
+        const months = ["Jan", "Fab", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const dateToUTC = tsToDate.getUTCDate() + ' ' + months[tsToDate.getUTCMonth()] + ' ' + tsToDate.getUTCFullYear();
+
+        const results = await chartData.find({ date: dateToUTC });
+
+        if (results.length === 0) {
+            await chartData.create({
+                date: dateToUTC,
+                joins: '0',
+                leaves: '0',
+                bans: '0',
+                messages: '1'
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+        } else {
+            for (const data of results) {
+                const { messages } = data;
+                currentMessages = messages;
+                currentMessages++;
+                await chartData.findOneAndUpdate({
+                    date: dateToUTC
+                }, {
+                    messages: currentMessages.toString()
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
         }
     }
