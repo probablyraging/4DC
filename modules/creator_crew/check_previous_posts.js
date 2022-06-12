@@ -98,7 +98,7 @@ async function setupChecks(client) {
                                 content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must wacth all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
                             staffChan.send({
-                                content: `<@${process.env.STAFF_ROLE}>
+                                content: `<@&${process.env.STAFF_ROLE}>
 <@${userId}> has not watched a video is their queue for greater than 3 days`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                             // Mark this video as notified so we don't notify again
@@ -119,7 +119,7 @@ async function setupChecks(client) {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
                             // Notify staff
                             staffChan.send({
-                                content: `<@${process.env.STAFF_ROLE}>
+                                content: `<@&${process.env.STAFF_ROLE}>
 <@${userId}> has not watched a video is their queue for greater than 5 days`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                             // Mark this video as notified so we don't notify again
