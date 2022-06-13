@@ -74,7 +74,8 @@ async function setupChecks(client) {
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
         const getUsersVideoQueue = await ccVideoQueue.find();
 
-        let lateUsersArr = [];
+        let lateUsersThree = [];
+        let lateUsersFive = [];
 
         for (const data of getUsersVideoQueue) {
             const { userId, videoId, timestamp, notified3, notified5 } = data;
@@ -91,70 +92,72 @@ async function setupChecks(client) {
             }
 
             // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
-            if (!away) {
-                if (convertTimestampToRelativeTime(timestamp) != undefined) {
-                    if (convertTimestampToRelativeTime(timestamp) === 3) {
-                        if (!notified3) {
-                            // Notify staff
-                            lateUsersArr.push(userId);
-                            if (lateUsersArr.length > 1) {
-                                staffChan.send({
-                                    content: `<@&${process.env.STAFF_ROLE}>
-${lateUsersArr.join(', ')} + 'have not watched a video in their queue for greater than 3 days'`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            } else {
-                                staffChan.send({
-                                    content: `<@&${process.env.STAFF_ROLE}>
-<@${userId}> has not watched a video in their queue for greater than 3 days`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            }
-                            // Notify the member
-                            ccMember.send({
-                                content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must watch all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
-                            // Mark this video as notified so we don't notify again
-                            await ccVideoQueue.findOneAndUpdate({
-                                userId: userId,
-                                videoId: videoId
-                            }, {
-                                notified3: true
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                        }
-                    } else if (convertTimestampToRelativeTime(timestamp) === 5) {
-                        if (!notified5) {
-                            // Notify staff
-                            lateUsersArr.push(userId);
-                            if (lateUsersArr.length > 1) {
-                                staffChan.send({
-                                    content: `<@&${process.env.STAFF_ROLE}>
-${lateUsersArr.join(', ')} + 'have not watched a video in their queue for greater than 5 days'`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            } else {
-                                staffChan.send({
-                                    content: `<@&${process.env.STAFF_ROLE}>
-<@${userId}> has not watched a video in their queue for greater than 3 days`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            }
-                            // Notify the member
-                            ccMember.send({
-                                content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 5 days. Staff have been notified and you may be removed from the Creator Crew role`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
-                            // Mark this video as notified so we don't notify again
-                            await ccVideoQueue.findOneAndUpdate({
-                                userId: userId,
-                                videoId: videoId
-                            }, {
-                                notified5: true
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                        }
-                    }
-                }
+            if (!away && !notified3 && convertTimestampToRelativeTime(timestamp) === 3) {
+                lateUsersThree.push(userId);
+                // Notify member
+                ccMember.send({
+                    content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must watch all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
+                // Mark this video as notified so we don't notify again
+                await ccVideoQueue.findOneAndUpdate({
+                    userId: userId,
+                    videoId: videoId
+                }, {
+                    notified3: true
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            }
+            if (!away && !notified5 && convertTimestampToRelativeTime(timestamp) === 5) {
+                lateUsersFive.push(userId);
+                // Notify the member
+                ccMember.send({
+                    content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 5 days. Staff have been notified and you may be removed from the Creator Crew role`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
+                // Mark this video as notified so we don't notify again
+                await ccVideoQueue.findOneAndUpdate({
+                    userId: userId,
+                    videoId: videoId
+                }, {
+                    notified5: true
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
         }
+        // Notify staff - 3 days
+        if (lateUsersThree.length > 1) {
+            // Notify staff
+            const notifyMessage = `<@${lateUsersThree.join('>, <@')}> have not watched a video in their queue for greater than 3 days`;
+            staffChan.send({
+                content: `<@&${process.env.STAFF_ROLE}>
+${notifyMessage}`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        } else if (lateUsersThree === 1) {
+            // Notify staff
+            const notifyMessage = `<@${lateUsersThree.join('>, <@')}> have not watched a video in their queue for greater than 3 days`;
+            staffChan.send({
+                content: `<@&${process.env.STAFF_ROLE}>
+${notifyMessage}`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
+        // Notify staff - 5 days
+        if (lateUsersFive.length > 1) {
+            // Notify staff
+            const notifyMessage = `<@${lateUsersFive.join('>, <@')}> have not watched a video in their queue for greater than 5 days`;
+            staffChan.send({
+                content: `<@&${process.env.STAFF_ROLE}>
+${notifyMessage}`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        } else if (lateUsersFive === 1) {
+            // Notify staff
+            const notifyMessage = `<@${lateUsersFive.join('>, <@')}> have not watched a video in their queue for greater than 5 days`;
+            staffChan.send({
+                content: `<@&${process.env.STAFF_ROLE}>
+${notifyMessage}`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
+
     }, 15 * 60 * 1000);
 }
 
