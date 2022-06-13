@@ -95,7 +95,7 @@ async function setupChecks(client) {
                         if (!notified3) {
                             // Notify the member
                             ccMember.send({
-                                content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must wacth all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
+                                content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must watch all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
                             staffChan.send({
                                 content: `<@&${process.env.STAFF_ROLE}>
