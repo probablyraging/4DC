@@ -56,7 +56,6 @@ module.exports = {
                 setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
             }
         } else {
-            applyModal(interaction);
             reportModal(interaction);
             massbanModal(interaction);
         }
