@@ -89,6 +89,10 @@ async function setupChecks(client) {
                     userId: userId,
                     videoId: videoId
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            // Also remove their videos from other members queues
+            ccVideoQueue.deleteMany({
+                authorId: userId
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
             }
 
             // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
