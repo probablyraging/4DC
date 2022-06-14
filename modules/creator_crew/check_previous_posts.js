@@ -78,21 +78,25 @@ async function setupChecks(client) {
         let lateUsersFive = [];
 
         for (const data of getUsersVideoQueue) {
-            const { userId, videoId, timestamp, notified3, notified5 } = data;
+            const { userId, videoAuthor, videoId, timestamp, notified3, notified5 } = data;
             const ccMember = guild.members.cache.get(userId);
             const away = await isAway(userId);
 
             // Check if member is no longer in Creator Crew and remove their queue
-            const checkUserRoles = guild.members.cache.get(userId)._roles;
+            const checkUserRoles = await guild.members.cache.get(userId)?._roles;
             if (!checkUserRoles.includes(process.env.CCREW_ROLE)) {
-                ccVideoQueue.findOneAndRemove({
+                await ccVideoQueue.findOneAndRemove({
                     userId: userId,
                     videoId: videoId
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+
+            }
             // Also remove their videos from other members queues
-            ccVideoQueue.deleteMany({
-                authorId: userId
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            const checkAuthorRoles = await guild.members.cache.get(videoAuthor)?._roles;
+            if (videoAuthor && !checkAuthorRoles.includes(process.env.CCREW_ROLE)) {
+                await ccVideoQueue.findOneAndRemove({
+                    videoAuthor: videoAuthor
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
             }
 
             // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
