@@ -13,26 +13,32 @@ module.exports = {
 
         const results = await chartData.find({ date: dateToUTC });
 
-        if (results.length === 0) {
-            await chartData.create({
-                date: dateToUTC,
-                joins: '0',
-                leaves: '1',
-                bans: '0',
-                messages: '0'
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-        } else {
-            for (const data of results) {
-                const { leaves } = data;
-                currentLeaves = leaves;
-                currentLeaves++;
-                await chartData.findOneAndUpdate({
-                    date: dateToUTC
-                }, {
-                    leaves: currentLeaves.toString()
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        const oneDay = 24 * 60 * 60 * 1000;
+        const joinedAt = member.joinedAt;
+
+        // Don't log members who join and instantly leave
+        if ((new Date() - joinedAt) > oneDay) {
+            if (results.length === 0) {
+                await chartData.create({
+                    date: dateToUTC,
+                    joins: '0',
+                    leaves: '1',
+                    bans: '0',
+                    messages: '0'
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            } else {
+                for (const data of results) {
+                    const { leaves } = data;
+                    currentLeaves = leaves;
+                    currentLeaves++;
+                    await chartData.findOneAndUpdate({
+                        date: dateToUTC
+                    }, {
+                        leaves: currentLeaves.toString()
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                }
             }
         }
     }
