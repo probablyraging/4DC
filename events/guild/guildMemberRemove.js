@@ -14,10 +14,10 @@ module.exports = {
         const results = await chartData.find({ date: dateToUTC });
 
         const oneDay = 24 * 60 * 60 * 1000;
-        const joinedAt = member.joinedAt;
+        const joinedTimestamp = member.joinedTimestamp;
 
         // Don't log members who join and instantly leave
-        if ((new Date() - joinedAt) > oneDay) {
+        if ((new Date() - joinedTimestamp) > oneDay) {
             if (results.length === 0) {
                 await chartData.create({
                     date: dateToUTC,
