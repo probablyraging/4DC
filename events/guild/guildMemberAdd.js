@@ -9,6 +9,12 @@ module.exports = {
     async execute(member, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
+        const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
+
+        // Joins/leaves log channel
+        joinLeaveChan.send({
+            content: `${process.env.BOT_JOIN} ${member} joined. There are now **${guild.memberCount}** members in the server`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         /**
          * invite tracker
