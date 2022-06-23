@@ -45,6 +45,7 @@ async function banUsers(interaction, users, reason) {
  */
 async function approveMassBan(interaction) {
     let {member, guild, options} = interaction;
+    await interaction.deferReply({ephemeral: true});
     let id = options.getString('id');
 
     let result = await massbanSchema.findOne({id: id}).exec()
@@ -54,10 +55,8 @@ async function approveMassBan(interaction) {
         let currentUser = member.user.tag;
 
         if (author === currentUser) {
-            interaction.reply({
-                content: `${process.env.BOT_DENY} \`The mass ban request with ID '${id}' cannot be approved by the same person who requested it.\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            interaction.editReply(`${process.env.BOT_DENY} \`The mass ban request with ID '${id}' cannot be approved by the same person who requested it.\``)
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
             const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
             let reason = result.reason;
@@ -82,16 +81,12 @@ async function approveMassBan(interaction) {
                 embeds: [staffEmbed]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-            interaction.reply({
-                content: `${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been approved.\``,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been approved.\``)
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     } else {
-        interaction.reply({
-            content: `${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        interaction.editReply(`${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``)
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
 
@@ -102,6 +97,7 @@ async function approveMassBan(interaction) {
  */
 async function denyMassBan(interaction) {
     let {options, member, guild} = interaction;
+    await interaction.deferReply({ephemeral: true});
     let id = options.getString('id');
 
     let result = await massbanSchema.findOne({id: id}).exec()
@@ -122,15 +118,11 @@ async function denyMassBan(interaction) {
             embeds: [staffEmbed]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        interaction.reply({
-            content: `${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been denied.\``,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been denied.\``)
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     } else {
-        interaction.reply({
-            content: `${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        interaction.editReply(`${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``)
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
 

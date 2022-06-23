@@ -7,6 +7,7 @@ module.exports = async (interaction) => {
     const {member, guild} = interaction
 
     if (interaction.customId === 'massban-modal') {
+        await interaction.deferReply({ ephemeral: true });
         let userListString = interaction.fields.getTextInputValue('user-list');
         let trimmedList = userListString.split(/\r?\n/).map(element => {
             return element.trim();
@@ -39,9 +40,7 @@ module.exports = async (interaction) => {
             reason: reason
         });
 
-        interaction.reply({
-            content: `${process.env.BOT_CONF} \`The mass ban request has been received. Another staff member will need to approve the ban.\``,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request has been received. Another staff member will need to approve the ban.\``)
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
