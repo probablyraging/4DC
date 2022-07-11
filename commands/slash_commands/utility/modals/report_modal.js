@@ -38,7 +38,7 @@ module.exports = async (interaction) => {
                 reportEmbed.setImage(attachment)
             }
 
-            const reactionMessage = await staffChannel.send({ embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+            const reactionMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
             await reactionMessage.react("⛔").catch(err => console.error(`Could not react to message '${reportId}': `, err));
 
