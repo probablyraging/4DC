@@ -87,6 +87,7 @@ module.exports = {
      */
     async execute(interaction) {
         const { client, member, guild, user, options } = interaction;
+        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
         try {
             switch (options.getSubcommand()) {
@@ -123,11 +124,25 @@ module.exports = {
                     const timestamp = new Date().getTime();
 
                     if (type === 'regular') {
+                        // Log to channel
+                        let log = new MessageEmbed()
+                            .setColor("#E04F5F")
+                            .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                            .setDescription(`**Member:** ${username} *(${userId})*
+**Action:** Warning Added
+**WarnId:** ${warnId}
+**Reason:** ${reason}`)
+                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                            .setTimestamp();
+
+                        logChan.send({
+                            embeds: [log]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+                        // Log to database
                         await mongo().then(async mongoose => {
                             try {
-                                await warnSchema.findOneAndUpdate({
-                                    userId
-                                }, {
+                                await warnSchema.create({
                                     guildId,
                                     userId,
                                     username,
@@ -136,8 +151,6 @@ module.exports = {
                                     authorTag,
                                     timestamp,
                                     reason
-                                }, {
-                                    upsert: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                             } finally {
                                 // do nothing
@@ -184,7 +197,7 @@ ${banMsg}`,
                                         let dmFail = false;
 
                                         target.send({
-                                            content: `${process.env.BOT_DENY} \`You received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!\`
+                                            content: `${target} - you received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!
                                                                                     
 **Reason**
 > ${reason}`
@@ -231,30 +244,60 @@ ${banMsg}`,
                     await mongo().then(async mongoose => {
                         const results = await warnSchema.find({ warnId: warning });
 
-                        for (const data of results) {
-                            var { userId } = data
-                            gotUserId = userId
-                        }
-
                         if (results.length >= 1) {
                             await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                 content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
 
+                            for (const data of results) {
+                                const { author, authorTag, username, userId, warnId } = data;
+
+                                const authorAvatar = guild.members.cache.get(author);
+
+                                // Log to channel
+                                let log = new MessageEmbed()
+                                    .setColor("#80ff88")
+                                    .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
+                                    .setDescription(`**Member:** ${username} *(${userId})*
+**Action:** Warning removed
+**WarnId:** ${warnId}`)
+                                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                                    .setTimestamp();
+
+                                logChan.send({
+                                    embeds: [log]
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                            }
+
                         } else {
                             const results2 = await ccWarnModel.find({ warnId: warning });
-
-                            for (const data of results2) {
-                                var { warnedBy } = data
-                                gotUserId = warnedBy
-                            }
 
                             if (results2.length >= 1) {
                                 await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
                                     content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
+
+                                for (const data of results2) {
+                                    const { author, authorTag, username, userId, warnId } = data;
+    
+                                    const authorAvatar = guild.members.cache.get(author);
+    
+                                    // Log to channel
+                                    let log = new MessageEmbed()
+                                        .setColor("#80ff88")
+                                        .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
+                                        .setDescription(`**Member:** ${username} *(${userId})*
+**Action:** Warning removed
+**WarnId:** ${warnId}`)
+                                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                                        .setTimestamp();
+    
+                                    logChan.send({
+                                        embeds: [log]
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                                }
 
                             } else {
                                 interaction.reply({

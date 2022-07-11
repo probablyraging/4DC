@@ -35,7 +35,7 @@ const warnSchema = mongoose.Schema({
     },
     warnCount: {
         type: String,
-        required: true
+        required: false
     }
 });
 
