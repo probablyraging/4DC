@@ -12,8 +12,10 @@ module.exports = {
         if (message?.author.bot) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        const logChan = guild.channels.cache.get(process.env.MSGUP_CHAN);
         const timestamp = new Date().getTime();
 
+        // Log to channel
         let content = message?.content || ` `;
         if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
 
@@ -44,6 +46,10 @@ module.exports = {
                 attachmentToImgur = res.data.link;
             });
         }
+
+        logChan.send({
+            embeds: [log]
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
         // Log to database for dashboard
         await mongo().then(async mongoose => {
