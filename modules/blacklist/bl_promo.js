@@ -14,7 +14,7 @@ module.exports = async (message, client) => {
      * This blacklist focuses on common "self-promo" type links like 'youtube.com' and 'twitch.tv'. We still allow these links to be posted in the "CONTENT SHARE" section and other specific channels. Users with the rank 5 or verified role are immune to this  
      */
     if (message?.deleted) return;
-    
+
     const reason = 'Contains Link';
     const timestamp = new Date().getTime();
 
@@ -124,7 +124,7 @@ module.exports = async (message, client) => {
     }
 
     for (var e in blacklist.noLinkChannels) {
-        if (found && message?.channel.id === blacklist.noLinkChannels[e] && !message?.content.includes('tenor.com') && !message?.author.bot) {
+        if (found && (message?.channel.id === blacklist.noLinkChannels[e] || message?.channel.parentId === blacklist.noLinkChannels[e]) && !message?.content.includes('tenor.com') && !message?.author.bot) {
             if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles?.cache.has(process.env.VERIFIED_ROLE) && !message?.member?.roles?.cache.has(process.env.BOOST_ROLE)) {
                 member?.send({
                     content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${message?.channel.name}. You have been timedout for 60 seconds to prevent spamming\``
@@ -140,7 +140,14 @@ module.exports = async (message, client) => {
                     });
                 });
 
-                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                setTimeout(() => { 
+                    // If channel is a thread, we delete the entire thread
+                    if (message?.author.id === message?.channel.ownerId) {
+                        message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err))
+                    } else {
+                        message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
+                    }
+                }, 600);
 
                 member?.timeout(60000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
