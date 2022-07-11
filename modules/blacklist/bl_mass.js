@@ -18,10 +18,10 @@ module.exports = async (message, client) => {
 
     if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions?.members?.size > 4) {
         member?.send({
-            content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 30 seconds to prevent spamming\``
+            content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 60 seconds to prevent spamming\``
         }).catch(() => {
             message?.reply({
-                content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 30 seconds to prevent spamming\``,
+                content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 60 seconds to prevent spamming\``,
                 allowedMentions: { repliedUser: true },
                 failIfNotExists: false
             }).catch(err => {

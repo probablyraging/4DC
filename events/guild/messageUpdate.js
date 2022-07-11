@@ -52,10 +52,10 @@ module.exports = {
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``
+                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``
                     }).catch(() => {
                         newMessage?.reply({
-                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``,
+                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``,
                             allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).then(msg => {

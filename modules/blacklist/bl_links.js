@@ -44,10 +44,10 @@ module.exports = async (message, client) => {
                     });
                 } else {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``
+                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``
                     }).catch(() => {
                         message?.reply({
-                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 30 seconds to prevent spamming\``,
+                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``,
                             allowedMentions: { repliedUser: true },
                             failIfNotExists: false
                         }).catch(err => {

@@ -32,13 +32,13 @@ module.exports = async (message, client) => {
 
                 const member = message?.member;
 
-                member?.timeout(600000, 'Repetitive messages').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+                member?.timeout(300000, 'Repetitive messages').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                 member?.send({
-                    content: `${process.env.BOT_DENY} \`You have been muted for 5 minutes for spamming. If this is a mistake, please content a staff member\``
+                    content: `${process.env.BOT_DENY} \`You have been timed out for 5 minutes for spamming. If this is a mistake, please content a staff member\``
                 }).catch(() => {
                     message?.reply({
-                        content: `${process.env.BOT_DENY} \`You have been muted for 5 minutes for spamming. If this is a mistake, please content a staff member\``,
+                        content: `${process.env.BOT_DENY} \`You have been timed out for 5 minutes for spamming. If this is a mistake, please content a staff member\``,
                         allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {
