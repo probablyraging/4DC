@@ -8,6 +8,7 @@ module.exports = {
     name: 'guildBanAdd',
     async execute(ban, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const timestamp = new Date().getTime();
 
         setTimeout(async () => {
@@ -18,6 +19,21 @@ module.exports = {
 
             const banLog = fetchedLogs.entries.first();
             const { executor, reason } = banLog;
+            const toReason = reason || `None`;
+
+            // Log to channel
+            let log = new MessageEmbed()
+                .setColor("#E04F5F")
+                .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
+**Action:** Ban
+**Reason:** ${toReason}`)
+                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                .setTimestamp();
+
+            logChan.send({
+                embeds: [log]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
             // Log to database for dashboard
             await mongo().then(async mongoose => {

@@ -71,7 +71,7 @@ async function setupChecks(client) {
         messageIds = await deleteVideosFromNonChannelMembers(allowedMembers);
         await deleteMessages(messageIds, ccChannel);
 
-        const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
+        const staffChan = guild.channels.cache.get(process.env.TEST_CHAN);
         const getUsersVideoQueue = await ccVideoQueue.find();
 
         let lateUsersThree = [];
@@ -138,14 +138,14 @@ async function setupChecks(client) {
             // Notify staff
             const notifyMessage = `<@${lateUsersThree.join('>, <@')}> have not watched a video in their queue for greater than 3 days`;
             staffChan.send({
-                content: `<@&${process.env.STAFF_ROLE}>
+                content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         } else if (lateUsersThree === 1) {
             // Notify staff
             const notifyMessage = `<@${lateUsersThree.join('>, <@')}> have not watched a video in their queue for greater than 3 days`;
             staffChan.send({
-                content: `<@&${process.env.STAFF_ROLE}>
+                content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
@@ -154,14 +154,14 @@ ${notifyMessage}`
             // Notify staff
             const notifyMessage = `<@${lateUsersFive.join('>, <@')}> have not watched a video in their queue for greater than 5 days`;
             staffChan.send({
-                content: `<@&${process.env.STAFF_ROLE}>
+                content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         } else if (lateUsersFive === 1) {
             // Notify staff
             const notifyMessage = `<@${lateUsersFive.join('>, <@')}> have not watched a video in their queue for greater than 5 days`;
             staffChan.send({
-                content: `<@&${process.env.STAFF_ROLE}>
+                content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
