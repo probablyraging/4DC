@@ -1,4 +1,5 @@
 const ccVideoQueue = require('../../../schemas/creator_crew/video_queue');
+const { ContextMenuInteraction, MessageActionRow, MessageSelectMenu } = require("discord.js");
 
 module.exports = {
 	name: `test`,
@@ -10,28 +11,47 @@ module.exports = {
 	 * @param {ContextMenuInteraction} interaction 
 	 */
 	async execute(interaction, client) {
-		const { options, member, guild } = interaction;
+		const { options, member, guild, channel } = interaction;
 
-		
+		const select1 = new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId('color-select')
+					.setPlaceholder('Pick a nickname color')
+					.addOptions([
+						{
+							label: 'Blue',
+							value: 'blue',
+						},
+						{
+							label: 'Red',
+							value: 'red',
+						},
+						{
+							label: 'Green',
+							value: 'green',
+						},
+						{
+							label: 'Orange',
+							value: 'orange',
+						},
+						{
+							label: 'Yellow',
+							value: 'yellow',
+						},
+						{
+							label: 'Pink',
+							value: 'pink',
+						},
+						{
+							label: 'Purple',
+							value: 'purple',
+						}
+					]),
+			);
+
+		channel.send({ content: 'Pong!', components: [row] });
 
 		interaction.reply({ content: 'done', ephemeral: true });
-	}
-}
-
-
-function convertTimestampToRelativeTime(dateToConvert) {
-	const msPerMinute = 60;
-	const msPerHour = msPerMinute * 60;
-	const msPerDay = msPerHour * 24;
-	const msPerMonth = msPerDay * 30;
-	const myDate = new Date();
-	const nowDate = myDate.setSeconds(myDate.getSeconds() + 1).toString().slice(0, 10);
-	const elapsed = nowDate - dateToConvert.toString().slice(0, 10);
-	if (elapsed < msPerMonth) {
-		if (Math.round(elapsed / msPerDay) >= 3 && Math.round(elapsed / msPerDay) < 4) {
-			return 3 || undefined;
-		} else if (Math.round(elapsed / msPerDay) >= 5) {
-			return 5 || undefined;
-		}
 	}
 }

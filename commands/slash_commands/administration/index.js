@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { getRules } = require('../../../lists/rule-list');
 const index = require('../../../lists/index');
 const path = require('path');
@@ -142,7 +142,23 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 					const response1 = new MessageEmbed()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Nickname Colors\`**`)
-						.setDescription(`Click a reaction below to change your nickname color`)
+						.setDescription(`Choose your nickname color below`)
+
+					const select1 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('color-select')
+								.setPlaceholder('Choose your nickname color')
+								.addOptions([
+									{ label: 'Blue', value: 'blue', emoji: '🔵' },
+									{ label: 'Red', value: 'red', emoji: '🔴' },
+									{ label: 'Green', value: 'green', emoji: '🟢' },
+									{ label: 'Orange', value: 'orange', emoji: '🟠' },
+									{ label: 'Yellow', value: 'yellow', emoji: '🟡' },
+									{ label: 'Pink', value: 'pink', emoji: '🌸' },
+									{ label: 'Purple', value: 'purple', emoji: '🟣' }
+								]),
+						);
 
 					const response2 = new MessageEmbed()
 						.setColor('#32BEA6')
@@ -152,6 +168,19 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 <:instagram:837325424744595466> - Instagram
 <:tiktok:837325423712796762> - TikTok`)
 
+					const select2 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('platform-select')
+								.setPlaceholder('Choose your platforms')
+								.addOptions([
+									{ label: 'Twitch', value: 'twitch', emoji: '837083090283003964' },
+									{ label: 'YouTube', value: 'youtube', emoji: '837083090441994240' },
+									{ label: 'Instagram', value: 'instagram', emoji: '837325424744595466' },
+									{ label: 'TikTok', value: 'tiktok', emoji: '837325423712796762' }
+								]),
+						);
+
 					const response3 = new MessageEmbed()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Age\`**`)
@@ -159,13 +188,38 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :boy: - 18-29
 :man: - 30+`)
 
+					const select3 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('age-select')
+								.setPlaceholder('Choose your age')
+								.addOptions([
+									{ label: '13-17', value: '13-17', emoji: '👶' },
+									{ label: '18-29', value: '18-29', emoji: '👦' },
+									{ label: '30+', value: '30+', emoji: '👨' }
+								]),
+						);
+
 					const response4 = new MessageEmbed()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Region\`**`)
-						.setDescription(`:one: - America
-:two: - Europe
-:three: - Oceania
-:four: - Asia`)
+						.setDescription(`:football: - America
+:ferris_wheel: - Europe
+:island: - Oceania
+:izakaya_lantern: - Asia`)
+
+					const select4 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('region-select')
+								.setPlaceholder('Choose your region')
+								.addOptions([
+									{ label: 'America', value: 'america', emoji: '🏈' },
+									{ label: 'Europe', value: 'europe', emoji: '🎡' },
+									{ label: 'Oceania', value: 'oceania', emoji: '🏝️' },
+									{ label: 'Asia', value: 'asia', emoji: '🏮' }
+								]),
+						);
 
 					const response5 = new MessageEmbed()
 						.setColor('#32BEA6')
@@ -174,6 +228,18 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :woman_raising_hand: - Female
 :person_raising_hand: - Non-binary`)
 
+					const select5 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('gender-select')
+								.setPlaceholder('Choose your gender')
+								.addOptions([
+									{ label: 'Male', value: 'male', emoji: '🙋‍♂️' },
+									{ label: 'Female', value: 'female', emoji: '🙋‍♀️' },
+									{ label: 'Non-binary', value: 'non-binary', emoji: '🙋' }
+								]),
+						);
+
 					const response6 = new MessageEmbed()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Optional Ping Roles\`**`)
@@ -181,41 +247,29 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :game_die: - Game Deals | *bot ping for <#846449072105586708>*
 :mega: - Disboard Bump | *bot ping for <#855427926136193054>*`)
 
-					const res1 = await channel.send({ embeds: [response1] }).catch(err => console.error(`Could not send a message: `, err));
-					await res1.react("🔵").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🔴").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🟢").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🟠").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🟡").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🟣").catch(err => console.error(`Could not react to message: `, err));
-					await res1.react("🌸").catch(err => console.error(`Could not react to message: `, err));
+					const select6 = new MessageActionRow()
+						.addComponents(
+							new MessageSelectMenu()
+								.setCustomId('custom-select')
+								.setPlaceholder('Choose your optional pings')
+								.addOptions([
+									{ label: 'Announcements', value: 'announcements', emoji: '🙋‍♂️' },
+									{ label: 'Game Deals', value: 'deals', emoji: '🙋‍♀️' },
+									{ label: 'Disboard Bump', value: 'bump', emoji: '🙋' }
+								]),
+						);
 
-					const res2 = await channel.send({ content: '⠀', embeds: [response2] }).catch(err => console.error(`Could not send a message: `, err));
-					await res2.react("<:twitch:837083090283003964>").catch(err => console.error(`Could not react to message: `, err));
-					await res2.react("<:youtube:837083090441994240>").catch(err => console.error(`Could not react to message: `, err));
-					await res2.react("<:instagram:837325424744595466>").catch(err => console.error(`Could not react to message: `, err));
-					await res2.react("<:tiktok:837325423712796762>").catch(err => console.error(`Could not react to message: `, err));
+					await channel.send({ embeds: [response1], components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
 
-					const res3 = await channel.send({ content: '⠀', embeds: [response3] }).catch(err => console.error(`Could not send a message: `, err));
-					await res3.react("👶").catch(err => console.error(`Could not react to message: `, err));
-					await res3.react("👦").catch(err => console.error(`Could not react to message: `, err));
-					await res3.react("👨").catch(err => console.error(`Could not react to message: `, err));
+					await channel.send({ content: '⠀', embeds: [response2], components: [select2] }).catch(err => console.error(`Could not send a message: `, err));
 
-					const res4 = await channel.send({ content: '⠀', embeds: [response4] }).catch(err => console.error(`Could not send a message: `, err));
-					await res4.react("1️⃣").catch(err => console.error(`Could not react to message: `, err));
-					await res4.react("2️⃣").catch(err => console.error(`Could not react to message: `, err));
-					await res4.react("3️⃣").catch(err => console.error(`Could not react to message: `, err));
-					await res4.react("4️⃣").catch(err => console.error(`Could not react to message: `, err));
+					await channel.send({ content: '⠀', embeds: [response3], components: [select3] }).catch(err => console.error(`Could not send a message: `, err));
 
-					const res5 = await channel.send({ content: '⠀', embeds: [response5] }).catch(err => console.error(`Could not send a message: `, err));
-					await res5.react("🙋‍♂️").catch(err => console.error(`Could not react to message: `, err));
-					await res5.react("🙋‍♀️").catch(err => console.error(`Could not react to message: `, err));
-					await res5.react("🙋").catch(err => console.error(`Could not react to message: `, err));
+					await channel.send({ content: '⠀', embeds: [response4], components: [select4] }).catch(err => console.error(`Could not send a message: `, err));
 
-					const res6 = await channel.send({ content: '⠀', embeds: [response6] }).catch(err => console.error(`Could not send a message: `, err));
-					await res6.react("📢").catch(err => console.error(`Could not react to message: `, err));
-					await res6.react("🎲").catch(err => console.error(`Could not react to message: `, err));
-					await res6.react("📣").catch(err => console.error(`Could not react to message: `, err));
+					await channel.send({ content: '⠀', embeds: [response5], components: [select5] }).catch(err => console.error(`Could not send a message: `, err));
+
+					await channel.send({ content: '⠀', embeds: [response6], components: [select6] }).catch(err => console.error(`Could not send a message: `, err));
 				}
 
 					interaction.editReply({

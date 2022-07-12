@@ -3,6 +3,12 @@ const cooldowns = new Map();
 const mongo = require('../../mongo');
 const commandCountSchema = require('../../schemas/misc/command_count');
 const commandUsageSchema = require('../../schemas/database_logs/command_usage');
+const colorSelect = require('../../handlers/select_menus/color_select');
+const platformSelect = require('../../handlers/select_menus/platform_select');
+const ageSelect = require('../../handlers/select_menus/age_select');
+const regionSelect = require('../../handlers/select_menus/region_select');
+const genderSelect = require('../../handlers/select_menus/gender_select');
+const customSelect = require('../../handlers/select_menus/custom_select');
 const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
 const massbanModal = require('../../commands/slash_commands/moderation/modals/massban_modal');
 const path = require('path');
@@ -28,9 +34,8 @@ module.exports = {
         //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         // }
 
-        // We can ignore cooldowns for modal submits
-        if (!interaction.isModalSubmit()) {
-            // Check for cooldown
+        // Cooldown handler
+        if (interaction.isCommand()) {
             if (!cooldowns.has(command.name)) {
                 cooldowns.set(command.name, new Discord.Collection());
             }
@@ -55,12 +60,41 @@ module.exports = {
 
                 setTimeout(() => time_stamps.delete(member.id), cooldown_amount);
             }
-        } else {
-            reportModal(interaction);
-            massbanModal(interaction);
         }
 
-        // handle and execute commands
+        // Select menu handler
+        if (interaction.isSelectMenu()) {
+            if (interaction.customId === 'color-select') {
+                colorSelect(interaction);
+            }
+            if (interaction.customId === 'platform-select') {
+                platformSelect(interaction);
+            }
+            if (interaction.customId === 'age-select') {
+                ageSelect(interaction);
+            }
+            if (interaction.customId === 'region-select') {
+                regionSelect(interaction);
+            }
+            if (interaction.customId === 'gender-select') {
+                genderSelect(interaction);
+            }
+            if (interaction.customId === 'custom-select') {
+                customSelect(interaction);
+            }
+        }
+
+        // Modal submit handler
+        if (interaction.isModalSubmit()) {
+            if (interaction.customId === 'report-modal') {
+                reportModal(interaction);
+            }
+            if (interaction.customId === 'massban-modal') {
+                massbanModal(interaction);
+            }
+        }
+
+        // Command and context menu handler
         if (interaction.isCommand() || interaction.isContextMenu()) {
             if (!command) return interaction.reply({
                 content: `${process.env.BOT_INFO} Could not run this command`,

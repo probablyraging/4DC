@@ -30,10 +30,6 @@ module.exports = {
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
 
-        // Fetch messages in #self-roles to listen for messageReactionAdd/Remove - this adds them to the cache
-        const reactChannel = client.channels.cache.get(process.env.SELFROLE_CHAN);
-        reactChannel.messages.fetch();
-
         await checkPreviousPosts(client);
 
         const img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
