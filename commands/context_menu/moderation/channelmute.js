@@ -1,6 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
-const mongo = require('../../../mongo');
-const muteTimeoutSchema = require('../../../schemas/database_logs/mute_timeout_schema');
+const { ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -17,41 +15,33 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
-        const reason = `None - command ran via context menu`;
 
-        channel.permissionOverwrites.edit(target.id, {
-            SEND_MESSAGES: false,
-        }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+        const modal = new Modal()
+            .setTitle('Channel Mute')
+            .setCustomId('channel-mute-modal')
 
-        // Log to database for dashboard
-        const logTimestamp = new Date().getTime();
+        const input1 = new TextInputComponent()
+            .setCustomId('input1')
+            .setLabel('User')
+            .setStyle(1)
+            .setValue(`${target.tag}`)
+            .setMinLength(1)
+            .setMaxLength(54)
+            .setRequired(true)
 
-        await mongo().then(async mongoose => {
-            await muteTimeoutSchema.create({
-                userId: target?.id,
-                username: target?.tag,
-                author: member?.id,
-                authorTag: `${member?.user.tag}`,
-                reason: reason,
-                timestamp: logTimestamp,
-                type: 'Channel Mute'
-            });
-        });
+        const input2 = new TextInputComponent()
+            .setCustomId('input2')
+            .setLabel('Reason for muting')
+            .setStyle(2)
+            .setMinLength(1)
+            .setMaxLength(512)
+            .setRequired(true)
 
-        let dmFail = false;
+        const row1 = new MessageActionRow().addComponents([input1]);
+        const row2 = new MessageActionRow().addComponents([input2]);
 
-        target.send({
-            content: `${process.env.BOT_DENY} \`You have been muted in #${channel.name} on ${guild.name}\`
-                                                                                
-**Reason**
-> None`
-        }).catch(() => dmFail = true).then(() => {
-            let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.tag} was muted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.tag} was muted in #${channel.name}\``;
+        modal.addComponents(row1, row2);
 
-            interaction.reply({
-                content: `${replyMsg}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        });
+        await interaction.showModal(modal);
     }
 }

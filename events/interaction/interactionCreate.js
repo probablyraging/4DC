@@ -11,6 +11,7 @@ const genderSelect = require('../../handlers/select_menus/gender_select');
 const customSelect = require('../../handlers/select_menus/custom_select');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
+const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
 const path = require('path');
 
 module.exports = {
@@ -24,15 +25,6 @@ module.exports = {
         const { member, channel, user, guild, options } = interaction
 
         let command = client.commands.get(interaction.commandName);
-
-        // owner only commands
-        // if (command.locked) {
-        //     if (member.id !== process.env.OWNER_ID)
-        //         return interaction.reply({
-        //             content: `${process.env.BOT_DENY} \`You don't have access to this command\``,
-        //             ephemeral: true
-        //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        // }
 
         // Cooldown handler
         if (interaction.isCommand()) {
@@ -91,6 +83,9 @@ module.exports = {
             }
             if (interaction.customId === 'massban-modal') {
                 massbanModal(interaction);
+            }
+            if (interaction.customId === 'channel-mute-modal') {
+                channelMuteModal(interaction);
             }
         }
 

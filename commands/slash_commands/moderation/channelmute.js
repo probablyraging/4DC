@@ -67,6 +67,8 @@ module.exports = {
     async execute(interaction) {
         const { client, member, guild, channel, options } = interaction;
 
+        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+
         try {
             switch (options.getSubcommand()) {
                 case 'add': {
@@ -115,6 +117,21 @@ module.exports = {
                         duration = `${duration} hours`;
                     }
 
+                    // Log to channel
+                    let log = new MessageEmbed()
+                        .setColor("#ffdf78")
+                        .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                        .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
+**Action:** Channel Mute
+**Channel:** ${channel}
+**Reason:** ${reason}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setTimestamp();
+
+                    logChan.send({
+                        embeds: [log]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
                     // Log to database for dashboard
                     const logTimestamp = new Date().getTime();
 
@@ -150,7 +167,26 @@ module.exports = {
 
             switch (options.getSubcommand()) {
                 case 'remove': {
-                    targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                    const target = options.getMember('username');
+                    const targetChan = options.getChannel('channel');
+
+                    targetChan.permissionOverwrites.edit(target.id, {
+                        SEND_MESSAGES: null,
+                    }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+
+                    // Log to channel
+                    let log = new MessageEmbed()
+                        .setColor("#80ff88")
+                        .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                        .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
+**Action:** Channel Unmute
+**Channel:** ${channel}`)
+                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setTimestamp();
+
+                    logChan.send({
+                        embeds: [log]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
                     let dmFail = false;
 
