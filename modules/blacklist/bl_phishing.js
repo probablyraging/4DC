@@ -24,7 +24,7 @@ module.exports = async (message, client) => {
         let isPhishing = await sdp.checkMessage(content);
 
         if (isPhishing) {
-            member?.timeout(86400 * 1000 * 7, 'Nitro scam link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+            member?.timeout(86400 * 1000 * 7, 'Phishing link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
             member?.send({
                 content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``

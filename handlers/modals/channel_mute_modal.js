@@ -33,7 +33,7 @@ module.exports = async (interaction) => {
 
     // Log to channel
     let log = new MessageEmbed()
-        .setColor("#ffdf78")
+        .setColor("#E04F5F")
         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`**Member:** ${fetchedMember?.user.tag} *(${fetchedMember?.user.id})*
 **Action:** Channel Mute

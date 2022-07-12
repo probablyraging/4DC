@@ -257,7 +257,7 @@ ${banMsg}`,
 
                                 // Log to channel
                                 let log = new MessageEmbed()
-                                    .setColor("#80ff88")
+                                    .setColor("#4fe059")
                                     .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                     .setDescription(`**Member:** ${username} *(${userId})*
 **Action:** Warning removed
@@ -286,7 +286,7 @@ ${banMsg}`,
     
                                     // Log to channel
                                     let log = new MessageEmbed()
-                                        .setColor("#80ff88")
+                                        .setColor("#4fe059")
                                         .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                         .setDescription(`**Member:** ${username} *(${userId})*
 **Action:** Warning removed

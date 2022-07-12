@@ -12,7 +12,7 @@ module.exports = async (message, client) => {
      */
     if (message?.deleted) return;
     const premChan = client.channels.cache.get(process.env.PREM_CHAN);
-    const reason = 'Blacklisted Link';
+    let reason = 'Blacklisted Link';
     const timestamp = new Date().getTime();
 
     const member = message?.member;
@@ -21,7 +21,12 @@ module.exports = async (message, client) => {
     let invite = false;
 
     for (var i in blacklist.links) {
-        if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) found = true;
+        if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) {
+            if (i >= 0 && i <= 1) reason = 'Discord invite link';
+            if (i >= 2 && i <= 4) reason = 'Adult content link';
+            if (i >= 5 && i <= 13) reason = 'Shortened link';
+            found = true;
+        }
         if (message?.content.toLowerCase().includes('discord.gg/') || message?.content.toLowerCase().includes('discord.com/invite')) invite = true;
     }
 
@@ -64,10 +69,10 @@ module.exports = async (message, client) => {
                         message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err))
                     } else {
                         message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
-                    }                    
+                    }
                 }, 600);
 
-                member?.timeout(60000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+                member?.timeout(60000, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                 let msgContent = message?.content || ` `;
                 if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;

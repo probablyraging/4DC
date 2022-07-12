@@ -23,7 +23,7 @@ module.exports = {
 
         // Log to channel
         let log = new MessageEmbed()
-            .setColor("#80ff88")
+            .setColor("#4fe059")
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
 **Action:** Channel Unmute

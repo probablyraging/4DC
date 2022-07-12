@@ -21,7 +21,7 @@ module.exports = {
 
             // Log to channel
             let log = new MessageEmbed()
-                .setColor("#80ff88")
+                .setColor("#4fe059")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
 **Action:** Unban`)

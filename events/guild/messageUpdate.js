@@ -36,19 +36,23 @@ module.exports = {
          */
         // ------- same as bl_links.js
         const member = newMessage?.member;
+        let reason = 'Blacklisted Link';
+        const timestamp = new Date().getTime();
 
         let found = false;
 
         if (newMessage?.deleted) return;
 
         for (var i in blacklist.links) {
-            if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) found = true;
+            if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) {
+                if (i >= 0 && i <= 1) reason = 'Discord invite link';
+                if (i >= 2 && i <= 4) reason = 'Adult content link';
+                if (i >= 5 && i <= 13) reason = 'Shortened link';
+                found = true;
+            }
         }
 
         for (var e in blacklist.allChannels) {
-            const reason = 'Blacklisted Link';
-            const timestamp = new Date().getTime();
-
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
@@ -65,7 +69,7 @@ module.exports = {
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-                    member?.timeout(60000, 'Blacklisted link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+                    member?.timeout(60000, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
