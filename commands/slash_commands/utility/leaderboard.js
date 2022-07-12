@@ -22,7 +22,7 @@ module.exports = {
         const { client, guild, options } = interaction;
 
         interaction.reply({
-            content: `Leaderboards are now available by [clicking here](https://creatorhub.info/)`,
+            content: `Leaderboards are now available by [clicking here](<https://creatorhub.info/>)`,
             ephemeral: true
         })
 

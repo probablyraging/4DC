@@ -5,7 +5,6 @@ const timerSchema = require('../../schemas/misc/timer_schema');
 const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
 
-
 module.exports = {
     name: 'messageDelete',
     async execute(message, client, Discord) {
