@@ -9,8 +9,8 @@ const ageSelect = require('../../handlers/select_menus/age_select');
 const regionSelect = require('../../handlers/select_menus/region_select');
 const genderSelect = require('../../handlers/select_menus/gender_select');
 const customSelect = require('../../handlers/select_menus/custom_select');
-const reportModal = require('../../commands/slash_commands/utility/modals/report_modal');
-const massbanModal = require('../../commands/slash_commands/moderation/modals/massban_modal');
+const reportModal = require('../../handlers/modals/report_modal');
+const massbanModal = require('../../handlers/modals/massban_modal');
 const path = require('path');
 
 module.exports = {

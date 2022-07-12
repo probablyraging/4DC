@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { v4: uuidv4 } = require("uuid");
-const { addCooldown, hasCooldown, removeCooldown } = require("../../../../modules/misc/report_cooldown");
-const { getAttachment } = require("../../../../modules/misc/report_attachment");
+const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
+const { getAttachment } = require("../../modules/misc/report_attachment");
 const path = require('path');
 
 module.exports = async (interaction) => {

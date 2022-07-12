@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const path = require('path');
-const massbanSchema = require('../../../../schemas/misc/mass_ban_schema');
+const massbanSchema = require('../../schemas/misc/mass_ban_schema');
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = async (interaction) => {
