@@ -11,7 +11,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { client, member, guild, channel } = interaction;
+        const { channel } = interaction;
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
@@ -22,9 +22,9 @@ module.exports = {
 
         const input1 = new TextInputComponent()
             .setCustomId('input1')
-            .setLabel('User')
+            .setLabel('Username')
             .setStyle(1)
-            .setValue(`${target.tag}`)
+            .setValue(`${target?.tag}`)
             .setMinLength(1)
             .setMaxLength(54)
             .setRequired(true)

@@ -50,7 +50,7 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [CreatorHub Dashboard](https://www.creatorhub.info), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
-> To make a report, you can use the \`/report\` command and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles`
+> To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles`
         ],
 
         creatorcrew: [
