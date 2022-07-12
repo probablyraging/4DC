@@ -9,6 +9,7 @@ const blMass = require('../../modules/blacklist/bl_mass');
 const blSpam = require('../../modules/blacklist/bl_spam');
 const blPhishing = require('../../modules/blacklist/bl_phishing');
 const blEveryone = require('../../modules/blacklist/bl_everyone');
+const autoModLog = require('../../modules/blacklist/automod_log');
 const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -26,12 +27,11 @@ module.exports = {
         linkCooldown(message, client);
         blPhishing(message, client);
         blPromo(message, client);
-        // blWords(message, client);
         blLinks(message, client);
         blMass(message, client);
         blSpam(message, client);
         blEveryone(message, client);
-        // blSub4Sub(message, client);
+        autoModLog(message, client);
 
         // bump and ckq checks
         ckqPost(message);

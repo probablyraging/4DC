@@ -9,15 +9,22 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
+        let error = false;
+
         if (oldMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
                 action: 'MEMBER_UPDATE'
+            }).catch(err => { 
+                console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
+                error = true;
             });
+
+            if (error) return;
 
             const muteLog = fetchedLogs.entries.first();
             const { executor, reason } = muteLog;
-            const toReason = reason || `None`;
+            const toReason = reason || `No reason given`;
             const timestamp = new Date().getTime();
 
             function converTimestampToSimpleFormat(timestamp) {
