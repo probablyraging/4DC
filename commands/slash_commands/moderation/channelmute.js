@@ -115,7 +115,11 @@ module.exports = {
                     if (duration === '0') {
                         duration = 'Permanent';
                     } else {
-                        duration = `${duration} hours`;
+                        if (duration > 1) {
+                            duration = `${duration} hours`;
+                        } else {
+                            duration = `${duration} hour`;
+                        }
                     }
 
                     // Log to channel

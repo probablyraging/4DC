@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const mongo = require('../../mongo');
+const muteSchema = require('../../schemas/misc/mute_schema');
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -9,7 +10,8 @@ module.exports = async (interaction) => {
 
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
     const target = interaction.fields.getTextInputValue('input1');
-    const reason = interaction.fields.getTextInputValue('input2');
+    let duration = interaction.fields.getTextInputValue('input2');
+    const reason = interaction.fields.getTextInputValue('input3');
 
     // Try to match the modal's username input to an actual member
     let fetchedMember;
@@ -32,12 +34,40 @@ module.exports = async (interaction) => {
         SEND_MESSAGES: false,
     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
+    if (duration > 0) {
+        const myDate = new Date();
+        const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
+
+        await muteSchema.findOneAndUpdate({
+            timestamp,
+            userId: fetchedMember?.user.id,
+            channelId: channel.id
+        }, {
+            timestamp,
+            userId: fetchedMember?.user.id,
+            channelId: channel.id
+        }, {
+            upsert: true
+        }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err) });
+    }
+
+    if (duration === '0') {
+        duration = 'Permanent';
+    } else {
+        if (duration > 1) {
+            duration = `${duration} hours`;
+        } else {
+            duration = `${duration} hour`;
+        }
+    }
+
     // Log to channel
     let log = new MessageEmbed()
         .setColor("#E04F5F")
         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`**Member:** ${fetchedMember?.user.tag} *(${fetchedMember?.user.id})*
 **Channel:** ${channel}
+**Duration:** ${duration}
 **Reason:** ${reason}`)
         .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/mute_icon.png' })
         .setTimestamp();

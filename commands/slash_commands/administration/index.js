@@ -148,15 +148,15 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('color-select')
-								.setPlaceholder('Choose your nickname color')
+								.setPlaceholder('Select')
 								.addOptions([
-									{ label: 'Blue', value: 'blue', emoji: '🔵' },
-									{ label: 'Red', value: 'red', emoji: '🔴' },
-									{ label: 'Green', value: 'green', emoji: '🟢' },
-									{ label: 'Orange', value: 'orange', emoji: '🟠' },
-									{ label: 'Yellow', value: 'yellow', emoji: '🟡' },
-									{ label: 'Pink', value: 'pink', emoji: '🌸' },
-									{ label: 'Purple', value: 'purple', emoji: '🟣' }
+									{ label: 'Blue', value: 'blue', emoji: '996661870461210655' },
+									{ label: 'Red', value: 'red', emoji: '996661868011716670' },
+									{ label: 'Green', value: 'green', emoji: '996661865784545302' },
+									{ label: 'Orange', value: 'orange', emoji: '996661864371081336' },
+									{ label: 'Yellow', value: 'yellow', emoji: '996661862714327080' },
+									{ label: 'Pink', value: 'pink', emoji: '996661860080304138' },
+									{ label: 'Purple', value: 'purple', emoji: '996661858025099275' }
 								]),
 						);
 
@@ -172,7 +172,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('platform-select')
-								.setPlaceholder('Choose your platforms')
+								.setPlaceholder('Select')
 								.addOptions([
 									{ label: 'Twitch', value: 'twitch', emoji: '837083090283003964' },
 									{ label: 'YouTube', value: 'youtube', emoji: '837083090441994240' },
@@ -192,7 +192,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('age-select')
-								.setPlaceholder('Choose your age')
+								.setPlaceholder('Select')
 								.addOptions([
 									{ label: '13-17', value: '13-17', emoji: '👶' },
 									{ label: '18-29', value: '18-29', emoji: '👦' },
@@ -212,7 +212,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('region-select')
-								.setPlaceholder('Choose your region')
+								.setPlaceholder('Select')
 								.addOptions([
 									{ label: 'America', value: 'america', emoji: '🏈' },
 									{ label: 'Europe', value: 'europe', emoji: '🎡' },
@@ -232,7 +232,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('gender-select')
-								.setPlaceholder('Choose your gender')
+								.setPlaceholder('Select')
 								.addOptions([
 									{ label: 'Male', value: 'male', emoji: '🙋‍♂️' },
 									{ label: 'Female', value: 'female', emoji: '🙋‍♀️' },
@@ -251,25 +251,30 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.addComponents(
 							new MessageSelectMenu()
 								.setCustomId('custom-select')
-								.setPlaceholder('Choose your optional pings')
+								.setPlaceholder('Select')
 								.addOptions([
-									{ label: 'Announcements', value: 'announcements', emoji: '🙋‍♂️' },
-									{ label: 'Game Deals', value: 'deals', emoji: '🙋‍♀️' },
-									{ label: 'Disboard Bump', value: 'bump', emoji: '🙋' }
+									{ label: 'Announcements', value: 'announcements', emoji: '📢' },
+									{ label: 'Game Deals', value: 'deals', emoji: '🎲' },
+									{ label: 'Disboard Bump', value: 'bump', emoji: '📣' }
 								]),
 						);
 
-					await channel.send({ embeds: [response1], components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: '**Choose your nickname color**', components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: '⠀', embeds: [response2], components: [select2] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: `⠀
+**Choose your platforms**`, components: [select2] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: '⠀', embeds: [response3], components: [select3] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: `⠀
+**Choose your age**`, components: [select3] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: '⠀', embeds: [response4], components: [select4] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: `⠀
+**Choose your region**`, components: [select4] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: '⠀', embeds: [response5], components: [select5] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: `⠀
+**Choose your gender**`, components: [select5] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: '⠀', embeds: [response6], components: [select6] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({ content: `⠀
+**Choose your optional pings**`, components: [select6] }).catch(err => console.error(`Could not send a message: `, err));
 				}
 
 					interaction.editReply({

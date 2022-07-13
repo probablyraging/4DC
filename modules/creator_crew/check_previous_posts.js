@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { getYoutubeVideoId, getAllVideoMessageIds, convertTimestampToRelativeTime, isAway, deleteVideosFromNonChannelMembers, addVideo, deleteVideosBefore } = require('./utilities');
 const ccVideoQueue = require('../../schemas/creator_crew/video_queue');
+const ccProofModel = require('../../schemas/creator_crew/proof_schema');
 const path = require("path");
 
 async function deleteMessages(messageIds, channel) {
@@ -82,14 +83,13 @@ async function setupChecks(client) {
             const ccMember = guild.members.cache.get(userId);
             const away = await isAway(userId);
 
-            // Check if member is no longer in Creator Crew and remove their queue
+            // Check if member is no longer in Creator Crew and remove their proof entry and queue
             const checkUserRoles = await guild.members.cache.get(userId)?._roles;
             if (!checkUserRoles.includes(process.env.CCREW_ROLE)) {
                 await ccVideoQueue.findOneAndRemove({
                     userId: userId,
                     videoId: videoId
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-
             }
             // Also remove their videos from other members queues
             const checkAuthorRoles = await guild.members.cache.get(videoAuthor)?._roles;
@@ -166,6 +166,23 @@ ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
+        // Check if a new user has been added to the role, if so create a proof entry in the database for them
+        ccRole.members.forEach(async member => {
+            const results = await ccProofModel.find({ author: member?.user.id });
+            if (results.length === 0) {
+                await ccProofModel.create({
+                    author: member?.user.id,
+                    proofTs: 0,
+                    proofId: 'null',
+                    threeDays: false,
+                    fourDays: false,
+                    fiveDays: false,
+                    away: false,
+                    missedCount: 0
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+                console.log(`Created a Creator Crew proof entry for ${member?.user.id}`);
+            }
+        });
     }, 15 * 60 * 1000);
 }
 

@@ -31,6 +31,15 @@ module.exports = {
 
         const input2 = new TextInputComponent()
             .setCustomId('input2')
+            .setLabel('Duration (hours)')
+            .setStyle(1)
+            .setPlaceholder('Leave blank to mute indefinitely')
+            .setMinLength(0)
+            .setMaxLength(2)
+            .setRequired(false)
+
+        const input3 = new TextInputComponent()
+            .setCustomId('input3')
             .setLabel('Reason for muting')
             .setStyle(2)
             .setMinLength(1)
@@ -39,8 +48,9 @@ module.exports = {
 
         const row1 = new MessageActionRow().addComponents([input1]);
         const row2 = new MessageActionRow().addComponents([input2]);
+        const row3 = new MessageActionRow().addComponents([input3]);
 
-        modal.addComponents(row1, row2);
+        modal.addComponents(row1, row2, row3);
 
         await interaction.showModal(modal);
     }

@@ -57,7 +57,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                     searchFor
                 }, {
                     upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updated a database entry: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
             } finally {
                 // do nothing
