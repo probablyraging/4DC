@@ -17,10 +17,12 @@ module.exports = async (client) => {
 
             // format numbers greater than 999
             function kFormatter1(num) {
-                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'K' : Math.sign(num) * Math.abs(num);
+                const regExp = new RegExp('^-?\\d+(?:\.\\d{0,' + (1 || -1) + '})?');
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000)).toString().match(regExp)[0] + 'K' : Math.sign(num) * Math.abs(num);
             }
             function kFormatter2(num) {
-                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(2)) + 'K' : Math.sign(num) * Math.abs(num);
+                const regExp = new RegExp('^-?\\d+(?:\.\\d{0,' + (2 || -1) + '})?');
+                return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000)).toString().match(regExp)[0] + 'K' : Math.sign(num) * Math.abs(num);
             }
 
             let onlineReal = kFormatter2(totalOnline);

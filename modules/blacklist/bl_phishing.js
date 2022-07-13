@@ -13,7 +13,7 @@ module.exports = async (message, client) => {
     if (message?.author.id === process.env.OWNER_ID || message?.deleted || message?.author.bot) return;
     
     const staffChan = client.channels.cache.get(process.env.STAFF_CHAN);
-    const reason = 'Phishing Link';
+    const reason = 'Phishing link';
     const timestamp = new Date().getTime();
 
     const member = message?.member;
@@ -24,13 +24,13 @@ module.exports = async (message, client) => {
         let isPhishing = await sdp.checkMessage(content);
 
         if (isPhishing) {
-            member?.timeout(86400 * 1000 * 7, 'Phishing link').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+            member?.timeout(86400 * 1000 * 7, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
             member?.send({
-                content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``
+                content: `${process.env.BOT_DENY} \`Phishing link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``
             }).catch(() => {
                 message?.reply({
-                    content: `${process.env.BOT_DENY} \`Nitro scam link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``,
+                    content: `${process.env.BOT_DENY} \`Phishing link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {
@@ -50,7 +50,7 @@ module.exports = async (message, client) => {
             staffChan.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
                 webhook.send({
                     content: `<@&885919072791973898>
-${message?.author} posted a link that looks like a Discord nitro scam/virus. Please review [this message](${m?.url}) if it exists, and ban them if neccassary`,
+${message?.author} posted a link that looks like a phishing link. Please review [this message](${m?.url}) if it exists, and ban them if neccassary`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
 
                 setTimeout(() => {

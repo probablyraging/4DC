@@ -30,6 +30,7 @@ module.exports = {
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
 
+        // Creator Crew previous post check
         await checkPreviousPosts(client);
 
         const img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
