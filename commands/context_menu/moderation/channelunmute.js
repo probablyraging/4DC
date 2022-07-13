@@ -1,4 +1,5 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -26,9 +27,8 @@ module.exports = {
             .setColor("#4fe059")
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
-**Action:** Channel Unmute
 **Channel:** ${channel}`)
-            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+            .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/unmute_icon.png' })
             .setTimestamp();
 
         logChan.send({

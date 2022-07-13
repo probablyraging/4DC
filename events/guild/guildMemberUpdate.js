@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const mongo = require("../../mongo");
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -56,10 +57,9 @@ module.exports = {
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
-**Action:** Timeout
 **Expires:** ${expiresAt}
 **Reason:** ${toReason}`)
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/timeout_icon.png' })
                 .setTimestamp();
 
             logChan.send({

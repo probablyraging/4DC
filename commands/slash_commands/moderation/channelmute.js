@@ -2,6 +2,7 @@ const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const muteTimeoutSchema = require('../../../schemas/database_logs/mute_timeout_schema');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 
@@ -112,7 +113,7 @@ module.exports = {
                     }
 
                     if (duration === '0') {
-                        duration = 'permanent';
+                        duration = 'Permanent';
                     } else {
                         duration = `${duration} hours`;
                     }
@@ -122,10 +123,10 @@ module.exports = {
                         .setColor("#E04F5F")
                         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
-**Action:** Channel Mute
-**Channel:** ${channel}
+**Channel:** ${targetChan}
+**Duration:** ${duration}
 **Reason:** ${reason}`)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/mute_icon.png' })
                         .setTimestamp();
 
                     logChan.send({
@@ -150,12 +151,12 @@ module.exports = {
                     let dmFail = false;
 
                     target.send({
-                        content: `${process.env.BOT_DENY} \`You have been muted in #${channel.name} on ${guild.name}\`
+                        content: `${process.env.BOT_DENY} \`You have been muted in #${targetChan.name} on ${guild.name}\`
         
 **Reason**
 > ${reason}`
                     }).catch(() => dmFail = true).then(() => {
-                        let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${channel.name}\``;
+                        let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${targetChan.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${targetChan.name}\``;
 
                         interaction.reply({
                             content: `${replyMsg}`,
@@ -179,9 +180,8 @@ module.exports = {
                         .setColor("#4fe059")
                         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
-**Action:** Channel Unmute
-**Channel:** ${channel}`)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+**Channel:** ${targetChan}`)
+                        .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/unmute_icon.png' })
                         .setTimestamp();
 
                     logChan.send({
@@ -191,9 +191,9 @@ module.exports = {
                     let dmFail = false;
 
                     target.send({
-                        content: `${process.env.BOT_DENY} \`You have been unmuted in #${channel.name} on ${guild.name}\``
+                        content: `${process.env.BOT_DENY} \`You have been unmuted in #${targetChan.name} on ${guild.name}\``
                     }).catch(() => dmFail = true).then(() => {
-                        let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${channel.name}\``;
+                        let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${targetChan.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${targetChan.name}\``;
 
                         interaction.reply({
                             content: `${replyMsg}`,

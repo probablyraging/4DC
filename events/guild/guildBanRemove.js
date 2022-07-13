@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const mongo = require("../../mongo");
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -23,9 +24,8 @@ module.exports = {
             let log = new MessageEmbed()
                 .setColor("#4fe059")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
-**Action:** Unban`)
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*`)
+                .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/unban_icon.png' })
                 .setTimestamp();
 
             logChan.send({

@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const mongo = require("../../mongo");
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const chartData = require('../../schemas/database_logs/chart_data');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -26,9 +27,8 @@ module.exports = {
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
-**Action:** Ban
 **Reason:** ${toReason}`)
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/ban_icon.png' })
                 .setTimestamp();
 
             logChan.send({

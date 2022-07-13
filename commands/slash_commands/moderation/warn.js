@@ -129,10 +129,8 @@ module.exports = {
                             .setColor("#E04F5F")
                             .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`**Member:** ${username} *(${userId})*
-**Action:** Warning Added
-**WarnId:** ${warnId}
 **Reason:** ${reason}`)
-                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                            .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_add_icon.png' })
                             .setTimestamp();
 
                         logChan.send({
@@ -259,10 +257,8 @@ ${banMsg}`,
                                 let log = new MessageEmbed()
                                     .setColor("#4fe059")
                                     .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
-                                    .setDescription(`**Member:** ${username} *(${userId})*
-**Action:** Warning removed
-**WarnId:** ${warnId}`)
-                                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                                    .setDescription(`**Member:** ${username} *(${userId})*`)
+                                    .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
                                     .setTimestamp();
 
                                 logChan.send({
@@ -281,19 +277,17 @@ ${banMsg}`,
 
                                 for (const data of results2) {
                                     const { author, authorTag, username, userId, warnId } = data;
-    
+
                                     const authorAvatar = guild.members.cache.get(author);
-    
+
                                     // Log to channel
                                     let log = new MessageEmbed()
                                         .setColor("#4fe059")
                                         .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
-                                        .setDescription(`**Member:** ${username} *(${userId})*
-**Action:** Warning removed
-**WarnId:** ${warnId}`)
-                                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                                        .setDescription(`**Member:** ${username} *(${userId})*`)
+                                        .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
                                         .setTimestamp();
-    
+
                                     logChan.send({
                                         embeds: [log]
                                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));

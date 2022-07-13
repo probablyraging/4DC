@@ -1,4 +1,5 @@
 const { Message, MessageEmbed } = require('discord.js');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 /**
  * @param {Message} message 
@@ -40,10 +41,9 @@ module.exports = async (message, client) => {
                         .setColor("#E04F5F")
                         .setAuthor({ name: `AutoMod`, iconURL: `https://discord.com/assets/e7af5fc8fa27c595d963c1b366dc91fa.gif` })
                         .setDescription(`**Member:** ${message?.author.tag} *(${message?.author.id})*
-**Action:** Timeout
 **Expires:** ${expiresAt}
 **Reason:** Flagged word/phrase`)
-                        .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                        .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/timeout_icon.png' })
                         .setTimestamp();
 
                     logChan.send({
