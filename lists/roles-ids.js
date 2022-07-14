@@ -26,7 +26,8 @@ module.exports = {
         process.env.REGION_AMERICA,
         process.env.REGION_EUROPE,
         process.env.REGION_OCEANIA,
-        process.env.REGION_ASIA
+        process.env.REGION_ASIA,
+        process.env.REGION_AFRICA
     ],
 
     genders: [

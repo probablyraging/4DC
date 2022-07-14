@@ -217,7 +217,8 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 									{ label: 'America', value: 'america', emoji: '🏈' },
 									{ label: 'Europe', value: 'europe', emoji: '🎡' },
 									{ label: 'Oceania', value: 'oceania', emoji: '🏝️' },
-									{ label: 'Asia', value: 'asia', emoji: '🏮' }
+									{ label: 'Asia', value: 'asia', emoji: '🐉' },
+									{ label: 'Africa', value: 'africa', emoji: '🦁' }
 								]),
 						);
 
