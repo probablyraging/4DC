@@ -119,7 +119,7 @@ module.exports = {
                     // current xp and xp needed
                     ctx.font = "24px grotesk";
                     ctx.fillStyle = "#000000";
-                    ctx.fillText(`${xp3} / ${xp2} XP`, canvas.width / 1.525, canvas.height / 1.31);
+                    ctx.fillText(`${xp3} / ${xp2} XP`, canvas.width / 1.525, canvas.height / 1.30);
 
                     // position in the leaderboard
                     if (rankPos.length >= 5) {

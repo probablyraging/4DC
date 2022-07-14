@@ -20,11 +20,19 @@ module.exports = async (message, client) => {
         let hasAttachment = message.attachments.size > 0;
         let isStaffPost = message.member?.roles.cache.some(role => role.id === process.env.STAFF_ROLE);
         let isValidPost = hasVideo || hasAttachment || isStaffPost;
+        let hasLateVideoInQueue = false;
 
         // Delay of 24 hours between posting videos
         const delayBetweenVideos = 24 * 60 * 60 * 1000;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
+
+        // Check if user has any late videos in their queue
+        const results = await ccVideoQueue.find({ userId: authorId });
+        for (const data of results) {
+            const { notified3, notified5 } = data;
+            if (notified3 || notified5) hasLateVideoInQueue = true;
+        }
 
         if (isValidPost) {
             if (hasVideo) {
@@ -33,6 +41,10 @@ module.exports = async (message, client) => {
                 let away = await isAway(authorId);
                 if (away) {
                     let notificationMessage = `${author} - you are currently set to away. Please contact a member of the CreatorHub Staff to let them know that you are back before posting a video.`;
+                    notifyUser(author, notificationMessage, null);
+                    message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                } else if (hasLateVideoInQueue) {
+                    let notificationMessage = `${author} - you currently have late videos in your queue. Please watch all late videos in your queue before posting a video`;
                     notifyUser(author, notificationMessage, null);
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 } else if (!latestVideoTs || Math.abs(new Date().valueOf() - latestVideoTs) >= delayBetweenVideos) {

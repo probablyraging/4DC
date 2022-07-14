@@ -53,7 +53,7 @@ module.exports = {
                     } else {
                         // If the user is being set as back, get all their queued video and reset the timestamps to avoid warnings
                         const getUsersQueue = await ccVideoQueue.find({ userId: target.id });
-                        if (getUsersQueue > 0) {
+                        if (getUsersQueue.length > 0) {
                             await ccVideoQueue.updateMany({
                                 userId: target.id
                             }, {
