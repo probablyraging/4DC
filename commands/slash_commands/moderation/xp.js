@@ -70,7 +70,7 @@ module.exports = {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
                     interaction.editReply({
-                        content: `${process.env.BOT_DENY} \`${target.user.tag}'s rank data has been reset to 0\``,
+                        content: `${process.env.BOT_CONF} \`${target.user.tag}'s rank data has been reset to 0\``,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
                 }
