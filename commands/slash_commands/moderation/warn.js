@@ -1,6 +1,6 @@
 const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
 const mongo = require('../../../mongo');
-const { deleteWarning, getWarnings, addWarning } = require('../../../modules/creator_crew/utilities');
+const { addWarning } = require('../../../modules/creator_crew/utilities');
 const { notifyUser } = require('../../../modules/creator_crew/utilities');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const ccWarnModel = require('../../../schemas/creator_crew/warn_schema');

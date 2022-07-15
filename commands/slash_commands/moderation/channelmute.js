@@ -112,7 +112,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                     }
 
-                    if (duration === '0') {
+                    if (!duration || duration === '0') {
                         duration = 'Permanent';
                     } else {
                         if (duration > 1) {

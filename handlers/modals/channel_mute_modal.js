@@ -51,7 +51,7 @@ module.exports = async (interaction) => {
         }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err) });
     }
 
-    if (duration === '0') {
+    if (!duration || duration === '0') {
         duration = 'Permanent';
     } else {
         if (duration > 1) {
