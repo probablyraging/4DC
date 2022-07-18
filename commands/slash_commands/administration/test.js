@@ -1,5 +1,5 @@
 
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
 	name: `test`,
@@ -13,9 +13,5 @@ module.exports = {
 	async execute(interaction, client) {
 		const { options, member, guild, channel } = interaction;
 
-		interaction.reply({
-			content: `ok`,
-			embeds: [helpEmbed]
-		})
 	}
 }

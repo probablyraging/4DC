@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
 const { getRules } = require('../../../lists/rule-list');
 const index = require('../../../lists/index');
 const path = require('path');
@@ -144,9 +144,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 						.setTitle(`**\`Nickname Colors\`**`)
 						.setDescription(`Choose your nickname color below`)
 
-					const select1 = new MessageActionRow()
+					const select1 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('color-select')
 								.setPlaceholder('Select')
 								.addOptions([
@@ -168,9 +168,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 <:instagram:837325424744595466> - Instagram
 <:tiktok:837325423712796762> - TikTok`)
 
-					const select2 = new MessageActionRow()
+					const select2 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('platform-select')
 								.setPlaceholder('Select')
 								.addOptions([
@@ -188,9 +188,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :boy: - 18-29
 :man: - 30+`)
 
-					const select3 = new MessageActionRow()
+					const select3 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('age-select')
 								.setPlaceholder('Select')
 								.addOptions([
@@ -208,9 +208,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :island: - Oceania
 :izakaya_lantern: - Asia`)
 
-					const select4 = new MessageActionRow()
+					const select4 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('region-select')
 								.setPlaceholder('Select')
 								.addOptions([
@@ -229,9 +229,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :woman_raising_hand: - Female
 :person_raising_hand: - Non-binary`)
 
-					const select5 = new MessageActionRow()
+					const select5 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('gender-select')
 								.setPlaceholder('Select')
 								.addOptions([
@@ -248,9 +248,9 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 :game_die: - Game Deals | *bot ping for <#846449072105586708>*
 :mega: - Disboard Bump | *bot ping for <#855427926136193054>*`)
 
-					const select6 = new MessageActionRow()
+					const select6 = new ActionRowBuilder()
 						.addComponents(
-							new MessageSelectMenu()
+							new SelectMenuBuilder()
 								.setCustomId('custom-select')
 								.setPlaceholder('Select')
 								.addOptions([

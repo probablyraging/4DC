@@ -11,6 +11,9 @@ module.exports = {
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
+        // Attempt to cache this member
+        guild.members.fetch(member.id);
+
         // Joins/leaves log channel
         joinLeaveChan.send({
             content: `${process.env.BOT_JOIN} ${member} joined. There are now **${guild.memberCount}** members in the server`
