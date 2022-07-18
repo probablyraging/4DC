@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const { logToDatabase } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
@@ -15,14 +15,14 @@ module.exports = {
         let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
 
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
-            var log = new Discord.MessageEmbed()
+            var log = new Discord.EmbedBuilder()
                 .setColor('#FF9E00')
                 .setAuthor({ name: `${oldMessage?.author?.tag}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
-                .addField(`Author`, `${oldMessage?.author}`, true)
-                .addField(`Channel`, `${oldMessage?.channel}`, true)
-                .addField(`Old Message`, `\`\`\`${original}\`\`\``, false)
-                .addField(`New Message`, `\`\`\`${edited}\`\`\``, false)
+                .addFields({ name: `Author`, value: `${oldMessage?.author}`, inline: true },
+                { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
+                { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
+                { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
                 .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 

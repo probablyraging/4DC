@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,12 +6,12 @@ module.exports = {
     description: `Get detailed information about a user`,
     access: '',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/whois (@username)`,
     options: [{
         name: `username`,
         description: `The user whos information you want`,
-        type: `USER`,
+        type: ApplicationCommandOptionType.User,
         required: false,
     }],
     /**
@@ -26,41 +26,41 @@ module.exports = {
         let acknowledgements = 'None'
         permissions = [];
 
-        if (target?.permissions?.has("ADMINISTRATOR")) {
+        if (target?.permissions.has("Administrator")) {
             permissions.push("Administrator");
             acknowledgements = 'Administrator';
         }
-        if (target?.permissions?.has("BAN_MEMBERS")) {
+        if (target?.permissions.has("BanMembers")) {
             permissions.push("Ban Members");
         }
-        if (target?.permissions?.has("KICK_MEMBERS")) {
+        if (target?.permissions.has("KickMembers")) {
             permissions.push("Kick Members");
         }
-        if (target?.permissions?.has("MANAGE_MESSAGES")) {
+        if (target?.permissions.has("ManageMessages")) {
             permissions.push("Manage Messages");
             acknowledgements = 'Moderator';
         }
-        if (target?.permissions?.has("MANAGE_CHANNELS")) {
+        if (target?.permissions.has("ManageChannels")) {
             permissions.push("Manage Channels");
         }
-        if (target?.permissions?.has("MENTION_EVERYONE")) {
+        if (target?.permissions.has("MentionEveryone")) {
             permissions.push("Mention Everyone");
         }
-        if (target?.permissions?.has("MANAGE_NICKNAMES")) {
+        if (target?.permissions.has("ManageNicknames")) {
             permissions.push("Manage Nicknames");
         }
-        if (target?.permissions?.has("MANAGE_ROLES")) {
+        if (target?.permissions.has("ManageRoles")) {
             permissions.push("Manage Roles");
             acknowledgements = 'Administrator';
         }
-        if (target?.permissions?.has("DEAFEN_MEMBERS")) {
+        if (target?.permissions.has("DeafenMembers")) {
             permissions.push("Deafen Members");
             acknowledgements = 'Administrator';
         }
-        if (target?.permissions?.has("MANAGE_WEBHOOKS")) {
+        if (target?.permissions.has("ManageWebhooks")) {
             permissions.push("Manage Webhooks");
         }
-        if (target?.permissions?.has("MANAGE_EMOJIS_AND_STICKERS")) {
+        if (target?.permissions.has("ManageEmojisAndStickers")) {
             permissions.push("Manage Emojis and Stickers");
         }
         if (permissions?.length == 0) {
@@ -100,20 +100,20 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
-        const response = new MessageEmbed()
+        const response = new EmbedBuilder()
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-            .setColor('RANDOM')
+            .setColor('Random')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
-            .addField('Registered:', `<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>`, true)
-            .addField('Joined:', `<t:${parseInt(target?.joinedTimestamp / 1000)}:R>`, true)
-            .addField('Status:', `${targetStatus}`, true)
-            .addField('Roles:', `${roleList}`, false)
-            .addField('Acknowledgements:', `${acknowledgements}`, true)
-            .addField('Permissions:', `${permissions.join(`, `)}`, false)
+            .addFields({ name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>`, inline: true },
+                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}:R>`, inline: true },
+                { name: `Status`, value: `${targetStatus}`, inline: true },
+                { name: `Roles`, value: `${roleList}`, inline: false },
+                { name: `Acknowledgements`, value: `${acknowledgements}`, inline: true },
+                { name: `Permissions`, value: `${permissions.join(`, `)}`, inline: false })
             .setFooter({ text: target?.id })
             .setTimestamp()
 
-        if (target?.user.bot) response.addField('Additional:', `This user is a BOT`, false);
+        if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false});
 
         interaction.reply({
             embeds: [response],

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed, MessageActionRow, MessageSelectMenu } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { getRules } = require('../../../lists/rule-list');
 const index = require('../../../lists/index');
 const path = require('path');
@@ -9,11 +9,11 @@ module.exports = {
 	description: `Pre-written content for specific channels`,
 	access: 'owner',
 	cooldown: 0,
-	type: 'CHAT_INPUT',
+	type: ApplicationCommandType.ChatInput,
 	options: [{
 		name: `data`,
 		description: `Data to send`,
-		type: `STRING`,
+		type: ApplicationCommandOptionType.String,
 		required: true,
 		choices: [{ name: 'welcome', value: 'welcome' },
 		{ name: 'rules', value: 'rules' },
@@ -28,13 +28,13 @@ module.exports = {
 	async execute(interaction) {
 		const { channel, client, options } = interaction;
 
-		const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
+		const avatarURL = await client.user.avatarURL({ format: 'png', size: 256 });
 
 		try {
 			// WELCOME
 			switch (options.getString('data')) {
 				case 'welcome': {
-					channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
+					channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
 						webhook.send(index.welcome[0])
 							.catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
 						setTimeout(() => {
@@ -53,7 +53,7 @@ module.exports = {
 			switch (options.getString('data')) {
 				case 'rules': {
 					getRules().then(rule => {
-						channel.createWebhook(client.user.username, { avatar: avatarURL }).then(async webhook => {
+						channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(async webhook => {
 							setTimeout(async () => {
 								webhook.send(`**SERVER RULES**
 To keep CreatorHub a safe and positive experience for everyone, you are required to follow [CreatorHub's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
@@ -93,7 +93,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				case 'faq': {
 					await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-					channel.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
+					channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
 						for (let i = 0; i < index.faq.length; i++) {
 							setTimeout(function () {
 								webhook.send({
@@ -119,7 +119,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 			// CREATOR CREW
 			switch (options.getString('data')) {
 				case 'creatorcrew': {
-					const response = new MessageEmbed()
+					const response = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setDescription(`${index.creatorcrew}`)
 
@@ -139,7 +139,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				case 'selfroles': {
 					await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-					const response1 = new MessageEmbed()
+					const response1 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Nickname Colors\`**`)
 						.setDescription(`Choose your nickname color below`)
@@ -160,7 +160,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								]),
 						);
 
-					const response2 = new MessageEmbed()
+					const response2 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Platforms\`**`)
 						.setDescription(`<:twitch:837083090283003964> - Twitch
@@ -181,7 +181,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								]),
 						);
 
-					const response3 = new MessageEmbed()
+					const response3 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Age\`**`)
 						.setDescription(`:baby: - 13-17
@@ -200,7 +200,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								]),
 						);
 
-					const response4 = new MessageEmbed()
+					const response4 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Region\`**`)
 						.setDescription(`:football: - America
@@ -222,7 +222,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								]),
 						);
 
-					const response5 = new MessageEmbed()
+					const response5 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Choose Your Gender\`**`)
 						.setDescription(`:man_raising_hand: - Male
@@ -241,7 +241,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								]),
 						);
 
-					const response6 = new MessageEmbed()
+					const response6 = new EmbedBuilder()
 						.setColor('#32BEA6')
 						.setTitle(`**\`Optional Ping Roles\`**`)
 						.setDescription(`:loudspeaker: - Announcements | *giveaways, new channels etc*
@@ -262,20 +262,30 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 
 					await channel.send({ content: '**Choose your nickname color**', components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: `⠀
-**Choose your platforms**`, components: [select2] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({
+						content: `⠀
+**Choose your platforms**`, components: [select2]
+					}).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: `⠀
-**Choose your age**`, components: [select3] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({
+						content: `⠀
+**Choose your age**`, components: [select3]
+					}).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: `⠀
-**Choose your region**`, components: [select4] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({
+						content: `⠀
+**Choose your region**`, components: [select4]
+					}).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: `⠀
-**Choose your gender**`, components: [select5] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({
+						content: `⠀
+**Choose your gender**`, components: [select5]
+					}).catch(err => console.error(`Could not send a message: `, err));
 
-					await channel.send({ content: `⠀
-**Choose your optional pings**`, components: [select6] }).catch(err => console.error(`Could not send a message: `, err));
+					await channel.send({
+						content: `⠀
+**Choose your optional pings**`, components: [select6]
+					}).catch(err => console.error(`Could not send a message: `, err));
 				}
 
 					interaction.editReply({

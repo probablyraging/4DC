@@ -1,4 +1,4 @@
-const { client, CommandInteraction, MessageEmbed } = require('discord.js');
+const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
 const mongo = require('../../mongo');
 const commandCountSchema = require('../../schemas/misc/command_count');
@@ -27,7 +27,7 @@ module.exports = {
         let command = client.commands.get(interaction.commandName);
 
         // Cooldown handler
-        if (interaction.isCommand()) {
+        if (interaction.type === InteractionType.ApplicationCommand) {
             if (!cooldowns.has(command.name)) {
                 cooldowns.set(command.name, new Discord.Collection());
             }
@@ -36,7 +36,7 @@ module.exports = {
             const time_stamps = cooldowns.get(command.name);
             const cooldown_amount = (command.cooldown) * 1000;
 
-            if (!member.permissions.has("ADMINISTRATOR")) {
+            if (!member.permissions.has("Administrator")) {
                 if (time_stamps.has(member.id)) {
                     const expiration_time = time_stamps.get(member.id) + cooldown_amount;
                     const time_left = (expiration_time - current_time) / 1000;
@@ -55,7 +55,7 @@ module.exports = {
         }
 
         // Select menu handler
-        if (interaction.isSelectMenu()) {
+        if (interaction.type === InteractionType.MessageComponent) {
             if (interaction.customId === 'color-select') {
                 colorSelect(interaction);
             }
@@ -77,7 +77,7 @@ module.exports = {
         }
 
         // Modal submit handler
-        if (interaction.isModalSubmit()) {
+        if (interaction.type === InteractionType.ModalSubmit) {
             if (interaction.customId === 'report-modal') {
                 reportModal(interaction);
             }
@@ -90,7 +90,7 @@ module.exports = {
         }
 
         // Command and context menu handler
-        if (interaction.isCommand() || interaction.isContextMenu()) {
+        if (interaction.type === InteractionType.ApplicationCommand) {
             if (!command) return interaction.reply({
                 content: `${process.env.BOT_INFO} Could not run this command`,
                 ephemeral: true
@@ -132,14 +132,6 @@ module.exports = {
             let cmdName = command.name;
             if (options._subcommand) cmdName = `${command.name} > ${options._subcommand}`;
 
-            const log = new MessageEmbed()
-                .setColor('#FF9E00')
-                .setAuthor({ name: `${user?.tag} used a command`, iconURL: user.displayAvatarURL({ dynamic: true }) })
-                .addField(`Command`, `${cmdName}`, false)
-                .addField(`Channel`, `${channel}`, true)
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                .setTimestamp()
-
             cmdOptions = [];
 
             options._hoistedOptions.forEach(option => {
@@ -151,7 +143,6 @@ module.exports = {
             })
 
             let input = cmdOptions.join('\n') || 'None';
-            log.addField(`Input`, `\`\`\`${input}\`\`\``, false);
 
             const logTimestamp = new Date().getTime();
 

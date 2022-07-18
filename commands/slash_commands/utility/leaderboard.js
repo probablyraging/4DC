@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const mongo = require('../../../mongo');
 const letterSchema = require('../../../schemas/letter_game/letter_schema');
 const letterRecordSchema = require('../../../schemas/letter_game/letter_record_schema');
@@ -13,7 +13,7 @@ module.exports = {
     description: `View leaderboards for the server ranks, games and others`,
     access: '',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
@@ -31,7 +31,7 @@ module.exports = {
 //                 case 'ranks': {
 //                     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-//                     const response = new MessageEmbed()
+//                     const response = new EmbedBuilder()
 //                         .setColor('#32BEA6')
 //                         .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 //                         .setTimestamp()
@@ -150,7 +150,7 @@ module.exports = {
 //                                                 }
 //                                             }
 
-//                                             let lllbEmbed = new MessageEmbed()
+//                                             let lllbEmbed = new EmbedBuilder()
 //                                                 .setColor('#32BEA6')
 //                                                 .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 //                                                 .setTimestamp()
@@ -170,7 +170,7 @@ module.exports = {
 // Current level: **${gotCount}**
 // Record level: **${letterRecord}**`, false)
 
-//                                             const letterRecordEmbed = new MessageEmbed()
+//                                             const letterRecordEmbed = new EmbedBuilder()
 //                                                 .setColor('#32BEA6')
 //                                                 .addField(`🔡 \`Last Letter Information\``, `Match the first letter of your word to the last letter of the previous word.
 // If the previous word was \`rabbit\`, then the next word would start with \`t\`, like \`tomato\`, and so on.
@@ -226,7 +226,7 @@ module.exports = {
 //                 case 'messages': {
 //                     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-//                     const response = new MessageEmbed()
+//                     const response = new EmbedBuilder()
 //                         .setColor('#32BEA6')
 //                         .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 //                         .setTimestamp()
@@ -301,7 +301,7 @@ module.exports = {
 //                         });
 
 
-//                         const response = new MessageEmbed()
+//                         const response = new EmbedBuilder()
 //                             .setColor('#32BEA6')
 //                             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
 //                             .setTimestamp()

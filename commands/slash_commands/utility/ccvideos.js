@@ -1,3 +1,4 @@
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 require("dotenv").config();
 
 module.exports = {
@@ -5,7 +6,7 @@ module.exports = {
     description: `Get Creator Crew videos that have been posted since you last posted a proof picture`,
     access: '',
     cooldown: 60,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/ccvideos`,
     /**
      * @param {ContextMenuInteraction} interaction

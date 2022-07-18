@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const mongo = require('../../../mongo');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
@@ -8,7 +8,7 @@ module.exports = {
     description: `Resets the content spotlight channel`,
     access: 'staff',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/resetspotlight`,
     /**
      * 
@@ -20,7 +20,7 @@ module.exports = {
         const ckqChannel = guild.channels.cache.get(process.env.CKQ_CHAN);
         const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
 
-        const ckqEmbed = new MessageEmbed()
+        const ckqEmbed = new EmbedBuilder()
             .setColor('#44eaff') // GREEN
             .setTitle(`:crown: Content Spotlight`)
             .setDescription(`**What Is It?**
@@ -44,7 +44,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                 }), 200);
 
                 setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
-                    SEND_MESSAGES: true,
+                    SendMessages: true,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
 
                 await timerSchema.findOneAndRemove({ searchFor });

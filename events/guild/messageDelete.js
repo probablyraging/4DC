@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const mongo = require('../../mongo');
 const timerSchema = require('../../schemas/misc/timer_schema');
@@ -18,13 +18,13 @@ module.exports = {
         let content = message?.content || ` `;
         if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
 
-        const log = new Discord.MessageEmbed()
+        const log = new EmbedBuilder()
             .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
             .setColor("#E04F5F")
             .setDescription(`**A message was deleted**`)
-            .addField("Author", `${message?.author}`, true)
-            .addField("Channel", `${message?.channel}`, true)
-            .addField('Message', `\`\`\`${content}\`\`\``)
+            .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
+                { name: `Channel`, value: `${message?.channel}`, inline: true },
+                { name: `Message`, value: `\`\`\`${content}\`\`\``, inline: false })
             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
@@ -71,7 +71,7 @@ module.exports = {
 
             const searchFor = "currentTime";
 
-            const ckEmbed = new MessageEmbed()
+            const ckEmbed = new EmbedBuilder()
                 .setColor("#44eaff") // GREEN
                 .setTitle(`:crown: Content Spotlight`)
                 .setDescription(`**What Is It?**
@@ -90,7 +90,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
             }), 5200);
 
             setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
-                SEND_MESSAGES: true,
+                SendMessages: true,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 5300);
 
             await mongo().then(async mongoose => {

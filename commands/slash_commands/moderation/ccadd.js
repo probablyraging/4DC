@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,12 +6,12 @@ module.exports = {
     description: `Add a user to the Creator Crew role`,
     access: 'staff',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/ccadd [@username]`,
     options: [{
         name: `username`,
         description: `The user you want to add to Creator Crew`,
-        type: `USER`,
+        type: ApplicationCommandOptionType.User,
         required: true,
     }],
     /**

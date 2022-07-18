@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { toggleAway, getAwayUsers } = require("../../../modules/creator_crew/utilities");
 const ccVideoQueue = require('../../../schemas/creator_crew/video_queue');
 const path = require('path');
@@ -8,18 +8,18 @@ module.exports = {
     description: `Toggle the away staus of users for Creator Crew, or list currently away users`,
     access: 'staff',
     cooldown: 10,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [
         {
             name: `toggle`,
             description: `Toggle the user's away status`,
-            type: `SUB_COMMAND`,
+            type: ApplicationCommandOptionType.Subcommand,
             usage: `/ccaway toggle [username]`,
             options: [
                 {
                     name: `username`,
                     description: `The user you want to add a warning to`,
-                    type: `USER`,
+                    type: ApplicationCommandOptionType.User,
                     required: true
                 }
             ]
@@ -27,7 +27,7 @@ module.exports = {
         {
             name: `list`,
             description: `List all users who are currently away`,
-            type: `SUB_COMMAND`,
+            type: ApplicationCommandOptionType.Subcommand,
             usage: `/ccaway list`
         }
     ],

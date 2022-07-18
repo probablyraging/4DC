@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 const mongo = require("../../mongo");
 const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
@@ -21,7 +21,7 @@ module.exports = async (client) => {
                 dbTimestamp = timestamp;
             }
 
-            const ckEmbed = new MessageEmbed()
+            const ckEmbed = new EmbedBuilder()
                 .setColor("#44eaff") // GREEN
                 .setTitle(`:crown: Content Spotlight`)
                 .setDescription(`**What Is It?**
@@ -44,7 +44,7 @@ Links to social media, youtube channels, twitch channels, videos, highlights etc
                 }), 200);
 
                 setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
-                    SEND_MESSAGES: true,
+                    SendMessages: true,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
 
                 await timerSchema.findOneAndUpdate({

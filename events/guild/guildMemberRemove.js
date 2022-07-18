@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const chartData = require('../../schemas/database_logs/chart_data');
 const path = require('path');
 

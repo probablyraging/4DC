@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const mongo = require('../../../mongo');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
@@ -9,34 +9,34 @@ module.exports = {
     description: `Add or remove a user from the AUTOYT list`,
     access: 'staff',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a user to the AUTOYT list`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/autoyt [@username] [ytChannelId]`,
         options: [{
             name: `username`,
             description: `The user who you would like to add`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: `channelid`,
             description: `The ID of the user's YouTube channel`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         }],
     },
     {
         name: `remove`,
         description: `Remove a user from the AUTOYT list`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/autoyt remove [@username]`,
         options: [{
             name: `username`,
             description: `The user who you would like to remove`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         }],
     }],

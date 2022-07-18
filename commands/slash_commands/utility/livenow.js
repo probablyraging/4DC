@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     description: `Shows a list of all server members who are currently streaming`,
     access: '',
     cooldown: 10,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/livenow`,
     /**
      * 
@@ -19,14 +19,14 @@ module.exports = {
 
         const liveArr = [];
 
-        let response = new MessageEmbed()
+        let response = new EmbedBuilder()
             .setColor('#fff500')
             .setTitle(`${process.env.LIVE_NOW} Live Now | SHOW SUPPORT`)
 
         await guild.members.fetch().then(async fetchedMembers => {
             fetchedMembers.forEach(member => {
                 for (let i = 0; i < 5; i++) {
-                    if (!member.user.bot && member.presence?.activities[i] && member.presence?.activities[i].type === 'STREAMING') {
+                    if (!member.user.bot && member.presence?.activities[i] && member.presence?.activities[i].type === ActivityType.Streaming) {
                         liveArr.push({ username: member.user.tag, url: member.presence?.activities[i].url, title: member.presence?.activities[i].details || 'Unknown', state: member.presence?.activities[i].state || 'Unknown' });
                     }
                 }
@@ -39,27 +39,12 @@ module.exports = {
             response.setDescription(`There are currently **${liveArr.length}** members streaming
 Please be respectful when visiting other member's streams`)
             liveArr.forEach(entry => {
-                response.addField(`⠀`, `**Member:** ${entry.username}
+                response.addFields({ name: `⠀`, value: `**Member:** ${entry.username}
 **Title:** ${entry.title}
 **Streaming:** ${entry.state}
-**Link:** [${entry.url}](${entry.url})`, false)
+**Link:** [${entry.url}](${entry.url})`, inline: false})
             });
         }
-
-        // const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
-        // const liveSize = guild.members.cache.filter(member => member.roles.cache.find(role => role === liveRole)).size;
-        // const liveMember = guild.members.cache.filter(member => member.roles.cache.find(role => role === liveRole)).map(member => member.user.id);
-
-        // let response = new MessageEmbed()
-        //     .setColor('#fff500')
-        //     .setTitle(`${process.env.LIVE_NOW} Live Now | SHOW SUPPORT`)
-
-        // if (liveSize < 1) {
-        //     response.setDescription(`There are currently **${liveSize}** members streaming`)
-        // } else {
-        //     response.setDescription(`There are currently **${liveSize}** members streaming`)
-        //     response.addField(`⠀`, `<@${liveMember.join('>\n<@')}>`, false)
-        // }
 
         interaction.editReply({
             embeds: [response],

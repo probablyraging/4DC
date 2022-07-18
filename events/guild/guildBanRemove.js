@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const mongo = require("../../mongo");
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const { v4: uuidv4 } = require('uuid');
@@ -14,14 +14,14 @@ module.exports = {
         setTimeout(async () => {
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
-                type: 'MEMBER_BAN_REMOVE',
+                type: AuditLogEvent.MemberBanRemove,
             });
 
             const banLog = fetchedLogs.entries.first();
             const { executor } = banLog;
 
             // Log to channel
-            let log = new MessageEmbed()
+            let log = new EmbedBuilder()
                 .setColor("#4fe059")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*`)

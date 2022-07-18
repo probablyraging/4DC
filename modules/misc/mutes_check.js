@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const mongo = require('../../mongo');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
@@ -26,11 +26,11 @@ module.exports = async (message, client, Discord) => {
                         const targetChan = guild.channels.cache.get(channelId);
 
                         targetChan.permissionOverwrites.edit(target.id, {
-                            SEND_MESSAGES: null,
+                            SendMessages: null,
                         }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                         // Log to channel
-                        let log = new MessageEmbed()
+                        let log = new EmbedBuilder()
                             .setColor("#E04F5F")
                             .setAuthor({ name: `${client?.user.tag}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`**Member:** ${target?.tag} *(${target?.id})*

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const mongo = require('../../../mongo');
 const path = require('path');
 const rankSchema = require('../../../schemas/misc/rank_schema');
@@ -8,16 +8,16 @@ module.exports = {
     description: `Add to, remove from or reset a user's XP`,
     access: 'staff',
     cooldown: 30,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `reset`,
         description: `Reset a user's XP and Rank to 0`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/xp reset [@username]`,
         options: [{
             name: `username`,
             description: `The user whos XP and Rank you want to reset`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         }],
     }],

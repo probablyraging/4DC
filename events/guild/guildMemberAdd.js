@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const mongo = require('../../mongo');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const chartData = require('../../schemas/database_logs/chart_data');

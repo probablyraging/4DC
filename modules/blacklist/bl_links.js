@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, EmbedBuilder } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const { logToDatabase } = require('../dashboard/log_to_database');
 const sleep = require("timers/promises").setTimeout;

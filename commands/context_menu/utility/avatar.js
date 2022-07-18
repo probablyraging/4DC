@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     description: ``,
     permission: ``,
     cooldown: 5,
-    type: `USER`,
+    type: ApplicationCommandType.User,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
@@ -19,7 +19,7 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         });;
 
-        const response = new MessageEmbed()
+        const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setTitle(`AVATAR`)

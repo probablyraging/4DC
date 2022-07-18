@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,23 +6,23 @@ module.exports = {
     description: `Prevent everyone from sending messages in all channels`,
     access: 'staff',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `start`,
         description: `Start a lockdown`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/lockdown start [reason]`,
         options: [{
             name: `reason`,
             description: `Provide a reason for the lockdown`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         }],
     },
     {
         name: `end`,
         description: `End a lockdown`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/lockdown end`,
     }],
     /**
@@ -41,7 +41,7 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'start': {
                     everyone.edit({
-                        permissions: ['VIEW_CHANNEL', 'CREATE_INSTANT_INVITE', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY']
+                        permissions: ['ViewChannel', 'CreateInstantInvite', 'AddReactions', 'ReadMessageHistory']
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                     noticeChan.send({
@@ -61,7 +61,7 @@ module.exports = {
             switch (options.getSubcommand()) {
                 case 'end': {
                     everyone.edit({
-                        permissions: ['VIEW_CHANNEL', 'CREATE_INSTANT_INVITE', 'SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS', 'USE_EXTERNAL_STICKERS', 'READ_MESSAGE_HISTORY', 'USE_APPLICATION_COMMANDS', 'CONNECT', 'SPEAK', 'STREAM', 'USE_VAD']
+                        permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Spead', 'Stream', 'UseVAD']
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                     noticeChan.send({

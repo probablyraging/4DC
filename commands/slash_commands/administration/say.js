@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,24 +6,24 @@ module.exports = {
     description: `Send a channel message as the bot`,
     access: 'owner',
     cooldown: 0,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/say (#channel) (message) (imageURL)`,
     options: [{
         name: `message`,
         description: `The message you want to send`,
-        type: `STRING`,
+        type: ApplicationCommandOptionType.String,
         required: false,
     },
     {
         name: `channel`,
         description: `The channel to send the message to. Leave black for current channel`,
-        type: `CHANNEL`,
+        type: ApplicationCommandOptionType.Channel,
         required: false,
     },
     {
         name: `image`,
         description: `If you want to send an image as well`,
-        type: `STRING`,
+        type: ApplicationCommandOptionType.String,
         required: false,
     }],
     /**

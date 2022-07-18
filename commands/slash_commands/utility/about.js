@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     description: `Information about CreatorBot`,
     access: '',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/about`,
     /**
      * 
@@ -24,13 +24,15 @@ module.exports = {
         let seconds = Math.floor(totalSeconds % 60);
         let botUptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
 
-        const response = new MessageEmbed()
+        const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setAuthor({ name: `${client.user.tag}`, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`Created by <@${process.env.OWNER_ID}> for [**CreatorHub**](https://discord.gg/creatorhub)`)
-            .addField(`Maintained By`, `<@${process.env.OWNER_ID}> - [YouTube](https://www.youtube.com/ProbablyRaging) - [GitHub](https://github.com/ProbablyRaging)
-<@878608494499098694> - [YouTube](https://www.youtube.com/HighTechLowIQ) - [GitHub](https://github.com/HighTechLowIQ)`, false)
-            .addField(`Uptime`, `${botUptime}`, false)
+            .addFields({
+                name: `Maintained By`, value: `<@${process.env.OWNER_ID}> - [YouTube](https://www.youtube.com/ProbablyRaging) - [GitHub](https://github.com/ProbablyRaging)
+<@878608494499098694> - [YouTube](https://www.youtube.com/HighTechLowIQ) - [GitHub](https://github.com/HighTechLowIQ)`, ineline: false
+            },
+                { name: `Uptime`, value: `${botUptime}`, ineline: false })
             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 

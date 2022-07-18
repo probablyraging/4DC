@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, EmbedBuilder } = require('discord.js');
 const { logToDatabase } = require('../dashboard/log_to_database');
 const cooldown = new Set();
 const sleep = require("timers/promises").setTimeout;
@@ -20,7 +20,7 @@ module.exports = async (message, client) => {
     if (!author) {
         return;
     } else {
-        if (check && !message?.member?.permissions.has("MANAGE_MESSAGES") && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE) && !message?.author?.bot) {
+        if (check && !message?.member?.permissions.has("ManageMessages") && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE) && !message?.author?.bot) {
             if (cooldown.has(message?.author?.id)) {
                 const response = `${process.env.BOT_DENY} \`You're sending links too fast. Please wait 30 seconds\``;
 

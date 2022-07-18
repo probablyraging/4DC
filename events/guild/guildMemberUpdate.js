@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const mongo = require("../../mongo");
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
 const { v4: uuidv4 } = require('uuid');
@@ -15,7 +15,7 @@ module.exports = {
         if (oldMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
-                action: 'MEMBER_UPDATE'
+                action: AuditLogEvent.MemberUpdate,
             }).catch(err => { 
                 console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
                 error = true;
@@ -53,7 +53,7 @@ module.exports = {
             const expiresAt = converTimestampToSimpleFormat(new Date(oldMember.communicationDisabledUntilTimestamp).getTime());
 
             // Log to channel
-            let log = new MessageEmbed()
+            let log = new EmbedBuilder()
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*

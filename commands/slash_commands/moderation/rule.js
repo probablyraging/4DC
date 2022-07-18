@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { getRules } = require('../../../lists/rule-list');
 const path = require('path');
 
@@ -7,12 +7,12 @@ module.exports = {
     description: `Remind a user to not be an a-hole`,
     access: 'staff',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/rules [ruleNumber] [@username]`,
     options: [{
         name: `number`,
         description: `The number of the rule you are referencing`,
-        type: `STRING`,
+        type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' },
         { name: 'Rule 2 - spamming and flooding', value: '2' },
@@ -25,7 +25,7 @@ module.exports = {
     {
         name: `username`,
         description: `The user you want to direct the reminder at`,
-        type: `USER`,
+        type: ApplicationCommandOptionType.User,
         required: true
     }],
     /**

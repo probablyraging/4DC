@@ -16,21 +16,10 @@ function msToHumanTime(milliseconds) {
     return hoursFloor + " hours, " + minutesFloor + " minutes and " + secondFloor + " seconds";
 }
 
-function convertTimestampToRelativeTime(dateToConvert) {
-    const msPerMinute = 60;
-    const msPerHour = msPerMinute * 60;
-    const msPerDay = msPerHour * 24;
-    const msPerMonth = msPerDay * 30;
-    const myDate = new Date();
-    const nowDate = myDate.setSeconds(myDate.getSeconds() + 1).toString().slice(0, 10);
-    const elapsed = nowDate - dateToConvert.toString().slice(0, 10);
-    if (elapsed < msPerMonth) {
-        if (Math.round(elapsed / msPerDay) >= 3 && Math.round(elapsed / msPerDay) < 4) {
-            return 3 || undefined;
-        } else if (Math.round(elapsed / msPerDay) >= 5) {
-            return 5 || undefined;
-        }
-    }
+function timeElapsedBetweenTimestamps(nowTime, oldTime) {
+    const msDifference = nowTime - oldTime;
+    const daysDifference = msDifference / 1000 / 60 / 60 / 24;
+    return daysDifference;
 }
 
 async function getLatestVideoTs(authorId) {
@@ -220,7 +209,7 @@ async function deleteWarning(warnId) {
 
 module.exports = {
     msToHumanTime,
-    convertTimestampToRelativeTime,
+    timeElapsedBetweenTimestamps,
     getLatestVideoTs,
     addVideo,
     isAway,

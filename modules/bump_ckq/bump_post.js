@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, EmbedBuilder } = require('discord.js');
 const mongo = require('../../mongo');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
@@ -25,7 +25,6 @@ module.exports = async (message) => {
                 if (embed.description.toLowerCase().includes('bump done!')) {
                     message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
-
                     const myDate = new Date();
                     const addTwo = myDate.setHours(myDate.getHours() + 2);
                     const timestamp = addTwo;
@@ -33,7 +32,7 @@ module.exports = async (message) => {
                     const searchFor = 'bumpTime';
 
                     message?.channel.permissionOverwrites.edit(message?.guild.id, {
-                        SEND_MESSAGES: false,
+                        SendMessages: false,
                     })
 
                     await mongo().then(async mongoose => {
@@ -101,7 +100,7 @@ module.exports = async (message) => {
                             }
                         }
 
-                        const bumpConfirm = new MessageEmbed()
+                        const bumpConfirm = new EmbedBuilder()
                             .setColor('#32B9FF')
                             .setTitle(`${message?.interaction?.user.username}`)
                             .setURL('https://disboard.org/server/820889004055855144')

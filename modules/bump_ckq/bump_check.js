@@ -24,7 +24,7 @@ module.exports = async (client) => {
 
             if (dbTimestamp && nowTime > dbTimestamp) {
                 bumpChan.permissionOverwrites.edit(guild.id, {
-                    SEND_MESSAGES: true,
+                    SendMessages: true,
                 }).then(() => {
                     return bumpChan.send({
                         content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the \`/bump\` command!`

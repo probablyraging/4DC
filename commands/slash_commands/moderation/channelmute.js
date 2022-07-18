@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const mongo = require('../../../mongo');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const muteTimeoutSchema = require('../../../schemas/database_logs/mute_timeout_schema');
@@ -11,52 +11,52 @@ module.exports = {
     description: `Mute a user in a specific channel`,
     access: 'staff',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a channel mute to a user`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/channelmute add [@username] [#channel] [reason]`,
         options: [{
             name: `username`,
             description: `The user you want to mute`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: `channel`,
             description: `The channel you want to mute the user in`,
-            type: `CHANNEL`,
+            type: ApplicationCommandOptionType.Channel,
             required: true
         },
         {
             name: `reason`,
             description: `The reason for muting the user`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         },
         {
             name: `duration`,
             description: `Set a duration (IN HOURS) for when the channel mute should expire`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         }],
     },
     {
         name: `remove`,
         description: `Remove a channel mute from a user`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/channelmute remove [@username] [#channel]`,
         options: [{
             name: `username`,
             description: `The user you want to mute`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: `channel`,
             description: `The channel you want to mute the user in`,
-            type: `CHANNEL`,
+            type: ApplicationCommandOptionType.Channel,
             required: true
         }],
     }],
@@ -86,7 +86,7 @@ module.exports = {
                     }
 
                     targetChan.permissionOverwrites.edit(target.id, {
-                        SEND_MESSAGES: false,
+                        SendMessages: false,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                     if (duration > 0) {
@@ -123,7 +123,7 @@ module.exports = {
                     }
 
                     // Log to channel
-                    let log = new MessageEmbed()
+                    let log = new EmbedBuilder()
                         .setColor("#E04F5F")
                         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
@@ -176,11 +176,11 @@ module.exports = {
                     const targetChan = options.getChannel('channel');
 
                     targetChan.permissionOverwrites.edit(target.id, {
-                        SEND_MESSAGES: null,
+                        SendMessages: null,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
                     // Log to channel
-                    let log = new MessageEmbed()
+                    let log = new EmbedBuilder()
                         .setColor("#4fe059")
                         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,46 +6,46 @@ module.exports = {
     description: `Create a new embed or edit an existing one`,
     access: 'owner',
     cooldown: 0,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `create`,
         description: `Create a new embed`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/embed create [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `description`,
             description: `The description for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: `title`,
             description: `The title for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `color`,
             description: `The color for the embed. Must be a valid #hex color`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `thumbnail`,
             description: `The thumbnail image URL for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `image`,
             description: `The image URL for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `author`,
             description: `Do you want to show who created this embed?`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
             choices: [{ name: `yes`, value: `yes` }],
         }],
@@ -53,42 +53,42 @@ module.exports = {
     {
         name: `edit`,
         description: `Edit an existing embed`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/embed edit [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `id`,
             description: `The id of the message containing the embed you want to edit`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true,
         },
         {
             name: `description`,
             description: `The description for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `title`,
             description: `The title for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `color`,
             description: `The color for the embed. Must be a valid #hex color`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `thumbnail`,
             description: `The thumbnail image URL for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: `image`,
             description: `The image URL for the embed`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
         }],
     }],
@@ -147,7 +147,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
-                    const create = new MessageEmbed()
+                    const create = new EmbedBuilder()
                         .setDescription(`${description}`)
                         .setColor(`${color}`)
 

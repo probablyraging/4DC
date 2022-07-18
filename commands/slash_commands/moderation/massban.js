@@ -1,7 +1,7 @@
-const {ContextMenuInteraction, Modal, TextInputComponent, MessageActionRow} = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
 const massbanSchema = require('../../../schemas/misc/mass_ban_schema');
 const path = require('path');
-const {MessageEmbed} = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 /**
  * Deny a mass ban request.
@@ -11,7 +11,7 @@ const {MessageEmbed} = require('discord.js');
  * @param {String} reason The reason for banning the users
  */
 async function banUsers(interaction, users, reason) {
-    let {guild} = interaction;
+    let { guild } = interaction;
 
     const oneDay = 24 * 60 * 60 * 1000;
 
@@ -30,12 +30,12 @@ async function banUsers(interaction, users, reason) {
             } else {
                 console.log(`${path.basename(__filename)} Banning ${memberTag} who joined at ${new Date(joinedAt).toISOString()}.`);
                 bannedUsers.push(memberTag);
-                await fetchedMember.ban({reason: reason, days: 7})
+                await fetchedMember.ban({ reason: reason, days: 7 })
                     .catch(err => console.error(`${path.basename(__filename)} Failed to ban user ${memberTag}: `, err));
             }
         }
     }
-    return {skippedUsers: skippedUsers, bannedUsers: bannedUsers}
+    return { skippedUsers: skippedUsers, bannedUsers: bannedUsers }
 }
 
 /**
@@ -44,11 +44,11 @@ async function banUsers(interaction, users, reason) {
  * @param {ContextMenuInteraction} interaction
  */
 async function approveMassBan(interaction) {
-    let {member, guild, options} = interaction;
-    await interaction.deferReply({ephemeral: true});
+    let { member, guild, options } = interaction;
+    await interaction.deferReply({ ephemeral: true });
     let id = options.getString('id');
 
-    let result = await massbanSchema.findOne({id: id}).exec()
+    let result = await massbanSchema.findOne({ id: id }).exec()
         .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
     if (result && result.state === "PENDING") {
         let author = result.author;
@@ -68,14 +68,14 @@ async function approveMassBan(interaction) {
 
             let bannedUsers = banResults.bannedUsers.join("\n");
             let skippedUsers = banResults.skippedUsers.join("\n");
-            const staffEmbed = new MessageEmbed()
+            const staffEmbed = new EmbedBuilder()
                 .setColor('#44ff00')
-                .setAuthor({name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({dynamic: true})})
+                .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Mass Ban Request Processed`)
-                .addField("Request ID", id)
-                .addField("Reason", reason)
-                .addField("Banned Users", bannedUsers ? bannedUsers : "None")
-                .addField("Skipped Users", skippedUsers ? skippedUsers : "None");
+                .addFields({ name: `Request ID`, value: id, inline: false },
+                    { name: `Reason`, value: reason, inline: false },
+                    { name: `Banned User`, value: bannedUsers ? bannedUsers : "None", inline: false },
+                    { name: `Skipped Users`, value: skippedUsers ? skippedUsers : "None", inline: false })
 
             staffChannel.send({
                 embeds: [staffEmbed]
@@ -96,11 +96,11 @@ async function approveMassBan(interaction) {
  * @param {ContextMenuInteraction} interaction
  */
 async function denyMassBan(interaction) {
-    let {options, member, guild} = interaction;
-    await interaction.deferReply({ephemeral: true});
+    let { options, member, guild } = interaction;
+    await interaction.deferReply({ ephemeral: true });
     let id = options.getString('id');
 
-    let result = await massbanSchema.findOne({id: id}).exec()
+    let result = await massbanSchema.findOne({ id: id }).exec()
         .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
     if (result && result.state === "PENDING") {
         result.state = "DENIED";
@@ -108,11 +108,11 @@ async function denyMassBan(interaction) {
 
         const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
 
-        const staffEmbed = new MessageEmbed()
+        const staffEmbed = new EmbedBuilder()
             .setColor('#ff8400')
-            .setAuthor({name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({dynamic: true})})
+            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`Mass Ban Request Denied`)
-            .addField("Request ID", id)
+            .addFields({ name: "Request ID", value: id, inline: false })
 
         staffChannel.send({
             embeds: [staffEmbed]
@@ -132,12 +132,12 @@ async function denyMassBan(interaction) {
  * @param {ContextMenuInteraction} interaction
  */
 async function createMassBanRequest(interaction) {
-    const modal = new Modal()
+    const modal = new ModalBuilder()
         .setTitle('Mass Ban Form')
         .setCustomId('massban-modal');
 
-    const usersRow = new MessageActionRow().addComponents([
-        new TextInputComponent()
+    const usersRow = new ActionRowBuilder().addComponents([
+        new TextInputBuilder()
             .setCustomId('user-list')
             .setLabel('User List to Ban (1 per line)')
             .setStyle(1)
@@ -145,11 +145,11 @@ async function createMassBanRequest(interaction) {
             .setMinLength(1)
             .setMaxLength(1000)
             .setRequired(true)
-            .setStyle("PARAGRAPH")
+            .setStyle(2)
     ]);
 
-    const reasonRow = new MessageActionRow().addComponents([
-        new TextInputComponent()
+    const reasonRow = new ActionRowBuilder().addComponents([
+        new TextInputBuilder()
             .setCustomId('reason')
             .setLabel('Reason For Ban')
             .setStyle(1)
@@ -157,7 +157,7 @@ async function createMassBanRequest(interaction) {
             .setMinLength(1)
             .setMaxLength(255)
             .setRequired(true)
-            .setStyle("SHORT")
+            .setStyle(1)
     ]);
 
     modal.addComponents(usersRow, reasonRow);
@@ -170,35 +170,35 @@ module.exports = {
     description: `Ban a list of users who have been in the server for less than a day.`,
     access: 'staff',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [
         {
             name: `create`,
             description: `Create a mass ban of multiple new users.`,
-            type: `SUB_COMMAND`,
+            type: ApplicationCommandOptionType.Subcommand,
             usage: `/massban create`
         },
         {
             name: `approve`,
             description: `Approve a mass ban request.`,
-            type: `SUB_COMMAND`,
+            type: ApplicationCommandOptionType.Subcommand,
             usage: `/massban approve [id]`,
             options: [{
                 name: `id`,
                 description: `The mass ban ID to approve.`,
-                type: `STRING`,
+                type: ApplicationCommandOptionType.String,
                 required: true
             }]
         },
         {
             name: `deny`,
             description: `Deny a mass ban request.`,
-            type: `SUB_COMMAND`,
+            type: ApplicationCommandOptionType.Subcommand,
             usage: `/massban deny [id]`,
             options: [{
                 name: `id`,
                 description: `The mass ban ID to deny.`,
-                type: `STRING`,
+                type: ApplicationCommandOptionType.String,
                 required: true
             }]
         }
@@ -210,7 +210,7 @@ module.exports = {
      */
     async execute(interaction) {
         try {
-            let {options} = interaction;
+            let { options } = interaction;
             switch (options.getSubcommand()) {
                 case 'create': {
                     await createMassBanRequest(interaction);

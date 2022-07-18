@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const path = require('path');
 /**
@@ -10,7 +10,7 @@ module.exports = async (message, client) => {
     if (message?.channel.id === process.env.RES_CHAN && !message?.author.bot) {
         const content = message?.cleanContent.split('\n');
 
-        let response = new MessageEmbed()
+        let response = new EmbedBuilder()
             .setColor('#F44336')
             .setTitle(`${content[0]}`)
             .setDescription(`${content.slice(1).join('\n')}`)

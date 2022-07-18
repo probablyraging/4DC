@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActivityType } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 
@@ -7,7 +7,7 @@ module.exports = {
     description: `Get information and stats about the server`,
     access: '',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/serverinfo`,
     /**
      * 
@@ -18,7 +18,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true });
 
-        let activityTypes = ["STREAMING", "PLAYING", "WATCHING", "COMPETING", "CUSTOM"];
+        let activityTypes = [ActivityType.Streaming, ActivityType.Playing, ActivityType.Listening, ActivityType.Watching, ActivityType.Competing, ActivityType.Custom];
 
         activityArr = [];
 
@@ -33,7 +33,7 @@ module.exports = {
             for (let j = 0; j < activityTypes.length; j++) {
                 let activityType = activityTypes[j];
 
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < activityTypes.length; i++) {
                     fetchedMembers.forEach(member => {
                         if (member.presence?.activities[i] && member.presence?.activities[i].type === activityType) {
                             activityArr.push(activityType);
@@ -45,15 +45,17 @@ module.exports = {
             streaming = 0;
             playing = 0;
             watching = 0;
+            listening = 0;
             competing = 0;
             custom = 0;
 
             activityArr.forEach(activity => {
-                if (activity === 'STREAMING') streaming++;
-                if (activity === 'PLAYING') playing++;
-                if (activity === 'WATCHING') watching++;
-                if (activity === 'COMPETING') competing++;
-                if (activity === 'CUSTOM') custom++;
+                if (activity === 0) playing++;
+                if (activity === 1) streaming++;
+                if (activity === 3) watching++;
+                if (activity === 4) listening++;
+                if (activity === 5) competing++;
+                if (activity === 4) custom++;
             });
 
             const description = guild.description || 'None';
@@ -85,32 +87,33 @@ module.exports = {
 
             var createdAt = converTimestampToSimpleFormat(new Date(guild.createdTimestamp).getTime());
 
-            const response = new MessageEmbed()
+            const response = new EmbedBuilder()
                 .setColor('#32BEA6') // GREEN
                 .setTitle(`${guild.name}'s Server Information`)
                 .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
                 .setImage()
-                .addField(`Name:`, `${guild.name}`, true)
-                .addField(`Owner:`, `<@${guild.ownerId}>`, true)
-                .addField(`Region:`, `Australia`, true)
-                .addField(`Description:`, `${description}`, false)
-                .addField(`Server Boosts:`, `${guild.premiumSubscriptionCount}`, true)
-                .addField(`Boost Tier:`, `${premiumTier}`, true)
-                .addField(`Created On:`, `${createdAt}`, true)
-                .addField(`Vanity URL:`, `${vanityURL}`, false)
+                .addFields({ name: `Name`, value: `${guild.name}`, inline: true },
+                { name: `Owner`, value: `<@${guild.ownerId}>`, inline: true },
+                { name: `Region`, value: `Australia`, inline: true },
+                { name: `Description`, value: `${description}`, inline: false },
+                { name: `Server Boosts`, value: `${guild.premiumSubscriptionCount}`, inline: true },
+                { name: `Boost Tier`, value: `${premiumTier}`, inline: true },
+                { name: `Created On`, value: `${createdAt}`, inline: true },
+                { name: `Vanity URL`, value: `${vanityURL}`, inline: false })
 
-            const response2 = new MessageEmbed()
+            const response2 = new EmbedBuilder()
                 .setColor('#32BEA6') // GREEN
                 .setTitle(`${guild.name}'s Server Stats`)
-                .addField(`Online:`, `${online}`, true)
-                .addField(`Idle:`, `${idle}`, true)
-                .addField(`DND:`, `${dnd}`, true)
-                .addField(`Playing:`, `${playing}`, true)
-                .addField(`Streaming:`, `${streaming}`, true)
-                .addField(`Watching:`, `${watching}`, true)
-                .addField(`Custom:`, `${custom}`, true)
-                .addField(`Competing:`, `${competing}`, true)
-                .addField(`Total Members:`, `${guild.memberCount}`, false)
+                .addFields({ name: `Online`, value: `${online}`, inline: true },
+                { name: `Idle`, value: `${idle}`, inline: true },
+                { name: `DND`, value: `${dnd}`, inline: true },
+                { name: `Playing`, value: `${playing}`, inline: true },
+                { name: `Streaming`, value: `${streaming}`, inline: true },
+                { name: `Watching`, value: `${watching}`, inline: true },
+                { name: `Listening`, value: `${listening}`, inline: true },
+                { name: `Custom`, value: `${custom}`, inline: true },
+                { name: `Competing`, value: `${competing}`, inline: true },
+                { name: `Total Members`, value: `${guild.memberCount}`, inline: false })
 
             interaction.editReply({
                 embeds: [response, response2],

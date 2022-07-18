@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,12 +6,12 @@ module.exports = {
 	description: `Information regarding individual topics`,
     access: 'staff',
 	cooldown: 3,
-	type: 'CHAT_INPUT',
+	type: ApplicationCommandType.ChatInput,
     usage: `/info [topic] [@username]`,
 	options: [{
 		name: `topic`,
 		description: `Select the topic you want to reference`,
-		type: `STRING`,
+		type: ApplicationCommandOptionType.String,
 		required: true,
 		choices: [{ name: 'review', value: 'review' },
 		{ name: 'connections', value: 'connections' },
@@ -23,7 +23,7 @@ module.exports = {
 	{
 		name: `username`,
 		description: `The user you want to direct the information at`,
-		type: `USER`,
+		type: ApplicationCommandOptionType.User,
 		required: true
 	}],
 	/**

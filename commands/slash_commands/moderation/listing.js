@@ -1,4 +1,4 @@
-const { ContextMenuInteraction } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const mongo = require('../../../mongo');
 const path = require('path');
 const rankSchema = require('../../../schemas/misc/rank_schema');
@@ -8,37 +8,37 @@ module.exports = {
     description: `Approve or deny a user's marketplace listing`,
     access: 'staff',
     cooldown: 30,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandOptionType.Subcommand,
     options: [{
         name: `approve`,
         description: `Approve a user's marketplace listing`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/listing approve [@username]`,
         options: [{
             name: `username`,
             description: `The user whos listing you want to approve`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         }, {
             name: `title`,
             description: `The custom title for the listing`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         }]
     }, {
         name: `deny`,
         description: `Deny a user's marketplace listing`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/listing deny [@username]`,
         options: [{
             name: `username`,
             description: `The user whos listing you want to deny`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         }, {
             name: `reason`,
             description: `The reason for denying the listing`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         }],
     }],

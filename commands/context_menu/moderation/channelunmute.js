@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -6,7 +6,7 @@ module.exports = {
     name: `Channel Unmute`,
     description: ``,
     cooldown: 5,
-    type: `MESSAGE`,
+    type: ApplicationCommandType.Message,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
@@ -19,11 +19,11 @@ module.exports = {
         const target = await fetchMsg.author;
 
         channel.permissionOverwrites.edit(target.id, {
-            SEND_MESSAGES: null,
+            SendMessages: null,
         }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
         // Log to channel
-        let log = new MessageEmbed()
+        let log = new EmbedBuilder()
             .setColor("#4fe059")
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target?.tag} *(${target?.id})*

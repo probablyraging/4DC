@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -6,12 +6,12 @@ module.exports = {
     description: `Fetch a user's avatar and display it in an embed`,
     access: '',
     cooldown: 5,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/avatar (@username)`,
     options: [{
         name: `username`,
         description: `The user whos avatar you want to fetch`,
-        type: `USER`,
+        type: ApplicationCommandOptionType.User,
         required: false,
     }],
     /**
@@ -23,7 +23,7 @@ module.exports = {
 
         const target = options.getMember(`username`) || member;
 
-        const response = new MessageEmbed()
+        const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setTitle(`AVATAR`)

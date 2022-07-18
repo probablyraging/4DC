@@ -23,26 +23,29 @@ module.exports = async (message) => {
         }
 
         // we only allow 1 link per post
-        if (detectURLs(message.content.toLowerCase()).length > 1) {
-            target?.send({
-                content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``
-            }).catch(() => {
-                message?.reply({
-                    content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                }).then(msg => {
-                    setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+        if (detectURLs(message.content.toLowerCase()) == null) {
+            return message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        } else {
+            if (detectURLs(message.content.toLowerCase()).length > 1) {
+                target?.send({
+                    content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``
+                }).catch(() => {
+                    message?.reply({
+                        content: `${process.env.BOT_DENY} \`You can only post 1 link in #${ckqChannel.name}\``,
+                        allowedMentions: { repliedUser: true },
+                        failIfNotExists: false
+                    }).catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                    }).then(msg => {
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
+                    });
                 });
-            });
-
-            return setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                return setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+            }
         }
 
         ckqChannel.permissionOverwrites.edit(message?.guildId, {
-            SEND_MESSAGES: false,
+            SendMessages: false,
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
         target?.roles?.add(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));

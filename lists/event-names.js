@@ -1,8 +1,5 @@
 module.exports = {
     events: [
-        "applicationCommandCreate",
-        "applicationCommandDelete",
-        "applicationCommandUpdate",
         "channelCreate",
         "channelDelete",
         "channelPinsUpdate",

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
@@ -9,37 +9,37 @@ module.exports = {
     description: `Information about CreatorBot's commands and features`,
     access: '',
     cooldown: 3,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `command`,
         description: `Get information about a specific command`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: `owner`,
             description: `A list of owner commands`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
             choices: [{ name: `commandcount`, value: `commandcount` }, { name: `embed`, value: `embed` }, { name: `index`, value: `index` }, { name: `say`, value: `say` }],
         },
         {
             name: `staff`,
             description: `A list of staff commands`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
-            choices: [{ name: `autoyt`, value: `autoyt` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `info`, value: `info` }, { name: `lockdown`, value: `lockdown` }, { name: `ccaudit`, value: `ccaudit` }, { name: `ccaway`, value: `ccaway` }, { name: `ccadd`, value: `ccadd` }, { name: `move`, value: `move` }, { name: `resetspotlight`, value: `resetspotlight` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `xp`, value: `xp` }, ],
+            choices: [{ name: `autoyt`, value: `autoyt` }, { name: `channelmute`, value: `channelmute` }, { name: `delete`, value: `delete` }, { name: `info`, value: `info` }, { name: `lockdown`, value: `lockdown` }, { name: `ccaudit`, value: `ccaudit` }, { name: `ccaway`, value: `ccaway` }, { name: `ccadd`, value: `ccadd` }, { name: `move`, value: `move` }, { name: `resetspotlight`, value: `resetspotlight` }, { name: `rule`, value: `rule` }, { name: `warn`, value: `warn` }, { name: `xp`, value: `xp` },],
         },
         {
             name: `other`,
             description: `A list of everyone commands`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false,
-            choices: [{ name: `about`, value: `about` }, { name: `avatar`, value: `avatar` }, { name: `boost`, value: `boost` }, { name: `counting`, value: `counting` }, { name: `help`, value: `help` }, { name: `invite`, value: `invite` }, { name: `leaderboard`, value: `leaderboard` }, { name: `livenow`, value: `livenow` }, { name: `ccvideos`, value: `ccvideos` }, { name: `rank`, value: `rank` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` }, ],
+            choices: [{ name: `about`, value: `about` }, { name: `avatar`, value: `avatar` }, { name: `boost`, value: `boost` }, { name: `counting`, value: `counting` }, { name: `help`, value: `help` }, { name: `invite`, value: `invite` }, { name: `leaderboard`, value: `leaderboard` }, { name: `livenow`, value: `livenow` }, { name: `ccvideos`, value: `ccvideos` }, { name: `rank`, value: `rank` }, { name: `report`, value: `report` }, { name: `serverinfo`, value: `serverinfo` }, { name: `whois`, value: `whois` },],
         }]
     },
     {
         name: `menu`,
         description: `The main menu of the help command`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/help menu`,
     }],
     /**
@@ -75,20 +75,20 @@ module.exports = {
 
                     const cmd = cmdArr.find(c => c.command.name === ownerCommands) || cmdArr.find(c => c.command.name === staffCommands) || cmdArr.find(c => c.command.name === otherCommands);
 
-                    const response = new MessageEmbed()
+                    const response = new EmbedBuilder()
                         .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
                         .setDescription(`${cmd.command.description}`)
 
-                    if (cmd.command.access === 'owner') response.addField(`Required Permissions`, `\`Owner\``, false), response.setColor('#87ecff');
-                    if (cmd.command.access === `staff`) response.addField(`Required Permissions`, `\`Staff\``, false), response.setColor('#fff766');
-                    if (cmd.command.access === ``) response.addField(`Required Permissions`, `\`None\``, false), response.setColor('#ffa116');
+                    if (cmd.command.access === 'owner') response.addFields({ name: `Required Permissions`, value: `\`Owner\``, inline: false }), response.setColor('#87ecff');
+                    if (cmd.command.access === `staff`) response.addFields({ name: `Required Permissions`, value: `\`Staff\``, inline: false }), response.setColor('#fff766');
+                    if (cmd.command.access === ``) response.addFields({ name: `Required Permissions`, value: `\`None\``, inline: false }), response.setColor('#ffa116');
 
                     if (!cmd.command.usage) {
                         cmd.command.options.forEach(option => {
-                            response.addField(`Usage (sub-command)`, `\`\`\`${option.usage}\`\`\``, false);
+                            response.addFields({ name: `Usage (sub-command)`, value: `\`\`\`${option.usage}\`\`\``, inline: false });
                         });
                     } else {
-                        response.addField(`Usage`, `\`\`\`${cmd.command.usage}\`\`\``, false);
+                        response.addFields({ name: `Usage`, value: `\`\`\`${cmd.command.usage}\`\`\``, inline: false });
                     }
 
                     interaction.reply({
@@ -118,7 +118,7 @@ module.exports = {
                         if (cmd.access === ``) utilCmds.push(cmd.name);
                     });
 
-                    const response = new MessageEmbed()
+                    const response = new EmbedBuilder()
                         .setColor('#32BEA6')
                         .setTitle(`ℹ️ CreatorBot's Help Menu`)
                         .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
@@ -127,12 +127,12 @@ Use \`/help [command]\` for information about a specific command
 Parameters inside \`[]\` brackets are mandatory
 Parameters inside \`()\` brackets are optional
 ⠀`)
-                        .addField(`👑 Owner`, `\`/${ownerCmd.join(`\`, \`/`)}\`
-⠀`, false)
-                        .addField(`👮 Staff`, `\`/${modCmds.join(`\`, \`/`)}\`
-⠀`, false)
-                        .addField(`👥 Everyone`, `\`/${utilCmds.join(`\`, \`/`)}\`
-⠀`, false)
+                        .addFields({ name: `👑 Owner`, value: `\`/${ownerCmd.join(`\`, \`/`)}\`
+⠀`, inline: false },
+                        { name: `👮 Staff`, value: `\`/${modCmds.join(`\`, \`/`)}\`
+⠀`, inline: false },
+                        { name: `👥 Everyone`, value: `\`/${utilCmds.join(`\`, \`/`)}\`
+⠀`, inline: false },)
                         .setFooter({ text: `${client.user.username} • Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
 
                     interaction.reply({

@@ -1,19 +1,19 @@
 require("dotenv").config();
 const { addAttachment } = require("../../../modules/misc/report_attachment");
-const { ContextMenuInteraction, MessageActionRow, TextInputComponent, Modal } = require("discord.js");
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
 
 module.exports = {
     name: "report",
     description: "Report a user to the CreatorHub staff",
     access: '',
     cooldown: 60,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/report [@username] [reason] (imageURL)`,
     options: [
         {
             name: "proof",
             description: "Provide proof of your report",
-            type: 11,
+            type: ApplicationCommandOptionType.Attachment,
             required: true
         }
     ],
@@ -28,11 +28,11 @@ module.exports = {
         
         addAttachment(1, attachment.url);
 
-        const modal = new Modal()
+        const modal = new ModalBuilder()
             .setTitle('Report Form')
             .setCustomId('report-modal')
 
-        const input1 = new TextInputComponent()
+        const input1 = new TextInputBuilder()
             .setCustomId('input1')
             .setLabel('Username')
             .setStyle(1)
@@ -41,7 +41,7 @@ module.exports = {
             .setMaxLength(54)
             .setRequired(true)
 
-        const input2 = new TextInputComponent()
+        const input2 = new TextInputBuilder()
             .setCustomId('input2')
             .setLabel('Reason')
             .setStyle(2)
@@ -50,8 +50,8 @@ module.exports = {
             .setMaxLength(1024)
             .setRequired(true)
 
-        const row1 = new MessageActionRow().addComponents([input1]);
-        const row2 = new MessageActionRow().addComponents([input2]);
+        const row1 = new ActionRowBuilder().addComponents([input1]);
+        const row2 = new ActionRowBuilder().addComponents([input2]);
 
         modal.addComponents(row1, row2);
 

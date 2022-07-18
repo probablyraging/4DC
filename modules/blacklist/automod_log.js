@@ -1,4 +1,4 @@
-const { Message, MessageEmbed } = require('discord.js');
+const { Message, EmbedBuilder } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 /**
@@ -8,7 +8,7 @@ module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-    if (message.channel.id === '990849600237740082') {
+    if (message.channel.id === process.env.AUTOMOD_CHAN) {
         if (message?.embeds?.length >= 1) {
             message.embeds.forEach(embed => {
                 if (embed.fields[0].value === 'Blacklist Words') {
@@ -37,7 +37,7 @@ module.exports = async (message, client) => {
                     const expiresAt = converTimestampToSimpleFormat(new Date().getTime() + 300000);
 
                     // Log to channel
-                    let log = new MessageEmbed()
+                    let log = new EmbedBuilder()
                         .setColor("#E04F5F")
                         .setAuthor({ name: `AutoMod`, iconURL: `https://discord.com/assets/e7af5fc8fa27c595d963c1b366dc91fa.gif` })
                         .setDescription(`**Member:** ${message?.author.tag} *(${message?.author.id})*

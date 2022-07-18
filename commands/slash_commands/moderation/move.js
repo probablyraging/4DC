@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { MessageEmbed } = require("discord.js");
+const { ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const path = require("path");
 
 module.exports = {
@@ -7,43 +7,43 @@ module.exports = {
     description: `Move a message to a specific channel. Move up to 5 messages at a time`,
     access: 'staff',
     cooldown: 10,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     usage: `/move [#toChannel] [messageId] (messageId2)...`,
     options: [
         {
             name: `channel`,
             description: `The channel you want to move a message to`,
-            type: `CHANNEL`,
+            type: ApplicationCommandOptionType.Channel,
             required: true
         },
         {
             name: `message`,
             description: `The ID of the message you want to move`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         },
         {
             name: `message2`,
             description: `The ID of the message you want to move`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: `message3`,
             description: `The ID of the message you want to move`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: `message4`,
             description: `The ID of the message you want to move`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         },
         {
             name: `message5`,
             description: `The ID of the message you want to move`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         }
     ],
@@ -79,7 +79,7 @@ module.exports = {
         });
         const filteredArr = delNull.filter(filterArr);
 
-        if (!guild.me.permissionsIn(channel).has("MANAGE_MESSAGES") || !guild.me.permissionsIn(channel).has("SEND_MESSAGES") || !guild.me.permissionsIn(channel).has("VIEW_CHANNEL")) {
+        if (!guild.members.me.permissionsIn(channel).has("ManageMessages") || !guild.members.me.permissionsIn(channel).has("SendMessages") || !guild.members.me.permissionsIn(channel).has("ViewChannel")) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`I do not have the proper permissions for #${channel.name}\``,
                 ephemeral: true
@@ -90,17 +90,17 @@ module.exports = {
         const channelType = toChannel.type;
 
         let cType;
-        if (channelType === "GUILD_VOICE") {
+        if (channelType === 2) {
             cType = "voice channel";
-        } else if (channelType === "GUILD_CATEGORY") {
+        } else if (channelType === 4) {
             cType = "category";
-        } else if (channelType === "GUILD_NEWS") {
+        } else if (channelType === 4) {
             cType = "news channel";
         } else {
             cType = "text channel";
         }
 
-        if (channelType !== "GUILD_TEXT") {
+        if (channelType !== 0) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`You can't move a message to a ${cType}\``,
                 ephemeral: true
@@ -135,7 +135,7 @@ module.exports = {
                                 imageArr.push(image.url);
                             });
 
-                            toChannel.createWebhook(authorUsername, { avatar: avatarURL }).then(webhook => {
+                            toChannel.createWebhook({ name: authorUsername, avatar: avatarURL }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     files: imageArr,
@@ -149,7 +149,7 @@ module.exports = {
 
                             msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         } else {
-                            toChannel.createWebhook(authorUsername, { avatar: avatarURL }).then(webhook => {
+                            toChannel.createWebhook({ name: authorUsername, avatar: avatarURL }).then(webhook => {
                                 webhook.send({
                                     content: `${msgContent}`,
                                     allowedMentions: {
@@ -179,15 +179,15 @@ module.exports = {
                             content = msgContent;
                         }
 
-                        let log = new MessageEmbed()
+                        let log = new EmbedBuilder()
                             .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                             .setColor("#FF9E00")
                             .setDescription(`**A message was moved**`)
-                            .addField(`By`, `<@${user.id}>`, false)
-                            .addField("Author", `<@${author.id}>`, true)
-                            .addField("From", `${channel}`, true)
-                            .addField("To", `${toChannel}`, true)
-                            .addField("Message", `\`\`\`${content}\`\`\``)
+                            .addFields({ name: `By`, value: `${user}`, inline: false },
+                            { name: `Author`, value: `${author}`, inline: true },
+                            { name: `From`, value: `${channel}`, inline: true },
+                            { name: `To`, value: `${toChannel}`, inline: true },
+                            { name: `Message`, value: `\`\`\`${content}\`\`\``, inline: true })
                             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                             .setTimestamp();
 

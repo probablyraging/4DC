@@ -1,6 +1,7 @@
-.env
+*.env
 node_modules
 .idea
 templates
 *.test
 .env.prod
+*.txt

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const mongo = require('../../mongo');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
@@ -31,7 +31,7 @@ module.exports = async (interaction) => {
     }
 
     channel.permissionOverwrites.edit(fetchedMember?.user.id, {
-        SEND_MESSAGES: false,
+        SendMessages: false,
     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
     if (duration > 0) {
@@ -62,7 +62,7 @@ module.exports = async (interaction) => {
     }
 
     // Log to channel
-    let log = new MessageEmbed()
+    let log = new EmbedBuilder()
         .setColor("#E04F5F")
         .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`**Member:** ${fetchedMember?.user.tag} *(${fetchedMember?.user.id})*

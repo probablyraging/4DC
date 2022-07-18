@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const mongo = require("../../mongo");
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const chartData = require('../../schemas/database_logs/chart_data');
@@ -15,7 +15,7 @@ module.exports = {
         setTimeout(async () => {
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
-                type: 'MEMBER_BAN_ADD',
+                type: AuditLogEvent.MemberBanAdd,
             });
 
             const banLog = fetchedLogs.entries.first();
@@ -23,7 +23,7 @@ module.exports = {
             const toReason = reason || `None`;
 
             // Log to channel
-            let log = new MessageEmbed()
+            let log = new EmbedBuilder()
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { v4: uuidv4 } = require("uuid");
 const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
 const { getAttachment } = require("../../modules/misc/report_attachment");
@@ -16,6 +16,8 @@ module.exports = async (interaction) => {
 
         if (member.user.username.toLowerCase() === split[0] && member.user.discriminator === split[1]) {
             target = `<@${member.id}>`;
+        } else if (member.user.username.toLowerCase() === split[0]) {
+            target = `<@${member.id}> - partial match`
         }
     });
 
@@ -23,11 +25,11 @@ module.exports = async (interaction) => {
     const staffChannel = interaction.client.channels.cache.get(process.env.STAFF_CHAN);
 
     if (!hasCooldown(user.id)) {
-        let reportEmbed = new MessageEmbed()
+        let reportEmbed = new EmbedBuilder()
             .setColor("#E04F5F")
             .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
-            .addField(`Reported User`, `${target}`, false)
-            .addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
+            .addFields({ name: `Reported User`, value: `${target}`, inline: false },
+                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
             .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp();
 
@@ -37,31 +39,41 @@ module.exports = async (interaction) => {
             reportEmbed.setImage(attachment)
         }
 
-        const reactionMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+        const reactionMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}`, embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
         await reactionMessage.react("⛔").catch(err => console.error(`Could not react to message '${reportId}': `, err));
 
         const filter = (reaction, user) => {
-            return guild.members.cache.find((member) => member.id === user.id).permissions.has("MANAGE_MESSAGES");
+            return guild.members.cache.find((member) => member.id === user.id).permissions.has("ManageMessages");
         };
 
         const collector = reactionMessage.createReactionCollector({ filter, dispose: true });
 
         collector.on("collect", (reaction, closingUser) => {
             if (!closingUser.bot && reaction.emoji.name === "⛔") {
-                const closedEmbed = new MessageEmbed(reportEmbed)
-                    .addField(`Closed By`, `${closingUser}`, false)
-                    .setColor("#32BEA6");
+                const closedEmbed = new EmbedBuilder(reportEmbed)
+                    .setColor("#32BEA6")
+                    .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+                    .addFields({ name: `Reported User`, value: `${target}`, inline: false },
+                        { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
+                    .addFields({ name: `Closed By`, value: `${closingUser}`, inline: false })
+                    .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setTimestamp();
+
+                if (attachment) {
+                    closedEmbed.setImage(attachment)
+                }
+
                 reactionMessage.edit({ embeds: [closedEmbed] });
                 reactionMessage.reactions.resolve("⛔").remove("⛔");
 
-                const replyEmbed = new MessageEmbed()
+                const replyEmbed = new EmbedBuilder()
                     .setColor("#32BEA6")
                     .setTitle(`CreatorHub Report`)
                     .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`Your report's status has been updated to \`CLOSED\``)
-                    .addField(`Report Message`, `\`\`\`${reason}\`\`\``, false)
-                    .addField(`Closed By`, `${closingUser}`, false)
+                    .addFields({ name: `Report Message`, value: `\`\`\`${reason}\`\`\``, inline: false },
+                        { name: `Closed By`, value: `${closingUser}`, inline: false })
                     .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp();
 

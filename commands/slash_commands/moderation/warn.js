@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, MessageEmbed } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const mongo = require('../../../mongo');
 const { addWarning } = require('../../../modules/creator_crew/utilities');
 const { notifyUser } = require('../../../modules/creator_crew/utilities');
@@ -14,16 +14,16 @@ module.exports = {
     description: `Add, remove or list a user's warnings`,
     access: 'staff',
     cooldown: 10,
-    type: `CHAT_INPUT`,
+    type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a warning to a specific user`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/warn add [type] [@username] [reason]`,
         options: [{
             name: `type`,
             description: `The type of warning to add`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{ name: 'regular', value: 'regular' },
             { name: 'creatorcrew', value: 'creatorcrew' }]
@@ -31,13 +31,13 @@ module.exports = {
         {
             name: `username`,
             description: `The user you want to add a warning to`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         },
         {
             name: `reason`,
             description: `Supply a reason for warning the user`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{ name: 'Rule 1 - harmful post/username/profile etc..', value: '1' },
             { name: 'Rule 2 - spamming and flooding', value: '2' },
@@ -53,31 +53,31 @@ module.exports = {
         {
             name: `custom`,
             description: `Supply a reason for warning the user when selecting custom`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: false
         }]
     },
     {
         name: `remove`,
         description: `Remove a warning from a specific user`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/warn remove [warningId]`,
         options: [{
             name: `warning`,
             description: `The warning ID you want to remove`,
-            type: `STRING`,
+            type: ApplicationCommandOptionType.String,
             required: true
         }],
     },
     {
         name: `list`,
         description: `List warnings warning IDs for a specific user`,
-        type: `SUB_COMMAND`,
+        type: ApplicationCommandOptionType.Subcommand,
         usage: `/warn list [@username]`,
         options: [{
             name: `username`,
             description: `The user whos warnings you want to list`,
-            type: `USER`,
+            type: ApplicationCommandOptionType.User,
             required: true
         }],
     }],
@@ -125,7 +125,7 @@ module.exports = {
 
                     if (type === 'regular') {
                         // Log to channel
-                        let log = new MessageEmbed()
+                        let log = new EmbedBuilder()
                             .setColor("#E04F5F")
                             .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`**Member:** ${username} *(${userId})*
@@ -254,7 +254,7 @@ ${banMsg}`,
                                 const authorAvatar = guild.members.cache.get(author);
 
                                 // Log to channel
-                                let log = new MessageEmbed()
+                                let log = new EmbedBuilder()
                                     .setColor("#4fe059")
                                     .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                     .setDescription(`**Member:** ${username} *(${userId})*`)
@@ -281,7 +281,7 @@ ${banMsg}`,
                                     const authorAvatar = guild.members.cache.get(author);
 
                                     // Log to channel
-                                    let log = new MessageEmbed()
+                                    let log = new EmbedBuilder()
                                         .setColor("#4fe059")
                                         .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                         .setDescription(`**Member:** ${username} *(${userId})*`)
@@ -318,7 +318,7 @@ ${banMsg}`,
                         // regular warnings
                         const results = await warnSchema.find({ guildId, userId });
 
-                        let warningEmbed = new MessageEmbed()
+                        let warningEmbed = new EmbedBuilder()
                             .setColor('#32BEA6')
                             .setAuthor({ name: `Regular Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
@@ -332,20 +332,20 @@ ${banMsg}`,
                                 const { warnId, author, timestamp, reason } = warning
                                 warnCount++
 
-                                warningEmbed.addField(`#${warnCount}
+                                warningEmbed.addFields({ name: `#${warnCount}
 ⠀
-Warning ID`, `\`\`\`${warnId}\`\`\``, false)
-                                warningEmbed.addField(`Date`, `\`\`\`${moment(timestamp).format('llll')}\`\`\``, false)
-                                warningEmbed.addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                warningEmbed.addField(`Warned By`, `<@${author}>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, false)
+Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false},
+                                { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false},
+                                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false},
+                                { name: `Warned By`, value: `<@${author}>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false})
                             }
                         }
 
                         // creator crew warnings
                         const results2 = await ccWarnModel.find({ userId });
 
-                        let mcWarningEmbed = new MessageEmbed()
+                        let mcWarningEmbed = new EmbedBuilder()
                             .setColor('#bdeb34')
                             .setAuthor({ name: `Creator Crew Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
@@ -359,13 +359,13 @@ Warning ID`, `\`\`\`${warnId}\`\`\``, false)
                                 const { warnId, warnedBy, timestamp, reason } = warning
                                 warnCount++
 
-                                mcWarningEmbed.addField(`#${warnCount}
+                                warningEmbed.addFields({ name: `#${warnCount}
 ⠀
-Warning ID`, `\`\`\`${warnId}\`\`\``, false)
-                                mcWarningEmbed.addField(`Date`, `\`\`\`${moment(timestamp).format('llll')}\`\`\``, false)
-                                mcWarningEmbed.addField(`Reason`, `\`\`\`${reason}\`\`\``, false)
-                                mcWarningEmbed.addField(`Warned By`, `<@${warnedBy}>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, false)
+Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false},
+                                { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false},
+                                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false},
+                                { name: `Warned By`, value: `<@${author}>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false})
                             }
                         }
 

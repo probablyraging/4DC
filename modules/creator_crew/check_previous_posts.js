@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { getYoutubeVideoId, getAllVideoMessageIds, convertTimestampToRelativeTime, isAway, deleteVideosFromNonChannelMembers, addVideo, deleteVideosBefore } = require('./utilities');
+const { getYoutubeVideoId, getAllVideoMessageIds, timeElapsedBetweenTimestamps, isAway, deleteVideosFromNonChannelMembers, addVideo, deleteVideosBefore } = require('./utilities');
 const ccVideoQueue = require('../../schemas/creator_crew/video_queue');
 const ccProofModel = require('../../schemas/creator_crew/proof_schema');
 const path = require("path");
@@ -80,6 +80,8 @@ async function setupChecks(client) {
 
         for (const data of getUsersVideoQueue) {
             const { userId, videoAuthor, videoId, timestamp, notified3, notified5 } = data;
+            const nowTime = new Date().valueOf();
+            const daysElapsed = timeElapsedBetweenTimestamps(nowTime, timestamp);
             const ccMember = guild.members.cache.get(userId);
             const away = await isAway(userId);
 
@@ -100,7 +102,7 @@ async function setupChecks(client) {
             }
 
             // Check all video timestamps in all Creator Crew members queues - notify users/staff if videos haven't been watched
-            if (!away && !notified3 && convertTimestampToRelativeTime(timestamp) === 3) {
+            if (!away && !notified3 && daysElapsed >= 3 && daysElapsed < 4) {
                 lateUsersThree.push(userId);
                 // Notify member
                 ccMember.send({
@@ -116,7 +118,7 @@ async function setupChecks(client) {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
-            if (!away && !notified5 && convertTimestampToRelativeTime(timestamp) === 5) {
+            if (!away && !notified5 && daysElapsed >= 5) {
                 lateUsersFive.push(userId);
                 // Notify the member
                 ccMember.send({
@@ -180,7 +182,7 @@ ${notifyMessage}`
                     away: false,
                     missedCount: 0
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-                console.log(`Created a Creator Crew proof entry for ${member?.user.id}`);
+                console.log(`Created a proof entry for ${member?.user.id}`);
             }
         });
     }, 15 * 60 * 1000);

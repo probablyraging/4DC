@@ -1,4 +1,4 @@
-const { CommandInteraction } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -10,13 +10,13 @@ module.exports = {
     options: [{
         name: `amount`,
         description: `Number of messages to delete`,
-        type: `NUMBER`,
+        type: ApplicationCommandOptionType.Number,
         required: true
     },
     {
         name: `username`,
         description: `Include a username to delete their messages only`,
-        type: `USER`,
+        type: ApplicationCommandOptionType.User,
         required: false
     }],
     /**
@@ -31,7 +31,7 @@ module.exports = {
 
         const fetchMsg = await channel.messages.fetch();
 
-        if (!guild.me.permissionsIn(channel).has('MANAGE_MESSAGES') || !guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
+        if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel')) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} \`I do not have to proper permissions for #${channel.name}\``,
                 ephemeral: true

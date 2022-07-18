@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const path = require('path');
 const massbanSchema = require('../../schemas/misc/mass_ban_schema');
 const { v4: uuidv4 } = require("uuid");
@@ -18,13 +18,13 @@ module.exports = async (interaction) => {
     let id = uuidv4();
 
     let authorTag = member?.user.tag;
-    let staffEmbed = new MessageEmbed()
+    let staffEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`Mass Ban Request Needs Approval - use \`\/massban approve [id]\` or \`\/massban deny [id]\``)
-        .addField("Request ID", id)
-        .addField("Reason", reason)
-        .addField("User List to Ban", trimmedListString, true);
+        .addFields({ name: `Request ID`, value: id, inline: false },
+        { name: `Reason`, value: reason, inline: false },
+        { name: `User List to Ban`, value: `trimmedListString`, inline: true })
 
     staffChannel.send({
         content: `<@&${process.env.STAFF_ROLE}>`,
