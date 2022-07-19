@@ -5,7 +5,7 @@ const cooldown = new Set();
 /**
  * @param {Message} message 
  */
-module.exports = (client) => {
+module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
@@ -137,5 +137,5 @@ module.exports = (client) => {
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
         });
-    }, 5000);
+    }, 30000);
 }

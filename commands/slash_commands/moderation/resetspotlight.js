@@ -24,10 +24,7 @@ module.exports = {
             .setColor('#44eaff') // GREEN
             .setTitle(`:crown: Content Spotlight`)
             .setDescription(`**What Is It?**
-Content Spotlight is a promo channel with a twist. Every 5 hours the channel will unlock allowing someone to post a single link to their content. The first person to post their content wins and the channel will be locked. Your content will be featured in this channel for 5 hours and you will also get the <@&878229140992589906> role. Once your 5 hours are up, your content will be deleted and the channel will be unlocked again ready for another round. To limit channel hogging the channel is on a 6 hour cool down.
-        
-**What Can I Post?**
-Links to social media, youtube channels, twitch channels, videos, highlights etc are all allowed. Please don't post anything that breaks the server rules.`)
+Every 5 hours the channel will unlock, allowing everyone to post a single link to their content, the person who claims the channel will also be given the <@&878229140992589906> role. The channel will then be locked again for 5 hours allowing that person's content to be centre of attention`)
 
         const searchFor = 'currentTime';
         await mongo().then(async mongoose => {

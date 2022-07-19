@@ -9,7 +9,11 @@ const timerSchema = mongoose.Schema({
     searchFor: {
         type: String,
         required: true
-    } 
+    },
+    previouslyFeatured: {
+        type: String,
+        required: false
+    }
 
 });
 
