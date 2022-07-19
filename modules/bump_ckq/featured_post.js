@@ -11,7 +11,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
         await fetchedMembers.forEach(member => {
             for (let i = 0; i < 5; i++) {
                 if (!member.user.bot && member.presence?.activities[i] && member.presence?.activities[i].type === ActivityType.Streaming) {
-                    liveArr.push({ id: member.user.id, username: member.user.username, url: member.presence?.activities[i].url });
+                    liveArr.push({ id: member.user.id, username: member.user.username, url: member.presence?.activities[i].url, state: member.presence?.activities[i].state });
                 }
             }
         });
@@ -37,7 +37,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
             let platform = 'Other';
             if (randUser.url.split('/').includes('www.twitch.tv')) platform = 'Twitch';
             if (randUser.url.split('/').includes('youtube.com')) platform = 'YouTube';
-            updatedMessage = `**${randUser.username}** is streaming on ${platform} - ${randUser.url}`;
+            updatedMessage = `**${randUser.username}** is streaming ${randUser.state} on ${platform} - ${randUser.url}`;
             // Fetch and delete the previous featured post
             await featuredChan.messages.fetch({ limi: 1 }).then(fetched => {
                 fetched.forEach(message => {
