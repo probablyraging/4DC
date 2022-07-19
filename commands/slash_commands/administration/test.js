@@ -1,6 +1,5 @@
 
 const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require("discord.js");
-const ogs = require('open-graph-scraper');
 
 module.exports = {
 	name: `test`,
