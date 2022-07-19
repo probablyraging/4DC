@@ -34,7 +34,7 @@ module.exports = async (message, client) => {
                         return time;
                     }
 
-                    const expiresAt = converTimestampToSimpleFormat(new Date().getTime() + 300000);
+                    const expiresAt = new Date(new Date().getTime() + 300000).toUTCString();
 
                     // Log to channel
                     let log = new EmbedBuilder()

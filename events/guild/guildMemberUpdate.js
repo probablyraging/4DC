@@ -50,7 +50,7 @@ module.exports = {
                 return time;
             }
 
-            const expiresAt = converTimestampToSimpleFormat(new Date(oldMember.communicationDisabledUntilTimestamp).getTime());
+            const expiresAt = new Date(oldMember.communicationDisabledUntilTimestamp).toUTCString();
 
             // Log to channel
             let log = new EmbedBuilder()
