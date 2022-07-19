@@ -25,7 +25,7 @@ module.exports = {
 
             const muteLog = fetchedLogs.entries.first();
             const { executor, reason } = muteLog;
-            const toReason = reason || `No reason given`;
+            const toReason = reason;
             const timestamp = new Date().getTime();
 
             function converTimestampToSimpleFormat(timestamp) {
