@@ -1,5 +1,4 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const mongo = require('../../../mongo');
 const path = require('path');
 const rankSchema = require('../../../schemas/misc/rank_schema');
 

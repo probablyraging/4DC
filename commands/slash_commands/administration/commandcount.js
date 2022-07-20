@@ -1,5 +1,4 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const mongo = require('../../../mongo');
 const commandCountSchema = require('../../../schemas/misc/command_count');
 const path = require('path');
 
@@ -24,16 +23,14 @@ module.exports = {
             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
-        await mongo().then(async mongoose => {
-            const sort = await commandCountSchema.find({})
+        const sort = await commandCountSchema.find({})
 
-            sortArr = [];
-            for (const data of sort) {
-                const { command, uses } = data;
+        sortArr = [];
+        for (const data of sort) {
+            const { command, uses } = data;
 
-                sortArr.push({ command, uses });
-            }
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+            sortArr.push({ command, uses });
+        }
 
         sortArr.sort(function (a, b) {
             return b.uses - a.uses;
@@ -43,7 +40,8 @@ module.exports = {
             return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
         }
 
-        response.addFields({ name: `${process.env.BOT_INFO} \`Command Usage\``, value: `⠀
+        response.addFields({
+            name: `${process.env.BOT_INFO} \`Command Usage\``, value: `⠀
 \`/${sortArr[0].command}\` - **${sortArr[0].uses}** uses
 \`/${sortArr[1].command}\` - **${sortArr[1].uses}** uses
 \`/${sortArr[2].command}\` - **${sortArr[2].uses}** uses
@@ -63,16 +61,17 @@ module.exports = {
 \`/${sortArr[16].command}\` - **${sortArr[16].uses}** uses
 \`/${sortArr[17].command}\` - **${sortArr[17].uses}** uses
 \`/${sortArr[18].command}\` - **${sortArr[18].uses}** uses
-\`/${sortArr[19].command}\` - **${sortArr[19].uses}** uses`, inline: false })
+\`/${sortArr[19].command}\` - **${sortArr[19].uses}** uses`, inline: false
+        })
 
-    interaction.editReply({
-        embeds: [response],
-        ephemeral: true
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-
-
+        interaction.editReply({
+            embeds: [response],
+            ephemeral: true
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
 
-}
+
+
+
+    }
 }

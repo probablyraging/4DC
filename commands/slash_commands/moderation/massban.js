@@ -209,25 +209,20 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        try {
-            let { options } = interaction;
-            switch (options.getSubcommand()) {
-                case 'create': {
-                    await createMassBanRequest(interaction);
-                    break;
-                }
-                case 'approve': {
-                    await approveMassBan(interaction);
-                    break;
-                }
-                case 'deny': {
-                    await denyMassBan(interaction);
-                    break;
-                }
+        let { options } = interaction;
+        switch (options.getSubcommand()) {
+            case 'create': {
+                await createMassBanRequest(interaction);
+                break;
             }
-        } catch (err) {
-            console.error(`${path.basename(__filename)} There was a problem while interacting with a mass ban: `, err)
+            case 'approve': {
+                await approveMassBan(interaction);
+                break;
+            }
+            case 'deny': {
+                await denyMassBan(interaction);
+                break;
+            }
         }
-
     }
 }

@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
-const mongo = require('../../mongo');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
@@ -54,16 +53,14 @@ module.exports = {
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
         // Log to database for dashboard
-        await mongo().then(async mongoose => {
-            await messageDeleteSchema.create({
-                userId: message?.author.id,
-                username: message?.author.tag,
-                channel: message?.channel.name,
-                message: content,
-                attachment: attachmentToImgur,
-                timestamp: timestamp,
-                type: 'Message Delete'
-            });
+        await messageDeleteSchema.create({
+            userId: message?.author.id,
+            username: message?.author.tag,
+            channel: message?.channel.name,
+            message: content,
+            attachment: attachmentToImgur,
+            timestamp: timestamp,
+            type: 'Message Delete'
         });
 
         // if a user deletes there post in CKQ before the timer is up, open the channel to be reposted in
@@ -93,16 +90,14 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                 SendMessages: true,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 5300);
 
-            await mongo().then(async mongoose => {
-                await timerSchema.findOneAndUpdate({
-                    searchFor
-                }, {
-                    timestamp: "null",
-                    searchFor
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+            await timerSchema.findOneAndUpdate({
+                searchFor
+            }, {
+                timestamp: "null",
+                searchFor
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
     }
 }

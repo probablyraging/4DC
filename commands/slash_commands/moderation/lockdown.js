@@ -37,45 +37,41 @@ module.exports = {
         const noticeChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
         const everyone = guild.roles.cache.get(process.env.GUILD_ID);
 
-        try {
-            switch (options.getSubcommand()) {
-                case 'start': {
-                    everyone.edit({
-                        permissions: ['ViewChannel', 'CreateInstantInvite', 'AddReactions', 'ReadMessageHistory']
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        switch (options.getSubcommand()) {
+            case 'start': {
+                everyone.edit({
+                    permissions: ['ViewChannel', 'CreateInstantInvite', 'AddReactions', 'ReadMessageHistory']
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                    noticeChan.send({
-                        content: `${process.env.BOT_DENY} \`SERVER LOCKDOWN STARTED\`
+                noticeChan.send({
+                    content: `${process.env.BOT_DENY} \`SERVER LOCKDOWN STARTED\`
                         
 **Reason**
 \`\`\`${reason}\`\`\``
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    interaction.reply({
-                        content: `${process.env.BOT_CONF} \`Done\``,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                interaction.reply({
+                    content: `${process.env.BOT_CONF} \`Done\``,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
+        }
 
-            switch (options.getSubcommand()) {
-                case 'end': {
-                    everyone.edit({
-                        permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Spead', 'Stream', 'UseVAD']
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        switch (options.getSubcommand()) {
+            case 'end': {
+                everyone.edit({
+                    permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Spead', 'Stream', 'UseVAD']
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                    noticeChan.send({
-                        content: `${process.env.BOT_CONF} \`A SERVER LOCKDOWN HAD ENDED\``
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                noticeChan.send({
+                    content: `${process.env.BOT_CONF} \`A SERVER LOCKDOWN HAD ENDED\``
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    interaction.reply({
-                        content: `${process.env.BOT_CONF} \`Done\``,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                interaction.reply({
+                    content: `${process.env.BOT_CONF} \`Done\``,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
-        } catch (err) {
-            console.error(err);
         }
     }
 }

@@ -1,4 +1,4 @@
-const { featuredRandomPicker } = require('../bump_ckq/featured_post')
+const { featuredRandomPicker } = require('./featured_post');
 const timerSchema = require("../../schemas/misc/timer_schema");
 
 module.exports = (client) => {

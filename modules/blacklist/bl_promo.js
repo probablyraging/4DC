@@ -39,28 +39,26 @@ module.exports = async (message, client) => {
             const splitStr = urlInStr[0].split('/');
             const channelId = splitStr[splitStr.length - 1];
 
-            try {
-                const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+            const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
 
-                if (resolve && resolve.title.toLowerCase() === username || resolve.title.toLowerCase() === displayName) {
-                    member?.send({
-                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
-                    }).catch(() => {
-                        message?.reply({
-                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
+            if (resolve && resolve.title.toLowerCase() === username || resolve.title.toLowerCase() === displayName) {
+                member?.send({
+                    content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
+                }).catch(() => {
+                    message?.reply({
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
+                        allowedMentions: { repliedUser: true },
+                        failIfNotExists: false
+                    }).catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                    }).then(msg => {
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
                     });
+                });
 
-                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
-                    await sleep(300);
-                }
-            } catch { }
+                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                await sleep(300);
+            }
         }
 
         // if the url is a video url, we can check the video author's name in the embed json data and see if it matches the message author's username
@@ -68,29 +66,27 @@ module.exports = async (message, client) => {
             const urlInStr = detectURLs(message?.content) || [`https://${message?.content}`];
             const replace = urlInStr[0].replace('www.', ''); ``
 
-            try {
-                const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
-                const response = await resolve.json();
+            const resolve = await fetch(`https://www.youtube.com/oembed?url=${replace}&format=json`);
+            const response = await resolve.json();
 
-                if (response && response.author_name.toLowerCase() === username || response.author_name.toLowerCase() === displayName) {
-                    member?.send({
-                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
-                    }).catch(() => {
-                        message?.reply({
-                            content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
+            if (response && response.author_name.toLowerCase() === username || response.author_name.toLowerCase() === displayName) {
+                member?.send({
+                    content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``
+                }).catch(() => {
+                    message?.reply({
+                        content: `${process.env.BOT_DENY} \`You cannot post your own channel link in #${message?.channel?.name}\``,
+                        allowedMentions: { repliedUser: true },
+                        failIfNotExists: false
+                    }).catch(err => {
+                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                    }).then(msg => {
+                        setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
                     });
+                });
 
-                    setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
-                    await sleep(300);
-                }
-            } catch { }
+                setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
+                await sleep(300);
+            }
         }
 
         // if the url is a twitch channel url, we can get the channel's name ur; and see if it matches the message author's username
@@ -145,7 +141,7 @@ module.exports = async (message, client) => {
                     });
                 });
 
-                setTimeout(() => { 
+                setTimeout(() => {
                     // If channel is a thread, we delete the entire thread, or we just delete the message
                     if (message?.author.id === message?.channel.ownerId) {
                         message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err))

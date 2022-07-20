@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const mongo = require('../../mongo');
 const letterSchema = require('../../schemas/letter_game/letter_schema');
 const letterRecordSchema = require('../../schemas/letter_game/letter_record_schema');
 const letterLBSchema = require('../../schemas/letter_game/letter_lb_schema');
@@ -24,20 +23,14 @@ module.exports = async (message, client) => {
          * GET CURRENT COUNT FROM DATABASE
          */
         const searchFor = 'currentCount';
-        await mongo().then(async (mongoose) => {
-            try {
-                const results = await letterSchema.find({ searchFor: 'currentCount' });
+        const results = await letterSchema.find({ searchFor: 'currentCount' });
 
-                for (const info of results) {
-                    var { currentLetterCounter } = info;
+        for (const info of results) {
+            var { currentLetterCounter } = info;
 
-                    currentCounter = parseInt(currentLetterCounter);
-                    dbCount = parseInt(currentLetterCounter)
-                }
-            } finally {
-                // do nothing
-            }
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+            currentCounter = parseInt(currentLetterCounter);
+            dbCount = parseInt(currentLetterCounter)
+        }
 
         let fetchFirst = message.channel.messages.cache.first();
 
@@ -339,35 +332,29 @@ module.exports = async (message, client) => {
 
             if (!failed) {
                 async function dbCheckRecord() {
-                    await mongo().then(async mongoose => {
-                        try {
-                            const results = await letterRecordSchema.find({ searchForRecord });
+                    const results = await letterRecordSchema.find({ searchForRecord });
 
-                            for (const info of results) {
-                                const { letterRecord } = info;
+                    for (const info of results) {
+                        const { letterRecord } = info;
 
-                                dbletterRecord = parseInt(letterRecord);
+                        dbletterRecord = parseInt(letterRecord);
 
-                                if (dbCount > dbletterRecord) {
-                                    await letterRecordSchema.findOneAndRemove({ searchForRecord });
+                        if (dbCount > dbletterRecord) {
+                            await letterRecordSchema.findOneAndRemove({ searchForRecord });
 
-                                    await letterRecordSchema.findOneAndUpdate({
-                                        letterRecord: currentCounter,
-                                        searchForRecord,
-                                    },
-                                        {
-                                            letterRecord: currentCounter,
-                                            searchForRecord,
-                                        },
-                                        {
-                                            upsert: true
-                                        });
-                                }
-                            }
-                        } finally {
-                            // do nothing
+                            await letterRecordSchema.findOneAndUpdate({
+                                letterRecord: currentCounter,
+                                searchForRecord,
+                            },
+                                {
+                                    letterRecord: currentCounter,
+                                    searchForRecord,
+                                },
+                                {
+                                    upsert: true
+                                });
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                    }
                 }
                 dbCheckRecord();
 
@@ -376,135 +363,122 @@ module.exports = async (message, client) => {
                  * COLLECTION IF USER DOESN'T EXIST IN DATABASE
                  */
                 let userId = message.author.id;
+                const results = await letterLBSchema.find({ userId });
 
-                await mongo().then(async mongoose => {
-                    try {
-                        const results = await letterLBSchema.find({ userId });
+                if (results.length === 0) {
+                    const correctCount = 1;
 
-                        if (results.length === 0) {
-                            const correctCount = 1;
+                    await letterLBSchema.findOneAndUpdate({
+                        userId,
+                        username: message.author.username,
+                        discriminator: message.author.discriminator,
+                        avatar: message.author.avatar,
+                        correctCount,
+                        searchFor
+                    }, {
+                        userId,
+                        username: message.author.username,
+                        discriminator: message.author.discriminator,
+                        avatar: message.author.avatar,
+                        correctCount,
+                        searchFor
+                    }, {
+                        upsert: true
+                    });
+                } else if (results.length > 0) {
+                    const results = await letterLBSchema.find({ userId });
 
-                            await letterLBSchema.findOneAndUpdate({
-                                userId,
-                                username: message.author.username,
-                                discriminator: message.author.discriminator,
-                                avatar: message.author.avatar,
-                                correctCount,
-                                searchFor
-                            }, {
-                                userId,
-                                username: message.author.username,
-                                discriminator: message.author.discriminator,
-                                avatar: message.author.avatar,
-                                correctCount,
-                                searchFor
-                            }, {
-                                upsert: true
-                            });
-                        } else if (results.length > 0) {
-                            const results = await letterLBSchema.find({ userId });
+                    for (const info of results) {
+                        const { correctCount } = info;
 
-                            for (const info of results) {
-                                const { correctCount } = info;
+                        let newCount = parseInt(correctCount);
 
-                                let newCount = parseInt(correctCount);
+                        // find the value of each letter in a submission
+                        let tens = 0;
+                        let eights = 0;
+                        let fives = 0;
+                        let fours = 0;
+                        let threes = 0;
+                        let twos = 0;
+                        let ones = 0;
 
-                                // find the value of each letter in a submission
-                                let tens = 0;
-                                let eights = 0;
-                                let fives = 0;
-                                let fours = 0;
-                                let threes = 0;
-                                let twos = 0;
-                                let ones = 0;
+                        for (let i = 0; i < message?.content?.length; i++) {
+                            const letters = message?.content?.toLowerCase().split('');
 
-                                for (let i = 0; i < message?.content?.length; i++) {
-                                    const letters = message?.content?.toLowerCase().split('');
-
-                                    letters.forEach(letter => {
-                                        if (letterVals.tens.letters.includes(letter[i])) {
-                                            tens++;
-                                        }
-                                        if (letterVals.eights.letters.includes(letter[i])) {
-                                            eights++;
-                                        }
-                                        if (letterVals.fives.letters.includes(letter[i])) {
-                                            fives++;
-                                        }
-                                        if (letterVals.fours.letters.includes(letter[i])) {
-                                            fours++;
-                                        }
-                                        if (letterVals.threes.letters.includes(letter[i])) {
-                                            threes++;
-                                        }
-                                        if (letterVals.twos.letters.includes(letter[i])) {
-                                            twos++;
-                                        }
-                                        if (letterVals.ones.letters.includes(letter[i])) {
-                                            ones++;
-                                        }
-                                    })
+                            letters.forEach(letter => {
+                                if (letterVals.tens.letters.includes(letter[i])) {
+                                    tens++;
                                 }
-
-                                const tensMath = tens * letterVals.tens.value;
-                                const eightsMath = eights * letterVals.eights.value;
-                                const fivesMath = fives * letterVals.fives.value;
-                                const foursMath = fours * letterVals.fours.value;
-                                const threesMath = threes * letterVals.threes.value;
-                                const twosMath = twos * letterVals.twos.value;
-                                const onesMath = ones * letterVals.ones.value;
-                                const totalPoints = tensMath + eightsMath + fivesMath + foursMath + threesMath + twosMath + onesMath + newCount;
-
-                                await letterLBSchema.findOneAndRemove({ userId });
-
-                                await letterLBSchema.findOneAndUpdate({
-                                    userId,
-                                    correctCount: totalPoints,
-                                    username: message.author.username,
-                                    discriminator: message.author.discriminator,
-                                    avatar: message.author.avatar,
-                                    searchFor
-                                }, {
-                                    userId,
-                                    correctCount: totalPoints,
-                                    username: message.author.username,
-                                    discriminator: message.author.discriminator,
-                                    avatar: message.author.avatar,
-                                    searchFor
-                                }, {
-                                    upsert: true
-                                });
-                            }
+                                if (letterVals.eights.letters.includes(letter[i])) {
+                                    eights++;
+                                }
+                                if (letterVals.fives.letters.includes(letter[i])) {
+                                    fives++;
+                                }
+                                if (letterVals.fours.letters.includes(letter[i])) {
+                                    fours++;
+                                }
+                                if (letterVals.threes.letters.includes(letter[i])) {
+                                    threes++;
+                                }
+                                if (letterVals.twos.letters.includes(letter[i])) {
+                                    twos++;
+                                }
+                                if (letterVals.ones.letters.includes(letter[i])) {
+                                    ones++;
+                                }
+                            })
                         }
-                    } finally {
-                        // do nothing
+
+                        const tensMath = tens * letterVals.tens.value;
+                        const eightsMath = eights * letterVals.eights.value;
+                        const fivesMath = fives * letterVals.fives.value;
+                        const foursMath = fours * letterVals.fours.value;
+                        const threesMath = threes * letterVals.threes.value;
+                        const twosMath = twos * letterVals.twos.value;
+                        const onesMath = ones * letterVals.ones.value;
+                        const totalPoints = tensMath + eightsMath + fivesMath + foursMath + threesMath + twosMath + onesMath + newCount;
+
+                        await letterLBSchema.findOneAndRemove({ userId });
+
+                        await letterLBSchema.findOneAndUpdate({
+                            userId,
+                            correctCount: totalPoints,
+                            username: message.author.username,
+                            discriminator: message.author.discriminator,
+                            avatar: message.author.avatar,
+                            searchFor
+                        }, {
+                            userId,
+                            correctCount: totalPoints,
+                            username: message.author.username,
+                            discriminator: message.author.discriminator,
+                            avatar: message.author.avatar,
+                            searchFor
+                        }, {
+                            upsert: true
+                        });
                     }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                }
             }
 
             /**
              * UPDATE CURRENT CURRENT COUNTER OR RESET IF FAIL
              */
             async function dbUpdateCount() {
-                await mongo().then(async mongoose => {
-                    try {
-                        await letterSchema.findOneAndRemove({ searchFor: 'currentCount' })
+                await letterSchema.findOneAndRemove({ searchFor: 'currentCount' })
 
-                        await letterSchema.findOneAndUpdate({
-                            currentLetterCounter: currentCounter,
-                            searchFor,
-                        },
-                            {
-                                currentLetterCounter: currentCounter,
-                                searchFor,
-                            },
-                            {
-                                upsert: true
-                            });
-                    } finally {
-                        // do nothing
-                    }
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                await letterSchema.findOneAndUpdate({
+                    currentLetterCounter: currentCounter,
+                    searchFor,
+                },
+                    {
+                        currentLetterCounter: currentCounter,
+                        searchFor,
+                    },
+                    {
+                        upsert: true
+                    });
             }
             dbUpdateCount();
         });

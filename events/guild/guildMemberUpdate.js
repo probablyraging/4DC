@@ -1,5 +1,4 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
-const mongo = require("../../mongo");
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -16,7 +15,7 @@ module.exports = {
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
                 action: AuditLogEvent.MemberUpdate,
-            }).catch(err => { 
+            }).catch(err => {
                 console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
                 error = true;
             });
@@ -67,16 +66,14 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
             // Log to database for dashboard
-            await mongo().then(async mongoose => {
-                await muteTimeoutSchema.create({
-                    userId: oldMember?.user.id,
-                    username: oldMember?.user.tag,
-                    author: executor?.id,
-                    authorTag: `${executor?.username}#${executor?.discriminator}`,
-                    reason: toReason,
-                    timestamp: timestamp,
-                    type: 'Timeout'
-                });
+            await muteTimeoutSchema.create({
+                userId: oldMember?.user.id,
+                username: oldMember?.user.tag,
+                author: executor?.id,
+                authorTag: `${executor?.username}#${executor?.discriminator}`,
+                reason: toReason,
+                timestamp: timestamp,
+                type: 'Timeout'
             });
         }
     }

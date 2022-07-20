@@ -1,5 +1,4 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
-const mongo = require("../../mongo");
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const chartData = require('../../schemas/database_logs/chart_data');
 const { v4: uuidv4 } = require('uuid');
@@ -36,16 +35,14 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
             // Log to database for dashboard
-            await mongo().then(async mongoose => {
-                await banUnbanSchema.create({
-                    userId: ban?.user.id,
-                    username: ban?.user.tag,
-                    author: executor?.id,
-                    authorTag: `${executor?.username}#${executor?.discriminator}`,
-                    reason: reason,
-                    timestamp: timestamp,
-                    type: 'Ban'
-                });
+            await banUnbanSchema.create({
+                userId: ban?.user.id,
+                username: ban?.user.tag,
+                author: executor?.id,
+                authorTag: `${executor?.username}#${executor?.discriminator}`,
+                reason: reason,
+                timestamp: timestamp,
+                type: 'Ban'
             });
         }, 2000);
 

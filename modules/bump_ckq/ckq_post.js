@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const mongo = require('../../mongo');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const blacklist = require('../../lists/blacklist');
 const path = require('path');
@@ -54,17 +53,15 @@ module.exports = async (message) => {
         const addTwo = myDate.setHours(myDate.getHours() + 5);
         const timestamp = addTwo;
 
-        await mongo().then(async mongoose => {
-            const searchFor = 'currentTime';
+        const searchFor = 'currentTime';
 
-            await timerSchema.findOneAndUpdate({
-                searchFor
-            }, {
-                timestamp,
-                searchFor
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+        await timerSchema.findOneAndUpdate({
+            searchFor
+        }, {
+            timestamp,
+            searchFor
+        }, {
+            upsert: true
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
     }
 }

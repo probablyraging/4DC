@@ -49,100 +49,102 @@ module.exports = {
     async execute(interaction) {
         const { guild, client, options } = interaction;
 
-        try {
-            switch (options.getSubcommand()) {
-                case 'command': {
-                    const ownerCommands = options.getString('owner');
-                    const staffCommands = options.getString('staff');
-                    const otherCommands = options.getString('other');
+        switch (options.getSubcommand()) {
+            case 'command': {
+                const ownerCommands = options.getString('owner');
+                const staffCommands = options.getString('staff');
+                const otherCommands = options.getString('other');
 
-                    if (!ownerCommands && !staffCommands && !otherCommands) {
-                        return interaction.reply({
-                            content: `${process.env.BOT_DENY} \`You did not include a command name\``,
-                            ephemeral: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                    }
-
-                    cmdArr = [];
-
-                    (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
-                        const command = require(file);
-
-                        if (file.includes('administration')) cmdArr.push({ command, access: 'Administration' });
-                        if (file.includes('moderation')) cmdArr.push({ command, access: 'Moderation' });
-                        if (file.includes('utility')) cmdArr.push({ command, access: 'Utility' });
-                    });
-
-                    const cmd = cmdArr.find(c => c.command.name === ownerCommands) || cmdArr.find(c => c.command.name === staffCommands) || cmdArr.find(c => c.command.name === otherCommands);
-
-                    const response = new EmbedBuilder()
-                        .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
-                        .setDescription(`${cmd.command.description}`)
-
-                    if (cmd.command.access === 'owner') response.addFields({ name: `Required Permissions`, value: `\`Owner\``, inline: false }), response.setColor('#87ecff');
-                    if (cmd.command.access === `staff`) response.addFields({ name: `Required Permissions`, value: `\`Staff\``, inline: false }), response.setColor('#fff766');
-                    if (cmd.command.access === ``) response.addFields({ name: `Required Permissions`, value: `\`None\``, inline: false }), response.setColor('#ffa116');
-
-                    if (!cmd.command.usage) {
-                        cmd.command.options.forEach(option => {
-                            response.addFields({ name: `Usage (sub-command)`, value: `\`\`\`${option.usage}\`\`\``, inline: false });
-                        });
-                    } else {
-                        response.addFields({ name: `Usage`, value: `\`\`\`${cmd.command.usage}\`\`\``, inline: false });
-                    }
-
-                    interaction.reply({
-                        embeds: [response],
+                if (!ownerCommands && !staffCommands && !otherCommands) {
+                    return interaction.reply({
+                        content: `${process.env.BOT_DENY} \`You did not include a command name\``,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
                 }
+
+                cmdArr = [];
+
+                (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
+                    const command = require(file);
+
+                    if (file.includes('administration')) cmdArr.push({ command, access: 'Administration' });
+                    if (file.includes('moderation')) cmdArr.push({ command, access: 'Moderation' });
+                    if (file.includes('utility')) cmdArr.push({ command, access: 'Utility' });
+                });
+
+                const cmd = cmdArr.find(c => c.command.name === ownerCommands) || cmdArr.find(c => c.command.name === staffCommands) || cmdArr.find(c => c.command.name === otherCommands);
+
+                const response = new EmbedBuilder()
+                    .setTitle(`${cmd.access} > ${cmd.command.name.toUpperCase()}`)
+                    .setDescription(`${cmd.command.description}`)
+
+                if (cmd.command.access === 'owner') response.addFields({ name: `Required Permissions`, value: `\`Owner\``, inline: false }), response.setColor('#87ecff');
+                if (cmd.command.access === `staff`) response.addFields({ name: `Required Permissions`, value: `\`Staff\``, inline: false }), response.setColor('#fff766');
+                if (cmd.command.access === ``) response.addFields({ name: `Required Permissions`, value: `\`None\``, inline: false }), response.setColor('#ffa116');
+
+                if (!cmd.command.usage) {
+                    cmd.command.options.forEach(option => {
+                        response.addFields({ name: `Usage (sub-command)`, value: `\`\`\`${option.usage}\`\`\``, inline: false });
+                    });
+                } else {
+                    response.addFields({ name: `Usage`, value: `\`\`\`${cmd.command.usage}\`\`\``, inline: false });
+                }
+
+                interaction.reply({
+                    embeds: [response],
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
             }
+        }
 
-            switch (options.getSubcommand()) {
-                case 'menu': {
-                    cmdArr = [];
+        switch (options.getSubcommand()) {
+            case 'menu': {
+                cmdArr = [];
 
-                    (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
-                        const command = require(file);
-                        cmdArr.push(command);
-                    });
+                (await PG(`${process.cwd()}/commands/slash_commands/*/*.js`)).map(async (file) => {
+                    const command = require(file);
+                    cmdArr.push(command);
+                });
 
-                    ownerCmd = [];
-                    modCmds = [];
-                    utilCmds = [];
+                ownerCmd = [];
+                modCmds = [];
+                utilCmds = [];
 
-                    cmdArr.forEach(cmd => {
-                        if (cmd.access === 'owner') ownerCmd.push(cmd.name);
-                        if (cmd.access === 'staff') modCmds.push(cmd.name);
-                        if (cmd.access === ``) utilCmds.push(cmd.name);
-                    });
+                cmdArr.forEach(cmd => {
+                    if (cmd.access === 'owner') ownerCmd.push(cmd.name);
+                    if (cmd.access === 'staff') modCmds.push(cmd.name);
+                    if (cmd.access === ``) utilCmds.push(cmd.name);
+                });
 
-                    const response = new EmbedBuilder()
-                        .setColor('#32BEA6')
-                        .setTitle(`ℹ️ CreatorBot's Help Menu`)
-                        .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
+                const response = new EmbedBuilder()
+                    .setColor('#32BEA6')
+                    .setTitle(`ℹ️ CreatorBot's Help Menu`)
+                    .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
         
 Use \`/help [command]\` for information about a specific command
 Parameters inside \`[]\` brackets are mandatory
 Parameters inside \`()\` brackets are optional
 ⠀`)
-                        .addFields({ name: `👑 Owner`, value: `\`/${ownerCmd.join(`\`, \`/`)}\`
-⠀`, inline: false },
-                        { name: `👮 Staff`, value: `\`/${modCmds.join(`\`, \`/`)}\`
-⠀`, inline: false },
-                        { name: `👥 Everyone`, value: `\`/${utilCmds.join(`\`, \`/`)}\`
-⠀`, inline: false },)
-                        .setFooter({ text: `${client.user.username} • Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
+                    .addFields({
+                        name: `👑 Owner`, value: `\`/${ownerCmd.join(`\`, \`/`)}\`
+⠀`, inline: false
+                    },
+                        {
+                            name: `👮 Staff`, value: `\`/${modCmds.join(`\`, \`/`)}\`
+⠀`, inline: false
+                        },
+                        {
+                            name: `👥 Everyone`, value: `\`/${utilCmds.join(`\`, \`/`)}\`
+⠀`, inline: false
+                        })
+                    .setFooter({ text: `${client.user.username} • Created by ProbablyRaging`, iconURL: guild.iconURL({ dynamic: true }) })
 
-                    interaction.reply({
-                        embeds: [response],
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                interaction.reply({
+                    embeds: [response],
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
-        } catch (err) {
-            console.error(err);
         }
     }
 }

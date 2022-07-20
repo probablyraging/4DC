@@ -1,5 +1,4 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const mongo = require('../../../mongo');
 const { addWarning } = require('../../../modules/creator_crew/utilities');
 const { notifyUser } = require('../../../modules/creator_crew/utilities');
 const warnSchema = require('../../../schemas/misc/warn_schema');
@@ -89,312 +88,300 @@ module.exports = {
         const { client, member, guild, user, options } = interaction;
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        try {
-            switch (options.getSubcommand()) {
-                case 'add': {
-                    const type = options.getString('type');
-                    const target = options.getMember('username');
-                    let reason = options.getString('reason');
-                    const custom = options.getString('custom');
+        switch (options.getSubcommand()) {
+            case 'add': {
+                const type = options.getString('type');
+                const target = options.getMember('username');
+                let reason = options.getString('reason');
+                const custom = options.getString('custom');
 
-                    await getRules().then(async rule => {
-                        if (reason === '1') reason = `${rule[0]}`;
-                        if (reason === '2') reason = `${rule[1]}`;
-                        if (reason === '3') reason = `${rule[2]}`;
-                        if (reason === '4') reason = `${rule[3].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}`;
-                        if (reason === '5') reason = `${rule[4]}`;
-                        if (reason === '6') reason = `${rule[5]}`;
-                        if (reason === '7') reason = `${rule[6]}`;
-                        if (reason === 'Custom') reason = `${custom}`;
-                    });
+                await getRules().then(async rule => {
+                    if (reason === '1') reason = `${rule[0]}`;
+                    if (reason === '2') reason = `${rule[1]}`;
+                    if (reason === '3') reason = `${rule[2]}`;
+                    if (reason === '4') reason = `${rule[3].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}`;
+                    if (reason === '5') reason = `${rule[4]}`;
+                    if (reason === '6') reason = `${rule[5]}`;
+                    if (reason === '7') reason = `${rule[6]}`;
+                    if (reason === 'Custom') reason = `${custom}`;
+                });
 
-                    if (reason === 'null') {
-                        return interaction.reply({
-                            content: `${process.env.BOT_DENY} \`You must provide custom reason when selecting the 'Custom' option\``,
+                if (reason === 'null') {
+                    return interaction.reply({
+                        content: `${process.env.BOT_DENY} \`You must provide custom reason when selecting the 'Custom' option\``,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+
+                const guildId = guild.id;
+                const userId = target.id;
+                const username = target.user.tag;
+                const authorTag = member.user.tag;
+                const warnId = uuidv4();
+                const author = member.id;
+                const timestamp = new Date().getTime();
+
+                if (type === 'regular') {
+                    // Log to channel
+                    let log = new EmbedBuilder()
+                        .setColor("#E04F5F")
+                        .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                        .setDescription(`**Member:** ${username} *(${userId})*
+**Reason:** ${reason}`)
+                        .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_add_icon.png' })
+                        .setTimestamp();
+
+                    logChan.send({
+                        embeds: [log]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+                    // Log to database
+                    await warnSchema.create({
+                        guildId,
+                        userId,
+                        username,
+                        warnId,
+                        author,
+                        authorTag,
+                        timestamp,
+                        reason
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                    const results = await warnSchema.find({ guildId, userId });
+                    const warnCount = results.length;
+
+                    if (warnCount >= 3) {
+                        let dmFail = false;
+                        let banFail = false;
+
+                        target.send({
+                            content: `${process.env.BOT_DENY} \`You have been permanently banned from ${guild.name}\`
+                                                                                    
+**Reason**
+> Warning threshold reached`
+                        }).catch(() => dmFail = true);
+
+                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
+
+                        target.ban({
+                            days: 0,
+                            reason: `Warning threshold reached`
+                        }).catch(() => banFail = true);
+
+                        let banMsg = banFail ? `${process.env.BOT_DENY} \`I could not ban ${target.user.tag}\`` : `${process.env.BOT_CONF} \`${target.user.tag} was banned\``;
+
+                        if (reason && reason.length > 1024) {
+                            return interaction.reply({
+                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        interaction.reply({
+                            content: `${replyMsg}
+${banMsg}`,
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    } else {
+                        let dmFail = false;
+
+                        target.send({
+                            content: `${target} - you received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!
+                                                                                    
+**Reason**
+> ${reason}`
+                        }).catch(() => dmFail = true);
+
+                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
+
+                        if (reason && reason.length > 1024) {
+                            return interaction.reply({
+                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                        }
+
+                        interaction.reply({
+                            content: `${replyMsg}`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
+                }
 
-                    const guildId = guild.id;
-                    const userId = target.id;
-                    const username = target.user.tag;
-                    const authorTag = member.user.tag;
-                    const warnId = uuidv4();
-                    const author = member.id;
-                    const timestamp = new Date().getTime();
+                if (type === 'creatorcrew') {
+                    const warnedBy = user.id;
 
-                    if (type === 'regular') {
+                    if (reason === 'lack_of_tabs') message = `The Creator Crew proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+                    if (reason === 'has_not_posted_proof') message = `You have not posted to Creator Crew recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+
+                    await addWarning(userId, warnId, warnedBy, reason);
+
+                    notifyUser(target, message, null);
+                }
+            }
+        }
+
+        switch (options.getSubcommand()) {
+            case 'remove': {
+                const warning = options.getString('warning');
+
+                const results = await warnSchema.find({ warnId: warning });
+
+                if (results.length >= 1) {
+                    await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
+                        content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
+
+                    for (const data of results) {
+                        const { author, authorTag, username, userId, warnId } = data;
+
+                        const authorAvatar = guild.members.cache.get(author);
+
                         // Log to channel
                         let log = new EmbedBuilder()
-                            .setColor("#E04F5F")
-                            .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
-                            .setDescription(`**Member:** ${username} *(${userId})*
-**Reason:** ${reason}`)
-                            .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_add_icon.png' })
+                            .setColor("#4fe059")
+                            .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
+                            .setDescription(`**Member:** ${username} *(${userId})*`)
+                            .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
                             .setTimestamp();
 
                         logChan.send({
                             embeds: [log]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-                        // Log to database
-                        await mongo().then(async mongoose => {
-                            try {
-                                await warnSchema.create({
-                                    guildId,
-                                    userId,
-                                    username,
-                                    warnId,
-                                    author,
-                                    authorTag,
-                                    timestamp,
-                                    reason
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                            } finally {
-                                // do nothing
-                            }
-
-                            await mongo().then(async (mongoose) => {
-                                try {
-                                    const results = await warnSchema.find({ guildId, userId });
-                                    const warnCount = results.length;
-
-                                    if (warnCount >= 3) {
-                                        let dmFail = false;
-                                        let banFail = false;
-
-                                        target.send({
-                                            content: `${process.env.BOT_DENY} \`You have been permanently banned from ${guild.name}\`
-                                                                                    
-**Reason**
-> Warning threshold reached`
-                                        }).catch(() => dmFail = true);
-
-                                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
-
-                                        target.ban({
-                                            days: 0,
-                                            reason: `Warning threshold reached`
-                                        }).catch(() => banFail = true);
-
-                                        let banMsg = banFail ? `${process.env.BOT_DENY} \`I could not ban ${target.user.tag}\`` : `${process.env.BOT_CONF} \`${target.user.tag} was banned\``;
-
-                                        if (reason && reason.length > 1024) {
-                                            return interaction.reply({
-                                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
-                                                ephemeral: true
-                                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                                        }
-
-                                        interaction.reply({
-                                            content: `${replyMsg}
-${banMsg}`,
-                                            ephemeral: true
-                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                                    } else {
-                                        let dmFail = false;
-
-                                        target.send({
-                                            content: `${target} - you received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!
-                                                                                    
-**Reason**
-> ${reason}`
-                                        }).catch(() => dmFail = true);
-
-                                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
-
-                                        if (reason && reason.length > 1024) {
-                                            return interaction.reply({
-                                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
-                                                ephemeral: true
-                                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                                        }
-
-                                        interaction.reply({
-                                            content: `${replyMsg}`,
-                                            ephemeral: true
-                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                                    }
-                                } finally {
-                                    // do nothing
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
                     }
 
-                    if (type === 'creatorcrew') {
-                        const warnedBy = user.id;
+                } else {
+                    const results2 = await ccWarnModel.find({ warnId: warning });
 
-                        if (reason === 'lack_of_tabs') message = `The Creator Crew proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
-                        if (reason === 'has_not_posted_proof') message = `You have not posted to Creator Crew recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+                    if (results2.length >= 1) {
+                        await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
+                            content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
 
-                        await addWarning(userId, warnId, warnedBy, reason);
+                        for (const data of results2) {
+                            const { author, authorTag, username, userId, warnId } = data;
 
-                        notifyUser(target, message, null);
+                            const authorAvatar = guild.members.cache.get(author);
+
+                            // Log to channel
+                            let log = new EmbedBuilder()
+                                .setColor("#4fe059")
+                                .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
+                                .setDescription(`**Member:** ${username} *(${userId})*`)
+                                .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
+                                .setTimestamp();
+
+                            logChan.send({
+                                embeds: [log]
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                        }
+
+                    } else {
+                        interaction.reply({
+                            content: `${process.env.BOT_DENY} \`Warning '${warning}' does not exist or has already been deleted\``,
+                            ephemeral: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
                 }
             }
+        }
 
-            switch (options.getSubcommand()) {
-                case 'remove': {
-                    const warning = options.getString('warning');
+        switch (options.getSubcommand()) {
+            case 'list': {
+                const target = options.getMember('username');
 
-                    await mongo().then(async mongoose => {
-                        const results = await warnSchema.find({ warnId: warning });
+                const guildId = guild.id;
+                const userId = target.id;
 
-                        if (results.length >= 1) {
-                            await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
-                                content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
+                let regWarning = 0;
+                let mcWarning = 0;
 
-                            for (const data of results) {
-                                const { author, authorTag, username, userId, warnId } = data;
+                // regular warnings
+                const results = await warnSchema.find({ guildId, userId });
 
-                                const authorAvatar = guild.members.cache.get(author);
+                let warningEmbed = new EmbedBuilder()
+                    .setColor('#32BEA6')
+                    .setAuthor({ name: `Regular Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setTimestamp()
 
-                                // Log to channel
-                                let log = new EmbedBuilder()
-                                    .setColor("#4fe059")
-                                    .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
-                                    .setDescription(`**Member:** ${username} *(${userId})*`)
-                                    .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
-                                    .setTimestamp();
+                if (results.length >= 1) {
+                    regWarning++;
+                    warnCount = `0`;
 
-                                logChan.send({
-                                    embeds: [log]
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                            }
+                    for (const warning of results) {
+                        const { warnId, author, timestamp, reason } = warning
+                        warnCount++
 
-                        } else {
-                            const results2 = await ccWarnModel.find({ warnId: warning });
+                        warningEmbed.addFields({
+                            name: `#${warnCount}
+⠀
+Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
+                        },
+                            { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false },
+                            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false },
+                            {
+                                name: `Warned By`, value: `<@${author}>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
+                            })
+                    }
+                }
 
-                            if (results2.length >= 1) {
-                                await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
-                                    content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
+                // creator crew warnings
+                const results2 = await ccWarnModel.find({ userId });
 
-                                for (const data of results2) {
-                                    const { author, authorTag, username, userId, warnId } = data;
+                let mcWarningEmbed = new EmbedBuilder()
+                    .setColor('#bdeb34')
+                    .setAuthor({ name: `Creator Crew Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setTimestamp()
 
-                                    const authorAvatar = guild.members.cache.get(author);
+                if (results2.length >= 1) {
+                    mcWarning++;
+                    warnCount = `0`;
 
-                                    // Log to channel
-                                    let log = new EmbedBuilder()
-                                        .setColor("#4fe059")
-                                        .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
-                                        .setDescription(`**Member:** ${username} *(${userId})*`)
-                                        .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
-                                        .setTimestamp();
+                    for (const warning of results2) {
+                        const { warnId, warnedBy, timestamp, reason } = warning
+                        warnCount++
 
-                                    logChan.send({
-                                        embeds: [log]
-                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                                }
+                        warningEmbed.addFields({
+                            name: `#${warnCount}
+⠀
+Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
+                        },
+                            { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false },
+                            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false },
+                            {
+                                name: `Warned By`, value: `<@${author}>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
+                            })
+                    }
+                }
 
-                            } else {
-                                interaction.reply({
-                                    content: `${process.env.BOT_DENY} \`Warning '${warning}' does not exist or has already been deleted\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
-                        }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+                if (regWarning >= 1 && mcWarning >= 1) {
+                    interaction.reply({
+                        embeds: [warningEmbed, mcWarningEmbed],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                } else if (regWarning >= 1) {
+                    interaction.reply({
+                        embeds: [warningEmbed],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                } else if (mcWarning >= 1) {
+                    interaction.reply({
+                        embeds: [mcWarningEmbed],
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                } else {
+                    interaction.reply({
+                        content: 'This user has no warnings',
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
             }
-
-            switch (options.getSubcommand()) {
-                case 'list': {
-                    const target = options.getMember('username');
-
-                    const guildId = guild.id;
-                    const userId = target.id;
-
-                    let regWarning = 0;
-                    let mcWarning = 0;
-
-                    await mongo().then(async (mongoose) => {
-                        // regular warnings
-                        const results = await warnSchema.find({ guildId, userId });
-
-                        let warningEmbed = new EmbedBuilder()
-                            .setColor('#32BEA6')
-                            .setAuthor({ name: `Regular Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                            .setTimestamp()
-
-                        if (results.length >= 1) {
-                            regWarning++;
-                            warnCount = `0`;
-
-                            for (const warning of results) {
-                                const { warnId, author, timestamp, reason } = warning
-                                warnCount++
-
-                                warningEmbed.addFields({ name: `#${warnCount}
-⠀
-Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false},
-                                { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false},
-                                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false},
-                                { name: `Warned By`, value: `<@${author}>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false})
-                            }
-                        }
-
-                        // creator crew warnings
-                        const results2 = await ccWarnModel.find({ userId });
-
-                        let mcWarningEmbed = new EmbedBuilder()
-                            .setColor('#bdeb34')
-                            .setAuthor({ name: `Creator Crew Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                            .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                            .setTimestamp()
-
-                        if (results2.length >= 1) {
-                            mcWarning++;
-                            warnCount = `0`;
-
-                            for (const warning of results2) {
-                                const { warnId, warnedBy, timestamp, reason } = warning
-                                warnCount++
-
-                                warningEmbed.addFields({ name: `#${warnCount}
-⠀
-Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false},
-                                { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false},
-                                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false},
-                                { name: `Warned By`, value: `<@${author}>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false})
-                            }
-                        }
-
-                        if (regWarning >= 1 && mcWarning >= 1) {
-                            interaction.reply({
-                                embeds: [warningEmbed, mcWarningEmbed],
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        } else if (regWarning >= 1) {
-                            interaction.reply({
-                                embeds: [warningEmbed],
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        } else if (mcWarning >= 1) {
-                            interaction.reply({
-                                embeds: [mcWarningEmbed],
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        } else {
-                            interaction.reply({
-                                content: 'This user has no warnings',
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
-                }
-            }
-        } catch (err) {
-            if (err) console.log(err);
         }
     }
 }

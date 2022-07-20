@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const mongo = require('../../mongo');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
 const { v4: uuidv4 } = require('uuid');
@@ -79,7 +78,6 @@ module.exports = async (interaction) => {
     // Log to database for dashboard
     const logTimestamp = new Date().getTime();
 
-    await mongo().then(async mongoose => {
         await muteTimeoutSchema.create({
             userId: fetchedMember?.user.id,
             username: fetchedMember?.user.tag,
@@ -89,7 +87,6 @@ module.exports = async (interaction) => {
             timestamp: logTimestamp,
             type: 'Channel Mute'
         });
-    });
 
     let dmFail = false;
 
