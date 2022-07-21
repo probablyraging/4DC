@@ -6,21 +6,14 @@
 [![Library](https://img.shields.io/badge/library-discord.js-5865f2?style=for-the-badge)](https://www.npmjs.com/package/discord.js)
 [![DiscordJS](https://img.shields.io/npm/v/discord.js.svg?maxAge=3600&style=for-the-badge)](https://www.npmjs.com/package/discord.js)
 
-CreatorBot is a multipurpose discord.js v13 bot created for the <a href="https://discord.gg/creatorhub">**CreatorHub**</a> Discord server.
+CreatorBot is a multipurpose discord.js v14 bot created for the <a href="https://discord.gg/creatorhub">**CreatorHub**</a> Discord server.
 
-With over 30 useful slash commands and other notable features including; moderation (mute/mass delete/move/blacklist), phishing scam detection ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), warning system, rank and xp economy, custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), youtube upload notifications, custom games, command help menu, reporting system plus many more..
+With 30+ custom slash commands and modules including; general moderation, suspicious link filters ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), custom blacklist, warning system, rank and xp economy with custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), invite tracker, youtube upload notifications, custom games, command help menu, reporting system, and much more..
 
-CreatorBot is actively being maintained and updated to include the newest discord.js features and Discord API integration.
-
-# CreatorHub Discord Server
-
-CreatorHub is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
-
-So if you're a youtuber, streamer, game developer, musician, or if you're just looking for somewhere to meet new people, come check us out at **[CreatorHub](https://discord.gg/creatorhub)**
+This repo is actively being maintained and updated to include the newest discord.js releases and Discord API changes.
 
 # Note
-- While this project and all of it's code is free to use and modify, it was created soley to run on a specific server and would not work elsewhere without some heavy modifying beforehand
-- This project is a WIP and you will likely encounter issues if you use it
+- While this project and all of its code is free to use and modify, it was created soley to run on a specific server and would not work elsewhere without some heavy modifying beforehand
 - The CreatorHub Discord server isn't for support for this project. Please DM me privately if you have any questions ProbablyRaging#7080
 
 # License
