@@ -14,7 +14,8 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'approve', value: 'approve' },
-        { name: 'deny', value: 'deny' }]
+        { name: 'deny', value: 'deny' },
+        { name: 'pigeonhole', value: 'pigeonhole' }]
     },
     {
         name: `id`,
@@ -33,7 +34,7 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const { guild, channel, options, user } = interaction;
+        const { guild, options, user } = interaction;
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const id = options.getString('id');
@@ -87,6 +88,24 @@ module.exports = {
                 // Edit the existing embed and add the approprate reaction
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
+
+                interaction.editReply({
+                    content: `${process.env.BOT_CONF} Response added to ${id}`,
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
+        }
+
+        // PIGEONHOLE
+        switch (options.getString('choice')) {
+            case 'pigeonhole': {
+                const responseEmbed = EmbedBuilder.from(embed)
+                    .addFields({ name: `Response`, value: `\`\`\`${response}\`\`\`` })
+                    .setFooter({ text: `Pigeonholed by ${user?.tag}` })
+                    .setTimestamp()
+
+                // Edit the existing embed and add the approprate reaction
+                await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                await message.react(`${process.env.BOT_INFO}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Response added to ${id}`,
