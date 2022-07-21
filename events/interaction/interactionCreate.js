@@ -40,11 +40,21 @@ module.exports = {
                     const expiration_time = time_stamps.get(member.id) + cooldown_amount;
                     const time_left = (expiration_time - current_time) / 1000;
 
+
+
                     if (current_time < expiration_time) {
-                        return interaction.reply({
-                            content: `${process.env.BOT_DENY} \`Cooldown: ${time_left.toFixed(0)} seconds\``,
-                            ephemeral: true
-                        })
+                        // For cooldowns longer than 60 seconds
+                        if (time_left > 60) {
+                            return interaction.reply({
+                                content: `${process.env.BOT_DENY} \`Cooldown: ${Math.round(time_left.toFixed(1) / 60)} minutes\``,
+                                ephemeral: true
+                            })
+                        } else {
+                            return interaction.reply({
+                                content: `${process.env.BOT_DENY} \`Cooldown: ${time_left.toFixed(0)} seconds\``,
+                                ephemeral: true
+                            })
+                        }
                     }
                 }
                 time_stamps.set(member.id, current_time);

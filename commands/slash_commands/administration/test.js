@@ -12,7 +12,7 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 		const { options, member, guild, channel } = interaction;
-
+		
 		interaction.reply({ content: 'ok', ephemeral: true })
 	}
 }

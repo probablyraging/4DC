@@ -11,7 +11,7 @@ module.exports = {
     name: `rank`,
     description: `Fetch your, or someone else's rank`,
     access: '',
-    cooldown: 60,
+    cooldown: 1200,
     type: ApplicationCommandType.ChatInput,
     usage: `/rank`,
     options: [{
