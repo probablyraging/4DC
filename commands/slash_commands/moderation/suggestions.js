@@ -38,7 +38,7 @@ module.exports = {
 
         const id = options.getString('id');
         const response = options.getString('response');
-        const suggestionChannel = guild.channels.cache.get(process.env.SUGGESTION_CHAN);
+        const suggestionChannel = guild.channels.cache.get(process.env.SUGGESTIONS_CHAN);
         const message = await suggestionChannel.messages.fetch(id);
         const embed = message?.embeds[0];
 
