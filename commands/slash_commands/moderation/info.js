@@ -15,7 +15,6 @@ module.exports = {
 		required: true,
 		choices: [{ name: 'review', value: 'review' },
 		{ name: 'connections', value: 'connections' },
-		{ name: 'seo', value: 'seo' },
         { name: 'xp', value: 'xp' },
         { name: 'premium', value: 'premium' },
         { name: 'contentshare', value: 'contentshare' }]
@@ -49,23 +48,6 @@ module.exports = {
 			interaction.reply({
 				content: `*Information for ${target}:*
 > ${process.env.BOT_DOC} Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings ⚙️ > Connections**`
-			}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-		}
-
-		// SEO
-		if (choice === 'seo') {
-			interaction.reply({
-				content: `*Information for ${target}:*
-> ${process.env.BOT_DOC} Search Engine Optimization (SEO) is the practice of using good keywords, thumbnails, titles and descriptions to improve the chances of YouTube and Google recommending your content to others, by choosing your content to fill their search results when someone makes search request uings keywords that you've used
-> 
-> To get you started with some general SEO, take a look at the following links. We also recommend you put some time aside to do your own research, as SEO is one of the more important aspects of content creation. The content itself is super important, but you can make awesome content and no one will find it because of poor SEO
-> 
-> **[#1: Raw Video Metadata](<https://discord.com/channels/820889004055855144/851707143873626134/852115913661743114>)**
-> **[#2: Pick Low Competition, High Ranking Keywords](<https://discord.com/channels/820889004055855144/851707143873626134/852458301588897822>)**
-> **[#3: Use Your Keywords Correctly](<https://discord.com/channels/820889004055855144/851707143873626134/852465447482818590>)**
-> **[RapidTags Keyword Generator](<https://discord.com/channels/820889004055855144/851707143873626134/859461224281538601>)**
-> 
-> Some other rarely spoken about SEO tactics also includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your closed caption and embedded subtitles if you use either of them, which you should. YouTube and Google use image, audio and video recognition/scanning that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos`
 			}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
 

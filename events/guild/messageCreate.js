@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const creatorCrew = require("../../modules/creator_crew/check_new_post");
 const chartData = require('../../schemas/database_logs/chart_data');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
@@ -14,7 +15,7 @@ const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
-const creatorCrew = require("../../modules/creator_crew/check_new_post");
+const suggestionPost = require('../../modules/misc/suggestion_post');
 const path = require('path');
 
 module.exports = {
@@ -45,6 +46,7 @@ module.exports = {
         rankXP(message, client);
         creatorCrew(message, client);
         resPost(message, client);
+        suggestionPost(message)
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {

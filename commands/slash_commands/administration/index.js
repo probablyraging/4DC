@@ -17,7 +17,10 @@ module.exports = {
 		required: true,
 		choices: [{ name: 'welcome', value: 'welcome' },
 		{ name: 'rules', value: 'rules' },
-		{ name: 'faq', value: 'faq' },
+		{ name: 'faqserver', value: 'faqserver' },
+		{ name: 'faqyoutube', value: 'faqyoutube' },
+		{ name: 'faqtwitch', value: 'faqtwitch' },
+		{ name: 'usefullinks', value: 'usefullinks' },
 		{ name: 'creatorcrew', value: 'creatorcrew' },
 		{ name: 'selfroles', value: 'selfroles' },
 		{ name: 'featuredstream', value: 'featuredstream' }]
@@ -88,16 +91,16 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
 
-		// FAQ
+		// FAQ SERVER
 		switch (options.getString('data')) {
-			case 'faq': {
+			case 'faqserver': {
 				await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
 				channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-					for (let i = 0; i < index.faq.length; i++) {
+					for (let i = 0; i < index.faqserver.length; i++) {
 						setTimeout(function () {
 							webhook.send({
-								content: `${index.faq[i]}`,
+								content: `${index.faqserver[i]}`,
 								allowedMentions: {
 									parse: []
 								}
@@ -114,6 +117,90 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 					content: `${process.env.BOT_CONF} \`Done\``,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+		}
+
+		// FAQ YOUTUBE
+		switch (options.getString('data')) {
+			case 'faqyoutube': {
+				await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+				channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+					for (let i = 0; i < index.faqyoutube.length; i++) {
+						setTimeout(function () {
+							webhook.send({
+								content: `${index.faqyoutube[i]}`,
+								allowedMentions: {
+									parse: []
+								}
+							}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+						}, i * 1000);
+					}
+					setTimeout(() => {
+						webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+					}, 10000);
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+				interaction.editReply({
+					content: `${process.env.BOT_CONF} \`Done\``,
+					ephemeral: true
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+			}
+		}
+
+		// FAQ TWITCH
+		switch (options.getString('data')) {
+			case 'faqtwitch': {
+				await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+				channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+					for (let i = 0; i < index.faqtwitch.length; i++) {
+						setTimeout(function () {
+							webhook.send({
+								content: `${index.faqtwitch[i]}`,
+								allowedMentions: {
+									parse: []
+								}
+							}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+						}, i * 1000);
+					}
+					setTimeout(() => {
+						webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+					}, 10000);
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+				interaction.editReply({
+					content: `${process.env.BOT_CONF} \`Done\``,
+					ephemeral: true
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+			}
+		}
+
+		// USEFUL LINKS
+		switch (options.getString('data')) {
+			case 'usefullinks': {
+				await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+				channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+					for (let i = 0; i < index.usefullinks.length; i++) {
+						setTimeout(function () {
+							webhook.send({
+								content: `${index.usefullinks[i]}`,
+								allowedMentions: {
+									parse: []
+								}
+							}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+						}, i * 1000);
+					}
+					setTimeout(() => {
+						webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+					}, 10000);
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+				interaction.editReply({
+					content: `${process.env.BOT_CONF} \`Done\``,
+					ephemeral: true
+				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+			}
 		}
 
 		// CREATOR CREW
