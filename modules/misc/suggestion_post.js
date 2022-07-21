@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = async (message) => {
     if (message?.channel.id === process.env.SUGGESTIONS_CHAN && !message.author.bot) {
         const suggestionEmbed = new EmbedBuilder()
-            .setColor('#008080')
+            .setColor('Random')
             .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
             .addFields({ name: `Suggestion`, value: `\`\`\`${message?.content}\`\`\`` })
 
