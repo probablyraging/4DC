@@ -38,10 +38,6 @@ module.exports = async (message, client, Discord) => {
                 logChan.send({
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-                target?.send({
-                    content: `${process.env.BOT_DENY} \`You have been unmuted in #${targetChan.name} on ${guild.name}\``
-                }).catch(err => { return; })
             }
         }
     }, 30000);

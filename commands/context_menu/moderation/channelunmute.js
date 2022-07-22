@@ -35,20 +35,9 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        let dmFail = false;
-
-        target.send({
-            content: `${process.env.BOT_DENY} \`You have been unmuted in #${channel.name} on ${guild.name}\`
-                                                                                    
-**Reason**
-> None`
-        }).catch(() => dmFail = true).then(() => {
-            let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.tag} was unmuted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.tag} was unmuted in #${channel.name}\``;
-
-            interaction.reply({
-                content: `${replyMsg}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        });
+        interaction.reply({
+            content: `${process.env.BOT_CONF} ${target} was unmuted in ${channel}`,
+            ephemeral: true
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }

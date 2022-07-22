@@ -108,7 +108,7 @@ module.exports = {
 
                 if (reason === 'null') {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`You must provide custom reason when selecting the 'Custom' option\``,
+                        content: `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -151,34 +151,24 @@ module.exports = {
                     const warnCount = results.length;
 
                     if (warnCount >= 3) {
-                        let dmFail = false;
                         let banFail = false;
-
-                        target.send({
-                            content: `${process.env.BOT_DENY} \`You have been permanently banned from ${guild.name}\`
-                                                                                    
-**Reason**
-> Warning threshold reached`
-                        }).catch(() => dmFail = true);
-
-                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
 
                         target.ban({
                             days: 0,
                             reason: `Warning threshold reached`
                         }).catch(() => banFail = true);
 
-                        let banMsg = banFail ? `${process.env.BOT_DENY} \`I could not ban ${target.user.tag}\`` : `${process.env.BOT_CONF} \`${target.user.tag} was banned\``;
+                        let banMsg = banFail ? `${process.env.BOT_DENY} I could not ban ${target}` : `${process.env.BOT_CONF} ${target} was banned`;
 
                         if (reason && reason.length > 1024) {
                             return interaction.reply({
-                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
 
                         interaction.reply({
-                            content: `${replyMsg}
+                            content: `${process.env.BOT_CONF} Your warning was added
 ${banMsg}`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -186,17 +176,15 @@ ${banMsg}`,
                         let dmFail = false;
 
                         target.send({
-                            content: `${target} - you received a warning in ${guild.name}. You now have ${warnCount}/3 warnings!
-                                                                                    
-**Reason**
-> ${reason}`
+                            content: `${target} - you received a warning in ${guild.name}
+\`\`\`${reason}\`\`\``
                         }).catch(() => dmFail = true);
 
-                        let replyMsg = dmFail ? `${process.env.BOT_DENY} \`Your warning was added\`\n${process.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`Your warning was added\``;
+                        let replyMsg = dmFail ? `${process.env.BOT_DENY} Your warning was added\n${process.BOT_DENY} I could not send ${target} a notification` : `${process.env.BOT_CONF} Your warning was added`;
 
                         if (reason && reason.length > 1024) {
                             return interaction.reply({
-                                content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                                content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
@@ -229,7 +217,7 @@ ${banMsg}`,
 
                 if (results.length >= 1) {
                     await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
-                        content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
+                        content: `${process.env.BOT_CONF} Warning '${warning}' removed`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
 
@@ -256,7 +244,7 @@ ${banMsg}`,
 
                     if (results2.length >= 1) {
                         await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
-                            content: `${process.env.BOT_CONF} \`Warning '${warning}' removed\``,
+                            content: `${process.env.BOT_CONF} Warning '${warning}' removed`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
 
@@ -280,7 +268,7 @@ ${banMsg}`,
 
                     } else {
                         interaction.reply({
-                            content: `${process.env.BOT_DENY} \`Warning '${warning}' does not exist or has already been deleted\``,
+                            content: `${process.env.BOT_DENY} Warning '${warning}' does not exist or has already been deleted`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }

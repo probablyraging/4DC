@@ -18,18 +18,8 @@ module.exports = async (message, client) => {
 
     if (!member?.roles?.cache.has(process.env.STAFF_ROLE) && !message?.author?.bot && message?.mentions?.members?.size > 4) {
         member?.send({
-            content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 60 seconds to prevent spamming\``
-        }).catch(() => {
-            message?.reply({
-                content: `${process.env.BOT_DENY} \`Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 60 seconds to prevent spamming\``,
-                allowedMentions: { repliedUser: true },
-                failIfNotExists: false
-            }).catch(err => {
-                console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-            }).then(msg => {
-                setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-            });
-        });
+            content: `${process.env.BOT_DENY} Mass mentions (${message?.mentions?.members?.size}) detected. You have been timedout for 60 seconds to prevent spamming`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
         setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 

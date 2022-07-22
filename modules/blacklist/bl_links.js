@@ -35,32 +35,12 @@ module.exports = async (message, client) => {
             if (member?.id !== process.env.OWNER_ID && !message?.author?.bot) {
                 if (invite) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Discord invite detected. You can only post Discord invites in ${premChan.name}\``
-                    }).catch(() => {
-                        message?.reply({
-                            content: `${process.env.BOT_DENY} \`Discord invite detected. You can only post Discord invites in ${premChan.name}\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
-                    });
+                        content: `${process.env.BOT_DENY} Discord invite detected. You can only post Discord invites in ${premChan}`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 } else {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``
-                    }).catch(() => {
-                        message?.reply({
-                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
-                    });
+                        content: `${process.env.BOT_DENY} Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 }
 
                 setTimeout(() => {

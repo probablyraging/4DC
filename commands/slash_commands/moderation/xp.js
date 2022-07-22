@@ -34,7 +34,7 @@ module.exports = {
         // dont allow the user running the command to add/remove/reset themselves
         if (target?.id === member?.id) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} \`You can't edit your own XP\``,
+                content: `${process.env.BOT_DENY} You can't edit your own XP`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
@@ -46,7 +46,7 @@ module.exports = {
 
                 if (results.length === 0) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`I could not find that user in the rank database\``,
+                        content: `${process.env.BOT_DENY} I could not find that user in the rank database`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -66,7 +66,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                 interaction.editReply({
-                    content: `${process.env.BOT_CONF} \`${target.user.tag}'s rank data has been reset to 0\``,
+                    content: `${process.env.BOT_CONF} ${target}'s rank data has been reset to 0`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
             }

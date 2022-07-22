@@ -46,12 +46,12 @@ module.exports = {
                         // For cooldowns longer than 60 seconds
                         if (time_left > 60) {
                             return interaction.reply({
-                                content: `${process.env.BOT_DENY} \`Cooldown: ${Math.round(time_left.toFixed(1) / 60)} minutes\``,
+                                content: `${process.env.BOT_DENY} Cooldown: ${Math.round(time_left.toFixed(1) / 60)} minutes`,
                                 ephemeral: true
                             })
                         } else {
                             return interaction.reply({
-                                content: `${process.env.BOT_DENY} \`Cooldown: ${time_left.toFixed(0)} seconds\``,
+                                content: `${process.env.BOT_DENY} Cooldown: ${time_left.toFixed(0)} seconds`,
                                 ephemeral: true
                             })
                         }

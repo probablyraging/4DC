@@ -57,7 +57,7 @@ module.exports = async (message, client) => {
                 message.delete()
 
                 return message.reply({
-                    content: `${process.env.BOT_DENY} \`To send chat messages, put a '> ' (greater than followed by a space) in front of your message\``,
+                    content: `${process.env.BOT_DENY} To send chat messages, put a '> ' (greater than followed by a space) in front of your message`,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => {

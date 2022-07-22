@@ -39,6 +39,6 @@ module.exports = async (interaction) => {
         reason: reason
     });
 
-    interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request has been received. Another staff member will need to approve the ban.\``)
+    interaction.editReply(`${process.env.BOT_CONF} The mass ban request has been received. Another staff member will need to approve the ban`)
         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 }

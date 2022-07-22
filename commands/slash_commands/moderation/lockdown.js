@@ -44,14 +44,14 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `${process.env.BOT_DENY} \`SERVER LOCKDOWN STARTED\`
+                    content: `${process.env.BOT_DENY} SERVER LOCKDOWN STARTED
                         
 **Reason**
 \`\`\`${reason}\`\`\``
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.reply({
-                    content: `${process.env.BOT_CONF} \`Done\``,
+                    content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
@@ -64,11 +64,11 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `${process.env.BOT_CONF} \`A SERVER LOCKDOWN HAD ENDED\``
+                    content: `${process.env.BOT_CONF} A SERVER LOCKDOWN HAD ENDED`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.reply({
-                    content: `${process.env.BOT_CONF} \`Done\``,
+                    content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }

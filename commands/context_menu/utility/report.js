@@ -75,12 +75,12 @@ module.exports = {
             }, 60000);
 
             await interaction.reply({
-                content: `${process.env.BOT_CONF} \`Your report has been submitted\``,
+                content: `${process.env.BOT_CONF} Your report has been submitted`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
             await interaction.reply({
-                content: `${process.env.BOT_DENY} \`You must wait 60 seconds between reports\``,
+                content: `${process.env.BOT_DENY} You must wait 60 seconds between reports`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }

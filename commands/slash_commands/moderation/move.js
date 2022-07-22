@@ -81,7 +81,7 @@ module.exports = {
 
         if (!guild.members.me.permissionsIn(channel).has("ManageMessages") || !guild.members.me.permissionsIn(channel).has("SendMessages") || !guild.members.me.permissionsIn(channel).has("ViewChannel")) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`I do not have the proper permissions for #${channel.name}\``,
+                content: `${process.env.BOT_DENY} I do not have the proper permissions for ${channel}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
@@ -102,7 +102,7 @@ module.exports = {
 
         if (channelType !== 0) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`You can't move a message to a ${cType}\``,
+                content: `${process.env.BOT_DENY} You can't move a message to a ${cType}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
@@ -201,7 +201,7 @@ module.exports = {
 
         // Add in any deleted messages to the reply
         if (deletedMessages !== 0) {
-            interactionReplyMessage = concatMessage(interactionReplyMessage, `${process.env.BOT_DENY} \`Deleted ${deletedMessages} message(s) from users who no longer exist.\``);
+            interactionReplyMessage = concatMessage(interactionReplyMessage, `${process.env.BOT_DENY} Deleted ${deletedMessages} message(s) from users who no longer exist`);
         }
 
         // Go through the authors and add how many messages were moved from each author to the reply
@@ -217,7 +217,7 @@ module.exports = {
             await interaction.reply(interactionReplyMessage)
                 .catch(err => console.error(`${path.basename(__filename)} 1 There was a problem sending an interaction: `, err));
         } catch {
-            await interaction.reply(`${process.env.BOT_DENY} \`There was a problem replying to this interaction.\``)
+            await interaction.reply(`${process.env.BOT_DENY} There was a problem replying to this interaction`)
                 .catch(err => console.error(`${path.basename(__filename)} 2 There was a problem sending an interaction: `, err));
         }
     }

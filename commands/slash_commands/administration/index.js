@@ -47,7 +47,7 @@ module.exports = {
 			}
 
 				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
@@ -86,7 +86,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 			}
 
 				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
@@ -114,7 +114,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 			}
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
@@ -141,7 +141,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
@@ -169,7 +169,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
@@ -197,7 +197,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 			}
@@ -216,7 +216,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 			}
 
 				interaction.reply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
@@ -225,11 +225,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 		switch (options.getString('data')) {
 			case 'selfroles': {
 				await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-				const response1 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Nickname Colors\`**`)
-					.setDescription(`Choose your nickname color below`)
 
 				const select1 = new ActionRowBuilder()
 					.addComponents(
@@ -247,14 +242,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 							]),
 					);
 
-				const response2 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Choose Your Platforms\`**`)
-					.setDescription(`<:twitch:837083090283003964> - Twitch
-<:youtube:837083090441994240> - YouTube
-<:instagram:837325424744595466> - Instagram
-<:tiktok:837325423712796762> - TikTok`)
-
 				const select2 = new ActionRowBuilder()
 					.addComponents(
 						new SelectMenuBuilder()
@@ -268,13 +255,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 							]),
 					);
 
-				const response3 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Choose Your Age\`**`)
-					.setDescription(`:baby: - 13-17
-:boy: - 18-29
-:man: - 30+`)
-
 				const select3 = new ActionRowBuilder()
 					.addComponents(
 						new SelectMenuBuilder()
@@ -286,14 +266,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								{ label: '30+', value: '30+', emoji: '👨' }
 							]),
 					);
-
-				const response4 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Choose Your Region\`**`)
-					.setDescription(`:football: - America
-:ferris_wheel: - Europe
-:island: - Oceania
-:izakaya_lantern: - Asia`)
 
 				const select4 = new ActionRowBuilder()
 					.addComponents(
@@ -309,13 +281,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 							]),
 					);
 
-				const response5 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Choose Your Gender\`**`)
-					.setDescription(`:man_raising_hand: - Male
-:woman_raising_hand: - Female
-:person_raising_hand: - Non-binary`)
-
 				const select5 = new ActionRowBuilder()
 					.addComponents(
 						new SelectMenuBuilder()
@@ -327,13 +292,6 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 								{ label: 'Non-binary', value: 'non-binary', emoji: '🙋' }
 							]),
 					);
-
-				const response6 = new EmbedBuilder()
-					.setColor('#32BEA6')
-					.setTitle(`**\`Optional Ping Roles\`**`)
-					.setDescription(`:loudspeaker: - Announcements | *giveaways, new channels etc*
-:game_die: - Game Deals | *bot ping for <#846449072105586708>*
-:mega: - Disboard Bump | *bot ping for <#855427926136193054>*`)
 
 				const select6 = new ActionRowBuilder()
 					.addComponents(
@@ -376,7 +334,7 @@ To keep CreatorHub a safe and positive experience for everyone, you are required
 			}
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
@@ -396,7 +354,7 @@ A server member who is currently streaming on either Twitch or YouTube will be p
 			}
 
 				interaction.editReply({
-					content: `${process.env.BOT_CONF} \`Done\``,
+					content: `${process.env.BOT_CONF} Done`,
 					ephemeral: true
 				}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}

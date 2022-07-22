@@ -49,7 +49,7 @@ module.exports = {
         }
 
         interaction.reply({
-            content: `${process.env.BOT_CONF} \`Message sent\``,
+            content: `${process.env.BOT_CONF} Message sent`,
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }

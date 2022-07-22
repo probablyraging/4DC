@@ -14,29 +14,12 @@ module.exports = async (message, client) => {
     const reason = 'Everyone or Here ping';
     const timestamp = new Date().getTime();
 
-    const member = message?.member;
-
     const contLow = message?.content.toLowerCase();
 
     const pingArr = ['@everyone', '@here'];
 
     for (var i in pingArr) {
         if (contLow.includes(pingArr[i])) {
-                        
-            // member?.send({
-            //     content: `${process.env.BOT_DENY} \`Everyone or Here ping detected. You have been timed out for 30 seconds\``
-            // }).catch(() => {
-            //     message?.reply({
-            //         content: `${process.env.BOT_DENY} \`Everyone or Here ping detected. You have been timed out for 30 seconds\``,
-            //         allowedMentions: { repliedUser: true },
-            //         failIfNotExists: false
-            //     }).catch(err => {
-            //         console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-            //     }).then(msg => {
-            //         setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 10000);
-            //     });
-            // });
-
             setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
             let msgContent = message?.content || ` `;

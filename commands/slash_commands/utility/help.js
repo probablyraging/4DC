@@ -57,7 +57,7 @@ module.exports = {
 
                 if (!ownerCommands && !staffCommands && !otherCommands) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`You did not include a command name\``,
+                        content: `${process.env.BOT_DENY} You did not include a command name`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }

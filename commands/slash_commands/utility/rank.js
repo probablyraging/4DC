@@ -41,7 +41,7 @@ module.exports = {
         const results = await rankSchema.find({ id: targetId }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
         if (results.length === 0) {
-            return interaction.editReply(`${process.env.BOT_DENY} \`${target.user.tag} isn't ranked yet. They need to send some messages to earn XP.\``)
+            return interaction.editReply(`${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`)
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 

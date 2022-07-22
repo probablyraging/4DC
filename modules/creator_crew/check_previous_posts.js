@@ -107,7 +107,7 @@ async function setupChecks(client) {
                 // Notify member
                 ccMember.send({
                     content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 3 days. You must watch all videos before 3 days. Continuing to miss this 3 day requirement may result in you being removed from the Creator Crew role`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 // Mark this video as notified so we don't notify again
                 await ccVideoQueue.findOneAndUpdate({
                     userId: userId,
@@ -123,7 +123,7 @@ async function setupChecks(client) {
                 // Notify the member
                 ccMember.send({
                     content: `A video with the ID \`${videoId}\` has been in your Creator Crew Queue for greater than 5 days. Staff have been notified and you may be removed from the Creator Crew role`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem DMing the guild member: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 // Mark this video as notified so we don't notify again
                 await ccVideoQueue.findOneAndUpdate({
                     userId: userId,

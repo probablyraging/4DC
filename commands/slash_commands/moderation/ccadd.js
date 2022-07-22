@@ -29,11 +29,11 @@ module.exports = {
         target.roles.add(mcRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         mcChan.send({
-            content: `${process.env.BOT_CONF} \`Added ${target.user.tag} to Creator Crew\``
+            content: `${process.env.BOT_CONF} Added ${target} to Creator Crew`
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         interaction.reply({
-            content: `${process.env.BOT_CONF} \`Added ${target.user.tag} to Creator Crew\``,
+            content: `${process.env.BOT_CONF} Added ${target} to Creator Crew`,
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }

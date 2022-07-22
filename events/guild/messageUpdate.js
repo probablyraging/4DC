@@ -56,16 +56,8 @@ module.exports = {
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``
-                    }).catch(() => {
-                        newMessage?.reply({
-                            content: `${process.env.BOT_DENY} \`Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
-                    });
+                        content: `${process.env.BOT_DENY} Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
@@ -96,16 +88,8 @@ module.exports = {
             if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${newMessage?.channel.name}\``
-                    }).catch(() => {
-                        newMessage?.reply({
-                            content: `${process.env.BOT_DENY} \`You must be rank 5 to post links in #${newMessage?.channel.name}\``,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).then(msg => {
-                            setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 5000);
-                        });
-                    });
+                        content: `${process.env.BOT_DENY} You must be rank 5 to post links in #${newMessage?.channel.name}`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                     setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 

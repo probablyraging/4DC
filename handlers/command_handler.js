@@ -10,7 +10,7 @@ module.exports = async (client, Discord) => {
         commandsArr.push(command);
     });
     client.on('ready', async () => {
-        const mainGuild = await client.guilds.cache.get(process.env.GUILD_ID);
-        mainGuild.commands.set(commandsArr)
+        const guild = await client.guilds.cache.get(process.env.GUILD_ID);
+        guild.commands.set(commandsArr);
     });
 }

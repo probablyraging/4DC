@@ -110,28 +110,28 @@ module.exports = {
 
                 if (title + description + author > 6000) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`The sum of all characters from all embed structures in a message must not exceed 6000 characters\``,
+                        content: `${process.env.BOT_DENY} The sum of all characters from all embed structures in a message must not exceed 6000 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (title && title.length > 256) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`Embed titles are limited to 256 characters\``,
+                        content: `${process.env.BOT_DENY} Embed titles are limited to 256 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (description && description.length > 4096) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`Embed descriptions are limited to 4096 characters\``,
+                        content: `${process.env.BOT_DENY} Embed descriptions are limited to 4096 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (image && !image.toLowerCase().startsWith('https://') && !image.toLowerCase().startsWith('http://')) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`Embed image and thumbnail urls must start with one of ('https://', 'http://')\``,
+                        content: `${process.env.BOT_DENY} Embed image and thumbnail urls must start with one of ('https://', 'http://')`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -141,7 +141,7 @@ module.exports = {
 
                 if (!isHex) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`You must enter a valid #hex color\``,
+                        content: `${process.env.BOT_DENY} You must enter a valid #hex color`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -159,7 +159,7 @@ module.exports = {
                     embeds: [create],
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(() => {
                     interaction.reply({
-                        content: `${process.env.BOT_CONF} \`Embed created and sent\``,
+                        content: `${process.env.BOT_CONF} Embed created and sent`,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(() => setTimeout(() => {
                         interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
                     }, 1500));
@@ -184,14 +184,14 @@ module.exports = {
 
                 if (hasLetter === true) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`You must enter a valid message id\``,
+                        content: `${process.env.BOT_DENY} You must enter a valid message id`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (color && isHex === false) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`You must enter a valid #hex color\``,
+                        content: `${process.env.BOT_DENY} You must enter a valid #hex color`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -201,7 +201,7 @@ module.exports = {
 
                     if (!embed) {
                         interaction.reply({
-                            content: `${process.env.BOT_DENY} \`This message does not contain an embed\``,
+                            content: `${process.env.BOT_DENY} This message does not contain an embed`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     } else {
@@ -214,7 +214,7 @@ module.exports = {
                         fetched.edit({ embeds: [embed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
 
                         interaction.reply({
-                            content: `${process.env.BOT_CONF} \`Embed edited successfully\``,
+                            content: `${process.env.BOT_CONF} Embed edited successfully`,
                         }).then(() => setTimeout(() => {
                             interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
                         }, 1500));

@@ -16,7 +16,7 @@ module.exports = {
 
         const target = await guild.members.fetch(interaction.targetId).catch(() => {
             interaction.reply({
-                content: `${process.env.BOT_DENY} \`This user no longer exists\``,
+                content: `${process.env.BOT_DENY} This user no longer exists`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         });
@@ -80,21 +80,21 @@ module.exports = {
 
         if (roleList && roleList.length > 1024) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`Role field exceeds 1024 characters\``,
+                content: `${process.env.BOT_DENY} Role field exceeds 1024 characters`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (acknowledgements && acknowledgements.length > 1024) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`Acknowledgements field exceeds 1024 characters\``,
+                content: `${process.env.BOT_DENY} Acknowledgements field exceeds 1024 characters`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (permissions && permissions.length > 1024) {
             return interaction.reply({
-                content: `${process.env.BOT_DENY} \`Permissions field exceeds 1024 characters\``,
+                content: `${process.env.BOT_DENY} Permissions field exceeds 1024 characters`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }

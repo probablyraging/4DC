@@ -78,7 +78,7 @@ module.exports = {
 
                 if (reason && reason.length > 1024) {
                     return interaction.reply({
-                        content: `${process.env.BOT_DENY} \`Reasons are limited to 1024 characters\``,
+                        content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
@@ -142,21 +142,10 @@ module.exports = {
                     type: 'Channel Mute'
                 });
 
-                let dmFail = false;
-
-                target.send({
-                    content: `${process.env.BOT_DENY} \`You have been muted in #${targetChan.name} on ${guild.name}\`
-        
-**Reason**
-> ${reason}`
-                }).catch(() => dmFail = true).then(() => {
-                    let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${targetChan.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was muted in #${targetChan.name}\``;
-
-                    interaction.reply({
-                        content: `${replyMsg}`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                });
+                interaction.reply({
+                    content: `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
         }
 
@@ -182,18 +171,10 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                let dmFail = false;
-
-                target.send({
-                    content: `${process.env.BOT_DENY} \`You have been unmuted in #${targetChan.name} on ${guild.name}\``
-                }).catch(() => dmFail = true).then(() => {
-                    let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${targetChan.name}\`\n${process.env.BOT_DENY} \`I could not send ${target.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${target.user.tag} was unmuted in #${targetChan.name}\``;
-
-                    interaction.reply({
-                        content: `${replyMsg}`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                });
+                interaction.reply({
+                    content: `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
         }
     }

@@ -27,18 +27,8 @@ module.exports = async (message, client) => {
             member?.timeout(86400 * 1000 * 7, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
             member?.send({
-                content: `${process.env.BOT_DENY} \`Phishing link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``
-            }).catch(() => {
-                message?.reply({
-                    content: `${process.env.BOT_DENY} \`Phishing link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member\``,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                }).then(msg => {
-                    setTimeout(() => { msg?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 10000);
-                });
-            });
+                content: `${process.env.BOT_DENY} Phishing link detected. You have been timed out until a staff member can verify if this is a mistake or not. If this is a mistake, please contact a staff member`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
             setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 

@@ -78,29 +78,18 @@ module.exports = async (interaction) => {
     // Log to database for dashboard
     const logTimestamp = new Date().getTime();
 
-        await muteTimeoutSchema.create({
-            userId: fetchedMember?.user.id,
-            username: fetchedMember?.user.tag,
-            author: member?.id,
-            authorTag: `${member?.user.tag}`,
-            reason: reason,
-            timestamp: logTimestamp,
-            type: 'Channel Mute'
-        });
-
-    let dmFail = false;
-
-    fetchedMember.send({
-        content: `${fetchedMember} - you were muted in #${channel.name} on ${guild.name}
-                                                                                    
-**Reason**
-> ${reason}`
-    }).catch(() => dmFail = true).then(() => {
-        let replyMsg = dmFail ? `${process.env.BOT_CONF} \`${fetchedMember?.user.tag} was muted in #${channel.name}\`\n${process.env.BOT_DENY} \`I could not send ${fetchedMember?.user.tag} a notification\`` : `${process.env.BOT_CONF} \`${fetchedMember?.user.tag} was muted in #${channel.name}\``;
-
-        interaction.reply({
-            content: `${replyMsg}`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+    await muteTimeoutSchema.create({
+        userId: fetchedMember?.user.id,
+        username: fetchedMember?.user.tag,
+        author: member?.id,
+        authorTag: `${member?.user.tag}`,
+        reason: reason,
+        timestamp: logTimestamp,
+        type: 'Channel Mute'
     });
+
+    interaction.reply({
+        content: `${process.env.BOT_CONF} ${fetchedMember} was muted in #${channel}`,
+        ephemeral: true
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 }

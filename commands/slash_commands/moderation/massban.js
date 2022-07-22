@@ -55,7 +55,7 @@ async function approveMassBan(interaction) {
         let currentUser = member.user.tag;
 
         if (author === currentUser) {
-            interaction.editReply(`${process.env.BOT_DENY} \`The mass ban request with ID '${id}' cannot be approved by the same person who requested it.\``)
+            interaction.editReply(`${process.env.BOT_DENY} The mass ban request with ID '${id}' cannot be approved by the same person who requested it`)
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
             const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
@@ -81,11 +81,11 @@ async function approveMassBan(interaction) {
                 embeds: [staffEmbed]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-            interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been approved.\``)
+            interaction.editReply(`${process.env.BOT_CONF} The mass ban request with ID '${id}' has been approved`)
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     } else {
-        interaction.editReply(`${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``)
+        interaction.editReply(`${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`)
             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
@@ -118,10 +118,10 @@ async function denyMassBan(interaction) {
             embeds: [staffEmbed]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        interaction.editReply(`${process.env.BOT_CONF} \`The mass ban request with ID '${id}' has been denied.\``)
+        interaction.editReply(`${process.env.BOT_CONF} The mass ban request with ID '${id}' has been denied`)
             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     } else {
-        interaction.editReply(`${process.env.BOT_DENY} \`Could not find a pending mass ban request with ID '${id}'.\``)
+        interaction.editReply(`${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`)
             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }
