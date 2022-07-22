@@ -43,7 +43,7 @@ module.exports = async (message, client) => {
 
             if (resolve && resolve.title.toLowerCase() === username || resolve.title.toLowerCase() === displayName) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel}`
+                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel.name}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
@@ -61,7 +61,7 @@ module.exports = async (message, client) => {
 
             if (response && response.author_name.toLowerCase() === username || response.author_name.toLowerCase() === displayName) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel}`
+                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel.name}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
@@ -76,7 +76,7 @@ module.exports = async (message, client) => {
 
             if (twitchUser && twitchUser.toLowerCase() === username || twitchUser.toLowerCase() === displayName) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel}`
+                    content: `${process.env.BOT_DENY} You cannot post your own channel link in #${message?.channel.name}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                 setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
@@ -98,7 +98,7 @@ module.exports = async (message, client) => {
         if (found && (message?.channel.id === blacklist.noLinkChannels[e] || message?.channel.parentId === blacklist.noLinkChannels[e]) && !message?.content.includes('tenor.com') && !message?.author.bot) {
             if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles?.cache.has(process.env.VERIFIED_ROLE) && !message?.member?.roles?.cache.has(process.env.BOOST_ROLE)) {
                 member?.send({
-                    content: `${process.env.BOT_DENY} You must be rank 5 to post links in #${message?.channel}. You have been timedout for 60 seconds to prevent spamming`
+                    content: `${process.env.BOT_DENY} You must be rank 5 to post links in #${message?.channel.name}. You have been timedout for 60 seconds to prevent spamming`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 
                 setTimeout(() => {

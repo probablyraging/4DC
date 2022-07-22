@@ -89,7 +89,7 @@ module.exports = async (interaction) => {
     });
 
     interaction.reply({
-        content: `${process.env.BOT_CONF} ${fetchedMember} was muted in #${channel}`,
+        content: `${process.env.BOT_CONF} ${fetchedMember} was muted in ${channel}`,
         ephemeral: true
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 }

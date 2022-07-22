@@ -27,7 +27,7 @@ module.exports = async (message) => {
         } else {
             if (detectURLs(message.content.toLowerCase()).length > 1) {
                 target?.send({
-                    content: `${process.env.BOT_DENY} You can only post 1 link in #${ckqChannel}`
+                    content: `${process.env.BOT_DENY} You can only post 1 link in #${ckqChannel.name}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 return setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
             }

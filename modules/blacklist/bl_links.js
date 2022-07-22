@@ -35,7 +35,7 @@ module.exports = async (message, client) => {
             if (member?.id !== process.env.OWNER_ID && !message?.author?.bot) {
                 if (invite) {
                     member?.send({
-                        content: `${process.env.BOT_DENY} Discord invite detected. You can only post Discord invites in ${premChan}`
+                        content: `${process.env.BOT_DENY} Discord invite detected. You can only post Discord invites in #${premChan.name}`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 } else {
                     member?.send({
