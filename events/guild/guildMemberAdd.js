@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const chartData = require('../../schemas/database_logs/chart_data');
+const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {
@@ -60,34 +60,6 @@ module.exports = {
         });
 
         // Database charts
-        const nowTimestamp = new Date().valueOf();
-        const tsToDate = new Date(nowTimestamp);
-        const months = ["Jan", "Fab", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const dateToUTC = tsToDate.getUTCDate() + ' ' + months[tsToDate.getUTCMonth()] + ' ' + tsToDate.getUTCFullYear();
-
-        const results = await chartData.find({ date: dateToUTC });
-
-        if (results.length === 0) {
-            await chartData.create({
-                date: dateToUTC,
-                joins: '1',
-                leaves: '0',
-                bans: '0',
-                messages: '0'
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-        } else {
-            for (const data of results) {
-                const { joins } = data;
-                currentJoins = joins;
-                currentJoins++;
-                await chartData.findOneAndUpdate({
-                    date: dateToUTC
-                }, {
-                    joins: currentJoins.toString()
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            }
-        }
+        logToChartData('joins');
     }
 }

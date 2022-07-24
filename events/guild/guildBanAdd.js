@@ -1,6 +1,6 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
-const chartData = require('../../schemas/database_logs/chart_data');
+const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -47,34 +47,6 @@ module.exports = {
         }, 2000);
 
         // Database charts
-        const nowTimestamp = new Date().valueOf();
-        const tsToDate = new Date(nowTimestamp);
-        const months = ["Jan", "Fab", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const dateToUTC = tsToDate.getUTCDate() + ' ' + months[tsToDate.getUTCMonth()] + ' ' + tsToDate.getUTCFullYear();
-
-        const results = await chartData.find({ date: dateToUTC });
-
-        if (results.length === 0) {
-            await chartData.create({
-                date: dateToUTC,
-                joins: '0',
-                leaves: '0',
-                bans: '1',
-                messages: '0'
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-        } else {
-            for (const data of results) {
-                const { bans } = data;
-                currentBans = bans;
-                currentBans++;
-                await chartData.findOneAndUpdate({
-                    date: dateToUTC
-                }, {
-                    bans: currentBans.toString()
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            }
-        }
+        logToChartData('bans');
     }
 }

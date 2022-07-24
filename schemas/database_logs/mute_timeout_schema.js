@@ -20,7 +20,7 @@ const muteTimeoutSchema = mongoose.Schema({
     },
     reason: {
         type: String,
-        required: true
+        required: false
     },
     timestamp: {
         type: Date,

@@ -40,8 +40,6 @@ module.exports = {
                     const expiration_time = time_stamps.get(member.id) + cooldown_amount;
                     const time_left = (expiration_time - current_time) / 1000;
 
-
-
                     if (current_time < expiration_time) {
                         // For cooldowns longer than 60 seconds
                         if (time_left > 60) {

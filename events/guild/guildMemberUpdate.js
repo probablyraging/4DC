@@ -1,5 +1,6 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
+const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -75,6 +76,9 @@ module.exports = {
                 timestamp: timestamp,
                 type: 'Timeout'
             });
+
+            // Chart date
+            logToChartData('timeouts');
         }
     }
 }
