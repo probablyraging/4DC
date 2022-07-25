@@ -12,6 +12,8 @@ module.exports = {
 	 */
 	async execute(interaction, client) {
 		const { options, member, guild, channel } = interaction;
+
+		// testing commit
 		
 		interaction.reply({ content: 'ok', ephemeral: true })
 	}
