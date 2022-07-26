@@ -26,40 +26,42 @@ module.exports = {
     async execute(interaction) {
         const { guild, member, channel, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         const amount = options.getNumber('amount');
         const target = options.getMember('username');
 
         const fetchMsg = await channel.messages.fetch();
 
         if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel')) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_DENY} I do not have to proper permissions for ${channel}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (fetchMsg.size < 1) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_INFO} I could not find any messages from ${target} in ${channel}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (amount < 1 && member.id === process.env.OWNER_ID || amount > 100 && member.id === process.env.OWNER_ID ) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_INFO} Amount must be between 1 and 100`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         if (amount < 1 || amount > 5 && member.id !== process.env.OWNER_ID) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_INFO} Amount must be between 1 and 5`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
             if (!target && member.id !== process.env.OWNER_ID) {
-                return interaction.reply({
+                return interaction.editReply({
                     content: `${process.env.BOT_INFO} You must include a username`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -75,14 +77,14 @@ module.exports = {
                         }
                     })
                     channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
-                        interaction.reply({
+                        interaction.editReply({
                             content: `${process.env.BOT_CONF} ${deleted.size} messages from ${target} deleted in ${channel}`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     });
                 } else {
                     channel.bulkDelete(amount, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
-                        interaction.reply({
+                        interaction.editReply({
                             content: `${process.env.BOT_CONF} ${deleted.size} messages deleted in ${channel}`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

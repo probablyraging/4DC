@@ -53,48 +53,48 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
                 `**How do I get started?**
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
 > <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like OBS
-> <:minidot:923683258871472248> A video editing suite, such as DaVinci Resolve (free) or Adobe Premiere Pro (paid). This is what you will use to edit your recorded footage into a watchable video
-> <:minidot:923683258871472248> A photo editing suite, such as GIMP (free) or Adobe Photoshop (paid). This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
+> <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
+> <:minidot:923683258871472248> A photo editing suite, such as [GIMP](<https://www.gimp.org/>) *(free)* or [Adobe Photoshop](<https://www.adobe.com/au/products/photoshop.html>) *(paid)*. This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
 > Take the time to do some research about the gear and software you plan to use. Use the <#851707143873626134> channel to find a list of free and paid software, as well as other gear and software you might want
+⠀`,
 
-**How do I get monetized?**
+                `**How do I get monetized?**
 > The option to monetize your content becomes available once you have reached the requirements set by YouTube, which currently are;
 > <:minidot:923683258871472248> 1000 subscribers
 > <:minidot:923683258871472248> 4000 watch time hours (over a 30-day period)
 > <:minidot:923683258871472248> 2FA enabled on your account
 > <:minidot:923683258871472248> 0 community strikes
-> Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partner. More information here <https://support.google.com/youtube/answer/72851>
+> Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partner. More information here <https://support.google.com/youtube/answer/72851/>
 ⠀`,
 
                 `**How can I get more subsribers/views?**
 > There is no simple answer to this question, but it's going to take time, patience, and an understanding of the platform. Some strategies worth noting are;
 > <:minidot:923683258871472248> Start by doing your own research on SEO (Search Engine Optimization). SEO such as using good keywords, thumbnails, titles, and descriptions can drastically improve the chances of YouTube and Google choosing your content to fill their search results with when someone makes a search request using keywords that you've used. Find more information in <#851707143873626134>
 > <:minidot:923683258871472248> Your YouTube studio analytics page has a bunch of really useful information that can help give you an understanding of how to maximize your reach. Things such as time frames of when your audience is most active on YouTube, other channels/content that your audience watches, the age and gender of your audience, and so on. Use this information to better match your content and uploading schedule so that you are doing everything possible to make sure your audience is seeing not only your content, but the content they want to watch
-> <:minidot:923683258871472248> Use tools such as VidIQ, TubeBuddy, and the new research tab in YouTube studio to plan your videos ahead of time. Make sure your content ideas are what people actually want to see, and then use suitable titles, tags and descriptions to make sure YouTube knows how to recommend your content
+> <:minidot:923683258871472248> Use tools such as [VidIQ](<https://vidiq.com>), [TubeBuddy](<https://www.tubebuddy.com>), and the new research tab in YouTube studio to plan your videos ahead of time. Make sure your content ideas are what people actually want to see, and then use suitable titles, tags and descriptions to make sure YouTube knows how to recommend your content
 > <:minidot:923683258871472248> Put call to actions in your videos. They remind people to like, comment and subscribe to your content. Video interaction like these, as well as viewer retention and average watch time are what the YouTube algorithm looks for when deciding what content to recommend
 ⠀`,
 
-                `**What is SEO and how do I utilize it?**                        
+                `**What is SEO and how do I utilize it?**
 > Search Engine Optimization (SEO) is the practice of using good thumbnails, titles, descriptions and keywords to improve the chances of YouTube and Google recommending your content to others by choosing your content to fill their search results. Here is how they are utilized;
 > <:minidot:923683258871472248> Thumbnails entice viewers to click on your content, leading to a higher watch time and click through rate, both of which help your content rank higher in search results
 > <:minidot:923683258871472248> Titles tell humans and search engines what your content is about, so make sure your title brielfy and accurately describes your content 
-> <:minidot:923683258871472248> Description are a longer form of your contents description and will also be used by search engines to determin what your content is about
+> <:minidot:923683258871472248> Description are a longer form of your contents description and will also be used by search engines to determine what your content is about
 > <:minidot:923683258871472248> Keywords give YouTube and other search engines information and context about your content. Using 5-10 keywords related to your content is the best practice
 > <:minidot:923683258871472248> Closed Captions are yet another way search engines can get an understanding into your video. You can turn on closed captions for your videos in YouTube studio
 > Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos
-⠀`,
-
-                `If you have any further questions, or think there should be a question listed here that isn't already, feel free to head over to <#978553334854205450> and create a thread`
+                
+If you have any further questions, or think there should be a question listed here that isn't already, feel free to head over to <#978553334854205450> and create a thread`
         ],
 
         faqtwitch: [
                 `**How do I get started?**
-> Streaming on Twitch is simple, all you need is a broadcasting program such as OBS, Streamlabs OBS, XSplit, or any other alternative. Once you have chosen a program to use, you can head over to your settings page on Twitch, grab your stream key and go live right away. Though you might want to take some time to learn the program you're using, fine-tune your video and audio settings and set up some overlays and notification alerts
+> Streaming on Twitch is simple, all you need is a broadcasting program such as [OBS](<https://obsproject.com>), [Streamlabs OBS](<https://streamlabs.com>), [XSplit](<https://www.xsplit.com>), or any other alternative. Once you have chosen a program to use, you can head over to your [settings](<https://dashboard.twitch.tv/settings/stream>) page on Twitch, grab your stream key and go live right away. Though you might want to take some time to learn the program you're using, fine-tune your video and audio settings and set up some overlays and notification alerts
 
 **Where can I get overlays, alert notifications, panels, emotes etc..?**
 > There are plenty of free and paid services to use that can improve your stream by adding overlays, alert notifications, subscriber badges, and more. If you are just starting out on Twitch, you probably don't want to be investing too much (if any) money into your stream early on, so your best option would be to use a free service like one of the following;
-> <:minidot:923683258871472248> StreamElements offers a variety of free and paid features ranging from overlays, alert graphics, chatbots, and donation options right up to having your very own merch store
-> <:minidot:923683258871472248> NerdOrDie offers everything you could really ever need as streamer with both free and paid features, such as overlays, alert graphics, sub badges, emotes, and lots more
+> <:minidot:923683258871472248> [StreamElements](<https://streamelements.com>) offers a variety of free and paid features ranging from overlays, alert graphics, chatbots, and donation options right up to having your very own merch store
+> <:minidot:923683258871472248> [NerdOrDie](<https://nerdordie.com>) offers everything you could really ever need as streamer with both free and paid features, such as overlays, alert graphics, sub badges, emotes, and lots more
 > <:minidot:923683258871472248> For custom subscriber and badge emotes you are likely going to have to invest some money into these. Fiverr would probably be the best place to start
 ⠀`,
 
@@ -104,7 +104,7 @@ By participating in this server, you agree to follow [CreatorHub's Server Rules]
 > <:minidot:923683258871472248> Stream on 7 unique days
 > <:minidot:923683258871472248> Average 3 concurrent viewers or more
 > <:minidot:923683258871472248> 50 followers
-> Once you have met these requirements you will receive an email from Twitch explaining how to continue with your application for the affiliate program. This email could take anywhere from a couple of hours to a few days to be received. More information here https://help.twitch.tv/s/article/joining-the-affiliate-program
+> You can check your progress here <https://dashboard.twitch.tv/achievements/>. Once you have met these requirements you will receive an email from Twitch explaining how to continue with your application for the affiliate program. This email could take anywhere from a couple of hours to a few days to be received. More information here <https://help.twitch.tv/s/article/joining-the-affiliate-program/>
                 
 **What should I stream?**
 > When it comes right down to it, you should stream what you enjoy, but you should also keep in mind that certain games and genres just don't perform as well as others. Streaming in categories that people want to actually watch is key. There is of course no harm in being a variety streamer or doing variety streams, but doing so may make the process of growing your audience a little harder. Playing games that aren't very popular might be fun for you, but may not be as exciting for your viewers. Reach out to your viewers and see what type of content they would like to see, mix it up and see what clicks best for you, your audience and your potential viewers
