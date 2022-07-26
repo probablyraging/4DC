@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const timerSchema = require('../../schemas/misc/timer_schema');
-const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
+// const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
 
 module.exports = {
@@ -53,15 +53,15 @@ module.exports = {
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
         // Log to database for dashboard
-        await messageDeleteSchema.create({
-            userId: message?.author.id,
-            username: message?.author.tag,
-            channel: message?.channel.name,
-            message: content,
-            attachment: attachmentToImgur,
-            timestamp: timestamp,
-            type: 'Message Delete'
-        });
+        // await messageDeleteSchema.create({
+        //     userId: message?.author.id,
+        //     username: message?.author.tag,
+        //     channel: message?.channel.name,
+        //     message: content,
+        //     attachment: attachmentToImgur,
+        //     timestamp: timestamp,
+        //     type: 'Message Delete'
+        // });
 
         // if a user deletes there post in CKQ before the timer is up, open the channel to be reposted in
         if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {

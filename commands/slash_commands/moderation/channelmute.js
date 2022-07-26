@@ -1,6 +1,6 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const muteSchema = require('../../../schemas/misc/mute_schema');
-const muteTimeoutSchema = require('../../../schemas/database_logs/mute_timeout_schema');
+// const muteTimeoutSchema = require('../../../schemas/database_logs/mute_timeout_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -130,17 +130,17 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
                 // Log to database for dashboard
-                const logTimestamp = new Date().getTime();
+                // const logTimestamp = new Date().getTime();
 
-                await muteTimeoutSchema.create({
-                    userId: target?.user.id,
-                    username: target?.user.tag,
-                    author: member?.id,
-                    authorTag: `${member?.user.tag}`,
-                    reason: reason,
-                    timestamp: logTimestamp,
-                    type: 'Channel Mute'
-                });
+                // await muteTimeoutSchema.create({
+                //     userId: target?.user.id,
+                //     username: target?.user.tag,
+                //     author: member?.id,
+                //     authorTag: `${member?.user.tag}`,
+                //     reason: reason,
+                //     timestamp: logTimestamp,
+                //     type: 'Channel Mute'
+                // });
 
                 interaction.reply({
                     content: `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`,
