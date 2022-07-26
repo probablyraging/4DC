@@ -51,5 +51,5 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
-    }, 30000);
+    }, 300000);
 };

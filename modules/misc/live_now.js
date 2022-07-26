@@ -111,7 +111,7 @@ module.exports = async (client) => {
                 }
             }
         }
-    }, 30000);
+    }, 300000);
 
     // check live now role to see if someone stopped streaming
     setInterval(async () => {
@@ -130,5 +130,5 @@ module.exports = async (client) => {
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
         });
-    }, 30000);
+    }, 300000);
 }

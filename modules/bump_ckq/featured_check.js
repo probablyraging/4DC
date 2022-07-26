@@ -16,5 +16,5 @@ module.exports = (client) => {
             featuredRandomPicker(client, previouslyFeatured);
             }
         }
-    }, 30000);
+    }, 300000);
 }

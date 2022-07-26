@@ -40,5 +40,5 @@ module.exports = async (message, client, Discord) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
             }
         }
-    }, 30000);
+    }, 300000);
 }
