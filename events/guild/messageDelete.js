@@ -1,6 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const timerSchema = require('../../schemas/misc/timer_schema');
+const countingSchema = require('../../schemas/counting_game/counting_schema');
+const countingCurrentSchema = require('../../schemas/counting_game/counting_current_schema');
 // const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
 
@@ -98,6 +100,25 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+
+        // If a user deletes their count in the counting game, send the current current
+        if (message?.channel.id === process.env.COUNT_CHAN) {
+            // Check if message was a number, and do some other checks to prevent false flags
+            const results = await countingSchema.find({ userId: message?.author?.id })
+            for (const data of results) {
+                currentSaves = data.saves;
+            }
+            if (!isNaN(message?.content) && (currentSaves > 0 || message?.member?.roles.cache.has(process.env.RANK5_ROLE) || message?.member?.roles.cache.has(process.env.VERIFIED_ROLE))) {
+                // Fetch the current count from the database
+                const results = await countingCurrentSchema.find({ searchFor: 'currentCount' });
+                for (const data of results) {
+                    message?.channel.send({
+                        content: `${process.env.BOT_INFO} ${message.author} deleted their message
+The current count is \`${data.currentCount}\``
+                    })
+                }
+            }
         }
     }
 }

@@ -205,12 +205,15 @@ module.exports = async (message, client) => {
              */
             if (!failed) {
                 const resolve = await fetch(`https://en.wiktionary.org/wiki/${message.content.toLowerCase()}`);
+                const body = await resolve.text();
+                const isEnglishWord = await body.toString().includes('toctext">English');
 
-                if (resolve.status !== 200) {
+                if (!isEnglishWord) {
                     failed = true;
 
                     message.reply({
-                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` isn't in the dictionary. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
+                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}>
+The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                         allowedMentions: { repliedUser: true },
                         failIfNotExists: false
                     }).catch(err => {

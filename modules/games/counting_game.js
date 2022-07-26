@@ -23,6 +23,10 @@ module.exports = async (message, client) => {
         const results2 = await countingCurrent.find({ searchFor: 'currentCount' })
             .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
+        // if the user doesn't have rank 5 or verified role, check if they have any saves
+        for (const data of results) {
+            currentSaves = data.saves;
+        }
         // get the current count from the database
         for (const data2 of results2) {
             currentCount = data2.currentCount;
@@ -30,7 +34,7 @@ module.exports = async (message, client) => {
         }
 
         // if the user doesn't have rank 5 or higher, they need to have atleast 1 save to play
-        if (results.length === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && results.length === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
+        if (results.length === 0 && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && currentSaves === 0 && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
             message?.channel.send({
                 content: `${author} You must be \`rank 5\` OR have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`
             }).then(msg => {
@@ -62,26 +66,21 @@ module.exports = async (message, client) => {
         }
 
         let failed = false;
-        let previousCounter = [];
         // fetch the previous batch of messages
         await message?.channel.messages.fetch({ limit: 20 }).then(async fetched => {
             const filtered = fetched.filter(m => !m.author.bot);
 
-            filtered.forEach(m => {
-                // only keep the results that are a number
-                if (!isNaN(m.content)) {
-                    previousCounter.push({ id: m.author.id });
+            // if the same person counted two numbers is a row
+            const results = await countingCurrent.find({ searchFor: 'currentCount' });
+            for (const data of results) {
+                if (author.id === data.previousCounter) {
+                    failReason = `${author} **FAILED** \n> You can't count two numbers in a row`;
+
+                    failed = true;
+
+                    await checkForPersonalSaves();
+                    return;
                 }
-            });
-
-            // if the same person counted two number is a row
-            if (previousCounter[1].id === author.id) {
-                failReason = `${author} **FAILED** \n> You can't count two numbers in a row`;
-
-                failed = true;
-
-                await checkForGuildSaves();
-                return;
             }
 
             // if the new number didn't increase by 1 from the previous number
@@ -90,7 +89,7 @@ module.exports = async (message, client) => {
 
                 failed = true
 
-                await checkForGuildSaves();
+                await checkForPersonalSaves();
                 return;
             }
         });
@@ -99,28 +98,7 @@ module.exports = async (message, client) => {
             await passedCount();
         }
 
-        // check if the guild has a personal save to use, if not try and use a personal save
-        async function checkForGuildSaves() {
-            const results = await countingSchema.find({ userId: guild.id })
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-            for (const data of results) {
-                const { saves } = data;
-
-                if (saves >= 1) {
-                    await useGuildSave();
-                    // if we used a guild save, we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 1}\``
-
-                    await passedCountWithSave();
-                } else {
-                    // if the guild doesn't have any saves to use, check to see if the user has a personal save to use
-                    checkForPersonalSaves();
-                }
-            }
-        }
-
-        // check if the user has a personal save to use
+        // check if the user has a personal save to use, if not try and use a guild save
         async function checkForPersonalSaves() {
             const results = await countingSchema.find({ userId: author.id })
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
@@ -131,12 +109,33 @@ module.exports = async (message, client) => {
                 if (saves >= 1) {
                     await usePersonalSave();
                     // if we use a personal save then we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 1}\``
+                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The current number is \`${currentCount}\``
 
                     await passedCountWithSave();
                 } else {
-                    // if the user doesn't have a personal save to use, then we fail
-                    failMessage = `${failReason} \n> You did not have any saves, so the count starts again. To get a save, use the \`/counting save\` command \n> The next number is \`1\``
+                    // if the user doesn't have any saves to use, check to see if there is a guild save to use
+                    checkForGuildSaves();
+                }
+            }
+        }
+
+        // check if the guild has a personal save to use
+        async function checkForGuildSaves() {
+            const results = await countingSchema.find({ userId: guild.id })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+
+            for (const data of results) {
+                const { saves } = data;
+
+                if (saves >= 1) {
+                    await useGuildSave();
+                    // if we used a guild save, we need to continue the count, so the next number is what we failed on + 1
+                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The current number is \`${currentCount}\``
+
+                    await passedCountWithSave();
+                } else {
+                    // if there are no guild saves to use, then we fail
+                    failMessage = `${failReason} \n> There were no guild saves to use, so the count starts again. To donate a save to the guild, use the \`/counting donatesave\` command \n> The current number is \`${currentCount}\``
 
                     await failedCount();
                 }
@@ -215,16 +214,15 @@ module.exports = async (message, client) => {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
                 }
             }
-
-
         }
 
-        // keep track of the current count
+        // keep track of the current count and the previous counter
         async function updateCurrentCount() {
             await countingCurrent.findOneAndUpdate({
                 searchFor: 'currentCount'
             }, {
                 currentCount: currentCount + 1,
+                previousCounter: author.id,
                 searchFor: 'currentCount'
             }, {
                 upsert: true

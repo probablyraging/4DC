@@ -10,6 +10,10 @@ const countingCurrent = mongoose.Schema({
         type: Number,
         required: true
     },
+    previousCounter: {
+        type: String,
+        required: true
+    },
     searchFor: {
         type: String,
         required: true
