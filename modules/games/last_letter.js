@@ -207,8 +207,9 @@ module.exports = async (message, client) => {
                 const resolve = await fetch(`https://en.wiktionary.org/wiki/${message.content.toLowerCase()}`);
                 const body = await resolve.text();
                 const isEnglishWord = await body.toString().includes('toctext">English');
+                const isEnglishWord2 = await body.toString().includes('class="mw-headline" id="English"');
 
-                if (!isEnglishWord) {
+                if (!isEnglishWord || !isEnglishWord2) {
                     failed = true;
 
                     message.reply({
