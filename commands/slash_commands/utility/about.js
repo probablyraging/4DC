@@ -27,7 +27,7 @@ module.exports = {
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setAuthor({ name: `${client.user.tag}`, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
-            .setDescription(`Created by <@${process.env.OWNER_ID}> for [**CreatorHub**](https://discord.gg/creatorhub)`)
+            .setDescription(`Created by <@${process.env.OWNER_ID}> for [**ForTheContent**](https://discord.gg/forthecontent)`)
             .addFields({
                 name: `Maintained By`, value: `<@${process.env.OWNER_ID}> - [YouTube](https://www.youtube.com/ProbablyRaging) - [GitHub](https://github.com/ProbablyRaging)
 <@878608494499098694> - [YouTube](https://www.youtube.com/HighTechLowIQ) - [GitHub](https://github.com/HighTechLowIQ)`, ineline: false

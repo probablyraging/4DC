@@ -206,8 +206,8 @@ ${banMsg}`,
                 if (type === 'creatorcrew') {
                     const warnedBy = user.id;
 
-                    if (reason === 'lack_of_tabs') message = `The Creator Crew proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
-                    if (reason === 'has_not_posted_proof') message = `You have not posted to Creator Crew recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the CreatorHub Staff`;
+                    if (reason === 'lack_of_tabs') message = `The Creator Crew proof that you provided did not contain enough tabs.\nPlease ensure that you watch _all_ videos that are posted. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the ForTheContent Staff`;
+                    if (reason === 'has_not_posted_proof') message = `You have not posted to Creator Crew recently.\nPlease ensure that you post screenshots of the videos you watched _at least_ every 3 days. You can use the \`/ccvideos\` command to get a list of videos to watch.\nIf you believe this is an error, then please contact a member of the ForTheContent Staff`;
 
                     await addWarning(userId, warnId, warnedBy, reason);
 

@@ -69,7 +69,7 @@ module.exports = async (interaction) => {
 
                 const replyEmbed = new EmbedBuilder()
                     .setColor("#32BEA6")
-                    .setTitle(`CreatorHub Report`)
+                    .setTitle(`ForTheContent Report`)
                     .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`Your report's status has been updated to \`CLOSED\``)
                     .addFields({ name: `Report Message`, value: `\`\`\`${reason}\`\`\``, inline: false },

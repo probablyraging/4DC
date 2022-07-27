@@ -19,7 +19,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
     let updatedMessage;
     if (liveArr.length < 1) {
         // If there no active streams
-        updatedMessage = `There are currently no CreatorHub members streaming, I'll check again in 60 minutes`;
+        updatedMessage = `There are currently no ForTheContent members streaming, I'll check again in 60 minutes`;
         // Fetch and delete the previous message
         await featuredChan.messages.fetch({ limi: 1 }).then(fetched => {
             fetched.forEach(message => {

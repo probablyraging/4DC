@@ -10,20 +10,22 @@ module.exports = {
     type: ApplicationCommandType.ChatInput,
     usage: `/msg (@username) (message) (imageURL)`,
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     *
+     * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
         const { guild } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction
+            .deferReply({ ephemeral: true })
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-            .setTimestamp()
+            .setTimestamp();
 
-        const sort = await commandCountSchema.find({})
+        const sort = await commandCountSchema.find({});
 
         sortArr = [];
         for (const data of sort) {
@@ -37,7 +39,7 @@ module.exports = {
         });
 
         function kFormatter(num) {
-            return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000 * 1).toFixed(0)) + 'K' : Math.sign(num) * Math.abs(num);
+            return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000) * 1).toFixed(0) + 'K' : Math.sign(num) * Math.abs(num);
         }
 
         response.addFields({
@@ -61,17 +63,13 @@ module.exports = {
 \`/${sortArr[16].command}\` - **${sortArr[16].uses}** uses
 \`/${sortArr[17].command}\` - **${sortArr[17].uses}** uses
 \`/${sortArr[18].command}\` - **${sortArr[18].uses}** uses
-\`/${sortArr[19].command}\` - **${sortArr[19].uses}** uses`, inline: false
-        })
+\`/${sortArr[19].command}\` - **${sortArr[19].uses}** uses`,
+            inline: false
+        });
 
         interaction.editReply({
             embeds: [response],
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-
-
-
-
     }
-}
+};

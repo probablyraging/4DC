@@ -40,7 +40,7 @@ module.exports = async (message, client) => {
                 let latestVideoTs = await getLatestVideoTs(authorId);
                 let away = await isAway(authorId);
                 if (away) {
-                    let notificationMessage = `${author} - you are currently set to away. Please contact a member of the CreatorHub Staff to let them know that you are back before posting a video.`;
+                    let notificationMessage = `${author} - you are currently set to away. Please contact a member of the ForTheContent Staff to let them know that you are back before posting a video.`;
                     notifyUser(author, notificationMessage, null);
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 } else if (hasLateVideoInQueue) {

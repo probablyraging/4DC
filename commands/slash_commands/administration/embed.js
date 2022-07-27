@@ -16,41 +16,35 @@ module.exports = {
             name: `description`,
             description: `The description for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
+            required: true
+        }, {
             name: `title`,
             description: `The title for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `color`,
             description: `The color for the embed. Must be a valid #hex color`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `thumbnail`,
             description: `The thumbnail image URL for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `image`,
             description: `The image URL for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `author`,
             description: `Do you want to show who created this embed?`,
             type: ApplicationCommandOptionType.String,
             required: false,
-            choices: [{ name: `yes`, value: `yes` }],
-        }],
-    },
-    {
+            choices: [{ name: `yes`, value: `yes` }]
+        }]
+    }, {
         name: `edit`,
         description: `Edit an existing embed`,
         type: ApplicationCommandOptionType.Subcommand,
@@ -59,42 +53,37 @@ module.exports = {
             name: `id`,
             description: `The id of the message containing the embed you want to edit`,
             type: ApplicationCommandOptionType.String,
-            required: true,
-        },
-        {
+            required: true
+        }, {
             name: `description`,
             description: `The description for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `title`,
             description: `The title for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `color`,
             description: `The color for the embed. Must be a valid #hex color`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `thumbnail`,
             description: `The thumbnail image URL for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        },
-        {
+            required: false
+        }, {
             name: `image`,
             description: `The image URL for the embed`,
             type: ApplicationCommandOptionType.String,
-            required: false,
-        }],
+            required: false
+        }]
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     *
+     * @param {ContextMenuInteraction} interaction
      */
     execute(interaction) {
         const { user, channel, options } = interaction;
@@ -146,27 +135,27 @@ module.exports = {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
-                const create = new EmbedBuilder()
-                    .setDescription(`${description}`)
-                    .setColor(`${color}`)
+                const create = new EmbedBuilder().setDescription(`${description}`).setColor(`${color}`);
 
                 if (title) create.setTitle(`${title}`);
                 if (thumbnail) create.setThumbnail(`${thumbnail}`);
                 if (image) create.setImage(`${image}`);
-                if (author === 'yes') create.setFooter({ text: `Created by ${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) })
+                if (author === 'yes') create.setFooter({ text: `Created by ${user.tag}`, iconURL: user.displayAvatarURL({ dynamic: true }) });
 
                 channel.send({
-                    embeds: [create],
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(() => {
-                    interaction.reply({
-                        content: `${process.env.BOT_CONF} Embed created and sent`,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(() => setTimeout(() => {
-                        interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-                    }, 1500));
-                });
-
+                    embeds: [create]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
+                    .then(() => {
+                        interaction.reply({
+                            content: `${process.env.BOT_CONF} Embed created and sent`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
+                            .then(() => setTimeout(() => {
+                                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                            }, 1500));
+                    });
             }
         }
+
         switch (options.getSubcommand()) {
             case 'edit': {
                 const id = options.getString('id');
@@ -214,7 +203,7 @@ module.exports = {
                         fetched.edit({ embeds: [embed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
 
                         interaction.reply({
-                            content: `${process.env.BOT_CONF} Embed edited successfully`,
+                            content: `${process.env.BOT_CONF} Embed edited successfully`
                         }).then(() => setTimeout(() => {
                             interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
                         }, 1500));
@@ -223,4 +212,4 @@ module.exports = {
             }
         }
     }
-}
+};

@@ -1,6 +1,6 @@
 const blacklistSchema = require('../../schemas/database_logs/blacklist_schema');
 const chartData = require('../../schemas/database_logs/chart_data');
-
+const path = require('path');
 
 // Database log
 async function logToDatabase(userId, username, channel, reason, message, timestamp, type) {

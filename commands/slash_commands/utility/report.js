@@ -4,7 +4,7 @@ const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOption
 
 module.exports = {
     name: "report",
-    description: "Report a user to the CreatorHub staff",
+    description: "Report a user to the ForTheContent staff",
     access: '',
     cooldown: 60,
     type: ApplicationCommandType.ChatInput,
@@ -25,7 +25,7 @@ module.exports = {
         const { options } = interaction;
 
         const attachment = options.getAttachment('proof')
-        
+
         addAttachment(1, attachment.url);
 
         const modal = new ModalBuilder()

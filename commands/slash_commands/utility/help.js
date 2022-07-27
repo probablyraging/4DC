@@ -120,7 +120,7 @@ module.exports = {
                 const response = new EmbedBuilder()
                     .setColor('#32BEA6')
                     .setTitle(`ℹ️ CreatorBot's Help Menu`)
-                    .setDescription(`**[CreatorHub Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
+                    .setDescription(`**[ForTheContent Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
         
 Use \`/help [command]\` for information about a specific command
 Parameters inside \`[]\` brackets are mandatory
