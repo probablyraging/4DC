@@ -209,7 +209,9 @@ module.exports = async (message, client) => {
                 const isEnglishWord = await body.toString().includes('toctext">English');
                 const isEnglishWord2 = await body.toString().includes('class="mw-headline" id="English"');
 
-                if (!isEnglishWord || !isEnglishWord2) {
+                console.log(isEnglishWord, isEnglishWord2)
+
+                if (!isEnglishWord && !isEnglishWord2) {
                     failed = true;
 
                     message.reply({
