@@ -14,7 +14,7 @@ This repo is actively being maintained and updated to include the newest discord
 
 # Note
 - While this project and all of its code is free to use and modify, it was created soley to run on a specific server and would not work elsewhere without some heavy modifying beforehand
-- The CreatorHub Discord server isn't for support for this project. Please DM me privately if you have any questions ProbablyRaging#7080
+- The ForTheContent Discord server isn't for support for this project. Please DM me privately if you have any questions ProbablyRaging#7080
 
 # License
 CreatorBot is licensed under the **[GPL-3.0 License](./LICENSE)**
