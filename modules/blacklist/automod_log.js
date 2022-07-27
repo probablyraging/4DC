@@ -43,7 +43,7 @@ module.exports = async (message, client) => {
                         .setDescription(`**Member:** ${message?.author.tag} *(${message?.author.id})*
 **Expires:** ${expiresAt}
 **Reason:** Flagged word/phrase`)
-                        .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/timeout_icon.png' })
+                        .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                         .setTimestamp();
 
                     logChan.send({

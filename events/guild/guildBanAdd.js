@@ -27,7 +27,7 @@ module.exports = {
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
 **Reason:** ${toReason}`)
-                .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/ban_icon.png' })
+                .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/ban_icon.png' })
                 .setTimestamp();
 
             logChan.send({
@@ -35,15 +35,15 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
             // Log to database for dashboard
-        //     await banUnbanSchema.create({
-        //         userId: ban?.user.id,
-        //         username: ban?.user.tag,
-        //         author: executor?.id,
-        //         authorTag: `${executor?.username}#${executor?.discriminator}`,
-        //         reason: reason,
-        //         timestamp: timestamp,
-        //         type: 'Ban'
-        //     });
+            //     await banUnbanSchema.create({
+            //         userId: ban?.user.id,
+            //         username: ban?.user.tag,
+            //         author: executor?.id,
+            //         authorTag: `${executor?.username}#${executor?.discriminator}`,
+            //         reason: reason,
+            //         timestamp: timestamp,
+            //         type: 'Ban'
+            //     });
         }, 2000);
 
         // Database charts

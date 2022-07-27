@@ -43,7 +43,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 ⠀`,
 
         `**How can I apply for a staff role?**
-> We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [ForTheContent Dashboard](https://www.creatorhub.info), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
+> We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [ForTheContent Dashboard](https://www.forthecontent.xyz), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
 > To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles`
@@ -161,7 +161,7 @@ If you have any further questions, or think there should be a question listed he
 Creator Crew is a channel for supporting your fellow content creators in a few different ways, such as views, likes and watch time. These analytics can help with having YouTube recommend your content more, and getting your content featured on the home pages of others. If you'd like to join the group, please DM a staff member
 ⠀
 **How It Works**
-\`1.\` Visit the [**ForTheContent Dashboard**](https://www.creatorhub.info/creatorcrew) and sign in
+\`1.\` Visit the [**ForTheContent Dashboard**](https://www.forthecontent.xyz/creatorcrew) and sign in
 \`2.\` Press play on all, or as many videos as you want
 \`3.\` Press the like button below all the videos you're watching
 \`4.\` Leave the videos to play for 10 minutes - the status indicator will turn green when successfully completed (liked and watched)

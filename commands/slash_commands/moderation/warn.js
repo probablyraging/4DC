@@ -129,7 +129,7 @@ module.exports = {
                         .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`**Member:** ${username} *(${userId})*
 **Reason:** ${reason}`)
-                        .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_add_icon.png' })
+                        .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/warning_add_icon.png' })
                         .setTimestamp();
 
                     logChan.send({
@@ -241,7 +241,7 @@ ${banMsg}`,
                             .setColor("#4fe059")
                             .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`**Member:** ${username} *(${userId})*`)
-                            .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
+                            .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/warning_remove_icon.png' })
                             .setTimestamp();
 
                         logChan.send({
@@ -268,7 +268,7 @@ ${banMsg}`,
                                 .setColor("#4fe059")
                                 .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                 .setDescription(`**Member:** ${username} *(${userId})*`)
-                                .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/warning_remove_icon.png' })
+                                .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/warning_remove_icon.png' })
                                 .setTimestamp();
 
                             logChan.send({

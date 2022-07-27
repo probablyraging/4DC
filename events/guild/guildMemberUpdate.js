@@ -59,7 +59,7 @@ module.exports = {
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
 **Expires:** ${expiresAt}
 **Reason:** ${toReason}`)
-                .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.creatorhub.info/images/creatorhub/timeout_icon.png' })
+                .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                 .setTimestamp();
 
             logChan.send({
