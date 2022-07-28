@@ -348,7 +348,7 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                     .setColor("#9c59ff")
                     .setTitle(`🎥 Featured Stream`)
                     .setDescription(`**What Is It?**
-A server member who is currently streaming on either Twitch or YouTube will be picked at random to be featured in this channel, they will also be given the <@&998861546530820207> role. After 1 hour, the channel will be reset and a new streamer will be featured`);
+A server member who is currently streaming on either Twitch or YouTube will be picked at random to be featured in this channel, they will also be given the <@&998861546530820207> role. After 2 hours, the channel will be reset and a new streamer will be featured`);
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
