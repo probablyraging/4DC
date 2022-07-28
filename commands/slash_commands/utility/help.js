@@ -6,7 +6,7 @@ const path = require('path');
 
 module.exports = {
     name: `help`,
-    description: `Information about CreatorBot's commands and features`,
+    description: `Information about 4DC's commands and features`,
     access: '',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
@@ -119,7 +119,7 @@ module.exports = {
 
                 const response = new EmbedBuilder()
                     .setColor('#32BEA6')
-                    .setTitle(`ℹ️ CreatorBot's Help Menu`)
+                    .setTitle(`ℹ️ 4DC's Help Menu`)
                     .setDescription(`**[ForTheContent Server Rules](https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}) - [Discord ToS](https://discord.com/terms) - [Discord Community Guidelines](https://discord.com/guidelines)**
         
 Use \`/help [command]\` for information about a specific command

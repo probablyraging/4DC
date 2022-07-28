@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     name: `about`,
-    description: `Information about CreatorBot`,
+    description: `Information about 4DC`,
     access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
