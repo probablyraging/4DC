@@ -222,8 +222,7 @@ module.exports = async (message, client) => {
                 searchFor: 'currentCount'
             }, {
                 currentCount: currentCount + 1,
-                previousCounter: author.id,
-                searchFor: 'currentCount'
+                previousCounter: author.id
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
@@ -235,7 +234,7 @@ module.exports = async (message, client) => {
                 searchFor: 'currentCount'
             }, {
                 currentCount: 0,
-                searchFor: 'currentCount'
+                previousCounter: ''
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
@@ -268,6 +267,7 @@ module.exports = async (message, client) => {
         // if the count was passed, but we needed to use a save first
         async function passedCountWithSave() {
             if (!message.deleted) {
+                await updateCurrentCount();
                 await updateRecord();
                 message.react(process.env.BOT_DENY)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
