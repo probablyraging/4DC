@@ -38,9 +38,9 @@ async function featuredRandomPicker(client, previouslyFeatured) {
             if (randUser.url.split('/').includes('www.twitch.tv')) platform = 'Twitch';
             if (randUser.url.split('/').includes('youtube.com')) platform = 'YouTube';
             if (randUser.state) {
-                updatedMessage = `**${randUser}** is streaming ${randUser.state} on ${platform} - ${randUser.url}`;
+                updatedMessage = `<@${randUser.id}> is streaming ${randUser.state} on ${platform} - ${randUser.url}`;
             } else {
-                updatedMessage = `**${randUser}** is streaming on ${platform} - ${randUser.url}`;
+                updatedMessage = `<@${randUser.id}> is streaming on ${platform} - ${randUser.url}`;
             }
             // Fetch and delete the previous featured post
             await featuredChan.messages.fetch({ limi: 1 }).then(fetched => {
