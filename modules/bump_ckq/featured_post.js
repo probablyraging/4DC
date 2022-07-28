@@ -38,9 +38,9 @@ async function featuredRandomPicker(client, previouslyFeatured) {
             if (randUser.url.split('/').includes('www.twitch.tv')) platform = 'Twitch';
             if (randUser.url.split('/').includes('youtube.com')) platform = 'YouTube';
             if (randUser.state) {
-                updatedMessage = `**${randUser.username}** is streaming ${randUser.state} on ${platform} - ${randUser.url}`;
+                updatedMessage = `**${randUser}** is streaming ${randUser.state} on ${platform} - ${randUser.url}`;
             } else {
-                updatedMessage = `**${randUser.username}** is streaming on ${platform} - ${randUser.url}`;
+                updatedMessage = `**${randUser}** is streaming on ${platform} - ${randUser.url}`;
             }
             // Fetch and delete the previous featured post
             await featuredChan.messages.fetch({ limi: 1 }).then(fetched => {
@@ -62,7 +62,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updated a database entry: `, err));
             // Send the message
-            featuredChan.send({ content: updatedMessage }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+            featuredChan.send({ content: updatedMessage, allowedMentions: { parse: [] } }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
             // Give the user the featured role
             await guild.members.fetch(randUser.id).then(member => {
                 member?.roles.add(process.env.FEATURED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
