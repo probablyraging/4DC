@@ -28,6 +28,9 @@ module.exports = {
             const toReason = reason;
             const timestamp = new Date().getTime();
 
+            // Prevent repeated logs when timed out by AutoMod
+            if (oldMember?.id === executor?.id) return;
+
             function converTimestampToSimpleFormat(timestamp) {
                 const t = new Date(timestamp);
                 const date = ('0' + t.getDate()).slice(-2);
