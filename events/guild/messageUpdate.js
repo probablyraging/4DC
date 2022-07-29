@@ -20,9 +20,9 @@ module.exports = {
                 .setAuthor({ name: `${oldMessage?.author?.tag}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addFields({ name: `Author`, value: `${oldMessage?.author}`, inline: true },
-                { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
-                { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
-                { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
+                    { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
+                    { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
+                    { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
                 .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
@@ -96,7 +96,7 @@ module.exports = {
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
 
-                    logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
+                    // logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
                 }
             }
         }

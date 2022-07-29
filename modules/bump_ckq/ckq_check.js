@@ -29,18 +29,15 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
         const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
 
         if (dbTimestamp && nowTime > dbTimestamp) {
-            setTimeout(() => ckqChannel.bulkDelete(10).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
-                .then(ckqChannel.send({
-                    embeds: [ckEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))), 100);
+            await ckqChannel.bulkDelete(10).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
-            setTimeout(() => ckqRole.members.each(member => {
+            await ckqRole.members.each(member => {
                 member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-            }), 200);
+            });
 
-            setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
+            await ckqChannel.permissionOverwrites.edit(guild.id, {
                 SendMessages: true,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
             await timerSchema.findOneAndUpdate({
                 searchFor
@@ -50,6 +47,10 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            await ckqChannel.send({
+                embeds: [ckEmbed]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))
         }
     }, 300000);
 };
