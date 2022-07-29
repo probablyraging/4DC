@@ -43,7 +43,6 @@ module.exports = {
 
             if (response.status === 200) {
                 response.forEach(res => {
-                    console.log(res.data.length)
                     log.setImage(res.data.link);
                     attachmentToImgur = res.data.link;
                 });

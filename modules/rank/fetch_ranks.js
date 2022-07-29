@@ -24,7 +24,6 @@ module.exports = async (message, client, Discord) => {
     async function newPage() {
         resolve = await fetch(`https://mee6.xyz/api/plugins/levels/leaderboard/820889004055855144?page=${page}`);
         data = await resolve.json()
-        console.log(`Page:`, page)
 
         for (var i = 0; i < data.players.length; i++) {
             await rankSchema.findOneAndRemove({ id: data.players[i].id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
