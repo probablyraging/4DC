@@ -107,6 +107,16 @@ module.exports = async (message) => {
 ${savesMessage}`)
                         .setImage('https://www.forthecontent.xyz/images/creatorhub/FTC_Bump.png')
 
+                    // Fetch and delete the previous bump ping message
+                    await message?.channel.messages.fetch({ limi: 3 }).then(fetched => {
+                        fetched.forEach(message => {
+                            if (message?.content.toLowerCase().includes('the server can be bumped again')) {
+                                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                            }
+                        })
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));
+
+                    // Send the confirmed bump embed
                     message?.channel.send({
                         embeds: [bumpConfirm]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));

@@ -21,6 +21,7 @@ module.exports = async (client) => {
         const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
 
         if (dbTimestamp && nowTime > dbTimestamp) {
+            // Allow message to be sent, and send the new bump ping
             bumpChan.permissionOverwrites.edit(guild.id, {
                 SendMessages: true,
             }).then(() => {
@@ -28,6 +29,7 @@ module.exports = async (client) => {
                     content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the \`/bump\` command!`
                 });
             }).then(async () => {
+                // Log the current timestamp
                 await timerSchema.findOneAndUpdate({
                     searchFor
                 }, {
