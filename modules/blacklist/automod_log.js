@@ -42,7 +42,7 @@ module.exports = async (message, client) => {
                         .setAuthor({ name: `AutoMod`, iconURL: `https://discord.com/assets/e7af5fc8fa27c595d963c1b366dc91fa.gif` })
                         .setDescription(`**Member:** ${message?.author.tag} *(${message?.author.id})*
 **Expires:** ${expiresAt}
-**Reason:** Flagged word/phrase`)
+**Reason:** Message contained a keyword defined in an AutoMod rule`)
                         .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                         .setTimestamp();
 
