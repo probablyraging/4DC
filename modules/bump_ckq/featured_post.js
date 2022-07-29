@@ -21,7 +21,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
         // If there no active streams
         updatedMessage = `There are currently no ForTheContent members streaming, I'll check again in 60 minutes`;
         // Fetch and delete the previous message
-        await featuredChan.messages.fetch({ limi: 1 }).then(fetched => {
+        await featuredChan.messages.fetch({ limit: 1 }).then(fetched => {
             fetched.forEach(message => {
                 if (message.content.length !== 0) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));

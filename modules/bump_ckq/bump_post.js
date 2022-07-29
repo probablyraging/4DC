@@ -108,7 +108,7 @@ ${savesMessage}`)
                         .setImage('https://www.forthecontent.xyz/images/creatorhub/FTC_Bump.png')
 
                     // Fetch and delete the previous bump ping message
-                    await message?.channel.messages.fetch({ limi: 3 }).then(fetched => {
+                    await message?.channel.messages.fetch({ limit: 3 }).then(fetched => {
                         fetched.forEach(message => {
                             if (message?.content.toLowerCase().includes('the server can be bumped again')) {
                                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
