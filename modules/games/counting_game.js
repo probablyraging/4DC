@@ -25,7 +25,7 @@ module.exports = async (message, client) => {
 
         // if the user doesn't have rank 5 or verified role, check if they have any saves
         for (const data of results) {
-            currentSaves = data.saves;
+            currentSaves = data.saves || 0;
         }
         // get the current count from the database
         for (const data2 of results2) {

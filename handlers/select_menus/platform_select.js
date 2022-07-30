@@ -8,6 +8,12 @@ module.exports = async (interaction) => {
     const roleYouTube = process.env.PLATFORM_YOUTUBE;
     const roleInstagram = process.env.PLATFORM_INSTAGRAM;
     const roleTikTok = process.env.PLATFORM_TIKTOK;
+    const roleSnapchat = process.env.PLATFORM_SNAPCHAT;
+    const roleSpotify = process.env.PLATFORM_SPOTIFY;
+    const roleSoundCloud = process.env.PLATFORM_SOUNDCLOUD;
+    const roleDeveloper = process.env.PLATFORM_DEVELOPER;
+    const roleWriter = process.env.PLATFORM_WRITER;
+    const roleMusician = process.env.PLATFORM_MUSICIAN;
 
     await interaction.deferUpdate();
     // await interaction.deferReply({ ephemeral: true });
@@ -52,6 +58,72 @@ module.exports = async (interaction) => {
             // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         } else {
             member?.roles?.add(roleTikTok).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'snapchat') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleSnapchat)) {
+            member?.roles?.remove(roleSnapchat).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleSnapchat).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'spotify') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleSpotify)) {
+            member?.roles?.remove(roleSpotify).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleSpotify).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'soundcloud') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleSoundCloud)) {
+            member?.roles?.remove(roleSoundCloud).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleSoundCloud).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'developer') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleDeveloper)) {
+            member?.roles?.remove(roleDeveloper).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleDeveloper).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'writer') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleWriter)) {
+            member?.roles?.remove(roleWriter).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleWriter).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+    }
+
+    if (values[0] === 'musician') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleMusician)) {
+            member?.roles?.remove(roleMusician).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            // interaction.editReply({ content: `Role ${values[0].toUpperCase()} removed`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        } else {
+            member?.roles?.add(roleMusician).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
             // interaction.editReply({ content: `Role ${values[0].toUpperCase()} added`, ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
     }

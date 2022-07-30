@@ -251,7 +251,13 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                                 { label: 'Twitch', value: 'twitch', emoji: '837083090283003964' },
                                 { label: 'YouTube', value: 'youtube', emoji: '837083090441994240' },
                                 { label: 'Instagram', value: 'instagram', emoji: '837325424744595466' },
-                                { label: 'TikTok', value: 'tiktok', emoji: '837325423712796762' }
+                                { label: 'TikTok', value: 'tiktok', emoji: '837325423712796762' },
+                                { label: 'Snapchat', value: 'snapchat', emoji: '1003006430065983488' },
+                                { label: 'Spotify', value: 'spotify', emoji: '1003022473702412318' },
+                                { label: 'SoundCloud', value: 'soundcloud', emoji: '1003021533272346664' },
+                                { label: 'Developer', value: 'developer', emoji: '1003006427117391892' },
+                                { label: 'Writer', value: 'writer', emoji: '1003006425301266512' },
+                                { label: 'Musician', value: 'musician', emoji: '1003021536292257913' }
                             ]),
                     );
 
@@ -309,7 +315,7 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
 
                 await channel.send({
                     content: `⠀
-**Choose your platforms**`, components: [select2]
+**Choose your content types**`, components: [select2]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
