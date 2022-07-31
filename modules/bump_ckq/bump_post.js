@@ -8,10 +8,6 @@ const path = require('path');
  */
 module.exports = async (message) => {
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === '302050872383242240') {
-        // delete all regular message that aren't from bots
-        if (!message?.author.bot) {
-            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-        }
         // delete the warning about regular commands
         if (message?.content.toLowerCase().includes('regular commands are being replaced')) {
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
@@ -140,5 +136,10 @@ ${savesMessage}`)
         setTimeout(() => {
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }, 600);
+    }
+
+    // delete all regular message that aren't from bots
+    if (!message?.author.bot) {
+        message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
     }
 }
