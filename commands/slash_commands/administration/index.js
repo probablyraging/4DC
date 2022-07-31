@@ -257,7 +257,8 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                                 { label: 'SoundCloud', value: 'soundcloud', emoji: '1003021533272346664' },
                                 { label: 'Developer', value: 'developer', emoji: '1003006427117391892' },
                                 { label: 'Writer', value: 'writer', emoji: '1003006425301266512' },
-                                { label: 'Musician', value: 'musician', emoji: '1003021536292257913' }
+                                { label: 'Musician', value: 'musician', emoji: '1003021536292257913' },
+                                { label: 'Photographer', value: 'photographer', emoji: '1003104549629870230' }
                             ]),
                     );
 
