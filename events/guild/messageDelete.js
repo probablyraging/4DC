@@ -104,7 +104,8 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
         // If a user deletes their count in the counting game, send the current current
         if (message?.channel.id === process.env.COUNT_CHAN) {
             // Check if message was a number, and do some other checks to prevent false flags
-            const results = await countingSchema.find({ userId: message?.author?.id })
+            const results = await countingSchema.find({ userId: message?.author?.id });
+            let currentSaves = 0;
             for (const data of results) {
                 currentSaves = data.saves;
             }

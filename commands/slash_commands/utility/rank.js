@@ -44,7 +44,7 @@ module.exports = {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`,
                 ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
         for (const info of results) {
@@ -61,23 +61,23 @@ module.exports = {
             ctx.fillStyle = "rgba(0,0,0,0.5)";
             ctx.fillRect(20, 30, canvas.width - 40, canvas.height - 60);
 
+            // not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
+            ctx.font = "36px grotesk";
+            ctx.fillStyle = "#44eaff";
+            ctx.fillText(`Rank ${level}`, 243, 90);
+
             // try to compensate for long usernames
             let userDiscrim = username + "#" + discrim;
-            if (userDiscrim.length > 30) {
+            if (userDiscrim.length > 25) {
                 ctx.font = "30px grotesk";
                 userDiscrim = userDiscrim.slice(0, 25) + "...";
             } else if (userDiscrim.length > 20) {
                 ctx.font = "30px grotesk";
             } else {
-                ctx.font = "37px grotesk";
+                ctx.font = "36px grotesk";
             }
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(userDiscrim, canvas.width / 3.8, canvas.height / 2.8);
-
-            // not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
-            ctx.font = "35px grotesk";
-            ctx.fillStyle = "#44eaff";
-            ctx.fillText(`Rank ${level}`, canvas.width / 3.8, canvas.height / 1.6);
+            ctx.fillText(userDiscrim, 243, 140);
 
             // k formatter for numbers greater than 999
             let xp2 = kFormatter(xxxp);
@@ -85,40 +85,15 @@ module.exports = {
             let count = kFormatter(msgCount);
 
             // message count
-            ctx.font = "23px grotesk";
+            ctx.font = "22px grotesk";
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = "right";
-            ctx.fillText(`Message Count: ${count}`, canvas.width / 1.16, canvas.height / 1.6);
-
-            // draw and fill our xp bar
-            const percentage = Math.floor((xxp / xxxp) * 100);
-            const roundedPercent = Math.round(percentage);
-
-            const testPerc = 100;
-            for (let i = 0; i < testPerc; i++) {
-                ctx.beginPath();
-                ctx.lineWidth = 14;
-                ctx.strokeStyle = "#484B4E";
-                ctx.fillStyle = "#484B4E";
-                ctx.arc(260 + (i * 5.32), 205, 8, 0, Math.PI * 2, true);
-                ctx.stroke();
-                ctx.fill();
-            }
-
-            for (let i = 0; i < roundedPercent; i++) {
-                ctx.beginPath();
-                ctx.lineWidth = 14;
-                ctx.strokeStyle = "#44eaff";
-                ctx.fillStyle = "#44eaff";
-                ctx.arc(260 + (i * 5.32), 205, 5.5, 0, Math.PI * 2, true);
-                ctx.stroke();
-                ctx.fill();
-            }
+            ctx.fillText(`Message Count: ${count}`, 511, 220);
 
             // current xp and xp needed
-            ctx.font = "24px grotesk";
-            ctx.fillStyle = "#000000";
-            ctx.fillText(`${xp3} / ${xp2} XP`, canvas.width / 1.525, canvas.height / 1.30);
+            ctx.font = "16px grotesk";
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(`${xp3} / ${xp2}`, 855, 149);
 
             // position in the leaderboard
             if (rankPos.length >= 5) {
@@ -129,35 +104,52 @@ module.exports = {
                 ctx.font = "60px grotesk";
             }
 
-            if (rankPos === 1) {
-                ctx.drawImage(rankFirst, 820, 50, 70, 70);
-            } else if (rankPos === 2) {
-                ctx.drawImage(rankSecond, 820, 50, 70, 70);
-            } else if (rankPos === 3) {
-                ctx.drawImage(rankThird, 820, 50, 70, 70);
-            } else {
-                ctx.font = "55px grotesk";
-                ctx.fillStyle = "#44eaff";
-                ctx.textAlign = "right";
-                ctx.fillText(`#${rankPos}`, canvas.width / 1.05, canvas.height / 2.8);
-            }
-
-            // draw a circle to crop our avatar into
+            // flip the canvas so the XP bar fills counter-clockwise
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            const percentage = Math.floor((xxp / xxxp) * 100);
+            // outter XP bar
             ctx.beginPath();
-            ctx.arc(140, 140, 80, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.clip();
+            ctx.lineWidth = 30;
+            ctx.strokeStyle = "#484B4E";
+            ctx.arc(130, 142, 75, 0, 2 * Math.PI, true);
+            ctx.stroke();
+            // inner XP bar
+            ctx.beginPath();
+            ctx.lineWidth = 20;
+            ctx.strokeStyle = "#44eaff";
+            ctx.arc(130, 142, 75, 1.5 * Math.PI, (Math.PI * 2) / (100 / percentage) - (Math.PI / 2), false);
+            ctx.stroke();
 
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+
+            // draw a rounded rectangle to crop our avatar into
+            function roundedImage(x, y, width, height, radius) {
+                ctx.beginPath();
+                ctx.moveTo(x + radius, y);
+                ctx.lineTo(x + width - radius, y);
+                ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+                ctx.lineTo(x + width, y + height - radius);
+                ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                ctx.lineTo(x + radius, y + height);
+                ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+                ctx.lineTo(x, y + radius);
+                ctx.quadraticCurveTo(x, y, x + radius, y);
+                ctx.closePath();
+            }
+            roundedImage(55, 55, 170, 170, 50);
+            ctx.clip();
             // get a small res version of the user's avatar and draw it onto the canvas
-            const avatarURL = target?.user.displayAvatarURL() + "?size=64";
+            const avatarURL = target?.user.displayAvatarURL() + "?size=128";
             const avatar = await Canvas.loadImage(avatarURL.replace('webp', 'png'));
-            ctx.drawImage(avatar, 60, 60, 160, 160);
+            ctx.drawImage(avatar, 55, 55, 170, 170);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer(), "profile-image.png");
 
             interaction.editReply({
                 files: [attachment]
-            })
+            }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
         }
     }
 };

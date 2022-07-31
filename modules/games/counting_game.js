@@ -14,6 +14,7 @@ module.exports = async (message, client) => {
     if (message?.channel.id === process.env.COUNT_CHAN && !message?.author.bot) {
         const content = message?.content;
         const author = message?.author;
+        let currentSaves = 0;
 
         // if the message isn't a number we can ignore it
         if (isNaN(content)) return;
@@ -25,7 +26,7 @@ module.exports = async (message, client) => {
 
         // if the user doesn't have rank 5 or verified role, check if they have any saves
         for (const data of results) {
-            currentSaves = data.saves || 0;
+            currentSaves = data.saves;
         }
         // get the current count from the database
         for (const data2 of results2) {
