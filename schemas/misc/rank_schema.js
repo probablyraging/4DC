@@ -20,7 +20,7 @@ const rankSchema = mongoose.Schema({
     },
     avatar: {
         type: String,
-        required: true
+        required: false
     },
     level: {
         type: Number,
