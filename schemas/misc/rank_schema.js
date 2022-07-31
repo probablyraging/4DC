@@ -23,7 +23,7 @@ const rankSchema = mongoose.Schema({
         required: true
     },
     level: {
-        type: String,
+        type: Number,
         required: true
     },
     msgCount: {
@@ -31,15 +31,15 @@ const rankSchema = mongoose.Schema({
         required: true
     },
     xp: {
-        type: String,
+        type: Number,
         required: true
     },
     xxp: {
-        type: String,
+        type: Number,
         required: true
     },
     xxxp: {
-        type: String,
+        type: Number,
         required: true
     },
 

@@ -22,7 +22,7 @@ module.exports = async (client) => {
 
         // remove non-existent users from the database
         for (var i = 0; i < sortArr.length; i++) {
-            const exists = await guild.members.cache.get(sortArr[i].id)
+            const exists = await guild.members.fetch(sortArr[i].id);
 
             if (!exists) {
                 await rankSchema.findOneAndRemove({ id: sortArr[i].id })
