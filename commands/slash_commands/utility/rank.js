@@ -87,13 +87,13 @@ module.exports = {
             // message count
             ctx.font = "22px grotesk";
             ctx.fillStyle = "#ffffff";
-            ctx.textAlign = "right";
-            ctx.fillText(`Message Count: ${count}`, 511, 220);
+            ctx.fillText(`Message Count: ${count}`, 243, 220);
 
             // current xp and xp needed
             ctx.font = "16px grotesk";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(`${xp3} / ${xp2}`, 855, 149);
+            ctx.textAlign = 'center';
+            ctx.fillText(`${xp3} / ${xp2}`, 798, 149);
 
             // position in the leaderboard
             if (rankPos.length >= 5) {
