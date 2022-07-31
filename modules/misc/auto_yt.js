@@ -43,7 +43,7 @@ module.exports = async (client) => {
                         // add the user's new video ID to the database
                         videoIds.push(regex);
 
-                        await ytNotificationSchema.findOneAndUpdate({
+                        await ytNotificationSchema.updateOne({
                             userId: userId,
                         }, {
                             userId: userId,

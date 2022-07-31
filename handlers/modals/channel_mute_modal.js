@@ -37,7 +37,7 @@ module.exports = async (interaction) => {
         const myDate = new Date();
         const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
 
-        await muteSchema.findOneAndUpdate({
+        await muteSchema.updateOne({
             timestamp,
             userId: fetchedMember?.user.id,
             channelId: channel.id

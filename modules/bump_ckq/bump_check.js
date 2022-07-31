@@ -30,7 +30,7 @@ module.exports = async (client) => {
                 });
             }).then(async () => {
                 // Log the current timestamp
-                await timerSchema.findOneAndUpdate({
+                await timerSchema.updateOne({
                     searchFor
                 }, {
                     timestamp: "null",

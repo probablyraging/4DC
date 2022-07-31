@@ -64,7 +64,7 @@ module.exports = {
                         videoIdArr.push(regex);
                     })
 
-                    await ytNotificationSchema.findOneAndUpdate({
+                    await ytNotificationSchema.updateOne({
                         userId: target.id,
                     }, {
                         userId: target.id,

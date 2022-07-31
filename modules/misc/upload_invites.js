@@ -22,7 +22,7 @@ module.exports = async (client) => {
 
         await inviteSchema.findOneAndRemove({ code: searchFor }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 
-        await inviteSchema.findOneAndUpdate({
+        await inviteSchema.updateOne({
             code: invitesArr[i].code,
             userId: invitesArr[i].userId,
             uses: invitesArr[i].uses

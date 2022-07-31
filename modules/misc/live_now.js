@@ -39,7 +39,7 @@ module.exports = async (client) => {
             const results = await streamSchema.find({ userId: userId })
 
             if (results?.length < 1) {
-                await streamSchema.findOneAndUpdate({
+                await streamSchema.updateOne({
                     userId,
                 }, {
                     userId,
@@ -84,7 +84,7 @@ module.exports = async (client) => {
             const results = await streamSchema.find({ userId: userId })
 
             if (results?.length < 1) {
-                await streamSchema.findOneAndUpdate({
+                await streamSchema.updateOne({
                     userId,
                 }, {
                     userId,

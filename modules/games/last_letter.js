@@ -346,7 +346,7 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                         if (dbCount > dbletterRecord) {
                             await letterRecordSchema.findOneAndRemove({ searchForRecord });
 
-                            await letterRecordSchema.findOneAndUpdate({
+                            await letterRecordSchema.updateOne({
                                 letterRecord: currentCounter,
                                 searchForRecord,
                             },
@@ -372,7 +372,7 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                 if (results.length === 0) {
                     const correctCount = 1;
 
-                    await letterLBSchema.findOneAndUpdate({
+                    await letterLBSchema.updateOne({
                         userId,
                         username: message.author.username,
                         discriminator: message.author.discriminator,
@@ -445,7 +445,7 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
 
                         await letterLBSchema.findOneAndRemove({ userId });
 
-                        await letterLBSchema.findOneAndUpdate({
+                        await letterLBSchema.updateOne({
                             userId,
                             correctCount: totalPoints,
                             username: message.author.username,
@@ -472,7 +472,7 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
             async function dbUpdateCount() {
                 await letterSchema.findOneAndRemove({ searchFor: 'currentCount' })
 
-                await letterSchema.findOneAndUpdate({
+                await letterSchema.updateOne({
                     currentLetterCounter: currentCounter,
                     searchFor,
                 },

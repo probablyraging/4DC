@@ -52,7 +52,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));
             // Set a timestamp 1 hour from the current time
             const setHours = new Date().setHours(new Date().getHours() + 2);
-            await timerSchema.findOneAndUpdate({
+            await timerSchema.updateOne({
                 searchFor: 'featuredTime'
             }, {
                 timestamp: setHours,

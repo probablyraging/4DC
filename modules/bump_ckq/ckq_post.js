@@ -45,7 +45,7 @@ module.exports = async (message) => {
 
         const searchFor = 'currentTime';
 
-        await timerSchema.findOneAndUpdate({
+        await timerSchema.updateOne({
             searchFor
         }, {
             timestamp,

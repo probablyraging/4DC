@@ -39,7 +39,7 @@ module.exports = {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                 if (results.length === 0) {
-                    await countingSchema.findOneAndUpdate({
+                    await countingSchema.updateOne({
                         userId: member.id,
                     }, {
                         userId: member.id,
@@ -128,7 +128,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             }
 
                             // remove 1 save from the user
-                            await countingSchema.findOneAndUpdate({
+                            await countingSchema.updateOne({
                                 userId: member.id
                             }, {
                                 saves: saves - 1
@@ -137,7 +137,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                             // add 0.25 saves to the guild
-                            await countingSchema.findOneAndUpdate({
+                            await countingSchema.updateOne({
                                 userId: guild.id
                             }, {
                                 saves: guildSaves + 0.25

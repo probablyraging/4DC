@@ -37,7 +37,7 @@ module.exports = {
 
                         await inviteSchema.findOneAndRemove({ code: code }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a database entry: `, err));
 
-                        await inviteSchema.findOneAndUpdate({
+                        await inviteSchema.updateOne({
                             code: code,
                             userId: userId,
                             uses: uses

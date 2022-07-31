@@ -39,7 +39,7 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                 SendMessages: true,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-            await timerSchema.findOneAndUpdate({
+            await timerSchema.updateOne({
                 searchFor
             }, {
                 timestamp: "null",

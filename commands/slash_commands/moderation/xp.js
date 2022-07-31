@@ -52,7 +52,7 @@ module.exports = {
                 }
 
                 // reset the user's rank data to 0
-                await rankSchema.findOneAndUpdate({
+                await rankSchema.updateOne({
                     id: target?.id
                 }, {
                     level: 0,

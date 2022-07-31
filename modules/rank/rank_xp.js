@@ -12,7 +12,28 @@ module.exports = async (message, client) => {
 
     const disableXP = [process.env.CONTENT_SHARE, process.env.BOT_CHAN]
 
+    let results;
     if (!message?.author?.bot && !xpLimit.has(message?.author?.id)) {
+        results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+        // check to see if the user is in our database yet, if not, add them
+        if (results.length === 0) {
+            await rankSchema.create({
+                rank: 0,
+                id: message?.author?.id,
+                username: message?.author.username,
+                discrim: message?.author.discriminator,
+                avatar: message?.author.avatar,
+                level: 0,
+                msgCount: 0,
+                xp: 0,
+                xxp: 0,
+                xxxp: 100
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+
+        // if the message is in an XP disabled channel, don't add XP
+        if (disableXP.includes(message?.channel?.id)) return;
+
         // find all entries, sort them based on their 'xp' and assign each user a 'rank'
         const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
@@ -26,39 +47,6 @@ module.exports = async (message, client) => {
         sortArr.sort(function (a, b) {
             return b.xp - a.xp;
         });
-
-        const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-        // check to see if the user is in our database yet, if not, add them
-        if (results.length === 0) {
-            await rankSchema.findOneAndUpdate({
-                rank: 0,
-                id: message?.author?.id,
-                username: message?.author.username,
-                discrim: message?.author.discriminator,
-                avatar: message?.author.avatar,
-                level: 0,
-                msgCount: 0,
-                xp: 0,
-                xxp: 0,
-                xxxp: 100
-            }, {
-                rank: 0,
-                id: message?.author?.id,
-                username: message?.author.username,
-                discrim: message?.author.discriminator,
-                avatar: message?.author.avatar,
-                level: 0,
-                msgCount: 0,
-                xp: 0,
-                xxp: 0,
-                xxxp: 100
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-        }
-
-        // if the message is in an XP disabled channel, don't add XP
-        if (disableXP.includes(message?.channel?.id)) return;
 
         // get a random number between 15 and 25
         function randomNum(min, max) {
@@ -88,7 +76,7 @@ module.exports = async (message, client) => {
             rankPos = findInArr?.pos;
 
             // update user's xp and xxp per 1 message, per 60 seconds
-            await rankSchema.findOneAndUpdate({
+            await rankSchema.updateOne({
                 id: message?.author?.id
             }, {
                 rank: rankPos,
@@ -106,7 +94,7 @@ module.exports = async (message, client) => {
                 let levelMath = parseInt(level) + 1;
                 let exponential = 5 * Math.pow(levelMath, 2) + (50 * levelMath) + 100 - 0;
 
-                await rankSchema.findOneAndUpdate({
+                await rankSchema.updateOne({
                     id: message?.author?.id
                 }, {
                     level: levelMath,
@@ -177,14 +165,14 @@ module.exports = async (message, client) => {
     }
 
     // count all new messages towards msgCount
-    const results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+    if (!results) results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
     for (const data of results) {
         let { msgCount } = data;
 
         let msgMath = parseInt(msgCount) + 1;
 
-        await rankSchema.findOneAndUpdate({
+        await rankSchema.updateOne({
             id: message?.author?.id
         }, {
             msgCount: msgMath

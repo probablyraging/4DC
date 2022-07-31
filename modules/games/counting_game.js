@@ -151,7 +151,7 @@ module.exports = async (message, client) => {
             for (const data of results) {
                 const { saves } = data;
 
-                await countingSchema.findOneAndUpdate({
+                await countingSchema.updateOne({
                     userId: guild.id
                 }, {
                     saves: saves - 1
@@ -169,7 +169,7 @@ module.exports = async (message, client) => {
             for (const data of results) {
                 const { saves } = data;
 
-                await countingSchema.findOneAndUpdate({
+                await countingSchema.updateOne({
                     userId: author.id
                 }, {
                     saves: saves - 1
@@ -186,7 +186,7 @@ module.exports = async (message, client) => {
 
             if (results === 0) {
                 // if user doesn't exist in the satabase yet, create an entry for them
-                await countingSchema.findOneAndUpdate({
+                await countingSchema.updateOne({
                     userId: author.id,
                 }, {
                     userId: author.id,
@@ -202,7 +202,7 @@ module.exports = async (message, client) => {
                 for (const data of results) {
                     const { counts, saves } = data;
 
-                    await countingSchema.findOneAndUpdate({
+                    await countingSchema.updateOne({
                         userId: author.id
                     }, {
                         username: author.username,
@@ -219,7 +219,7 @@ module.exports = async (message, client) => {
 
         // keep track of the current count and the previous counter
         async function updateCurrentCount() {
-            await countingCurrent.findOneAndUpdate({
+            await countingCurrent.updateOne({
                 searchFor: 'currentCount'
             }, {
                 currentCount: currentCount + 1,
@@ -231,7 +231,7 @@ module.exports = async (message, client) => {
 
         // reset the current count if it fails
         async function resetCurrentCount() {
-            await countingCurrent.findOneAndUpdate({
+            await countingCurrent.updateOne({
                 searchFor: 'currentCount'
             }, {
                 currentCount: 0,
@@ -244,7 +244,7 @@ module.exports = async (message, client) => {
         // if the current count is higher than the record count, update it
         async function updateRecord() {
             if (currentCount >= currentRecord) {
-                await countingCurrent.findOneAndUpdate({
+                await countingCurrent.updateOne({
                     searchFor: 'currentCount'
                 }, {
                     currentRecord: currentCount + 1

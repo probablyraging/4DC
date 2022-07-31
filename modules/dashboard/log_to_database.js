@@ -42,7 +42,7 @@ async function logToChartData(logType, author) {
                 const { joins } = data;
                 current = joins;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     joins: current.toString()
@@ -70,7 +70,7 @@ async function logToChartData(logType, author) {
                 const { leaves } = data;
                 current = leaves;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     leaves: current.toString()
@@ -98,7 +98,7 @@ async function logToChartData(logType, author) {
                 const { bans } = data;
                 current = bans;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     bans: current.toString()
@@ -115,7 +115,7 @@ async function logToChartData(logType, author) {
             const { newcommunicatorsarr } = data;
             if (!newcommunicatorsarr.includes(author)) {
                 newCommsArr.push(author);
-                logToChartData('newcommunicators');                
+                logToChartData('newcommunicators');
             }
         }
 
@@ -135,7 +135,7 @@ async function logToChartData(logType, author) {
                 const { messages } = data;
                 current = messages;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     messages: current.toString()
@@ -163,7 +163,7 @@ async function logToChartData(logType, author) {
                 const { timeouts } = data;
                 current = timeouts;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     timeouts: current.toString()
@@ -191,7 +191,7 @@ async function logToChartData(logType, author) {
                 const { warnings } = data;
                 current = warnings;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     warnings: current.toString()
@@ -220,7 +220,7 @@ async function logToChartData(logType, author) {
                 const { newcommunicators } = data;
                 current = newcommunicators;
                 current++;
-                await chartData.findOneAndUpdate({
+                await chartData.updateOne({
                     date: dateToUTC
                 }, {
                     newcommunicators: current.toString(),

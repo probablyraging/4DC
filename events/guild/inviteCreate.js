@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'inviteCreate',
     async execute(invite, client, Discord) {
-        await inviteSchema.findOneAndUpdate({
+        await inviteSchema.updateOne({
             code: invite.code,
             userId: invite.inviterId,
             uses: invite.uses

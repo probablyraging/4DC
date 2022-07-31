@@ -112,7 +112,7 @@ module.exports = {
             const results = await commandCountSchema.find({ command: command.name })
 
             if (results.length === 0) {
-                await commandCountSchema.findOneAndUpdate({
+                await commandCountSchema.updateOne({
                     command: command.name
                 }, {
                     command: command.name,
@@ -126,7 +126,7 @@ module.exports = {
 
                     let usesAdd = uses + 1;
 
-                    await commandCountSchema.findOneAndUpdate({
+                    await commandCountSchema.updateOne({
                         command: command.name,
                     }, {
                         uses: usesAdd

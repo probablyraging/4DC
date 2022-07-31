@@ -34,7 +34,7 @@ module.exports = async (message) => {
                         SendMessages: false,
                     })
 
-                    await timerSchema.findOneAndUpdate({
+                    await timerSchema.updateOne({
                         searchFor
                     }, {
                         timestamp,
@@ -47,7 +47,7 @@ module.exports = async (message) => {
                     const results = await countingSchema.find({ userId: bumpUser });
                     // if user doesn't have an entry yet
                     if (results.length === 0) {
-                        await countingSchema.findOneAndUpdate({
+                        await countingSchema.updateOne({
                             userId: bumpUser,
                             saves: 0,
                             counts: 0
@@ -65,7 +65,7 @@ module.exports = async (message) => {
                             const { saves } = data;
 
                             if (saves < 2) {
-                                await countingSchema.findOneAndUpdate({
+                                await countingSchema.updateOne({
                                     userId: bumpUser
                                 }, {
                                     saves: saves + 1,
@@ -83,7 +83,7 @@ module.exports = async (message) => {
                             const { saves } = data;
 
                             if (saves < 2) {
-                                await countingSchema.findOneAndUpdate({
+                                await countingSchema.updateOne({
                                     userId: bumpUser
                                 }, {
                                     saves: saves + 1,

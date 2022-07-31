@@ -38,7 +38,7 @@ module.exports = async (client) => {
 
         // assign the new rank position to each user
         for (var i = 0; i < rankPosArr.length; i++) {
-            await rankSchema.findOneAndUpdate({
+            await rankSchema.updateOne({
                 id: rankPosArr[i].id
             }, {
                 rank: rankPosArr[i].pos

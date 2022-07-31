@@ -56,7 +56,7 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
 
                 await timerSchema.findOneAndRemove({ searchFor });
 
-                await timerSchema.findOneAndUpdate({
+                await timerSchema.updateOne({
                     timestamp: 'null',
                     searchFor
                 }, {
