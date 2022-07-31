@@ -139,7 +139,7 @@ ${savesMessage}`)
     }
 
     // delete all regular message that aren't from bots
-    if (!message?.author.bot) {
+    if (message?.channel.id === process.env.BUMP_CHAN && !message?.author.bot) {
         message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
     }
 }
