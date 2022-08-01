@@ -33,10 +33,7 @@ module.exports = {
         const targetId = target?.user?.id || member?.id;
 
         // Load default images
-        const background = await Canvas.loadImage("./res/images/rankbg.jpg");
-        const rankFirst = await Canvas.loadImage("./res/images/firstplace.png");
-        const rankSecond = await Canvas.loadImage("./res/images/secondplace.png");
-        const rankThird = await Canvas.loadImage("./res/images/thirdplace.png");
+        const background = await Canvas.loadImage("./res/images/rankbg.png");
 
         const results = await rankSchema.find({ id: targetId }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
