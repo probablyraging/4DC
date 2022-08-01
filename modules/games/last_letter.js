@@ -349,14 +349,12 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                             await letterRecordSchema.updateOne({
                                 letterRecord: currentCounter,
                                 searchForRecord,
-                            },
-                                {
-                                    letterRecord: currentCounter,
-                                    searchForRecord,
-                                },
-                                {
-                                    upsert: true
-                                });
+                            }, {
+                                letterRecord: currentCounter,
+                                searchForRecord,
+                            }, {
+                                upsert: true
+                            });
                         }
                     }
                 }

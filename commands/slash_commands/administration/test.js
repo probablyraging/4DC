@@ -1,4 +1,3 @@
-
 const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require("discord.js");
 
 module.exports = {
@@ -11,9 +10,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction, client) {
-        const { options, member, guild, channel } = interaction;
-
-        // testing commit
+        const { options, member, guild, channel } = interaction;        
 
         interaction.reply({ content: 'ok', ephemeral: true })
     }
