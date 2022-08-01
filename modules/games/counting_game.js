@@ -67,33 +67,28 @@ module.exports = async (message, client) => {
         }
 
         let failed = false;
-        // fetch the previous batch of messages
-        await message?.channel.messages.fetch({ limit: 20 }).then(async fetched => {
-            const filtered = fetched.filter(m => !m.author.bot);
+        // if the same person counted two numbers is a row
+        const results3 = await countingCurrent.find({ searchFor: 'currentCount' });
+        for (const data of results3) {
+            if (author.id === data.previousCounter) {
+                failReason = `${author} **FAILED** \n> You can't count two numbers in a row`;
 
-            // if the same person counted two numbers is a row
-            const results = await countingCurrent.find({ searchFor: 'currentCount' });
-            for (const data of results) {
-                if (author.id === data.previousCounter) {
-                    failReason = `${author} **FAILED** \n> You can't count two numbers in a row`;
-
-                    failed = true;
-
-                    await checkForPersonalSaves();
-                    return;
-                }
-            }
-
-            // if the new number didn't increase by 1 from the previous number
-            if (!failed && parseInt(content) !== currentCount + 1) {
-                failReason = `${author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${content}\``;
-
-                failed = true
+                failed = true;
 
                 await checkForPersonalSaves();
                 return;
             }
-        });
+        }
+
+        // if the new number didn't increase by 1 from the previous number
+        if (!failed && parseInt(content) !== currentCount + 1) {
+            failReason = `${author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${content}\``;
+
+            failed = true
+
+            await checkForPersonalSaves();
+            return;
+        }
 
         if (!failed) {
             await passedCount();

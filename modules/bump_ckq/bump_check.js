@@ -40,5 +40,5 @@ module.exports = async (client) => {
                 })
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem with updating the bump channel: `, err));
         }
-    }, 120000);
+    }, 300000);
 };
