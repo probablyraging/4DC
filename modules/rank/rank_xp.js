@@ -57,7 +57,7 @@ module.exports = async (message, client) => {
             let { xp, xxp, xxxp, level, msgCount } = data;
 
             let msgMath = parseInt(msgCount) + 1;
-            let random = randomNum(15, 25);
+            let random = randomNum(15, 25) * 2;
             let xpMath = parseInt(xp) + random;
             let xxpMath = parseInt(xxp) + random;
 
