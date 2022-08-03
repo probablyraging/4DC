@@ -206,10 +206,20 @@ module.exports = async (message, client) => {
             if (!failed) {
                 const resolve = await fetch(`https://en.wiktionary.org/wiki/${message.content.toLowerCase()}`);
                 const body = await resolve.text();
-                const isEnglishWord = await body.toString().includes('toctext">English');
-                const isEnglishWord2 = await body.toString().includes('class="mw-headline" id="English"');
+                const checkOne = await body.toString().includes('toctext">English');
+                const checkTwo = await body.toString().includes('class="mw-headline" id="English"');
 
-                if (!isEnglishWord && !isEnglishWord2) {
+                function capitalizeFirstLetter(string) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+
+                // Check for capatilized entries
+                const resolve2 = await fetch(`https://en.wiktionary.org/wiki/${capitalizeFirstLetter(message.content.toLowerCase())}`);
+                const body2 = await resolve2.text();
+                const checkThreee = await body2.toString().includes('toctext">English');
+                const checkFour = await body2.toString().includes('class="mw-headline" id="English"');
+
+                if (!checkOne && !checkTwo && !checkThreee && !checkFour) {
                     failed = true;
 
                     message.reply({
