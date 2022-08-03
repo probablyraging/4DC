@@ -28,7 +28,7 @@ module.exports = async (message, client, Discord) => {
 
                 // Log to channel
                 let log = new EmbedBuilder()
-                    .setColor("#E04F5F")
+                    .setColor("#4fe059")
                     .setAuthor({ name: `${client?.user.tag}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
 **Channel:** ${targetChan}`)
