@@ -10,7 +10,7 @@ module.exports = async (message, client) => {
     if (message?.channel.id === process.env.RES_CHAN && !message?.author.bot) {
         const content = message?.cleanContent.split('\n');
 
-        let response = new EmbedBuilder()
+        let resEmbed = new EmbedBuilder()
             .setColor('#F44336')
             .setTitle(`${content[0]}`)
             .setDescription(`${content.slice(1).join('\n')}`)
@@ -28,13 +28,14 @@ module.exports = async (message, client) => {
                 image: msgAttachment,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
-            response.forEach(res => {
-                response.setImage(res.data.link)
-            });
+            if (response.length > 0) {
+                if (response[0].status !== 200) return;
+                log.setImage(resEmbed[0].data.link);
+            }
         }
 
         resChan.send({
-            embeds: [response]
+            embeds: [resEmbed]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err)).then(msg => {
             msg.react('<a:upvote:842350442297688074>')
             msg.react('<a:downvote:842350442481713153>')

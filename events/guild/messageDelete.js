@@ -30,7 +30,6 @@ module.exports = {
             .setTimestamp()
 
         let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
-        let attachmentToImgur;
 
         if (msgAttachment) {
             // create a new imgur client
@@ -41,11 +40,9 @@ module.exports = {
                 image: msgAttachment,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
 
-            if (response.status === 200) {
-                response.forEach(res => {
-                    log.setImage(res.data.link);
-                    attachmentToImgur = res.data.link;
-                });
+            if (response.length > 0) {
+                if (response[0].status !== 200) return;
+                log.setImage(response[0].data.link);
             }
         }
 
