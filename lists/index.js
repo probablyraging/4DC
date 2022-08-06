@@ -8,13 +8,13 @@ ForTheContent is a growing community of content creators, game developers, music
 So if you're a youtuber, streamer, game developer, musician, or if you're just looking for somewhere to meet new people, you are in the right place!
 
 **GETTING STARTED**
-> <#898541066595209248> Read the server rules
-> <#1005283113775157349> View a map of the server's channels
-> <#898611031146889286> Get answers to frequently asked server questions
+> <#898541066595209248> Read the server rules, these are important
+> <#1005283113775157349> Familiarize yourself with the server channels
+> <#1005305774471381002> Find answers to frequently asked questions
 > <#948052750611120228> Give your profile some flair
-> <#820889004055855147> Introduce yourself to the community
+> <#820889004055855147> Introduce yourself to and chat with the community
 > <#851707143873626134> Find some useful tips & tricks
-> <#978553334854205450> If you need help with anything, just ask
+> <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
 **NEW TO DISCORD?**
