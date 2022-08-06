@@ -1,5 +1,7 @@
 module.exports = {
     welcome: [
+        `https://www.forthecontent.xyz/images/creatorhub/banner_welcome.png`,
+
         `**WELCOME TO FORTHECONTENT**
 ForTheContent is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
 
@@ -7,18 +9,24 @@ So if you're a youtuber, streamer, game developer, musician, or if you're just l
 
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules
-> <#898611031146889286> Get answers to frequently asked questions
+> <#1005283113775157349> View a map of the server's channels
+> <#898611031146889286> Get answers to frequently asked server questions
 > <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to the community
 > <#851707143873626134> Find some useful tips & tricks
 > <#978553334854205450> If you need help with anything, just ask
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
+**NEW TO DISCORD?**
+Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
+
 **YOUR AGREEMENT**
 By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
     ],
 
-    faqserver: [
+    faqs: [
+        `https://www.forthecontent.xyz/images/creatorhub/banner_serverfaq.png`,
+
         `**When/how can I share my content?**
 > Content share channels can be found under the 'CONTENT SHARE' section. Content share channels are unlocked at Rank 5. Reaching Rank 5 and unlocking the 'CONTENT SHARE' channels takes approximately 80 messages *(or 1 hour of total chat time)*. You can bypass these rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the \`/rank\` command
 
@@ -46,11 +54,12 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [ForTheContent Dashboard](https://www.forthecontent.xyz), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
-> To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles`
-    ],
+> To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
+⠀`,
 
-    faqyoutube: [
-        `**How do I get started?**
+`https://www.forthecontent.xyz/images/creatorhub/banner_youtubefaq.png`,
+
+`**How do I get started?**
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
 > <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like OBS
 > <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
@@ -82,13 +91,12 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > <:minidot:923683258871472248> Description are a longer form of your contents description and will also be used by search engines to determine what your content is about
 > <:minidot:923683258871472248> Keywords give YouTube and other search engines information and context about your content. Using 5-10 keywords related to your content is the best practice
 > <:minidot:923683258871472248> Closed Captions are yet another way search engines can get an understanding into your video. You can turn on closed captions for your videos in YouTube studio
-> Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos
-                
-If you have any further questions, or think there should be a question listed here that isn't already, feel free to head over to <#978553334854205450> and create a thread`
-    ],
+> Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos4
+⠀`,
 
-    faqtwitch: [
-        `**How do I get started?**
+`https://www.forthecontent.xyz/images/creatorhub/banner_twitchfaq.png`,
+
+`**How do I get started?**
 > Streaming on Twitch is simple, all you need is a broadcasting program such as [OBS](<https://obsproject.com>), [Streamlabs OBS](<https://streamlabs.com>), [XSplit](<https://www.xsplit.com>), or any other alternative. Once you have chosen a program to use, you can head over to your [settings](<https://dashboard.twitch.tv/settings/stream>) page on Twitch, grab your stream key and go live right away. Though you might want to take some time to learn the program you're using, fine-tune your video and audio settings and set up some overlays and notification alerts
 
 **Where can I get overlays, alert notifications, panels, emotes etc..?**
@@ -172,6 +180,66 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 \`2.\` You must watch your video queue at least once every 3 days, if a video is only than 3 days, staff will be notified
 \`4.\` Contact a staff member if you need to be set as away
 \`5.\` Click the INFORMATION button on the Creator Crew dashboard for more information`
+    ],
+
+    servermap: [
+        `https://www.forthecontent.xyz/images/creatorhub/banner_servermap.png`,
+
+        `**A handy guide to help you navigate the server**
+        
+**WELCOME**
+<#820909722458652674> Welcome to ForTheContent!
+<#898541066595209248> A list of the server rules. Read them, they're important
+<#1005283113775157349> You are here
+<#820922632227913759> Important updates and changes regarding the server
+<#948052750611120228> Grab yourself some profile flair
+<#843127402435313724> Let us know how we can improve on things
+<#887642369598570527> Look at all the awesome server boosters
+
+**CHATTING**
+<#820889004055855147> Introduce yourself, hang out, and chat with other server members
+<#845180182410428416> Everyone loves movies, TV and music, so it gets it's own channel
+<#843103680592609320> Reached a personal milestone? Share it with us
+<#846449072105586708> Current game deals and random game related chat
+
+**INFORMATION**
+<#898611031146889286> Frequently asked question regading ForTheContent
+<#999530701038817281> Frequently asked question regading YouTube
+<#999546035196145794> Frequently asked question regading Twitch
+<#851707143873626134> Find a load a useful resources to help in your creative process
+<#999590455576645662> A growing list of useful links for platforms such as YouTube and Twitch
+<#900243955847938078> Videos for creators, from YouTube Creators
+
+**FORUMS**
+<#978553334854205450> Post any help or advice related question you might have here
+<#978691673842389053> Get some constructive feedback on your graphics or videos
+<#978694637088804884> Looking for something specific? Like new friends? Find them here`,
+
+            `⠀
+**CONTENT SHARE**
+<#907446635435540551> Paid promotion for things that don't relate to content creation
+<#841568782992277524> An elite group of super supportive server members
+<#878229815541497857> Content sharing, but with a twist
+<#998819701704630272> Randomly selected live streams
+<#859117794779987978> A channel for our awesome server boosters to share their content
+<#856719763187302441> **Unlocked at Rank 5** Share your content with other server members
+
+**MEDIA AND GAMES**
+<#845180817281253406> Share memes, images and non-promotional type content here
+<#837041072168632360> Show off your epic *(or not so epic)* warstation
+<#848168241275731979> It's like a typical Instagram page, but on Discord
+<#837941067450023937> Cats > dogs, change my mind
+<#851584454036029441> Help us count to 10,000
+<#896069772624683018> Match the first letter of your word, with the last letter of the previous word
+
+**VOICE CHANNELS**
+<#838305157771034624> Create your own voice channel to chill out in
+
+**BOT**
+<#855427926136193054> Bump the server every 2 hours for a cookie
+<#837945839799500850> Check your rank, and get notified when you rank up
+<#987212586007281674> It's like a revolving door
+<#995882451446546502> All of these people are on Santa's naughty list`
     ]
 }
 

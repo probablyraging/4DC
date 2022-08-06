@@ -17,9 +17,8 @@ module.exports = {
         required: true,
         choices: [{ name: 'welcome', value: 'welcome' },
         { name: 'rules', value: 'rules' },
-        { name: 'faqserver', value: 'faqserver' },
-        { name: 'faqyoutube', value: 'faqyoutube' },
-        { name: 'faqtwitch', value: 'faqtwitch' },
+        { name: 'servermap', value: 'servermap' },
+        { name: 'faqs', value: 'faqs' },
         { name: 'usefullinks', value: 'usefullinks' },
         { name: 'creatorcrew', value: 'creatorcrew' },
         { name: 'selfroles', value: 'selfroles' },
@@ -37,19 +36,29 @@ module.exports = {
         // WELCOME
         switch (options.getString('data')) {
             case 'welcome': {
+                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    webhook.send(index.welcome[0])
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    for (let i = 0; i < index.welcome.length; i++) {
+                        setTimeout(function () {
+                            webhook.send({
+                                content: `${index.welcome[i]}`,
+                                allowedMentions: {
+                                    parse: []
+                                }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                        }, i * 1000);
+                    }
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-            }
 
-                interaction.reply({
+                interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
         }
 
         // RULES
@@ -58,6 +67,8 @@ module.exports = {
                 getRules().then(rule => {
                     channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(async webhook => {
                         setTimeout(async () => {
+                            webhook.send(`https://www.forthecontent.xyz/images/creatorhub/banner_rules.png`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+
                             webhook.send(`**SERVER RULES**
 To keep ForTheContent a safe and positive experience for everyone, you are required to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
 
@@ -91,16 +102,44 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
+        // SERVER MAP
+        switch (options.getString('data')) {
+            case 'servermap': {
+                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    for (let i = 0; i < index.servermap.length; i++) {
+                        setTimeout(function () {
+                            webhook.send({
+                                content: `${index.servermap[i]}`,
+                                allowedMentions: {
+                                    parse: []
+                                }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                        }, i * 1000);
+                    }
+                    setTimeout(() => {
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+                interaction.editReply({
+                    content: `${process.env.BOT_CONF} Done`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
+        }
+
         // FAQ SERVER
         switch (options.getString('data')) {
-            case 'faqserver': {
+            case 'faqs': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.faqserver.length; i++) {
+                    for (let i = 0; i < index.faqs.length; i++) {
                         setTimeout(function () {
                             webhook.send({
-                                content: `${index.faqserver[i]}`,
+                                content: `${index.faqs[i]}`,
                                 allowedMentions: {
                                     parse: []
                                 }
@@ -109,7 +148,7 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                     }
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
+                    }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
             }
 
@@ -117,62 +156,6 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
-        // FAQ YOUTUBE
-        switch (options.getString('data')) {
-            case 'faqyoutube': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.faqyoutube.length; i++) {
-                        setTimeout(function () {
-                            webhook.send({
-                                content: `${index.faqyoutube[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }, i * 1000);
-                    }
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
-
-        // FAQ TWITCH
-        switch (options.getString('data')) {
-            case 'faqtwitch': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.faqtwitch.length; i++) {
-                        setTimeout(function () {
-                            webhook.send({
-                                content: `${index.faqtwitch[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }, i * 1000);
-                    }
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
         }
 
         // USEFUL LINKS
@@ -312,7 +295,11 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
                             ]),
                     );
 
-                await channel.send({ content: '**Choose your nickname color**', components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
+                await channel.send({ content: `https://www.forthecontent.xyz/images/creatorhub/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
+
+                await channel.send({ content: `**Select your roles from the dropdown menus below. Select a role again to remove it**
+
+**Choose your nickname color**`, components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
