@@ -185,7 +185,7 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
     servermap: [
         `https://www.forthecontent.xyz/images/creatorhub/banner_servermap.png`,
 
-        `**A handy guide to help you navigate the server**
+        `**A handy guide to help you navigate the server channels**
         
 **WELCOME**
 <#820909722458652674> Welcome to ForTheContent!
@@ -193,44 +193,42 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#1005283113775157349> You are here
 <#820922632227913759> Important updates and changes regarding the server
 <#948052750611120228> Grab yourself some profile flair
-<#843127402435313724> Let us know how we can improve on things
-<#887642369598570527> Look at all the awesome server boosters
+<#843127402435313724> Let us know how we can improve the server
+<#887642369598570527> Look at all these awesome server boosters
 
 **CHATTING**
 <#820889004055855147> Introduce yourself, hang out, and chat with other server members
-<#845180182410428416> Everyone loves movies, TV and music, so it gets it's own channel
-<#843103680592609320> Reached a personal milestone? Share it with us
+<#845180182410428416> Everyone loves movies, TV and music, so they get their own channel
+<#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
 
 **INFORMATION**
-<#898611031146889286> Frequently asked question regading ForTheContent
-<#999530701038817281> Frequently asked question regading YouTube
-<#999546035196145794> Frequently asked question regading Twitch
+<#1005305774471381002> Frequently asked questions for multiple topics
 <#851707143873626134> Find a load a useful resources to help in your creative process
 <#999590455576645662> A growing list of useful links for platforms such as YouTube and Twitch
-<#900243955847938078> Videos for creators, from YouTube Creators
+<#900243955847938078> Helpful videos for creators, from YouTube Creators
 
 **FORUMS**
-<#978553334854205450> Post any help or advice related question you might have here
+<#978553334854205450> Get assistance or support for specific topics
 <#978691673842389053> Get some constructive feedback on your graphics or videos
 <#978694637088804884> Looking for something specific? Like new friends? Find them here`,
 
             `⠀
 **CONTENT SHARE**
-<#907446635435540551> Paid promotion for things that don't relate to content creation
+<#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#841568782992277524> An elite group of super supportive server members
 <#878229815541497857> Content sharing, but with a twist
-<#998819701704630272> Randomly selected live streams
-<#859117794779987978> A channel for our awesome server boosters to share their content
-<#856719763187302441> **Unlocked at Rank 5** Share your content with other server members
+<#998819701704630272> Links to currently live streaming server members, selected at random
+<#859117794779987978> A channel for our awesome server boosters to share their awesome content
+<#856719763187302441> Share your content with other server members *(unlocked at rank 5)*
 
 **MEDIA AND GAMES**
-<#845180817281253406> Share memes, images and non-promotional type content here
+<#845180817281253406> Share memes, images and other non-promotional type media here
 <#837041072168632360> Show off your epic *(or not so epic)* warstation
-<#848168241275731979> It's like a typical Instagram page, but on Discord
+<#848168241275731979> What's cookin', good lookin'?
 <#837941067450023937> Cats > dogs, change my mind
-<#851584454036029441> Help us count to 10,000
-<#896069772624683018> Match the first letter of your word, with the last letter of the previous word
+<#851584454036029441> Count to 10,000 for an epic reward
+<#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
 **VOICE CHANNELS**
 <#838305157771034624> Create your own voice channel to chill out in
