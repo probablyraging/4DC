@@ -24,6 +24,35 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
     ],
 
+    rules: [
+        `https://www.forthecontent.xyz/images/creatorhub/banner_rules.png`,
+
+        `To keep ForTheContent a safe and positive experience for everyone, you are required to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
+        
+**1. Harmful, offensive, or explicit content**
+> Messages, usernames, avatars, banners, bios, or linked accounts containing this type of content has no place in this server. This may result in a ban without warning
+
+**2. Spamming and flooding**
+> Sending multiple messages repeatedly or sending purposeless messages in an attempt to gain XP
+
+**3. Self-promotion and unsolicited DMs**
+> Do not post self-promotional content outside of the 'CONTENT SHARE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites, or spam
+
+**4. Advertising servers and paid products**
+> Advertising of other discord servers, offering or requesting paid services, products, and other promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>
+
+**5. Sub for sub posts**
+> We do not allow sub for sub type posts anywhere on the server, including the 'CONTENT SHARE' section. This is also against [YouTube's ToS](<https://www.youtube.com/static?template=terms>)
+
+**6. Moderator discretion**
+> Do not publicly discuss other members' bans, mutes, message deletions, or other moderating actions. If you have a concern, please DM a staff member privately
+
+**7.  English only**
+> For moderating purposes, please keep your messages in English
+
+*last updated: ${new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}*`
+    ],
+
     faqs: [
         `https://www.forthecontent.xyz/images/creatorhub/banner_serverfaq.png`,
 
@@ -57,9 +86,9 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
 ⠀`,
 
-`https://www.forthecontent.xyz/images/creatorhub/banner_youtubefaq.png`,
+        `https://www.forthecontent.xyz/images/creatorhub/banner_youtubefaq.png`,
 
-`**How do I get started?**
+        `**How do I get started?**
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
 > <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like OBS
 > <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
@@ -94,9 +123,9 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos4
 ⠀`,
 
-`https://www.forthecontent.xyz/images/creatorhub/banner_twitchfaq.png`,
+        `https://www.forthecontent.xyz/images/creatorhub/banner_twitchfaq.png`,
 
-`**How do I get started?**
+        `**How do I get started?**
 > Streaming on Twitch is simple, all you need is a broadcasting program such as [OBS](<https://obsproject.com>), [Streamlabs OBS](<https://streamlabs.com>), [XSplit](<https://www.xsplit.com>), or any other alternative. Once you have chosen a program to use, you can head over to your [settings](<https://dashboard.twitch.tv/settings/stream>) page on Twitch, grab your stream key and go live right away. Though you might want to take some time to learn the program you're using, fine-tune your video and audio settings and set up some overlays and notification alerts
 
 **Where can I get overlays, alert notifications, panels, emotes etc..?**
@@ -213,7 +242,7 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#978691673842389053> Get some constructive feedback on your graphics or videos
 <#978694637088804884> Looking for something specific? Like new friends? Find them here`,
 
-            `⠀
+        `⠀
 **CONTENT SHARE**
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#841568782992277524> An elite group of super supportive server members

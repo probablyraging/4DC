@@ -3,8 +3,8 @@ const { addWarning } = require('../../../modules/creator_crew/utilities');
 const { notifyUser } = require('../../../modules/creator_crew/utilities');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const ccWarnModel = require('../../../schemas/creator_crew/warn_schema');
-const { getRules } = require('../../../lists/rule-list');
 const { logToChartData } = require('../../../modules/dashboard/log_to_database');
+const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
 const path = require('path');
@@ -96,16 +96,14 @@ module.exports = {
                 let reason = options.getString('reason');
                 const custom = options.getString('custom');
 
-                await getRules().then(async rule => {
-                    if (reason === '1') reason = `${rule[0]}`;
-                    if (reason === '2') reason = `${rule[1]}`;
-                    if (reason === '3') reason = `${rule[2]}`;
-                    if (reason === '4') reason = `${rule[3].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}`;
-                    if (reason === '5') reason = `${rule[4]}`;
-                    if (reason === '6') reason = `${rule[5]}`;
-                    if (reason === '7') reason = `${rule[6]}`;
-                    if (reason === 'Custom') reason = `${custom}`;
-                });
+                if (reason === '1') reason = `${rules[0]}`;
+                if (reason === '2') reason = `${rules[1]}`;
+                if (reason === '3') reason = `${rules[2]}`;
+                if (reason === '4') reason = `${rules[3]}`;
+                if (reason === '5') reason = `${rules[4]}`;
+                if (reason === '6') reason = `${rules[5]}`;
+                if (reason === '7') reason = `${rules[6]}`;
+                if (reason === 'Custom') reason = `${custom}`;
 
                 if (reason === 'null') {
                     return interaction.reply({

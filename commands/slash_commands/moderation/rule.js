@@ -1,5 +1,6 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { getRules } = require('../../../lists/rule-list');
+const index = require('../../../lists/index');
+const { rules } = require('../../../lists/rules');
 const path = require('path');
 
 module.exports = {
@@ -40,11 +41,9 @@ module.exports = {
 
         const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
 
-        getRules().then(rule => {
-            interaction.reply({
-                content: `*Please read the rules ${target}:*
-> ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rule[number - 1].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        });
+        interaction.reply({
+            content: `*Please read the rules ${target}:*
+> ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rules[number - 1]}`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
 }

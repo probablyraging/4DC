@@ -1,8 +1,6 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
-const { getRules } = require('../../../lists/rule-list');
 const index = require('../../../lists/index');
 const path = require('path');
-const nowDate = new Date();
 
 module.exports = {
     name: `index`,
@@ -61,45 +59,32 @@ module.exports = {
             }
         }
 
-        // RULES
+        // WELCOME
         switch (options.getString('data')) {
             case 'rules': {
-                getRules().then(rule => {
-                    channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(async webhook => {
-                        setTimeout(async () => {
-                            webhook.send(`https://www.forthecontent.xyz/images/creatorhub/banner_rules.png`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-                            webhook.send(`**SERVER RULES**
-To keep ForTheContent a safe and positive experience for everyone, you are required to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
+                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    for (let i = 0; i < index.rules.length; i++) {
+                        setTimeout(function () {
+                            webhook.send({
+                                content: `${index.rules[i]}`,
+                                allowedMentions: {
+                                    parse: []
+                                }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                        }, i * 1000);
+                    }
+                    setTimeout(() => {
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-> **1.** ${rule[0]}
-> 
-> **2.** ${rule[1]}
-> 
-> **3.** ${rule[2]}
-> 
-> **4.** ${rule[3].replace('<#${process.env.PREM_CHAN}>', `<#${process.env.PREM_CHAN}>`)}
-> 
-> **5.** ${rule[4]}
-> 
-> **6.** ${rule[5]}
-> 
-> **7.** ${rule[6]}
-
-*last updated: ${nowDate.toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}*`).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }, 1000);
-                        setTimeout(() => {
-                            webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                        }, 10000);
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-                });
-
-            }
-
-                interaction.reply({
+                interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }
         }
 
         // SERVER MAP
@@ -297,9 +282,11 @@ To keep ForTheContent a safe and positive experience for everyone, you are requi
 
                 await channel.send({ content: `https://www.forthecontent.xyz/images/creatorhub/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
 
-                await channel.send({ content: `**Select your roles from the dropdown menus below. Select a role again to remove it**
+                await channel.send({
+                    content: `**Select your roles from the dropdown menus below. Select a role again to remove it**
 
-**Choose your nickname color**`, components: [select1] }).catch(err => console.error(`Could not send a message: `, err));
+**Choose your nickname color**`, components: [select1]
+                }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
