@@ -23,7 +23,15 @@ module.exports = async (message, client) => {
          * GET CURRENT COUNT FROM DATABASE
          */
         const searchFor = 'currentCount';
-        const results = await letterSchema.find({ searchFor: 'currentCount' });
+        let results = await letterSchema.find({ searchFor: 'currentCount' });
+
+        if (results < 1) {
+            await letterSchema.create({
+                currentLetterCounter: 0,
+                searchFor: 'currentCount'
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            results = await letterSchema.find({ searchFor: 'currentCount' });
+        }
 
         for (const info of results) {
             var { currentLetterCounter } = info;
@@ -493,6 +501,16 @@ The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
                     });
             }
             dbUpdateCount();
+        }).catch(err => {
+            console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err);
+            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            message.channel.send({
+                content: `${process.env.BOT_DENY} An unavoidable error occurred. Please try again later. If this error occurrs for more than an hour, notify a staff member`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err)).then(msg => {
+                setTimeout(() => {
+                    msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                }, 10000);
+            })
         });
         if (!deleted && !failed) currentCounter++, message.react(process.env.BOT_CONF);
 
