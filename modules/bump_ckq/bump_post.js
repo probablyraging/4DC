@@ -101,8 +101,8 @@ module.exports = async (message) => {
                     const bumpConfirm = new EmbedBuilder()
                         .setColor('#32B9FF')
                         .setTitle(`${message?.interaction?.user.username}`)
-                        .setURL('https://disboard.org/server/820889004055855144')
-                        .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/server/820889004055855144)
+                        .setURL('https://disboard.org/review/create/820889004055855144')
+                        .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/review/create/820889004055855144)
         
 ${savesMessage}`)
                         .setImage('https://www.forthecontent.xyz/images/creatorhub/FTC_Bump.png')
