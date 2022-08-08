@@ -8,14 +8,11 @@ module.exports = async (client) => {
     const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
 
     setInterval(async () => {
-        const searchFor = "currentTime";
         let dbTimestamp;
-
-        const results = await timerSchema.find({ searchFor });
+        const results = await timerSchema.find({ searchFor: 'currentTime' });
 
         for (const info of results) {
             const { timestamp } = info;
-
             dbTimestamp = timestamp;
         }
 
@@ -40,10 +37,9 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
             await timerSchema.updateOne({
-                searchFor
+                searchFor: 'currentTime'
             }, {
-                timestamp: "null",
-                searchFor
+                timestamp: "null"
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

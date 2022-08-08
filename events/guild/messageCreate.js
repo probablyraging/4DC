@@ -15,7 +15,6 @@ const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const suggestionPost = require('../../modules/misc/suggestion_post');
-const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {
@@ -46,10 +45,7 @@ module.exports = {
         rankXP(message, client);
         creatorCrew(message, client);
         resPost(message, client);
-        suggestionPost(message)
-
-        // chart data
-        logToChartData('messages', message.author.id);
+        suggestionPost(message);
 
         // delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {

@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {
@@ -35,15 +34,9 @@ module.exports = {
                             content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                        await inviteSchema.findOneAndRemove({ code: code }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a database entry: `, err));
-
                         await inviteSchema.updateOne({
-                            code: code,
-                            userId: userId,
-                            uses: uses
+                            code: code
                         }, {
-                            code: code,
-                            userId: userId,
                             uses: i.uses
                         }, {
                             upsert: true
@@ -58,8 +51,5 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         });
-
-        // Database charts
-        logToChartData('joins');
     }
 }

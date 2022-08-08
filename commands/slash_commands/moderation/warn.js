@@ -3,7 +3,6 @@ const { addWarning } = require('../../../modules/creator_crew/utilities');
 const { notifyUser } = require('../../../modules/creator_crew/utilities');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const ccWarnModel = require('../../../schemas/creator_crew/warn_schema');
-const { logToChartData } = require('../../../modules/dashboard/log_to_database');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
@@ -166,9 +165,6 @@ module.exports = {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
 
-                        // Chart data
-                        logToChartData('warnings');
-
                         interaction.reply({
                             content: `${process.env.BOT_CONF} Your warning was added
 ${banMsg}`,
@@ -191,9 +187,6 @@ ${banMsg}`,
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
 
-                        // Chart data
-                        logToChartData('warnings');
-
                         interaction.reply({
                             content: `${replyMsg}`,
                             ephemeral: true
@@ -210,9 +203,6 @@ ${banMsg}`,
                     await addWarning(userId, warnId, warnedBy, reason);
 
                     notifyUser(target, message, null);
-
-                    // Chart data
-                    logToChartData('warnings');
                 }
             }
         }

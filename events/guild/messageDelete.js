@@ -3,7 +3,6 @@ const { ImgurClient } = require('imgur');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const countingCurrentSchema = require('../../schemas/counting_game/counting_current_schema');
-// const messageDeleteSchema = require('../../schemas/database_logs/message_delete_schema');
 const path = require('path');
 
 module.exports = {
@@ -13,7 +12,6 @@ module.exports = {
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.MSGUP_CHAN);
-        const timestamp = new Date().getTime();
 
         // Log to channel
         let content = message?.content || ` `;
@@ -49,17 +47,6 @@ module.exports = {
         logChan.send({
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-        // Log to database for dashboard
-        // await messageDeleteSchema.create({
-        //     userId: message?.author.id,
-        //     username: message?.author.tag,
-        //     channel: message?.channel.name,
-        //     message: content,
-        //     attachment: attachmentToImgur,
-        //     timestamp: timestamp,
-        //     type: 'Message Delete'
-        // });
 
         // if a user deletes there post in CKQ before the timer is up, open the channel to be reposted in
         if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {

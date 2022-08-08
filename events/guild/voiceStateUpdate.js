@@ -1,11 +1,10 @@
-const { ChannelType, PermissionFlagsBits } = require('discord.js')
+const { ChannelType } = require('discord.js')
 const path = require('path');
 
 module.exports = {
     name: 'voiceStateUpdate',
     execute(oldState, newState, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const botRole = guild.roles.cache.get(process.env.BOT_ROLE);
         const vcHub = guild.channels.cache.get(process.env.VC_HUB);
         
         if (newState?.channelId === process.env.VC_HUB) {

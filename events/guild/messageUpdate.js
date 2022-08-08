@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
-// const { logToDatabase } = require('../../modules/dashboard/log_to_database');
 const path = require('path');
 
 module.exports = {
@@ -65,8 +64,6 @@ module.exports = {
 
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
-
-                    // logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
                 }
             }
         }
@@ -95,8 +92,6 @@ module.exports = {
 
                     let msgContent = newMessage?.content || ` `;
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
-
-                    // logToDatabase(newMessage?.author?.id, newMessage?.author?.tag, newMessage?.channel.name, reason, msgContent, timestamp, reason);
                 }
             }
         }

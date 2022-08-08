@@ -1,6 +1,4 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
-// const muteTimeoutSchema = require('../../schemas/database_logs/mute_timeout_schema');
-const { logToChartData } = require('../../modules/dashboard/log_to_database');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -68,20 +66,6 @@ module.exports = {
             logChan.send({
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-            // Log to database for dashboard
-            // await muteTimeoutSchema.create({
-            //     userId: oldMember?.user.id,
-            //     username: oldMember?.user.tag,
-            //     author: executor?.id,
-            //     authorTag: `${executor?.username}#${executor?.discriminator}`,
-            //     reason: toReason,
-            //     timestamp: timestamp,
-            //     type: 'Timeout'
-            // });
-
-            // Chart date
-            logToChartData('timeouts');
         }
     }
 }

@@ -1,5 +1,4 @@
 const { Message, EmbedBuilder } = require('discord.js');
-// const { logToDatabase } = require('../dashboard/log_to_database');
 const cooldown = new Set();
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -32,8 +31,6 @@ module.exports = async (message, client) => {
 
                         let msgContent = message?.content || ` `;
                         if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
-
-                        // logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
                     });
 
                 await sleep(300);

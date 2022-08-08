@@ -7,13 +7,10 @@ module.exports = async (client) => {
 
     setInterval(async () => {
         let dbTimestamp;
-        const searchFor = "bumpTime";
-
-        const results = await timerSchema.find({ searchFor });
+        const results = await timerSchema.find({ searchFor: 'bumpTime' });
 
         for (const info of results) {
             const { timestamp } = info;
-
             dbTimestamp = timestamp;
         }
 
@@ -31,10 +28,9 @@ module.exports = async (client) => {
             }).then(async () => {
                 // Log the current timestamp
                 await timerSchema.updateOne({
-                    searchFor
+                    searchFor: 'bumpTime'
                 }, {
-                    timestamp: "null",
-                    searchFor
+                    timestamp: "null"
                 }, {
                     upsert: true
                 })

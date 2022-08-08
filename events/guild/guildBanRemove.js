@@ -1,5 +1,4 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
-// const banUnbanSchema = require('../../schemas/database_logs/ban_unban_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -30,16 +29,6 @@ module.exports = {
             logChan.send({
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-            // Log to database for dashboard
-            // await banUnbanSchema.create({
-            //     userId: ban?.user.id,
-            //     username: ban?.user.tag,
-            //     author: executor?.id,
-            //     authorTag: `${executor?.username}#${executor?.discriminator}`,
-            //     timestamp: timestamp,
-            //     type: 'Unban'
-            // });
         }, 2000);
     }
 }

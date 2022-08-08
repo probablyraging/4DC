@@ -1,5 +1,4 @@
 const { Message, EmbedBuilder } = require('discord.js');
-// const { logToDatabase } = require('../dashboard/log_to_database');
 const sdp = require('stop-discord-phishing');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -47,8 +46,6 @@ ${message?.author} posted a link that looks like a phishing link. Please review 
                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                 }, 10000);
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a webhook: `, err));
-
-            // logToDatabase(message?.author?.id, message?.author?.tag, message?.channel.name, reason, msgContent, timestamp, reason);
         }
 
         return isPhishing;

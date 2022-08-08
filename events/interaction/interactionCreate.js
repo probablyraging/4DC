@@ -1,7 +1,6 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
 const commandCountSchema = require('../../schemas/misc/command_count');
-// const commandUsageSchema = require('../../schemas/database_logs/command_usage');
 const colorSelect = require('../../handlers/select_menus/color_select');
 const platformSelect = require('../../handlers/select_menus/platform_select');
 const ageSelect = require('../../handlers/select_menus/age_select');
@@ -145,21 +144,7 @@ module.exports = {
                 if (option.name === 'number') cmdOptions.push(`Param: ${option?.value}`);
                 if (option.name === 'username') cmdOptions.push(`User: ${option?.user?.tag}`);
                 if (option.name === 'channel') cmdOptions.push(`Channel: #${option?.channel?.name}`);
-            })
-
-            let input = cmdOptions.join('\n') || 'None';
-
-            const logTimestamp = new Date().getTime();
-
-            // Log to database for dashboard
-            // await commandUsageSchema.create({
-            //     userId: user?.id,
-            //     username: user?.tag,
-            //     command: cmdName,
-            //     input: input,
-            //     timestamp: logTimestamp,
-            //     type: 'Command Usage'
-            // });
+            });
         }
     }
 }
