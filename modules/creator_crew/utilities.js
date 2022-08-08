@@ -159,12 +159,6 @@ async function getAwayUsers() {
     }
 }
 
-async function addWarning(userId, warnId, warnedBy, reason, messageUrl) {
-    let timestamp = new Date().valueOf();
-    const newWarning = new ccWarnModel({ userId: userId, warnId: warnId, warnedBy: warnedBy, timestamp: timestamp, reason: reason, messageUrl: messageUrl });
-    await newWarning.save().catch(err => console.error(`${path.basename(__filename)} There was a problem saving the warning ${warnId} for user ${userId}: `, err));
-}
-
 async function getWarnings(userId) {
     // If we have a userId, find the warnings for the user - else find all warnings
     let query = userId ? ccWarnModel.find({ userId: userId }) : ccWarnModel.find();
@@ -197,7 +191,6 @@ module.exports = {
     attachmentIsImage,
     toggleAway,
     getAwayUsers,
-    addWarning,
     getWarnings,
     deleteWarning
 }
