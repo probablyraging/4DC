@@ -8,7 +8,6 @@ const ckqCheck = require('../../modules/bump_ckq/ckq_check');
 const bumpCheck = require('../../modules/bump_ckq/bump_check');
 const featuredCheck = require('../../modules/bump_ckq/featured_check');
 const liveNow = require('../../modules/misc/live_now');
-const fetchInvites = require('../../modules/misc/upload_invites');
 const mutesCheck = require('../../modules/misc/mutes_check');
 const autoYT = require('../../modules/misc/auto_yt');
 const rankSort = require('../../modules/rank/rank_sort');
@@ -49,7 +48,6 @@ module.exports = {
 
         boostTimer.start();
         mutesCheck(message, client, Discord);
-        fetchInvites(message, client, Discord);
         statusCounter(client);
         memberCounter(client);
         ckqCheck(client);

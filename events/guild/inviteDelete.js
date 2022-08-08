@@ -4,6 +4,6 @@ const path = require('path');
 module.exports = {
     name: 'inviteDelete',
     async execute(invite, client, Discord) {
-        await inviteSchema.findOneAndRemove({ code: invite.code }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+        await inviteSchema.deleteOne({ code: invite.code }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
     }
 }
