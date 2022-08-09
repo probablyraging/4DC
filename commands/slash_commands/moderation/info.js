@@ -71,7 +71,7 @@ module.exports = {
 		if (choice === 'contentshare') {
 			interaction.reply({
 				content: `*Information for ${target}:*
-> ${process.env.BOT_DOC} You can share your content in the <#856719763187302441> channel once you've reached __Rank 5__, or you can skip the rank requirements by becoming a __Server Booster__. We also have the <#878229815541497857> channel which is accessible by everyone. For more information about ranks, XP and server boosting, take a look at <#898611031146889286>`
+> ${process.env.BOT_DOC} You can share your content in the <#856719763187302441> channel once you've reached __Rank 5__, or you can skip the rank requirements by becoming a __Server Booster__. We also have the <#878229815541497857> channel which is accessible by everyone. For more information about ranks, XP and server boosting [click here](https://discord.com/channels/820889004055855144/1005305774471381002)`
 			}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
 	}
