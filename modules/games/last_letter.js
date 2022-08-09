@@ -205,6 +205,7 @@ module.exports = async (message, client) => {
                 searchFor: 'letterCurrents'
             }, {
                 lastLetter: message.content.toLowerCase().slice(-1),
+                previousWord: message.content.toLowerCase(),
                 currentLevel: currentLevel,
                 previousUsedWords: previousUsedWords,
                 previousSubmitter: message.author.id

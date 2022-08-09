@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { ImgurClient } = require('imgur');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
+const letterCurrents = require('../../schemas/letter_game/letter_currents_schema');
 const countingCurrentSchema = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 
@@ -85,8 +86,8 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
 
-        // If a user deletes their count in the counting game, send the current current
-        if (message?.channel.id === process.env.COUNT_CHAN) {
+        // If a user deletes their count in the counting game, send the current number
+        if (message?.channel.id === process.env.COUNT_CHAN && !message.author.bot) {
             // Check if message was a number, and do some other checks to prevent false flags
             const results = await countingSchema.find({ userId: message?.author?.id });
             let currentSaves = 0;
@@ -98,9 +99,22 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                 const results = await countingCurrentSchema.find({ searchFor: 'currentCount' });
                 for (const data of results) {
                     message?.channel.send({
-                        content: `${process.env.BOT_INFO} ${message.author} deleted their message
+                        content: `${process.env.BOT_INFO} ${message.author}'s message was deleted
 The current count is \`${data.currentCount}\``
-                    })
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }
+            }
+        }
+
+        // If a user deletes their word in the letter game, send the current word and letter
+        if (message?.channel.id === process.env.LL_CHAN && !message.author.bot) {
+            const results = await letterCurrents.find();
+            for (const data of results) {
+                if (message?.content.toLowerCase() === data.previousWord) {
+                    message?.channel.send({
+                        content: `${process.env.BOT_INFO} ${message.author}'s message was deleted
+Their word was \`${data.previousWord.toUpperCase()}\``
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
             }
         }

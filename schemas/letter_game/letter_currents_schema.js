@@ -6,6 +6,10 @@ const letterCurrent = mongoose.Schema({
         type: String,
         required: true
     },
+    previousWord: {
+        type: String,
+        required: true
+    },
     currentLevel: {
         type: Number,
         required: true
