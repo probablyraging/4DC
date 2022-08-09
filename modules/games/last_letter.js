@@ -1,522 +1,327 @@
 const { Message } = require('discord.js');
-const letterSchema = require('../../schemas/letter_game/letter_schema');
-const letterRecordSchema = require('../../schemas/letter_game/letter_record_schema');
-const letterLBSchema = require('../../schemas/letter_game/letter_lb_schema');
+const letterCurrents = require('../../schemas/letter_game/letter_currents_schema');
+const letterLeaderboard = require('../../schemas/letter_game/letter_lb_schema');
 const letterVals = require('../../lists/letter-values');
 const fetch = require('node-fetch');
 const path = require('path');
-let currentCounter = 0;
 /**
  * 
  * @param {Message} message 
  */
 module.exports = async (message, client) => {
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-
     if (message.channel.id === process.env.LL_CHAN && !message.author.bot) {
-        /**
-         * IGNORE MESSAGES THAT START WITH A '>'
-         */
+        // Ignore message that start with '>'
         if (message.content.startsWith('>')) return;
 
-        /**
-         * GET CURRENT COUNT FROM DATABASE
-         */
-        const searchFor = 'currentCount';
-        let results = await letterSchema.find({ searchFor: 'currentCount' });
+        // Get current level from the database
+        let results = await letterCurrents.find();
 
+        // If the entry doesn't exist, create it
         if (results < 1) {
-            await letterSchema.create({
-                currentLetterCounter: 0,
-                searchFor: 'currentCount'
+            await letterCurrents.create({
+                lastLetter: 'null',
+                currentLevel: 0,
+                currentRecord: 0,
+                previousUsedWords: [],
+                previousSubmitter: 'null',
+                searchFor: 'letterCurrents'
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-            results = await letterSchema.find({ searchFor: 'currentCount' });
+            results = await letterCurrents.find();
         }
 
-        for (const info of results) {
-            var { currentLetterCounter } = info;
-
-            currentCounter = parseInt(currentLetterCounter);
-            dbCount = parseInt(currentLetterCounter)
-        }
-
-        let fetchFirst = message.channel.messages.cache.first();
-
-        await message.channel.messages.fetch({ limit: 15 }).then(async fetched => {
+        for (const data of results) {
+            // Set some needed variables
+            lastLetter = data.lastLetter;
+            currentLevel = data.currentLevel;
+            currentRecord = data.currentRecord;
+            previousUsedWords = data.previousUsedWords
+            previousSubmitter = data.previousSubmitter;
             failed = false;
             deleted = false;
 
-            msgContentArr = [];
+            // Get the first letter of the newly submitted word
+            const firstLetter = message.content.charAt(0);
 
-            const filtered = fetched.filter(m => !m.author.bot && !m.content.startsWith('>'));
-
-            filtered.forEach(msg => {
-                msgContentArr.push(msg.content.toLowerCase());
-            });
-
-            lastLetter = msgContentArr[1].slice(-1);
-            firstLetter = msgContentArr[0].charAt(0);
-
-            /**
-             * IF MESSAGE CONTAINS MORE THAN ONE WORD
-             */
+            // If the message contains more than one word, delete the message and notify the user
             if (!failed && message.content.split(' ').length > 1) {
-                deleted = true;
-                message.delete()
-
+                failed = true;
+                message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                 return message.reply({
                     content: `${process.env.BOT_DENY} To send chat messages, put a '> ' (greater than followed by a space) in front of your message`,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                }).then(msg => {
-                    setTimeout(() => {
-                        msg.delete()
-                    }, 6000);
-                });
+                }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
+                    .then(msg => {
+                        setTimeout(() => {
+                            msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                        }, 10000);
+                    });
             }
 
-            /**
-             * IF NEW MESSAGE HAS SYMBOL OR NUMBER
-             */
+            // If the message contains a symbol or number, delete the message and notify the user
             var hasSymbol = /^[a-zA-Z]+$/;
             const test = !hasSymbol.test(message.content);
-
             if (!failed && test) {
                 failed = true;
-                deleted = true;
-
-                message.delete().then(() => {
-                    nextLetter = fetchFirst.content;
-
-                    message.reply({
-                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can only use \`a-Z\`. Your previous message was deleted. The next letter is \`${nextLetter.slice(-1).toUpperCase()}\`!`,
-                        allowedMentions: { repliedUser: true },
-                        failIfNotExists: false
-                    }).catch(err => {
-                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+                message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                return message.reply({
+                    content: `${process.env.BOT_DENY} Your word cannot contain numbers or letters. Try again!`,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
+                }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
+                    .then(msg => {
+                        setTimeout(() => {
+                            msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                        }, 10000);
                     });
-
-                    currentCounter = 0;
-                    return dbUpdateCount();
-                });
             }
 
-            /**
-             * IF LAST LETTER AND FIRST LETTER DON'T MATCH
-             */
+            // If the same user tries to add two messages in a row, delete the message and notify the user
+            if (!failed && previousSubmitter === message.author.id) {
+                failed = true;
+                message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                return message.reply({
+                    content: `${process.env.BOT_DENY} You can't add two words in a row. You must wait for another player to submit a word first`,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
+                }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
+                    .then(msg => {
+                        setTimeout(() => {
+                            msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                        }, 10000);
+                    });
+            }
+
+            // If a message is not longer than 2 characters, delete the message and notify the user
+            if (!failed && message.content.length <= 2) {
+                failed = true;
+                message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                return message.reply({
+                    content: `${process.env.BOT_DENY} All words must be longer than 2 characters. Try again!`,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
+                }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
+                    .then(msg => {
+                        setTimeout(() => {
+                            msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                        }, 10000);
+                    });
+            }
+
+            // If the last letter and first letter don't match, fail the game
             if (!failed && lastLetter !== firstLetter) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${message.content.charAt(0).toUpperCase()}\`. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);;
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nYour letter was \`${lastLetter.toUpperCase()}\` but you used \`${firstLetter.toUpperCase()}\` \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                return failGame();
             }
 
-            /**
-             * IF MESSAGE LESS THAN 2 CHARACTERS
-             */
-            if (!failed && message.content.length < 2) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word has to be longer than \`1\` letter. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
+            // If the word has been used too soon, fail the game
+            if (!failed && previousUsedWords.includes(message.content.toLowerCase())) {
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nThe word \`${message.content.toUpperCase()}\` was used in the last 10 messages \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                return failGame();
             }
 
-            /**
-             * IF WORD HAS BEEN USED TO SOON
-             */
+            // Check if the word is in the English dictionary
             if (!failed) {
-                await message.channel.messages.fetch({ limit: 10 }).then(fetched => {
-                    const repeats = fetched.filter(m => !m.author.bot && !m.content.startsWith('>') && m.content.toLowerCase() === message.content.toLowerCase()).size;
+                dictionaryCheckOne(message.content.toLowerCase());
+            }
+        }
 
-                    if (repeats > 1) {
-                        failed = true;
-
-                        message.reply({
-                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` was used in the last 10 messages. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        });
-
-                        currentCounter = 0;
-                        return dbUpdateCount();
-                    }
+        // Check if the dictionary contains a lowercase version of the word
+        async function dictionaryCheckOne(wordToCheck) {
+            const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${wordToCheck}`);
+            const response = await resolve.json();
+            const error = response?.error;
+            if (!error) {
+                const sections = response.parse.sections;
+                // If the response contains an English entry
+                sections.forEach(section => {
+                    if (section.line === 'English') passGameAndUpdateDatabase();
                 });
+            } else {
+                dictionaryCheckTwo(wordToCheck);
             }
+        }
 
-            /**
-             * IF SAME USER ADDS TWO MESSAGES IN A ROW
-             */
-            if (!failed) {
-                await message.channel.messages.fetch({ limit: 2 }).then(async fetched => {
-                    const repeats = fetched.filter(m => !m.content.startsWith('>') && m.author.id === message.author.id).size;
-
-                    if (repeats > 1) {
-                        failed = true;
-
-                        message.reply({
-                            content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                            allowedMentions: { repliedUser: true },
-                            failIfNotExists: false
-                        }).catch(err => {
-                            console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                        });
-
-                        currentCounter = 0;
-                        return dbUpdateCount();
-                    }
-
-                    if (repeats < 2) {
-                        await message.channel.messages.fetch({ limit: 3 }).then(fetched => {
-                            const repeats = fetched.filter(m => !m.author.bot && !m.content.startsWith('>') && m.author.id === message.author.id).size
-
-                            if (repeats > 2) {
-                                failed = true;
-
-                                message.reply({
-                                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. You can't add two words in a row. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                                    allowedMentions: { repliedUser: true },
-                                    failIfNotExists: false
-                                }).catch(err => {
-                                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                                });
-
-                                currentCounter = 0;
-                                return dbUpdateCount();
-                            }
-                        });
-                    }
+        // Check if the dictionary contains a capitilized version of the word
+        async function dictionaryCheckTwo(wordToCheck) {
+            const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${capitalizeFirstLetter(wordToCheck)}`);
+            const response = await resolve.json();
+            const error = response?.error;
+            if (!error) {
+                const sections = response.parse.sections;
+                // If the response contains an English entry
+                sections.forEach(section => {
+                    if (section.line === 'English') passGameAndUpdateDatabase();
                 });
+            } else {
+                dictionaryCheckThree();
             }
+        }
 
-            /**
-             * CHECK IF WORD IS IN DICTIONARY
-             */
-            if (!failed) {
-                const resolve = await fetch(`https://en.wiktionary.org/wiki/${message.content.toLowerCase()}`);
-                const body = await resolve.text();
-                const checkOne = await body.toString().includes('toctext">English');
-                const checkTwo = await body.toString().includes('class="mw-headline" id="English"');
-
-                function capitalizeFirstLetter(string) {
-                    return string.charAt(0).toUpperCase() + string.slice(1);
-                }
-
-                // Check for capatilized entries
-                const resolve2 = await fetch(`https://en.wiktionary.org/wiki/${capitalizeFirstLetter(message.content.toLowerCase())}`);
-                const body2 = await resolve2.text();
-                const checkThreee = await body2.toString().includes('toctext">English');
-                const checkFour = await body2.toString().includes('class="mw-headline" id="English"');
-
-                if (!checkOne && !checkTwo && !checkThreee && !checkFour) {
-                    failed = true;
-
-                    message.reply({
-                        content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. The word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}>
-The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                        allowedMentions: { repliedUser: true },
-                        failIfNotExists: false
-                    }).catch(err => {
-                        console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                    });
-
-                    currentCounter = 0;
-                    return dbUpdateCount();
-                }
-            }
-
-            /**
-             * CHECK FOR CURRENT LEVEL AND UPDATE CHANNEL DESCRIPTION
-             */
-            // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 19) {
-                message.channel.send(`**NEW LEVEL** All words must now be more than \`4\` characters long!`)
-                message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 20 - 4 CHARACTER MINIMUM`)
-            }
-            if (!failed && parseInt(currentCounter) >= 20 && message.content.length < 4) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
+        // Check if the dictionary contains an exact matching version of the word
+        async function dictionaryCheckThree() {
+            const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${message.content}`);
+            const response = await resolve.json();
+            const error = response?.error;
+            if (!error) {
+                const sections = response.parse.sections;
+                // If the response contains an English entry
+                sections.forEach(section => {
+                    if (section.line === 'English') passGameAndUpdateDatabase();
                 });
-
-                currentCounter = 0;
-                return dbUpdateCount();
+            } else {
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nThe word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}> \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                return failGame();
             }
+        }
 
-            // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 39) {
-                message.channel.send(`**NEW LEVEL** All words must now be more than \`5\` characters long!`)
-                message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 40 - 5 CHARACTER MINIMUM`)
-            }
-            if (!failed && parseInt(currentCounter) >= 40 && message.content.length < 5) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
-            }
-
-            // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 79) {
-                message.channel.send(`**NEW LEVEL** All words must now be more than \`6\` characters long!`)
-                message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 80 - 6 CHARACTER MINIMUM`)
-            }
-            if (!failed && parseInt(currentCounter) >= 80 && message.content.length < 6) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
-            }
-
-            // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 99) {
-                message.channel.send(`**NEW LEVEL** All words must now be more than \`7\` characters long!`)
-                message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 100 - 7 CHARACTER MINIMUM`)
-            }
-            if (!failed && parseInt(currentCounter) >= 100 && message.content.length < 7) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
-            }
-
-            // NEW LEVEL
-            if (!failed && parseInt(currentCounter) === 149) {
-                message.channel.send(`**NEW LEVEL** All words must now be more than \`8\` characters long!`)
-                message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 150 - 8 CHARACTER MINIMUM`)
-            }
-            if (!failed && parseInt(currentCounter) >= 150 && message.content.length < 8) {
-                failed = true;
-
-                message.reply({
-                    content: `${process.env.BOT_DENY} ${message.author} **FAILED at ${dbCount}**. Your word didn't have enough characters. The next letter is \`${message.content.slice(-1).toUpperCase()}\`!`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending a message: `, err);
-                });
-
-                currentCounter = 0;
-                return dbUpdateCount();
-            }
-
-            /**
-             * UPDATE letterRecord IF currentCounter IS HIGHER
-             */
-            const searchForRecord = 'currentRecord';
-
-            if (!failed) {
-                async function dbCheckRecord() {
-                    const results = await letterRecordSchema.find({ searchForRecord });
-
-                    for (const info of results) {
-                        const { letterRecord } = info;
-
-                        dbletterRecord = parseInt(letterRecord);
-
-                        if (dbCount > dbletterRecord) {
-                            await letterRecordSchema.findOneAndRemove({ searchForRecord });
-
-                            await letterRecordSchema.updateOne({
-                                letterRecord: currentCounter,
-                                searchForRecord,
-                            }, {
-                                letterRecord: currentCounter,
-                                searchForRecord,
-                            }, {
-                                upsert: true
-                            });
-                        }
-                    }
-                }
-                dbCheckRecord();
-
-                /**
-                 * UPDATE USER'S CORRECT COUNT OR CREATE
-                 * COLLECTION IF USER DOESN'T EXIST IN DATABASE
-                 */
-                let userId = message.author.id;
-                const results = await letterLBSchema.find({ userId });
-
-                if (results.length === 0) {
-                    const correctCount = 1;
-
-                    await letterLBSchema.updateOne({
-                        userId,
-                        username: message.author.username,
-                        discriminator: message.author.discriminator,
-                        avatar: message.author.avatar,
-                        correctCount,
-                        searchFor
-                    }, {
-                        userId,
-                        username: message.author.username,
-                        discriminator: message.author.discriminator,
-                        avatar: message.author.avatar,
-                        correctCount,
-                        searchFor
-                    }, {
-                        upsert: true
-                    });
-                } else if (results.length > 0) {
-                    const results = await letterLBSchema.find({ userId });
-
-                    for (const info of results) {
-                        const { correctCount } = info;
-
-                        let newCount = parseInt(correctCount);
-
-                        // find the value of each letter in a submission
-                        let tens = 0;
-                        let eights = 0;
-                        let fives = 0;
-                        let fours = 0;
-                        let threes = 0;
-                        let twos = 0;
-                        let ones = 0;
-
-                        for (let i = 0; i < message?.content?.length; i++) {
-                            const letters = message?.content?.toLowerCase().split('');
-
-                            letters.forEach(letter => {
-                                if (letterVals.tens.letters.includes(letter[i])) {
-                                    tens++;
-                                }
-                                if (letterVals.eights.letters.includes(letter[i])) {
-                                    eights++;
-                                }
-                                if (letterVals.fives.letters.includes(letter[i])) {
-                                    fives++;
-                                }
-                                if (letterVals.fours.letters.includes(letter[i])) {
-                                    fours++;
-                                }
-                                if (letterVals.threes.letters.includes(letter[i])) {
-                                    threes++;
-                                }
-                                if (letterVals.twos.letters.includes(letter[i])) {
-                                    twos++;
-                                }
-                                if (letterVals.ones.letters.includes(letter[i])) {
-                                    ones++;
-                                }
-                            })
-                        }
-
-                        const tensMath = tens * letterVals.tens.value;
-                        const eightsMath = eights * letterVals.eights.value;
-                        const fivesMath = fives * letterVals.fives.value;
-                        const foursMath = fours * letterVals.fours.value;
-                        const threesMath = threes * letterVals.threes.value;
-                        const twosMath = twos * letterVals.twos.value;
-                        const onesMath = ones * letterVals.ones.value;
-                        const totalPoints = tensMath + eightsMath + fivesMath + foursMath + threesMath + twosMath + onesMath + newCount;
-
-                        await letterLBSchema.findOneAndRemove({ userId });
-
-                        await letterLBSchema.updateOne({
-                            userId,
-                            correctCount: totalPoints,
-                            username: message.author.username,
-                            discriminator: message.author.discriminator,
-                            avatar: message.author.avatar,
-                            searchFor
-                        }, {
-                            userId,
-                            correctCount: totalPoints,
-                            username: message.author.username,
-                            discriminator: message.author.discriminator,
-                            avatar: message.author.avatar,
-                            searchFor
-                        }, {
-                            upsert: true
-                        });
-                    }
-                }
-            }
-
-            /**
-             * UPDATE CURRENT CURRENT COUNTER OR RESET IF FAIL
-             */
-            async function dbUpdateCount() {
-                await letterSchema.findOneAndRemove({ searchFor: 'currentCount' })
-
-                await letterSchema.updateOne({
-                    currentLetterCounter: currentCounter,
-                    searchFor,
-                },
-                    {
-                        currentLetterCounter: currentCounter,
-                        searchFor,
-                    },
-                    {
-                        upsert: true
-                    });
-            }
-            dbUpdateCount();
-        }).catch(err => {
-            console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err);
-            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-            message.channel.send({
-                content: `${process.env.BOT_DENY} An unavoidable error occurred. Please try again later. If this error occurrs for more than an hour, notify a staff member`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err)).then(msg => {
-                setTimeout(() => {
-                    msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                }, 10000);
-            })
-        });
-        if (!deleted && !failed) currentCounter++, message.react(process.env.BOT_CONF);
-
-        if (!deleted && failed) {
+        // If a message doesn't pass all checks, fail the game
+        function failGame() {
+            failed = true;
+            // React to the message with a fail
             message.react(process.env.BOT_DENY);
-            message.channel.setTopic(`MATCH THE FIRST LETTER OF YOUR WORD TO THE LAST LETTER OF THE PREVIOUS WORD | CURRENT LEVEL: 0`);
-        };
+            message.reply({
+                content: `${failMessage}`,
+                allowedMentions: { repliedUser: true },
+                failIfNotExists: false
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem replying to a message: `, err));
+            resetDatabaseEntry();
+        }
+
+        // Update the database entry if the message passed
+        async function passGameAndUpdateDatabase() {
+            // Increment the current level
+            currentLevel++;
+            // React to the message with a pass
+            message.react(process.env.BOT_CONF);
+            // We only need to store the previous 10 words
+            if (previousUsedWords.length >= 10) {
+                previousUsedWords.shift();
+                previousUsedWords.push(message.content.toLowerCase());
+            } else {
+                previousUsedWords.push(message.content.toLowerCase());
+            }
+            await letterCurrents.updateOne({
+                searchFor: 'letterCurrents'
+            }, {
+                lastLetter: message.content.slice(-1),
+                currentLevel: currentLevel,
+                previousUsedWords: previousUsedWords,
+                previousSubmitter: message.author.id
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            // Check if we need to update the record
+            if (currentLevel > currentRecord) {
+                updateRecordLevel();
+            }
+            // Update the users leaderboard entry
+            updateUserEntry();
+        }
+
+        // If the current level is higher than the record level, update it
+        async function updateRecordLevel() {
+            await letterCurrents.updateOne({
+                searchFor: 'letterCurrents'
+            }, {
+                currentRecord: currentLevel
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+
+        // Update the users leaderboard entry, this involves breaking down their word and applying a letter value to each letter
+        async function updateUserEntry() {
+            // find the value of each letter in a submission
+            let tens = 0;
+            let eights = 0;
+            let fives = 0;
+            let fours = 0;
+            let threes = 0;
+            let twos = 0;
+            let ones = 0;
+            for (let i = 0; i < message?.content?.length; i++) {
+                const letters = message?.content?.toLowerCase().split('');
+                letters.forEach(letter => {
+                    if (letterVals.tens.letters.includes(letter[i])) {
+                        tens++;
+                    }
+                    if (letterVals.eights.letters.includes(letter[i])) {
+                        eights++;
+                    }
+                    if (letterVals.fives.letters.includes(letter[i])) {
+                        fives++;
+                    }
+                    if (letterVals.fours.letters.includes(letter[i])) {
+                        fours++;
+                    }
+                    if (letterVals.threes.letters.includes(letter[i])) {
+                        threes++;
+                    }
+                    if (letterVals.twos.letters.includes(letter[i])) {
+                        twos++;
+                    }
+                    if (letterVals.ones.letters.includes(letter[i])) {
+                        ones++;
+                    }
+                })
+            }
+            const tensMath = tens * letterVals.tens.value;
+            const eightsMath = eights * letterVals.eights.value;
+            const fivesMath = fives * letterVals.fives.value;
+            const foursMath = fours * letterVals.fours.value;
+            const threesMath = threes * letterVals.threes.value;
+            const twosMath = twos * letterVals.twos.value;
+            const onesMath = ones * letterVals.ones.value;
+            const totalPoints = tensMath + eightsMath + fivesMath + foursMath + threesMath + twosMath + onesMath;
+
+            // Find the user's entry
+            const results = await letterLeaderboard.find({ userId: message.author.id });
+            // If the user doesn't exist in the database
+            if (results < 1) {
+                await letterLeaderboard.create({
+                    userId: message.author.id,
+                    username: message.author.username,
+                    discriminator: message.author.discriminator,
+                    avatar: message.author.avatar,
+                    correctCount: totalPoints,
+                    searchFor: 'currentCount'
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            } else {
+                for (const data of results) {
+                    correctCount = parseInt(data.correctCount);
+                    // Add the total points to the current count
+                    newCorrectCount = correctCount + totalPoints;
+                    await letterLeaderboard.updateOne({
+                        userId: message.author.id
+                    }, {
+                        username: message.author.username,
+                        discriminator: message.author.discriminator,
+                        avatar: message.author.avatar,
+                        correctCount: newCorrectCount
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                }
+            }
+        }
+
+        // Reset the current counts if the game fails
+        async function resetDatabaseEntry() {
+            await letterCurrents.updateOne({
+                searchFor: 'letterCurrents'
+            }, {
+                currentLevel: 0,
+                previousUsedWords: [],
+                previousSubmitter: message.author.id
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+
+        // Capitilize the first letter of a word
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
     }
 }
