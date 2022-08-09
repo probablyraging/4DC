@@ -40,7 +40,7 @@ module.exports = async (message, client) => {
             deleted = false;
 
             // Get the first letter of the newly submitted word
-            const firstLetter = message.content.charAt(0);
+            const firstLetter = message.content.charAt(0).toLowerCase();
 
             // If the message contains more than one word, delete the message and notify the user
             if (!failed && message.content.split(' ').length > 1) {
@@ -204,7 +204,7 @@ module.exports = async (message, client) => {
             await letterCurrents.updateOne({
                 searchFor: 'letterCurrents'
             }, {
-                lastLetter: message.content.slice(-1),
+                lastLetter: message.content.toLowerCase().slice(-1),
                 currentLevel: currentLevel,
                 previousUsedWords: previousUsedWords,
                 previousSubmitter: message.author.id
