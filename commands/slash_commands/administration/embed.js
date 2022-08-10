@@ -85,8 +85,10 @@ module.exports = {
      *
      * @param {ContextMenuInteraction} interaction
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { user, channel, options } = interaction;
+
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'create': {
@@ -98,28 +100,28 @@ module.exports = {
                 const author = options.getString('author');
 
                 if (title + description + author > 6000) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} The sum of all characters from all embed structures in a message must not exceed 6000 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (title && title.length > 256) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} Embed titles are limited to 256 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (description && description.length > 4096) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} Embed descriptions are limited to 4096 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (image && !image.toLowerCase().startsWith('https://') && !image.toLowerCase().startsWith('http://')) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} Embed image and thumbnail urls must start with one of ('https://', 'http://')`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -129,7 +131,7 @@ module.exports = {
                 const isHex = hexRegex.test(color);
 
                 if (!isHex) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} You must enter a valid #hex color`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -146,7 +148,7 @@ module.exports = {
                     embeds: [create]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
                     .then(() => {
-                        interaction.reply({
+                        interaction.editReply({
                             content: `${process.env.BOT_CONF} Embed created and sent`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
                             .then(() => setTimeout(() => {
@@ -171,44 +173,61 @@ module.exports = {
                 const hexRegex = /^#[0-9A-F]{6}$/i;
                 const isHex = hexRegex.test(color);
 
+                const message = await channel.messages.fetch(id);
+                const embed = message?.embeds[0];
+
                 if (hasLetter === true) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} You must enter a valid message id`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
                 if (color && isHex === false) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} You must enter a valid #hex color`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
-                channel.messages.fetch(id).then(fetched => {
-                    let embed = fetched?.embeds[0];
+                if (title) {
+                    const editEmbed = EmbedBuilder.from(embed)
+                        .setTitle(`${title}`)
+                    // Edit the existing embed and add the approprate reaction
+                    await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                }
 
-                    if (!embed) {
-                        interaction.reply({
-                            content: `${process.env.BOT_DENY} This message does not contain an embed`,
-                            ephemeral: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                    } else {
-                        if (title) embed.setTitle(`${title}`);
-                        if (description) embed.setDescription(`${description}`);
-                        if (color) embed.setColor(`${color}`);
-                        if (thumbnail) embed.setThumbnail(`${thumbnail}`);
-                        if (image) embed.setImage(`${image}`);
+                if (description) {
+                    const editEmbed = EmbedBuilder.from(embed)
+                        .setDescription(`${description}`)
+                    // Edit the existing embed and add the approprate reaction
+                    await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                }
 
-                        fetched.edit({ embeds: [embed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                if (color) {
+                    const editEmbed = EmbedBuilder.from(embed)
+                        .setColor(`${color}`)
+                    // Edit the existing embed and add the approprate reaction
+                    await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                }
 
-                        interaction.reply({
-                            content: `${process.env.BOT_CONF} Embed edited successfully`
-                        }).then(() => setTimeout(() => {
-                            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-                        }, 1500));
-                    }
-                });
+                if (thumbnail) {
+                    const editEmbed = EmbedBuilder.from(embed)
+                        .setThumbnail(`${thumbnail}`)
+                    // Edit the existing embed and add the approprate reaction
+                    await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                }
+
+                if (image) {
+                    const editEmbed = EmbedBuilder.from(embed)
+                        .setImage(`${image}`)
+                    // Edit the existing embed and add the approprate reaction
+                    await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                }
+
+                interaction.editReply({
+                    content: `${process.env.BOT_CONF} Ok`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
         }
     }
