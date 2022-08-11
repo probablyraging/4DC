@@ -29,29 +29,21 @@ module.exports = {
             // Prevent repeated logs when timed out by AutoMod
             if (oldMember?.id === executor?.id) return;
 
-            function converTimestampToSimpleFormat(timestamp) {
-                const t = new Date(timestamp);
-                const date = ('0' + t.getDate()).slice(-2);
-                const month = ('0' + (t.getMonth() + 1)).slice(-2);
-                const year = t.getFullYear();
-                let hours = ('0' + t.getHours()).slice(-2);
-                const minutes = ('0' + t.getMinutes()).slice(-2);
-                const seconds = ('0' + t.getSeconds()).slice(-2);
-                let meridiem = 'AM';
-                if (hours > 12 && hours < 22) {
-                    hours = (hours - 2).toString().slice(-1);
-                    meridiem = 'PM';
-                } else if (hours >= 21) {
-                    hours = '1' + (hours - 2).toString().slice(-1);
-                    meridiem = 'PM';
-                }
-                if (hours === '12') meridiem = 'PM';
-                if (hours === '00') hours = '12';
-                const time = `${date}/${month}/${year}, ${hours}:${minutes}${meridiem}`;
-                return time;
-            }
-
             const expiresAt = new Date(oldMember.communicationDisabledUntilTimestamp).toUTCString();
+            let duration = oldMember.communicationDisabledUntilTimestamp - new Date().valueOf();
+            if (duration < 3600000) {
+                if (duration <= 60000) {
+                    duration = Math.ceil((duration / 1000) / 60) + ' minute';
+                } else {
+                    duration = Math.ceil((duration / 1000) / 60) + ' minutes';
+                }
+            } else {
+                if (duration <= 3600000) {
+                    duration = Math.ceil((duration / 1000) / 60 / 60) + ' hour';
+                } else {
+                    duration = Math.ceil((duration / 1000) / 60 / 60) + ' hours';
+                }
+            }
 
             // Log to channel
             let log = new EmbedBuilder()
@@ -59,6 +51,7 @@ module.exports = {
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
 **Expires:** ${expiresAt}
+**Duration:** ${duration}
 **Reason:** ${toReason}`)
                 .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                 .setTimestamp();
