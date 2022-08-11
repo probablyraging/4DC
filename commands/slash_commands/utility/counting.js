@@ -146,8 +146,10 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                             client.channels.cache.get(process.env.COUNT_CHAN).send({
-                                content: `${member} donated \`1 personal save\`. The guild now has \`${guildSaves + 0.25}/3 saves\``
-                            })
+                                content: `${member} donated \`1 personal save\`. The guild now has \`${guildSaves + 0.25}/3 saves\``,
+                                allowedMentions: { repliedUser: true },
+                                failIfNotExists: false
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                             if (guildSaves === 3) {
                                 return interaction.reply({
