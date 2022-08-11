@@ -105,7 +105,7 @@ module.exports = async (message, client) => {
                 if (saves >= 1) {
                     await usePersonalSave();
                     // if we use a personal save then we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The current number is \`${currentCount + 1}\` \n> The record to beat is \`${currentRecord}\``
+                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 2}\` \n> The record to beat is \`${currentRecord}\``
 
                     await passedCountWithSave();
                 } else {
@@ -126,7 +126,7 @@ module.exports = async (message, client) => {
                 if (saves >= 1) {
                     await useGuildSave();
                     // if we used a guild save, we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The current number is \`${currentCount + 1}\` \n> The record to beat is \`${currentRecord}\``
+                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 2}\` \n> The record to beat is \`${currentRecord}\``
 
                     await passedCountWithSave();
                 } else {
