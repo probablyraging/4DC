@@ -14,7 +14,7 @@ module.exports = async (message, client) => {
         if (!message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
             // if the user doesn't have rank 5 or higher, they need to have atleast 1 save to play
             const results = await countingSchema.find({ userId: message.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-            if (results > 0) {
+            if (results.length > 0) {
                 for (const data of results) {
                     currentSaves = data.saves;
                 }
@@ -22,7 +22,7 @@ module.exports = async (message, client) => {
                 currentSaves = 0;
             }
             // If the user doesn't exist in the database or they have no saves
-            if (results === 0 || currentSaves === 0) {
+            if (currentSaves === 0) {
                 message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                 return message.reply({
                     content: `${process.env.BOT_DENY} You must be \`rank 5\` OR have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`,
