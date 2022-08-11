@@ -14,8 +14,12 @@ module.exports = async (message, client) => {
         if (!message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
             // if the user doesn't have rank 5 or higher, they need to have atleast 1 save to play
             const results = await countingSchema.find({ userId: message.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-            for (const data of results) {
-                currentSaves = data.saves;
+            if (results > 0) {
+                for (const data of results) {
+                    currentSaves = data.saves;
+                }
+            } else {
+                currentSaves = 0;
             }
             // If the user doesn't exist in the database or they have no saves
             if (results === 0 || currentSaves === 0) {
