@@ -1,10 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
+const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 
 module.exports = {
     name: 'messageUpdate',
-    execute(oldMessage, newMessage, client, Discord) {
+    async execute(oldMessage, newMessage, client, Discord) {
         if (oldMessage?.author?.bot) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -79,9 +80,6 @@ module.exports = {
         }
 
         for (var e in blacklist.noLinkChannels) {
-            const reason = 'Contains Link';
-            const timestamp = new Date().getTime();
-
             if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                     member?.send({
@@ -94,6 +92,19 @@ module.exports = {
                     if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
                 }
             }
+        }
+
+        // If a user edits their message in the counting game, delete their message and send the current number
+        if (newMessage?.channel.id === process.env.COUNT_CHAN && !newMessage.author.bot) {
+            const containsNumbers = /\d/.test(newMessage.content);
+            if (!containsNumbers) return;
+            newMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
+
+        // If a user edits their message in the counting game, delete their message and send the current number
+        if (newMessage?.channel.id === process.env.LL_CHAN && !newMessage.author.bot) {
+            if (newMessage.content.startsWith('>')) return;
+            newMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
     }
 }

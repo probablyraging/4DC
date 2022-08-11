@@ -110,13 +110,13 @@ module.exports = async (message, client) => {
 
             // If the last letter and first letter don't match, fail the game
             if (!failed && lastLetter !== firstLetter) {
-                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nYour letter was \`${lastLetter.toUpperCase()}\` but you used \`${firstLetter.toUpperCase()}\` \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> Your letter was \`${lastLetter.toUpperCase()}\` but you used \`${firstLetter.toUpperCase()}\` \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
                 return failGame();
             }
 
             // If the word has been used too soon, fail the game
             if (!failed && previousUsedWords.includes(message.content.toLowerCase())) {
-                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nThe word \`${message.content.toUpperCase()}\` was used in the last 10 messages \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` was used in the last 10 messages \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
                 return failGame();
             }
 
@@ -170,7 +170,7 @@ module.exports = async (message, client) => {
                     if (section.line === 'English') passGameAndUpdateDatabase();
                 });
             } else {
-                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \nThe word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}> \nThe next letter is \`${lastLetter.toUpperCase()}\` \nThe record to beat is \`${currentRecord}\``;
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}> \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
                 return failGame();
             }
         }

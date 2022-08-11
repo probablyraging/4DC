@@ -3,7 +3,7 @@ const { ImgurClient } = require('imgur');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const letterCurrents = require('../../schemas/letter_game/letter_currents_schema');
-const countingCurrentSchema = require('../../schemas/counting_game/counting_current_schema');
+const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 
 module.exports = {
@@ -88,18 +88,20 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
 
         // If a user deletes their count in the counting game, send the current number
         if (message?.channel.id === process.env.COUNT_CHAN && !message.author.bot) {
-            // Check if message was a number, and do some other checks to prevent false flags
+            // Check if message contained a number, and do some other checks to prevent false flags
+            const containsNumbers = /\d/.test(message?.content);
+            if (!containsNumbers) return;
             const results = await countingSchema.find({ userId: message?.author?.id });
             let currentSaves = 0;
             for (const data of results) {
                 currentSaves = data.saves;
             }
-            if (!isNaN(message?.content) && (currentSaves > 0 || message?.member?.roles.cache.has(process.env.RANK5_ROLE) || message?.member?.roles.cache.has(process.env.VERIFIED_ROLE))) {
+            if ((currentSaves > 0 || message?.member?.roles.cache.has(process.env.RANK5_ROLE) || message?.member?.roles.cache.has(process.env.VERIFIED_ROLE))) {
                 // Fetch the current count from the database
-                const results = await countingCurrentSchema.find({ searchFor: 'currentCount' });
+                const results = await countingCurrent.find({ searchFor: 'currentCount' });
                 for (const data of results) {
                     message?.channel.send({
-                        content: `${process.env.BOT_INFO} ${message.author}'s message was deleted
+                        content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
 The current count is \`${data.currentCount}\``
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
@@ -112,7 +114,7 @@ The current count is \`${data.currentCount}\``
             for (const data of results) {
                 if (message?.content.toLowerCase() === data.previousWord) {
                     message?.channel.send({
-                        content: `${process.env.BOT_INFO} ${message.author}'s message was deleted
+                        content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
 Their word was \`${data.previousWord.toUpperCase()}\``
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
