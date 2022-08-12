@@ -159,6 +159,8 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
     ],
 
     usefullinks: [
+        `https://www.forthecontent.xyz/images/creatorhub/banner_usefullinks.png`,
+
         `**Official YouTube Links**
 > Help Center: <https://support.google.com/youtube/>
 > General FAQ: <https://support.google.com/youtube/thread/677314/>
