@@ -190,6 +190,15 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > Discord Integration: <https://support.discord.com/hc/en-us/articles/212112068-Twitch-Integration-FAQ/>
 ⠀`,
 
+        `**Official Discord Links**
+> Beginner's Guide: <https://support.discord.com/hc/en-us/articles/360045138571-Beginner-s-Guide-to-Discord>
+> Support Center: <https://support.discord.com>
+> Community Guidelines: <https://discord.com/guidelines>
+> Safety Center: <https://discord.com/safety>
+> Setting up Two-Factor Authentication: <https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication>
+> Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>
+⠀`,
+
         `If you have found a useful link that isn't listed here already, feel free to head over to <#978553334854205450> and create a thread`
     ],
 
