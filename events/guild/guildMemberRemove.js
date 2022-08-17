@@ -9,7 +9,8 @@ module.exports = {
 
         // Joins/leaves log channel
         joinLeaveChan.send({
-            content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`
+            content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`,
+            allowedMentions: { parse: [] }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
     }
 }
