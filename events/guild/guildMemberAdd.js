@@ -32,6 +32,8 @@ module.exports = {
 
                         inviteChan.send({
                             content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
+                            allowedMentions: { repliedUser: true },
+                            failIfNotExists: false
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                         await inviteSchema.updateOne({
@@ -48,6 +50,8 @@ module.exports = {
             if (vanity) {
                 return inviteChan.send({
                     content: `${member.user.tag} joined using a vanity invite`,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         });
