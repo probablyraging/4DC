@@ -32,7 +32,7 @@ module.exports = {
 
                         inviteChan.send({
                             content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
-                            allowedMentions: { parse: false },
+                            allowedMentions: { parse: [] },
                             failIfNotExists: false
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
@@ -50,7 +50,7 @@ module.exports = {
             if (vanity) {
                 return inviteChan.send({
                     content: `${member.user.tag} joined using a vanity invite`,
-                    allowedMentions: { parse: false },
+                    allowedMentions: { parse: [] },
                     failIfNotExists: false
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
