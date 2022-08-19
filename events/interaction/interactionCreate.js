@@ -1,12 +1,12 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
 const commandCountSchema = require('../../schemas/misc/command_count');
-const colorSelect = require('../../handlers/select_menus/color_select');
-const platformSelect = require('../../handlers/select_menus/platform_select');
-const ageSelect = require('../../handlers/select_menus/age_select');
-const regionSelect = require('../../handlers/select_menus/region_select');
-const genderSelect = require('../../handlers/select_menus/gender_select');
-const customSelect = require('../../handlers/select_menus/custom_select');
+const colorButton = require('../../handlers/buttons/color_buttons');
+const platformButton = require('../../handlers/buttons/platform_button');
+const ageButton = require('../../handlers/buttons/age_button');
+const regionButton = require('../../handlers/buttons/region_button');
+const genderButton = require('../../handlers/buttons/gender_button');
+const customButton = require('../../handlers/buttons/custom_button');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
@@ -79,6 +79,28 @@ module.exports = {
             }
             if (interaction.customId === 'custom-select') {
                 customSelect(interaction);
+            }
+        }
+
+        // Button submit handler
+        if (interaction.isButton()) {
+            if (interaction.customId.split('-')[0] === 'color') {
+                colorButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'platform') {
+                platformButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'age') {
+                ageButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'region') {
+                regionButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'gender') {
+                genderButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'custom') {
+                customButton(interaction);
             }
         }
 

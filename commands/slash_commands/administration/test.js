@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder } = require("discord.js");
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
     name: `test`,
@@ -10,8 +10,27 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction, client) {
-        const { options, member, guild, channel } = interaction;        
+        const { options, member, guild, channel } = interaction;
 
-        interaction.reply({ content: 'ok', ephemeral: true })
+        const btnCustoms = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('custom-announcements')
+                    .setLabel('Announcements')
+                    .setEmoji('🙋‍♂️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('custom-deals')
+                    .setLabel('Game Deals')
+                    .setEmoji('🙋‍♀️')
+                    .setStyle(ButtonStyle.Secondary),
+                new ButtonBuilder()
+                    .setCustomId('custom-bump')
+                    .setLabel('Bump Ping')
+                    .setEmoji('🙋')
+                    .setStyle(ButtonStyle.Secondary)
+            );
+
+        interaction.reply({ content: 'ok', components: [btnCustoms] })
     }
 }

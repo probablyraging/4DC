@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, SelectMenuBuilder } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -194,123 +194,235 @@ module.exports = {
             case 'selfroles': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-                const select1 = new ActionRowBuilder()
+                // Colors
+                const btnColorsOne = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('color-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: 'Blue', value: 'blue', emoji: '996661870461210655' },
-                                { label: 'Red', value: 'red', emoji: '996661868011716670' },
-                                { label: 'Green', value: 'green', emoji: '996661865784545302' },
-                                { label: 'Orange', value: 'orange', emoji: '996661864371081336' },
-                                { label: 'Yellow', value: 'yellow', emoji: '996661862714327080' },
-                                { label: 'Pink', value: 'pink', emoji: '996661860080304138' },
-                                { label: 'Purple', value: 'purple', emoji: '996661858025099275' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('color-blue')
+                            .setLabel('Blue')
+                            .setEmoji('996661870461210655')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('color-red')
+                            .setLabel('Red')
+                            .setEmoji('996661868011716670')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('color-green')
+                            .setLabel('Green')
+                            .setEmoji('996661865784545302')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('color-orange')
+                            .setLabel('Orange')
+                            .setEmoji('996661864371081336')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('color-yellow')
+                            .setLabel('Yellow')
+                            .setEmoji('996661862714327080')
+                            .setStyle(ButtonStyle.Secondary)
+                    );
+                const btnColorsTwo = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('color-pink')
+                            .setLabel('Pink')
+                            .setEmoji('996661860080304138')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('color-purple')
+                            .setLabel('Purple')
+                            .setEmoji('996661858025099275')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
-                const select2 = new ActionRowBuilder()
+                const btnPlatformsOne = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('platform-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: 'Twitch', value: 'twitch', emoji: '837083090283003964' },
-                                { label: 'YouTube', value: 'youtube', emoji: '837083090441994240' },
-                                { label: 'Instagram', value: 'instagram', emoji: '837325424744595466' },
-                                { label: 'TikTok', value: 'tiktok', emoji: '837325423712796762' },
-                                { label: 'Snapchat', value: 'snapchat', emoji: '1003006430065983488' },
-                                { label: 'Spotify', value: 'spotify', emoji: '1003022473702412318' },
-                                { label: 'SoundCloud', value: 'soundcloud', emoji: '1003021533272346664' },
-                                { label: 'Developer', value: 'developer', emoji: '1003006427117391892' },
-                                { label: 'Writer', value: 'writer', emoji: '1003006425301266512' },
-                                { label: 'Musician', value: 'musician', emoji: '1003021536292257913' },
-                                { label: 'Photographer', value: 'photographer', emoji: '1003104549629870230' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('platform-twitch')
+                            .setLabel('Twitch')
+                            .setEmoji('837083090283003964')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-youtube')
+                            .setLabel('YouTube')
+                            .setEmoji('837083090441994240')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-instagram')
+                            .setLabel('Instagram')
+                            .setEmoji('837325424744595466')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-tiktok')
+                            .setLabel('TikTok')
+                            .setEmoji('837325423712796762')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-snapchat')
+                            .setLabel('Snapchat')
+                            .setEmoji('1003006430065983488')
+                            .setStyle(ButtonStyle.Secondary)
+                    );
+                const btnPlatformsTwo = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('platform-spotify')
+                            .setLabel('Spotify')
+                            .setEmoji('1003022473702412318')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-soundcloud')
+                            .setLabel('SoundCloud')
+                            .setEmoji('1003021533272346664')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-developer')
+                            .setLabel('Developer')
+                            .setEmoji('1003006427117391892')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-writer')
+                            .setLabel('Writer')
+                            .setEmoji('1003006425301266512')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-musician')
+                            .setLabel('Musician')
+                            .setEmoji('1003021536292257913')
+                            .setStyle(ButtonStyle.Secondary),
+                    );
+                const btnPlatformsThree = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('platform-photographer')
+                            .setLabel('Photographer')
+                            .setEmoji('1003104549629870230')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
-                const select3 = new ActionRowBuilder()
+                // Ages
+                const btnAges = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('age-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: '13-17', value: '13-17', emoji: '👶' },
-                                { label: '18-29', value: '18-29', emoji: '👦' },
-                                { label: '30+', value: '30+', emoji: '👨' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('age-groupone')
+                            .setLabel('13-17')
+                            .setEmoji('👶')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('age-grouptwo')
+                            .setLabel('18-29')
+                            .setEmoji('👦')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('age-groupthree')
+                            .setLabel('30+')
+                            .setEmoji('👨')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
-                const select4 = new ActionRowBuilder()
+                // Regions
+                const btnRegions = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('region-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: 'America', value: 'america', emoji: '🏈' },
-                                { label: 'Europe', value: 'europe', emoji: '🎡' },
-                                { label: 'Oceania', value: 'oceania', emoji: '🏝️' },
-                                { label: 'Asia', value: 'asia', emoji: '🐉' },
-                                { label: 'Africa', value: 'africa', emoji: '🦁' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('region-america')
+                            .setLabel('America')
+                            .setEmoji('🏈')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('region-europe')
+                            .setLabel('Europe')
+                            .setEmoji('🎡')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('region-oceania')
+                            .setLabel('Oceania')
+                            .setEmoji('🏝️')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('region-asia')
+                            .setLabel('Asia')
+                            .setEmoji('🐉')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('region-africa')
+                            .setLabel('Africa')
+                            .setEmoji('🦁')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
-                const select5 = new ActionRowBuilder()
+                // Genders
+                const btnGenders = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('gender-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: 'Male', value: 'male', emoji: '🙋‍♂️' },
-                                { label: 'Female', value: 'female', emoji: '🙋‍♀️' },
-                                { label: 'Non-binary', value: 'non-binary', emoji: '🙋' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('gender-male')
+                            .setLabel('Male')
+                            .setEmoji('🙋‍♂️')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('gender-female')
+                            .setLabel('Female')
+                            .setEmoji('🙋‍♀️')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('gender-binary')
+                            .setLabel('Non-binary')
+                            .setEmoji('🙋')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
-                const select6 = new ActionRowBuilder()
+                // Customs
+                const btnCustoms = new ActionRowBuilder()
                     .addComponents(
-                        new SelectMenuBuilder()
-                            .setCustomId('custom-select')
-                            .setPlaceholder('Select')
-                            .addOptions([
-                                { label: 'Announcements', value: 'announcements', emoji: '📢' },
-                                { label: 'Game Deals', value: 'deals', emoji: '🎲' },
-                                { label: 'Disboard Bump', value: 'bump', emoji: '📣' }
-                            ]),
+                        new ButtonBuilder()
+                            .setCustomId('custom-announcements')
+                            .setLabel('Announcements')
+                            .setEmoji('📢')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('custom-deals')
+                            .setLabel('Game Deals')
+                            .setEmoji('🎲')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('custom-bump')
+                            .setLabel('Bump Ping')
+                            .setEmoji('📣')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
                 await channel.send({ content: `https://www.forthecontent.xyz/images/creatorhub/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
-                    content: `**Select your roles from the dropdown menus below. Select a role again to remove it**
+                    content: `**Press a button below to add your role. Press it again to remove it**
 
-**Choose your nickname color**`, components: [select1]
+**Choose your nickname color**`, components: [btnColorsOne, btnColorsTwo]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
-**Choose your content types**`, components: [select2]
+**Choose your content types**`, components: [btnPlatformsOne, btnPlatformsTwo, btnPlatformsThree]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
-**Choose your age**`, components: [select3]
+**Choose your age**`, components: [btnAges]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
-**Choose your region**`, components: [select4]
+**Choose your region**`, components: [btnRegions]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
-**Choose your gender**`, components: [select5]
+**Choose your gender**`, components: [btnGenders]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
-**Choose your optional pings**`, components: [select6]
+**Choose your optional pings**`, components: [btnCustoms]
                 }).catch(err => console.error(`Could not send a message: `, err));
             }
 
