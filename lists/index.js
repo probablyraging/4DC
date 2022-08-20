@@ -57,7 +57,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
         `https://www.forthecontent.xyz/images/creatorhub/banner_serverfaq.png`,
 
         `**When/how can I share my content?**
-> Content share channels can be found under the 'CONTENT SHARE' section. Content share channels are unlocked at Rank 5. Reaching Rank 5 and unlocking the 'CONTENT SHARE' channels takes approximately 80 messages *(or 1 hour of total chat time)*. You can bypass these rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the \`/rank\` command
+> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to them when posting. You can bypass this rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the \`/rank\` command
 
 **Can I advertise my own server or paid service?**
 > Advertising, as well as looking for other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
