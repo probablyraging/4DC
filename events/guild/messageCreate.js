@@ -23,6 +23,9 @@ module.exports = {
      * @param {Message} message
      */
     async execute(message, client) {
+        // Ignore DM messages
+        if (message?.channel.type === 1) return;
+
         // blacklist checks
         linkCooldown(message, client);
         blPhishing(message, client);
