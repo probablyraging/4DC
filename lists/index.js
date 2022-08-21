@@ -90,7 +90,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 
         `**How do I get started?**
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
-> <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like OBS
+> <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like [OBS](<https://obsproject.com>)
 > <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
 > <:minidot:923683258871472248> A photo editing suite, such as [GIMP](<https://www.gimp.org/>) *(free)* or [Adobe Photoshop](<https://www.adobe.com/au/products/photoshop.html>) *(paid)*. This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
 > Take the time to do some research about the gear and software you plan to use. Use the <#851707143873626134> channel to find a list of free and paid software, as well as other gear and software you might want
