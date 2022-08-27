@@ -5,7 +5,7 @@ module.exports = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
-        useEnsureIndex: true
+        useCreateIndex: true
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
     return mongoose;
 }
