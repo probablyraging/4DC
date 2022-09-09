@@ -41,8 +41,8 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 **4. Advertising servers and paid products**
 > Advertising of other discord servers, offering or requesting paid services, products, and other promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>
 
-**5. Sub for sub posts**
-> We do not allow sub for sub type posts anywhere on the server, including the 'CONTENT SHARE' section. This is also against [YouTube's ToS](<https://www.youtube.com/static?template=terms>)
+**5. Posts against platform ToS**
+> We do not allow posts that break the various platform Terms of Service. This includes content like sub for sub behaviour, promoting/linking bot votes, etc. [YouTube's ToS](<https://www.youtube.com/static?template=terms>), [Twitch ToS](https://www.twitch.tv/p/en/legal/terms-of-service/), [TikTok ToS](https://www.tiktok.com/legal/terms-of-service-eea?lang=en), [Instagram ToS](https://help.instagram.com/581066165581870)
 
 **6. Moderator discretion**
 > Do not publicly discuss other members' bans, mutes, message deletions, or other moderating actions. If you have a concern, please DM a staff member privately

@@ -19,7 +19,7 @@ module.exports = {
         { name: 'Rule 2 - spamming and flooding', value: '2' },
         { name: 'Rule 3 - self promotion and unsolicited DMs', value: '3' },
         { name: 'Rule 4 - advertising discord servers and paid services', value: '4' },
-        { name: 'Rule 5 - sub4sub type behaviour', value: '5' },
+        { name: 'Rule 5 - behaviour breaking platform ToS', value: '5' },
         { name: 'Rule 6 - openly discussing moderator actions', value: '6' },
         { name: 'Rule 7 - messages not in English', value: '7' }]
     },
