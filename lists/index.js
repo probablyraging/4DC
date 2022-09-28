@@ -99,7 +99,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
         `**How do I get monetized?**
 > The option to monetize your content becomes available once you have reached the requirements set by YouTube, which currently are;
 > <:minidot:923683258871472248> 1000 subscribers
-> <:minidot:923683258871472248> 4000 watch time hours (over a 30-day period)
+> <:minidot:923683258871472248> 4000 watch time hours (over a 12-month period)
 > <:minidot:923683258871472248> 2FA enabled on your account
 > <:minidot:923683258871472248> 0 community strikes
 > Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partner. More information here <https://support.google.com/youtube/answer/72851/>
