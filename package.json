@@ -20,7 +20,7 @@
         "console-stamp": "^3.0.4",
         "cron": "^1.8.2",
         "discord-api-types": "^0.25.2",
-        "discord.js": "^14.1.1",
+        "discord.js": "^14.6.0",
         "dotenv": "^9.0.2",
         "express": "^4.17.1",
         "glob": "^7.2.0",
