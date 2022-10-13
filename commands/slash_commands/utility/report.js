@@ -36,7 +36,7 @@ module.exports = {
             .setCustomId('input1')
             .setLabel('Username')
             .setStyle(1)
-            .setPlaceholder('Username and tag (e.g: ProbablyRaging#0001')
+            .setPlaceholder(`Offender's username and tag (e.g: ProbablyRaging#0001`)
             .setMinLength(1)
             .setMaxLength(54)
             .setRequired(true)

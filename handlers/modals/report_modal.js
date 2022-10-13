@@ -30,7 +30,7 @@ module.exports = async (interaction) => {
             .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
                 { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
-            .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
+            .setFooter({ text: `React below to close this report • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp();
 
         const attachment = getAttachment(1);
@@ -39,12 +39,12 @@ module.exports = async (interaction) => {
             reportEmbed.setImage(attachment)
         }
 
-        const reactionMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+        const reactionMessage = await staffChannel.send({ content: `.`, embeds: [reportEmbed] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
         await reactionMessage.react("⛔").catch(err => console.error(`Could not react to message '${reportId}': `, err));
 
         const filter = (reaction, user) => {
-            return guild.members.cache.find((member) => member.id === user.id).permissions.has("ManageMessages");
+            return guild.members.cache.find((member) => member.id === user.id).permissions.has("BanMembers");
         };
 
         const collector = reactionMessage.createReactionCollector({ filter, dispose: true });
@@ -57,7 +57,7 @@ module.exports = async (interaction) => {
                     .addFields({ name: `Reported User`, value: `${target}`, inline: false },
                         { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
                     .addFields({ name: `Closed By`, value: `${closingUser}`, inline: false })
-                    .setFooter({ text: `${guild.name} • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setFooter({ text: `Report Closed • Report ID ${reportId}`, iconURL: guild.iconURL({ dynamic: true }) })
                     .setTimestamp();
 
                 if (attachment) {
