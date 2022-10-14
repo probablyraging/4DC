@@ -1,5 +1,5 @@
 <a href="https://discord.gg/forthecontent"><img width="120" height="120" align="left" style="float: left" src="https://i.imgur.com/Dc7fS2o.png"></a>
-# 4DC (previously CreatorBot)
+# 4DC
 
 [![ForTheContent](https://img.shields.io/discord/820889004055855144?color=5865F2&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/forthecontent)
 [![Language](https://img.shields.io/github/languages/top/ProbablyRaging/CreatorBot?color=f0db4f&logoColor=white&style=for-the-badge)]()
