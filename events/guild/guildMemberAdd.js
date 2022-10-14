@@ -9,15 +9,47 @@ module.exports = {
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
+        // Survey
+        const testChan = client.channels.cache.get(process.env.TEST_CHAN);
+
+        setTimeout(async () => {
+            let dmError = false;
+            const surveyMessage = await member?.send({
+                content: `Thanks for joining ForTheContent, would you mind taking a quick survey?
+    
+**In an attempt to better understand our community, we would love to know how you heard about ForTheContent**
+*You can reply directly to this message within 5 minutes with your answer (i.e.: Reddit, Google, Facebook, Disboard, etc..)*
+    
+Thank you for your time!` }).catch(() => {
+                    dmError = true;
+                });
+
+            if (!dmError) {
+                const dmChannel = client.channels.cache.get(surveyMessage?.channelId);
+
+                const filter = (message) => {
+                    return guild.members.cache.find((member) => member?.id === message?.author.id);
+                };
+
+                const collector = dmChannel?.createMessageCollector({ filter, time: 300000, dispose: true });
+
+                collector.on('collect', (message) => {
+                    if (!message.author.bot) {
+                        testChan?.send({ content: `${message?.author} found the server via \`${message?.content}\`` });
+                        message?.reply({ content: `Thank you, your answer has been saved!` });
+                        collector?.stop()
+                    }
+                });
+            }
+        }, 30000);
+
         // Joins/leaves log channel
         joinLeaveChan.send({
             content: `${process.env.BOT_JOIN} ${member} joined. There are now **${guild.memberCount}** members in the server`,
             allowedMentions: { parse: [] }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        /**
-         * invite tracker
-         */
+        // Invite tracker
         guild.invites.fetch().then(async invites => {
             let vanity = true;
 
