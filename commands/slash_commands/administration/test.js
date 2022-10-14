@@ -10,27 +10,22 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction, client) {
-        const { options, member, guild, channel } = interaction;
+        const { options, member, guild, channel, user } = interaction;
 
-        const btnCustoms = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('custom-announcements')
-                    .setLabel('Announcements')
-                    .setEmoji('🙋‍♂️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('custom-deals')
-                    .setLabel('Game Deals')
-                    .setEmoji('🙋‍♀️')
-                    .setStyle(ButtonStyle.Secondary),
-                new ButtonBuilder()
-                    .setCustomId('custom-bump')
-                    .setLabel('Bump Ping')
-                    .setEmoji('🙋')
-                    .setStyle(ButtonStyle.Secondary)
-            );
+        // const btnCustoms = new ActionRowBuilder()
+        //     .addComponents(
+        //         new ButtonBuilder()
+        //             .setCustomId('btn-one')
+        //             .setLabel('btn-one')
+        //             .setEmoji('🙋‍♂️')
+        //             .setStyle(ButtonStyle.Secondary),
+        //         new ButtonBuilder()
+        //             .setCustomId('btn-two')
+        //             .setLabel('btn-two')
+        //             .setEmoji('🙋‍♀️')
+        //             .setStyle(ButtonStyle.Secondary)
+        //     );
 
-        interaction.reply({ content: 'ok', components: [btnCustoms] })
+        // user.send({ content: 'ok', components: [btnCustoms] })
     }
 }

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const path = require('path');
 
@@ -10,38 +10,44 @@ module.exports = {
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
         // Survey
-        const testChan = client.channels.cache.get(process.env.TEST_CHAN);
+        const btnCustoms = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('btn-one')
+                    .setLabel('Reddit')
+                    .setEmoji('1️⃣')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('btn-two')
+                    .setLabel('Google')
+                    .setEmoji('2️⃣')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('btn-three')
+                    .setLabel('YouTube')
+                    .setEmoji('3️⃣')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('btn-four')
+                    .setLabel('Friends or Family')
+                    .setEmoji('4️⃣')
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('btn-five')
+                    .setLabel('Other')
+                    .setEmoji('5️⃣')
+                    .setStyle(ButtonStyle.Primary),
+            );
 
-        setTimeout(async () => {
-            let dmError = false;
-            const surveyMessage = await member?.send({
+        // setTimeout(async () => {
+            await member?.send({
                 content: `Thanks for joining ForTheContent, would you mind taking a quick survey?
     
 **In an attempt to better understand our community, we would love to know how you heard about ForTheContent**
-*You can reply directly to this message within 5 minutes with your answer (i.e.: Reddit, Google, Facebook, Disboard, etc..)*
-    
-Thank you for your time!` }).catch(() => {
-                    dmError = true;
-                });
 
-            if (!dmError) {
-                const dmChannel = client.channels.cache.get(surveyMessage?.channelId);
-
-                const filter = (message) => {
-                    return guild.members.cache.find((member) => member?.id === message?.author.id);
-                };
-
-                const collector = dmChannel?.createMessageCollector({ filter, time: 300000, dispose: true });
-
-                collector.on('collect', (message) => {
-                    if (!message.author.bot) {
-                        testChan?.send({ content: `${message?.author} found the server via \`${message?.content}\`` });
-                        message?.reply({ content: `Thank you, your answer has been saved!` });
-                        collector?.stop()
-                    }
-                });
-            }
-        }, 30000);
+*Click one of the buttons below to submit your answer*`, components: [btnCustoms]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        // }, 30000);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
