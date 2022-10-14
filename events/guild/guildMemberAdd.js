@@ -39,7 +39,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary),
             );
 
-        // setTimeout(async () => {
+        setTimeout(async () => {
             await member?.send({
                 content: `Thanks for joining ForTheContent, would you mind taking a quick survey?
     
@@ -47,7 +47,7 @@ module.exports = {
 
 *Click one of the buttons below to submit your answer*`, components: [btnCustoms]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-        // }, 30000);
+        }, 30000);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
