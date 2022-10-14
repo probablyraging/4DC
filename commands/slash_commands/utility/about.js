@@ -30,9 +30,9 @@ module.exports = {
             .setDescription(`Created by <@${process.env.OWNER_ID}> for [**ForTheContent**](https://discord.gg/forthecontent)`)
             .addFields({
                 name: `Maintained By`, value: `<@${process.env.OWNER_ID}> - [YouTube](https://www.youtube.com/ProbablyRaging) - [GitHub](https://github.com/ProbablyRaging)
-<@878608494499098694> - [YouTube](https://www.youtube.com/HighTechLowIQ) - [GitHub](https://github.com/HighTechLowIQ)`, ineline: false
+<@878608494499098694> - [YouTube](https://www.youtube.com/HighTechLowIQ) - [GitHub](https://github.com/HighTechLowIQ)`, inline: false
             },
-                { name: `Uptime`, value: `${botUptime}`, ineline: false })
+                { name: `Uptime`, value: `${botUptime}`, inline: false })
             .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp()
 
