@@ -30,7 +30,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
         `To keep ForTheContent a safe and positive experience for everyone, you are required to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
         
 **1. Harmful, offensive, or explicit content**
-> Messages, usernames, avatars, banners, bios, or linked accounts containing this type of content has no place in this server. This may result in a ban without warning
+> Messages, usernames, avatars, banners, bios, or linked accounts containing harmful, offensive, or explicit content has no place in this server. This may result in a ban without warning
 
 **2. Spamming and flooding**
 > Sending multiple messages repeatedly or sending purposeless messages in an attempt to gain XP
