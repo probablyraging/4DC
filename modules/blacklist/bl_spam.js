@@ -34,7 +34,7 @@ module.exports = async (message, client) => {
                 const member = message?.member;
                 member?.timeout(300000, 'Spam detection').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
                 member?.send({
-                    content: `${process.env.BOT_DENY} You have been timed out for 5 minutes for spamming. If this is a mistake, please content a staff member`
+                    content: `${process.env.BOT_DENY} You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 // Add the user to a set for 15 seconds. This prevents the bot trying to take action again
                 timedout.add(author);
