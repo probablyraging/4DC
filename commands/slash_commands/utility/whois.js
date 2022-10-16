@@ -33,6 +33,9 @@ module.exports = {
         if (target?.permissions.has("BanMembers")) {
             permissions.push("Ban Members");
         }
+        if (target?.permissions.has("ModerateMembers")) {
+            permissions.push("Moderate Members");
+        }
         if (target?.permissions.has("KickMembers")) {
             permissions.push("Kick Members");
         }
