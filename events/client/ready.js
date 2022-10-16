@@ -57,5 +57,7 @@ module.exports = {
         autoYT(client);
         rankSort(client);
         setupChecks(client);
+
+        console.timeEnd('Time to online');
     }
 };

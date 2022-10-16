@@ -19,8 +19,6 @@ async function deleteMessages(messageIds, channel) {
 }
 
 async function checkPreviousPosts(client) {
-    console.log("Checking previously posted messages in Creator Crew.");
-    let startTime = new Date();
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const ccChannel = guild.channels.cache.get(process.env.CCREW_CHAN);
     let allVideoMessageIds = await getAllVideoMessageIds();
@@ -44,8 +42,6 @@ async function checkPreviousPosts(client) {
             }
         });
     }).catch(err => console.error(`${path.basename(__filename)} Failed to find previous messages in Creator Crew: `, err));
-
-    console.log(`Processed previous messages in Creator Crew in ${(new Date - startTime).valueOf()}ms.`)
 }
 
 async function setupChecks(client) {

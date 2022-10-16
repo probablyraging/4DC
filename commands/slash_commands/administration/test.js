@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require("discord.js");
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder } = require("discord.js");
 
 module.exports = {
     name: `test`,
@@ -11,21 +11,6 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
-
-        // const btnCustoms = new ActionRowBuilder()
-        //     .addComponents(
-        //         new ButtonBuilder()
-        //             .setCustomId('btn-one')
-        //             .setLabel('btn-one')
-        //             .setEmoji('🙋‍♂️')
-        //             .setStyle(ButtonStyle.Secondary),
-        //         new ButtonBuilder()
-        //             .setCustomId('btn-two')
-        //             .setLabel('btn-two')
-        //             .setEmoji('🙋‍♀️')
-        //             .setStyle(ButtonStyle.Secondary)
-        //     );
-
-        // user.send({ content: 'ok', components: [btnCustoms] })
+        
     }
 }
