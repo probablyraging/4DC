@@ -159,7 +159,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 > You now have \`${saves - 1}/2 personal saves\` left
 > The guild now has \`3/3 saves\``,
                                     ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)); F
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                             } else {
                                 return interaction.reply({
                                     content: `You have donated \`1 personal save\` to the guild

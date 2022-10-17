@@ -19,7 +19,7 @@ module.exports = async (message, client) => {
     let found = false;
     let invite = false;
 
-    for (var i in blacklist.links) {
+    for (let i in blacklist.links) {
         if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) {
             if (i >= 0 && i <= 1) reason = 'Discord invite link';
             if (i >= 2 && i <= 4) reason = 'Adult content link';
@@ -29,7 +29,7 @@ module.exports = async (message, client) => {
         if (message?.content.toLowerCase().includes('discord.gg/') || message?.content.toLowerCase().includes('discord.com/invite')) invite = true;
     }
 
-    for (var e in blacklist.allChannels) {
+    for (let e in blacklist.allChannels) {
         if (found && message?.channel.id === blacklist.allChannels[e] || found && message?.channel.parentId === blacklist.allChannels[e]) {
             if (member?.id !== process.env.OWNER_ID && !message?.author?.bot) {
                 if (invite) {

@@ -17,8 +17,8 @@ function msToHumanTime(milliseconds) {
 
 function timeElapsedBetweenTimestamps(nowTime, oldTime) {
     const msDifference = nowTime - oldTime;
-    const daysDifference = msDifference / 1000 / 60 / 60 / 24;
-    return daysDifference;
+    // Convert milliseconds to days
+    return msDifference / 1000 / 60 / 60 / 24;
 }
 
 async function getLatestVideoTs(authorId) {

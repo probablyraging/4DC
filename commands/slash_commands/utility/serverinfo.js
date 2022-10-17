@@ -73,7 +73,7 @@ module.exports = {
                 vanityURL = `https://discord.gg/${guild.vanityURLCode}`;
             }
 
-            function converTimestampToSimpleFormat(timestamp) {
+            function convertTimestampToSimpleFormat(timestamp) {
                 const t = new Date(timestamp);
                 const date = ('0' + t.getDate()).slice(-2);
                 const month = ('0' + (t.getMonth() + 1)).slice(-2);
@@ -81,11 +81,10 @@ module.exports = {
                 const hours = ('0' + t.getHours()).slice(-2);
                 const minutes = ('0' + t.getMinutes()).slice(-2);
                 const seconds = ('0' + t.getSeconds()).slice(-2);
-                const time = `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
-                return time;
+                return `${date}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
             }
 
-            var createdAt = converTimestampToSimpleFormat(new Date(guild.createdTimestamp).getTime());
+            let createdAt = convertTimestampToSimpleFormat(new Date(guild.createdTimestamp).getTime());
 
             const response = new EmbedBuilder()
                 .setColor('#32BEA6') // GREEN

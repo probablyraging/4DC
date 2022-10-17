@@ -21,7 +21,7 @@ module.exports = async (client) => {
         });
 
         // remove non-existent users from the database
-        for (var i = 0; i < sortArr.length; i++) {
+        for (let i = 0; i < sortArr.length; i++) {
             const exists = await guild.members.fetch(sortArr[i].id)
                 .catch(() => console.log(`Found and removed a user in the rank system that no longer exists`));
 
@@ -38,7 +38,7 @@ module.exports = async (client) => {
         }
 
         // assign the new rank position to each user
-        for (var i = 0; i < rankPosArr.length; i++) {
+        for (let i = 0; i < rankPosArr.length; i++) {
             await rankSchema.updateOne({
                 id: rankPosArr[i].id
             }, {
