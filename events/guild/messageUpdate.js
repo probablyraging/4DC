@@ -15,7 +15,7 @@ module.exports = {
         let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
 
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
-            var log = new Discord.EmbedBuilder()
+            let log = new Discord.EmbedBuilder()
                 .setColor('#FF9E00')
                 .setAuthor({ name: `${oldMessage?.author?.tag}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
@@ -43,7 +43,7 @@ module.exports = {
 
         if (newMessage?.deleted) return;
 
-        for (var i in blacklist.links) {
+        for (let i in blacklist.links) {
             if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) {
                 if (i >= 0 && i <= 1) reason = 'Discord invite link';
                 if (i >= 2 && i <= 4) reason = 'Adult content link';
@@ -52,7 +52,7 @@ module.exports = {
             }
         }
 
-        for (var e in blacklist.allChannels) {
+        for (let e in blacklist.allChannels) {
             if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
                     member?.send({
@@ -71,15 +71,15 @@ module.exports = {
 
         // ------- same as bl_promo.js
         // ignore links from the 'links' array to not cause double messages
-        for (var i in blacklist.links) {
+        for (let i in blacklist.links) {
             if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
         }
 
-        for (var i in blacklist.promo) {
+        for (let i in blacklist.promo) {
             if (newMessage?.content.toLowerCase().includes(blacklist.promo[i].toLowerCase())) found = true;
         }
 
-        for (var e in blacklist.noLinkChannels) {
+        for (let e in blacklist.noLinkChannels) {
             if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
                 if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
                     member?.send({

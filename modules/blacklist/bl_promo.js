@@ -24,7 +24,7 @@ module.exports = async (message, client) => {
     // if a message contains a youtube channel url, get the channel id and see if the channel's name is the same as the author's
     // this is for the movies-tv-music and memes-and-media channel only, as they allow all ranks to post links unchecked
     function detectURLs(message) {
-        var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+        let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
         return message.match(urlRegex)
     }
 
@@ -84,7 +84,7 @@ module.exports = async (message, client) => {
         }
     }
 
-    for (var i in blacklist.promo) {
+    for (let i in blacklist.promo) {
         if (message?.content.toLowerCase().includes(blacklist.promo[i].toLowerCase())) {
             if (i >= 0 && i <= 2) reason = 'Unverified user link';
             if (i >= 3 && i <= 13) reason = 'Self promotion link';
@@ -93,7 +93,7 @@ module.exports = async (message, client) => {
         }
     }
 
-    for (var e in blacklist.noLinkChannels) {
+    for (let e in blacklist.noLinkChannels) {
         if (found && (message?.channel.id === blacklist.noLinkChannels[e] || message?.channel.parentId === blacklist.noLinkChannels[e]) && !message?.content.includes('tenor.com') && !message?.author.bot) {
             if (member?.id !== process.env.OWNER_ID && !message?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles?.cache.has(process.env.VERIFIED_ROLE) && !message?.member?.roles?.cache.has(process.env.BOOST_ROLE)) {
                 member?.send({

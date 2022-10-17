@@ -17,7 +17,7 @@ module.exports = async (message, client) => {
 
     const pingArr = ['@everyone', '@here'];
 
-    for (var i in pingArr) {
+    for (let i in pingArr) {
         if (contLow.includes(pingArr[i])) {
             setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 

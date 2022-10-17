@@ -8,7 +8,7 @@ const path = require('path');
  */
 module.exports = async (message) => {
     if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {
-        for (var i in blacklist.links) {
+        for (let i in blacklist.links) {
             if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
         }
 
@@ -17,7 +17,7 @@ module.exports = async (message) => {
         const target = message?.member;
 
         function detectURLs(message) {
-            var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+            let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
             return message.match(urlRegex)
         }
 
@@ -40,8 +40,8 @@ module.exports = async (message) => {
         target?.roles?.add(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         const myDate = new Date();
-        const addTwo = myDate.setHours(myDate.getHours() + 5);
-        const timestamp = addTwo;
+        // Add 5 hours to the current time
+        const timestamp = myDate.setHours(myDate.getHours() + 5);
 
         const searchFor = 'currentTime';
 

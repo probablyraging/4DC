@@ -25,8 +25,8 @@ module.exports = async (message) => {
                     message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
                     const myDate = new Date();
-                    const addTwo = myDate.setHours(myDate.getHours() + 2);
-                    const timestamp = addTwo;
+                    // Add two hours to the current time
+                    const timestamp = myDate.setHours(myDate.getHours() + 2);
 
                     const searchFor = 'bumpTime';
 

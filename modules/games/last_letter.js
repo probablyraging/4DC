@@ -59,7 +59,7 @@ module.exports = async (message, client) => {
             }
 
             // If the message contains a symbol or number, delete the message and notify the user
-            var hasSymbol = /^[a-zA-Z]+$/;
+            let hasSymbol = /^[a-zA-Z]+$/;
             const test = !hasSymbol.test(message.content);
             if (!failed && test) {
                 failed = true;
