@@ -8,7 +8,7 @@ module.exports = {
     access: 'owner',
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
-    usage: `/msg (@username) (message) (imageURL)`,
+    usage: `/commandcount`,
     /**
      *
      * @param {ContextMenuInteraction} interaction
