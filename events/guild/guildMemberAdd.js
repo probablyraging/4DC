@@ -13,27 +13,27 @@ module.exports = {
         const btnCustoms = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('btn-one')
+                    .setCustomId('survey-reddit')
                     .setLabel('Reddit')
                     .setEmoji('1️⃣')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('btn-two')
+                    .setCustomId('survey-google')
                     .setLabel('Google')
                     .setEmoji('2️⃣')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('btn-three')
+                    .setCustomId('survey-youtube')
                     .setLabel('YouTube')
                     .setEmoji('3️⃣')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('btn-four')
+                    .setCustomId('survey-friend')
                     .setLabel('Friends or Family')
                     .setEmoji('4️⃣')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('btn-five')
+                    .setCustomId('survey-other')
                     .setLabel('Other')
                     .setEmoji('5️⃣')
                     .setStyle(ButtonStyle.Primary),
@@ -41,7 +41,7 @@ module.exports = {
 
         setTimeout(async () => {
             await member?.send({
-                content: `Thanks for joining ForTheContent, would you mind taking a quick survey?
+                content: `Thanks for joining ForTheContent, would you mind answering a quick question?
     
 **In an attempt to better understand our community, we would love to know how you heard about ForTheContent**
 

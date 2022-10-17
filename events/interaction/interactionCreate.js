@@ -7,6 +7,7 @@ const ageButton = require('../../handlers/buttons/age_button');
 const regionButton = require('../../handlers/buttons/region_button');
 const genderButton = require('../../handlers/buttons/gender_button');
 const customButton = require('../../handlers/buttons/custom_button');
+const surveyButton = require('../../handlers/buttons/survey_button');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
@@ -102,55 +103,8 @@ module.exports = {
             if (interaction.customId.split('-')[0] === 'custom') {
                 customButton(interaction);
             }
-            if (interaction.customId === 'btn-one') {
-                try {
-                    const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-                    testChan.send({ content: `${interaction.user} found the server via \`Reddit\`` });
-                    const dmChan = client.channels.cache.get(interaction.channelId);
-                    const dmMsg = await dmChan.messages.fetch(interaction.message.id);
-                    dmMsg.delete();
-                    dmChan.send({ content: `Thanks, your answer has been submitted` });
-                } catch { }
-            }
-            if (interaction.customId === 'btn-two') {
-                try {
-                    const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-                    testChan.send({ content: `${interaction.user} found the server via \`Google\`` });
-                    const dmChan = client.channels.cache.get(interaction.channelId);
-                    const dmMsg = await dmChan.messages.fetch(interaction.message.id);
-                    dmMsg.delete();
-                    dmChan.send({ content: `Thanks, your answer has been submitted` });
-                } catch { }
-            }
-            if (interaction.customId === 'btn-three') {
-                try {
-                    const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-                    testChan.send({ content: `${interaction.user} found the server via \`YouTube\`` });
-                    const dmChan = client.channels.cache.get(interaction.channelId);
-                    const dmMsg = await dmChan.messages.fetch(interaction.message.id);
-                    dmMsg.delete();
-                    dmChan.send({ content: `Thanks, your answer has been submitted` });
-                } catch { }
-            }
-            if (interaction.customId === 'btn-four') {
-                try {
-                    const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-                    testChan.send({ content: `${interaction.user} found the server via \`Friends or Family\`` })
-                    const dmChan = client.channels.cache.get(interaction.channelId);
-                    const dmMsg = await dmChan.messages.fetch(interaction.message.id);
-                    dmMsg.delete();
-                    dmChan.send({ content: `Thanks, your answer has been submitted` });
-                } catch { }
-            }
-            if (interaction.customId === 'btn-five') {
-                try {
-                    const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-                    testChan.send({ content: `${interaction.user} found the server via \`Other\`` })
-                    const dmChan = client.channels.cache.get(interaction.channelId);
-                    const dmMsg = await dmChan.messages.fetch(interaction.message.id);
-                    dmMsg.delete();
-                    dmChan.send({ content: `Thanks, your answer has been submitted` });
-                } catch { }
+            if (interaction.customId.split('-')[0] === 'survey') {
+                surveyButton(interaction);
             }
         }
 
