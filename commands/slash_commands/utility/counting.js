@@ -90,10 +90,9 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                         }
                     }
                 }
+                break;
             }
-        }
 
-        switch (options.getSubcommand()) {
             case 'donatesave': {
                 const results = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
@@ -171,6 +170,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                         }
                     }
                 }
+                break;
             }
         }
     }

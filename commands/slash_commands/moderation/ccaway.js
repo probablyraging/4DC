@@ -71,6 +71,7 @@ module.exports = {
                 }
                 break;
             }
+            
             case 'list': {
                 let users = await getAwayUsers();
 

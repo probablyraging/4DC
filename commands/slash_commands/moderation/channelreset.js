@@ -70,10 +70,10 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                     content: `${[process.env.BOT_CONF]} ${ckqChannel} has been reset`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        switch (options.getString('channel')) {
+                break;
+            }
+
             case 'featuredchannel': {
                 const featuredChan = guild.channels.cache.get(process.env.FEATURED_CHAN);
                 const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
@@ -89,6 +89,8 @@ Every 5 hours the channel will unlock, allowing everyone to post a single link t
                     content: `${[process.env.BOT_CONF]} ${featuredChan} has been reset`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
             }
         }
     }

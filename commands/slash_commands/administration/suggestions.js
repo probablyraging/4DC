@@ -74,11 +74,11 @@ module.exports = {
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Response added to ${id}`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // DENY
-        switch (options.getString('choice')) {
+                break;
+            }
+
+            // DENY
             case 'deny': {
                 const responseEmbed = EmbedBuilder.from(embed)
                     .addFields({ name: `Response`, value: `\`\`\`${response}\`\`\`` })
@@ -92,11 +92,11 @@ module.exports = {
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Response added to ${id}`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // PIGEONHOLE
-        switch (options.getString('choice')) {
+                break;
+            }
+
+            // PIGEONHOLE
             case 'pigeonhole': {
                 const responseEmbed = EmbedBuilder.from(embed)
                     .addFields({ name: `Response`, value: `\`\`\`${response}\`\`\`` })
@@ -110,6 +110,8 @@ module.exports = {
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Response added to ${id}`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            
+                break;
             }
         }
     }

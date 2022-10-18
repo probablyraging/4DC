@@ -155,10 +155,10 @@ module.exports = {
                                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
                             }, 1500));
                     });
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                    break;
+            }
+
             case 'edit': {
                 const id = options.getString('id');
                 const title = options.getString('title');
@@ -228,6 +228,8 @@ module.exports = {
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Ok`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
             }
         }
     }
