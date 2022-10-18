@@ -58,16 +58,16 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://www.forthecontent.xyz/images/creatorhub/banner_serverfaq.png`,
 
         `**When/how can I share my content?**
-> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to them when posting. You can bypass this rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the \`/rank\` command
+> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to them when posting. You can bypass this rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the </rank:1031245457902555212> command
 
 **Can I advertise my own server or paid service?**
 > Advertising, as well as looking for other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
 
 **What is server boosting?**
-> Server boosting is a fun way to support ForTheContent by helping us unlock awesome server perks. On top of that, becoming a server booster allows you to bypass most of the rank requirements on the server, and you also get some extra perks which you can find by using the \`/boost\` command
+> Server boosting is a fun way to support ForTheContent by helping us unlock awesome server perks. On top of that, becoming a server booster allows you to bypass most of the rank requirements on the server, and you also get some extra perks which you can find by using the </boost:1031245457835429998> command
 
 **How do I rank up?**
-> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, content share channels, game channels, permission to post links outside of the 'CONTENT SHARE' section, etc. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the \`/rank\` command. *You will not gain XP for posting messages in the CONTENT SHARE section!*
+> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, content share channels, game channels, permission to post links outside of the 'CONTENT SHARE' section, etc. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the </rank:1031245457902555212> command. *You will not gain XP for posting messages in the CONTENT SHARE section!*
 ⠀`,
 
         `**How do I link my channels/socials?**
@@ -84,7 +84,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [ForTheContent Dashboard](https://www.forthecontent.xyz), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
-> To make a report, you can use the \`/report\` command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
+> To make a report, you can use the </report:1031245457902555213> command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
 ⠀`,
 
         `https://www.forthecontent.xyz/images/creatorhub/banner_youtubefaq.png`,
