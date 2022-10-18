@@ -1,6 +1,6 @@
 const { ActivityType } = require('discord.js');
 
-module.exports = (client) => {
+module.exports = async (client) => {
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
