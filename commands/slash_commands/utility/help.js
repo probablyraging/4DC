@@ -95,10 +95,9 @@ module.exports = {
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
+                break;
             }
-        }
 
-        switch (options.getSubcommand()) {
             case 'menu': {
                 cmdArr = [];
 
@@ -144,6 +143,8 @@ Parameters inside \`()\` brackets are optional
                     embeds: [response],
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                
+                break;
             }
         }
     }

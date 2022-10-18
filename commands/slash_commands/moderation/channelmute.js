@@ -132,10 +132,10 @@ module.exports = {
                     content: `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                break;
+            }
+
             case 'remove': {
                 const target = options.getMember('username');
                 const targetChan = options.getChannel('channel');
@@ -161,6 +161,8 @@ module.exports = {
                     content: `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
             }
         }
     }

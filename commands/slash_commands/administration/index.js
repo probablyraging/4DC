@@ -56,11 +56,11 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // WELCOME
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // WELCOME
             case 'rules': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -84,11 +84,11 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // SERVER MAP
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // SERVER MAP
             case 'servermap': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -112,11 +112,11 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // FAQ SERVER
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // FAQ SERVER
             case 'faqs': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -135,16 +135,16 @@ module.exports = {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-            }
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
 
-        // USEFUL LINKS
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // USEFUL LINKS
             case 'usefullinks': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -168,11 +168,11 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        // CREATOR CREW
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // CREATOR CREW
             case 'creatorcrew': {
                 const response = new EmbedBuilder()
                     .setColor('#32BEA6')
@@ -181,16 +181,16 @@ module.exports = {
                 channel.send({
                     embeds: [response]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-            }
 
-                interaction.reply({
+                interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
 
-        // SELF ROLES
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // SELF ROLES
             case 'selfroles': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -424,16 +424,16 @@ module.exports = {
                     content: `⠀
 **Choose your optional pings**`, components: [btnCustoms]
                 }).catch(err => console.error(`Could not send a message: `, err));
-            }
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
 
-        // FEATURED STREAM
-        switch (options.getString('data')) {
+                break;
+            }
+
+            // FEATURED STREAM
             case 'featuredstream': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -444,12 +444,14 @@ module.exports = {
 A server member who is currently streaming on either Twitch or YouTube will be picked at random to be featured in this channel, they will also be given the <@&998861546530820207> role. After 2 hours, the channel will be reset and a new streamer will be featured`);
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
+            }
         }
     }
 }

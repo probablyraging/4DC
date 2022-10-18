@@ -45,6 +45,7 @@ module.exports = {
      */
     async execute(interaction) {
         const { options } = interaction;
+
         switch (options.getSubcommand()) {
             case 'add': {
                 const target = options.getMember('username');
@@ -85,10 +86,10 @@ module.exports = {
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                break;
+            }
+
             case 'remove': {
                 const target = options.getMember('username');
 
@@ -99,6 +100,8 @@ module.exports = {
                     content: `${process.env.BOT_CONF} ${target} has been removed from the AUTOYT list`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
             }
         }
     }

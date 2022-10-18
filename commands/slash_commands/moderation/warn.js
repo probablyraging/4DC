@@ -180,10 +180,10 @@ ${banMsg}`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                break;
+            }
+
             case 'remove': {
                 const warning = options.getString('warning');
 
@@ -247,10 +247,10 @@ ${banMsg}`,
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
                 }
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                break;
+            }
+
             case 'list': {
                 const target = options.getMember('username');
 
@@ -343,6 +343,8 @@ Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
+
+                break;
             }
         }
     }

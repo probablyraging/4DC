@@ -54,10 +54,10 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            }
-        }
 
-        switch (options.getSubcommand()) {
+                break;
+            }
+
             case 'end': {
                 everyone.edit({
                     permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Spead', 'Stream', 'UseVAD']
@@ -71,6 +71,8 @@ module.exports = {
                     content: `${process.env.BOT_CONF} Done`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+
+                break;
             }
         }
     }
