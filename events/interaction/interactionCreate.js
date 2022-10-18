@@ -8,6 +8,7 @@ const regionButton = require('../../handlers/buttons/region_button');
 const genderButton = require('../../handlers/buttons/gender_button');
 const customButton = require('../../handlers/buttons/custom_button');
 const surveyButton = require('../../handlers/buttons/survey_button');
+const reportButton = require('../../handlers/buttons/report_button');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
@@ -105,6 +106,9 @@ module.exports = {
             }
             if (interaction.customId.split('-')[0] === 'survey') {
                 surveyButton(interaction);
+            }
+            if (interaction.customId === 'report-close') {
+                reportButton(interaction);
             }
         }
 

@@ -1,6 +1,7 @@
 const ccVideoModel = require('../../schemas/creator_crew/video_schema');
 const ccProofModel = require('../../schemas/creator_crew/proof_schema');
 const ccWarnModel = require('../../schemas/creator_crew/warn_schema');
+const path = require('path');
 
 function msToHumanTime(milliseconds) {
     let hours = milliseconds / (1000 * 60 * 60);

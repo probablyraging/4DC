@@ -29,7 +29,7 @@ module.exports = {
             name: `${process.env.BOT_INFO} \`Survey Responses\``, value: `⠀
 Reddit - \`${results[0].reddit}\`
 Google - \`${results[0].google}\`
-YouTUbe - \`${results[0].youtube}\`
+YouTube - \`${results[0].youtube}\`
 Friends or Family - \`${results[0].friend}\`
 Other - \`${results[0].other}\``,
             inline: false
