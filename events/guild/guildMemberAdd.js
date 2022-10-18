@@ -9,46 +9,6 @@ module.exports = {
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
-        // Survey
-        const btnCustoms = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('survey-reddit')
-                    .setLabel('Reddit')
-                    .setEmoji('1️⃣')
-                    .setStyle(ButtonStyle.Primary),
-                new ButtonBuilder()
-                    .setCustomId('survey-google')
-                    .setLabel('Google')
-                    .setEmoji('2️⃣')
-                    .setStyle(ButtonStyle.Primary),
-                new ButtonBuilder()
-                    .setCustomId('survey-youtube')
-                    .setLabel('YouTube')
-                    .setEmoji('3️⃣')
-                    .setStyle(ButtonStyle.Primary),
-                new ButtonBuilder()
-                    .setCustomId('survey-friend')
-                    .setLabel('Friends or Family')
-                    .setEmoji('4️⃣')
-                    .setStyle(ButtonStyle.Primary),
-                new ButtonBuilder()
-                    .setCustomId('survey-other')
-                    .setLabel('Other')
-                    .setEmoji('5️⃣')
-                    .setStyle(ButtonStyle.Primary),
-            );
-
-        setTimeout(async () => {
-            await member?.send({
-                content: `Thanks for joining ForTheContent, would you mind answering a quick question?
-    
-**In an attempt to better understand our community, we would love to know how you heard about ForTheContent**
-
-*Click one of the buttons below to submit your answer*`, components: [btnCustoms]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-        }, 30000);
-
         // Joins/leaves log channel
         joinLeaveChan.send({
             content: `${process.env.BOT_JOIN} ${member} joined. There are now **${guild.memberCount}** members in the server`,
