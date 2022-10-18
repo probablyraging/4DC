@@ -10,10 +10,8 @@ function kFormatter(num) {
 module.exports = {
     name: `rank`,
     description: `Fetch your, or someone else's rank`,
-    access: '',
     cooldown: 1200,
     type: ApplicationCommandType.ChatInput,
-    usage: `/rank`,
     options: [{
         name: `username`,
         description: `The user whos rank you want to fetch. Leave blank to fetch your own`,

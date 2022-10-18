@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `say`,
     description: `Send a channel message as the bot`,
-    access: 'owner',
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
-    usage: `/say (#channel) (message) (imageURL)`,
     options: [{
         name: `message`,
         description: `The message you want to send`,

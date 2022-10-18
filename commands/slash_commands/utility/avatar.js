@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `avatar`,
     description: `Fetch a user's avatar and display it in an embed`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
-    usage: `/avatar (@username)`,
     options: [{
         name: `username`,
         description: `The user whos avatar you want to fetch`,

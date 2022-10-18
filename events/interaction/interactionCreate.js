@@ -1,6 +1,5 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
-const commandCountSchema = require('../../schemas/misc/command_count');
 const colorButton = require('../../handlers/buttons/color_buttons');
 const platformButton = require('../../handlers/buttons/platform_button');
 const ageButton = require('../../handlers/buttons/age_button');
@@ -22,7 +21,7 @@ module.exports = {
      * @param {client} client 
      */
     async execute(interaction, client, Discord) {
-        const { member, channel, user, guild, options } = interaction
+        const { member } = interaction
 
         let command = client.commands.get(interaction.commandName);
 
@@ -137,44 +136,6 @@ module.exports = {
 
             // log command usage
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
-
-            const results = await commandCountSchema.find({ command: command.name })
-
-            if (results.length === 0) {
-                await commandCountSchema.updateOne({
-                    command: command.name
-                }, {
-                    command: command.name,
-                    uses: 1
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            } else {
-                for (const data of results) {
-                    let { uses } = data;
-
-                    let usesAdd = uses + 1;
-
-                    await commandCountSchema.updateOne({
-                        command: command.name,
-                    }, {
-                        uses: usesAdd
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                }
-            }
-
-            let cmdName = command.name;
-            if (options._subcommand) cmdName = `${command.name} > ${options._subcommand}`;
-
-            cmdOptions = [];
-
-            options._hoistedOptions.forEach(option => {
-                if (option.name === 'command') cmdOptions.push(`Param: ${option?.value}`);
-                if (option.name === 'reason') cmdOptions.push(`Param: ${option?.value}`);
-                if (option.name === 'number') cmdOptions.push(`Param: ${option?.value}`);
-                if (option.name === 'username') cmdOptions.push(`User: ${option?.user?.tag}`);
-                if (option.name === 'channel') cmdOptions.push(`Channel: #${option?.channel?.name}`);
-            });
         }
     }
 }

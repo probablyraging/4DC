@@ -4,14 +4,12 @@ const path = require('path');
 module.exports = {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
-    access: 'owner',
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `create`,
         description: `Create a new embed`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/embed create [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `description`,
             description: `The description for the embed`,
@@ -48,7 +46,6 @@ module.exports = {
         name: `edit`,
         description: `Edit an existing embed`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/embed edit [description] (title) (color) (thumbnail) (image) (author)`,
         options: [{
             name: `id`,
             description: `The id of the message containing the embed you want to edit`,

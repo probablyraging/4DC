@@ -9,14 +9,12 @@ const path = require('path');
 module.exports = {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
-    access: 'staff',
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a warning to a specific user`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/warn add [type] [@username] [reason]`,
         options: [{
             name: `username`,
             description: `The user you want to add a warning to`,
@@ -50,7 +48,6 @@ module.exports = {
         name: `remove`,
         description: `Remove a warning from a specific user`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/warn remove [warningId]`,
         options: [{
             name: `warning`,
             description: `The warning ID you want to remove`,
@@ -62,7 +59,6 @@ module.exports = {
         name: `list`,
         description: `List warnings warning IDs for a specific user`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/warn list [@username]`,
         options: [{
             name: `username`,
             description: `The user whos warnings you want to list`,

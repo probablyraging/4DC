@@ -5,10 +5,8 @@ const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOption
 module.exports = {
     name: "report",
     description: "Report a user to the ForTheContent staff",
-    access: '',
     cooldown: 60,
     type: ApplicationCommandType.ChatInput,
-    usage: `/report [@username] [reason] (imageURL)`,
     options: [{
         name: "proof",
         description: "Provide a screenshot of the incident you are reporting",

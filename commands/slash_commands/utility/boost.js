@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `boost`,
     description: `Provides information about the current server booster perks`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
-    usage: `/boost`,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 

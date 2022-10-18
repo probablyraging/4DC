@@ -6,14 +6,12 @@ const path = require('path');
 module.exports = {
     name: `autoyt`,
     description: `Add or remove a user from the AUTOYT list`,
-    access: 'staff',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a user to the AUTOYT list`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/autoyt [@username] [ytChannelId]`,
         options: [{
             name: `username`,
             description: `The user who you would like to add`,
@@ -31,7 +29,6 @@ module.exports = {
         name: `remove`,
         description: `Remove a user from the AUTOYT list`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/autoyt remove [@username]`,
         options: [{
             name: `username`,
             description: `The user who you would like to remove`,

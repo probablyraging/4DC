@@ -6,10 +6,8 @@ const path = require('path');
 module.exports = {
     name: `rule`,
     description: `Remind a user to not be an a-hole`,
-    access: 'staff',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
-    usage: `/rules [ruleNumber] [@username]`,
     options: [{
         name: `number`,
         description: `The number of the rule you are referencing`,

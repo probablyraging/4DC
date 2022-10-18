@@ -5,14 +5,12 @@ const rankSchema = require('../../../schemas/misc/rank_schema');
 module.exports = {
     name: `xp`,
     description: `Add to, remove from or reset a user's XP`,
-    access: 'staff',
     cooldown: 30,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `reset`,
         description: `Reset a user's XP and Rank to 0`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/xp reset [@username]`,
         options: [{
             name: `username`,
             description: `The user whos XP and Rank you want to reset`,

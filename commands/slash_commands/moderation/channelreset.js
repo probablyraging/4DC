@@ -6,10 +6,8 @@ const path = require('path');
 module.exports = {
     name: `channelreset`,
     description: `Manually reset a timed channel`,
-    access: 'staff',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
-    usage: `/channelreset [channel]`,
     options: [{
         name: `channel`,
         description: `The channel you want to reset`,

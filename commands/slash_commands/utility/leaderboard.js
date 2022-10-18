@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `leaderboard`,
     description: `View leaderboards for the server ranks, games and others`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**

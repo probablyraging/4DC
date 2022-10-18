@@ -6,7 +6,6 @@ const path = require('path');
 module.exports = {
     name: `ccaway`,
     description: `Toggle the away staus of users for Creator Crew, or list currently away users`,
-    access: 'staff',
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [
@@ -14,7 +13,6 @@ module.exports = {
             name: `toggle`,
             description: `Toggle the user's away status`,
             type: ApplicationCommandOptionType.Subcommand,
-            usage: `/ccaway toggle [username]`,
             options: [
                 {
                     name: `username`,
@@ -28,7 +26,6 @@ module.exports = {
             name: `list`,
             description: `List all users who are currently away`,
             type: ApplicationCommandOptionType.Subcommand,
-            usage: `/ccaway list`
         }
     ],
     /**

@@ -7,20 +7,17 @@ const path = require('path');
 module.exports = {
     name: `counting`,
     description: `Information about the counting game`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `save`,
         description: `Information about how to get a save`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/counting save`,
     },
     {
         name: `donatesave`,
         description: `Donate a personal save to the guild. 1 personal save = .25 guild saves`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/counting donatesave`,
     }],
     /**
      * 

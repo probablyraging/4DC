@@ -7,14 +7,12 @@ const path = require('path');
 module.exports = {
     name: `channelmute`,
     description: `Mute a user in a specific channel`,
-    access: 'staff',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,
         description: `Add a channel mute to a user`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/channelmute add [@username] [#channel] [reason]`,
         options: [{
             name: `username`,
             description: `The user you want to mute`,
@@ -44,7 +42,6 @@ module.exports = {
         name: `remove`,
         description: `Remove a channel mute from a user`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/channelmute remove [@username] [#channel]`,
         options: [{
             name: `username`,
             description: `The user you want to mute`,

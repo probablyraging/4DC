@@ -5,10 +5,8 @@ const path = require('path');
 module.exports = {
     name: `serverinfo`,
     description: `Get information and stats about the server`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
-    usage: `/serverinfo`,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 

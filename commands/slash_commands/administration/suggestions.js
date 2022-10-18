@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `suggestions`,
     description: `Approve or deny a suggestions`,
-    access: 'owner',
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
-    usage: `/suggestions [message_id] [choice] [response]`,
     options: [{
         name: `choice`,
         description: `Choose to approve or deny the suggestion`,

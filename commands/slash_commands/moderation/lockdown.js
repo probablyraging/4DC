@@ -4,14 +4,12 @@ const path = require('path');
 module.exports = {
     name: `lockdown`,
     description: `Prevent everyone from sending messages in all channels`,
-    access: 'staff',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `start`,
         description: `Start a lockdown`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/lockdown start [reason]`,
         options: [{
             name: `reason`,
             description: `Provide a reason for the lockdown`,
@@ -23,7 +21,6 @@ module.exports = {
         name: `end`,
         description: `End a lockdown`,
         type: ApplicationCommandOptionType.Subcommand,
-        usage: `/lockdown end`,
     }],
     /**
      * 

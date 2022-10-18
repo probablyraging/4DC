@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `about`,
     description: `Information about 4DC`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
-    usage: `/about`,
     /**
      * 
      * @param {ContextMenuInteraction} interaction 

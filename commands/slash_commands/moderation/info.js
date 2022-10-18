@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
 	name: `info`,
 	description: `Information regarding individual topics`,
-    access: 'staff',
 	cooldown: 3,
 	type: ApplicationCommandType.ChatInput,
-    usage: `/info [topic] [@username]`,
 	options: [{
 		name: `topic`,
 		description: `Select the topic you want to reference`,

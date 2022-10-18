@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `ccadd`,
     description: `Add a user to the Creator Crew role`,
-    access: 'staff',
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
-    usage: `/ccadd [@username]`,
     options: [{
         name: `username`,
         description: `The user you want to add to Creator Crew`,

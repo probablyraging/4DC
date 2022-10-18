@@ -5,10 +5,8 @@ const path = require('path');
 module.exports = {
     name: `survey`,
     description: `A log of survey responses`,
-    access: 'owner',
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
-    usage: `/survey`,
     /**
      *
      * @param {ContextMenuInteraction} interaction

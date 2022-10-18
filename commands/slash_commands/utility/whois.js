@@ -4,10 +4,8 @@ const path = require('path');
 module.exports = {
     name: `whois`,
     description: `Get detailed information about a user`,
-    access: '',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
-    usage: `/whois (@username)`,
     options: [{
         name: `username`,
         description: `The user whos information you want`,

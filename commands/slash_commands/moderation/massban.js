@@ -168,7 +168,6 @@ async function createMassBanRequest(interaction) {
 module.exports = {
     name: `massban`,
     description: `Ban a list of users who have been in the server for less than a day.`,
-    access: 'staff',
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [
@@ -176,13 +175,11 @@ module.exports = {
             name: `create`,
             description: `Create a mass ban of multiple new users.`,
             type: ApplicationCommandOptionType.Subcommand,
-            usage: `/massban create`
         },
         {
             name: `approve`,
             description: `Approve a mass ban request.`,
             type: ApplicationCommandOptionType.Subcommand,
-            usage: `/massban approve [id]`,
             options: [{
                 name: `id`,
                 description: `The mass ban ID to approve.`,
@@ -194,7 +191,6 @@ module.exports = {
             name: `deny`,
             description: `Deny a mass ban request.`,
             type: ApplicationCommandOptionType.Subcommand,
-            usage: `/massban deny [id]`,
             options: [{
                 name: `id`,
                 description: `The mass ban ID to deny.`,
