@@ -27,9 +27,14 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { channel, client, options } = interaction;
+        let { client, guild, channel, options } = interaction;
 
-        const avatarURL = await client.user.avatarURL({ format: 'png', size: 256 });
+        const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
+
+        if (channel.type === 11) {
+            threadId = channel.id
+            channel = await guild.channels.cache.get(channel.parentId);
+        }
 
         // WELCOME
         switch (options.getString('data')) {
@@ -123,12 +128,22 @@ module.exports = {
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.faqs.length; i++) {
                         setTimeout(function () {
-                            webhook.send({
-                                content: `${index.faqs[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            if (channel.type === 15) {
+                                webhook.send({
+                                    content: `${index.faqs[i]}`,
+                                    threadId: threadId,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            } else {
+                                webhook.send({
+                                    content: `${index.faqs[i]}`,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }
                         }, i * 1000);
                     }
                     setTimeout(() => {
@@ -151,12 +166,22 @@ module.exports = {
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.usefullinks.length; i++) {
                         setTimeout(function () {
-                            webhook.send({
-                                content: `${index.usefullinks[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            if (channel.type === 15) {
+                                webhook.send({
+                                    content: `${index.usefullinks[i]}`,
+                                    threadId: threadId,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            } else {
+                                webhook.send({
+                                    content: `${index.usefullinks[i]}`,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }
                         }, i * 1000);
                     }
                     setTimeout(() => {
