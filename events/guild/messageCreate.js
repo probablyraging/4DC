@@ -56,5 +56,10 @@ module.exports = {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
         }
+
+        // delete all messages in FAQ threa channel
+        if (message?.channel.id === process.env.FAQ_CHAN && !message?.author.bot) {
+            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
     }
 };

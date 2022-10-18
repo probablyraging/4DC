@@ -236,6 +236,8 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#820922632227913759> Important updates and changes regarding the server
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
+<#851707143873626134> Find a load a useful resources to help in your creative process
+<#900243955847938078> Helpful videos for creators, from YouTube Creators
 <#887642369598570527> Look at all these awesome server boosters
 
 **CHATTING**
@@ -243,12 +245,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#845180182410428416> Everyone loves movies, TV and music, so they get their own channel
 <#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
-
-**INFORMATION**
-<#1005305774471381002> Frequently asked questions for multiple topics
-<#851707143873626134> Find a load a useful resources to help in your creative process
-<#999590455576645662> A growing list of useful links for platforms such as YouTube and Twitch
-<#900243955847938078> Helpful videos for creators, from YouTube Creators
 
 **FORUMS**
 <#978553334854205450> Get assistance or support for specific topics
