@@ -10,7 +10,6 @@ So if you're a youtuber, streamer, game developer, musician, or if you're just l
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules, these are important
 > <#1005283113775157349> Familiarize yourself with the server channels
-> <#1005305774471381002> Find answers to frequently asked questions
 > <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to and chat with the community
 > <#851707143873626134> Find some useful tips & tricks
@@ -50,7 +49,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 **7.  English only**
 > For moderating purposes, please keep your messages in English
 
-See something that breaks the rules? Use the \`/report\` command to notify staff
+See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
 
 *last updated: ${new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}*`
     ],
