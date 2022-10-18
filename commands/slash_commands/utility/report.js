@@ -9,14 +9,12 @@ module.exports = {
     cooldown: 60,
     type: ApplicationCommandType.ChatInput,
     usage: `/report [@username] [reason] (imageURL)`,
-    options: [
-        {
-            name: "proof",
-            description: "Provide proof of your report",
-            type: ApplicationCommandOptionType.Attachment,
-            required: true
-        }
-    ],
+    options: [{
+        name: "proof",
+        description: "Provide a screenshot of the incident you are reporting",
+        type: ApplicationCommandOptionType.Attachment,
+        required: true
+    }],
     /**
      * 
      * @param {ContextMenuInteraction} interaction 
@@ -36,7 +34,7 @@ module.exports = {
             .setCustomId('input1')
             .setLabel('Username')
             .setStyle(1)
-            .setPlaceholder(`Offender's username and tag (e.g: ProbablyRaging#0001`)
+            .setPlaceholder(`Offender's username and tag (e.g: ProbablyRaging#7080`)
             .setMinLength(1)
             .setMaxLength(54)
             .setRequired(true)
@@ -45,7 +43,7 @@ module.exports = {
             .setCustomId('input2')
             .setLabel('Reason')
             .setStyle(2)
-            .setPlaceholder('Please include a reason for your report..')
+            .setPlaceholder('Please include a brief description..')
             .setMinLength(1)
             .setMaxLength(1024)
             .setRequired(true)
