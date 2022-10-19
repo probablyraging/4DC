@@ -2,7 +2,6 @@ const mongo = require('../../mongo');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 const Canvas = require("canvas");
-const memberCounter = require('../../modules/misc/member_counter');
 const statusCounter = require('../../modules/misc/activity_update');
 const ckqCheck = require('../../modules/bump_ckq/ckq_check');
 const bumpCheck = require('../../modules/bump_ckq/bump_check');
@@ -49,7 +48,6 @@ module.exports = {
         boostTimer.start();
         mutesCheck(message, client, Discord);
         statusCounter(client);
-        memberCounter(client);
         ckqCheck(client);
         bumpCheck(message, client, Discord);
         featuredCheck(client);
