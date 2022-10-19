@@ -12,15 +12,14 @@ module.exports = async (message, client) => {
         if (message?.embeds?.length >= 1) {
             message.embeds.forEach(embed => {
                 if (embed.fields[0].value === 'Blacklist Words') {
-                    const expiresAt = new Date(new Date().getTime() + 300000).toUTCString();
+                    const expiresAt = new Date(new Date().getTime() + 300000);
 
                     // Log to channel
                     let log = new EmbedBuilder()
                         .setColor("#E04F5F")
                         .setAuthor({ name: `AutoMod`, iconURL: `https://discord.com/assets/e7af5fc8fa27c595d963c1b366dc91fa.gif` })
                         .setDescription(`**Member:** ${message?.author.tag} *(${message?.author.id})*
-**Expires:** ${expiresAt}
-**Duration:** 5 minutes
+**Expires:** <t:${Math.round(expiresAt / 1000)}> (<t:${Math.round(expiresAt / 1000)}:R>)
 **Reason:** Message contained a keyword defined in an AutoMod rule`)
                         .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                         .setTimestamp();

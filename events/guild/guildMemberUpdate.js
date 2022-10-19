@@ -24,34 +24,31 @@ module.exports = {
             const muteLog = fetchedLogs.entries.first();
             const { executor, reason } = muteLog;
             const toReason = reason;
-            const timestamp = new Date().getTime();
 
             // Prevent repeated logs when timed out by AutoMod
             if (oldMember?.id === executor?.id) return;
 
-            const expiresAt = new Date(oldMember.communicationDisabledUntilTimestamp).toUTCString();
             let duration = oldMember.communicationDisabledUntilTimestamp - new Date().valueOf();
-            if (duration < 3600000) {
-                if (duration <= 60000) {
-                    duration = Math.ceil((duration / 1000) / 60) + ' minute';
-                } else {
-                    duration = Math.ceil((duration / 1000) / 60) + ' minutes';
-                }
-            } else {
-                if (duration <= 3600000) {
-                    duration = Math.ceil((duration / 1000) / 60 / 60) + ' hour';
-                } else {
-                    duration = Math.ceil((duration / 1000) / 60 / 60) + ' hours';
-                }
-            }
+            // if (duration < 3600000) {
+            //     if (duration <= 60000) {
+            //         duration = Math.ceil((duration / 1000) / 60) + ' minute';
+            //     } else {
+            //         duration = Math.ceil((duration / 1000) / 60) + ' minutes';
+            //     }
+            // } else {
+            //     if (duration <= 3600000) {
+            //         duration = Math.ceil((duration / 1000) / 60 / 60) + ' hour';
+            //     } else {
+            //         duration = Math.ceil((duration / 1000) / 60 / 60) + ' hours';
+            //     }
+            // }
 
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
-**Expires:** ${expiresAt}
-**Duration:** ${duration}
+**Expires:** <t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}> (<t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}:R>)
 **Reason:** ${toReason}`)
                 .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/timeout_icon.png' })
                 .setTimestamp();
