@@ -139,9 +139,9 @@ async function setupChecks(client) {
                 content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-        } else if (lateUsersThree === 1) {
+        } else if (lateUsersThree.length === 1) {
             // Notify staff
-            const notifyMessage = `<@${lateUsersThree.join('>, <@')}> have not watched a video in their queue for greater than 3 days`;
+            const notifyMessage = `<@${lateUsersThree[0]}> has not watched a video in their queue for greater than 3 days`;
             staffChan.send({
                 content: `<@438434841617367080>
 ${notifyMessage}`
@@ -155,9 +155,9 @@ ${notifyMessage}`
                 content: `<@438434841617367080>
 ${notifyMessage}`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-        } else if (lateUsersFive === 1) {
+        } else if (lateUsersFive.length === 1) {
             // Notify staff
-            const notifyMessage = `<@${lateUsersFive.join('>, <@')}> have not watched a video in their queue for greater than 5 days`;
+            const notifyMessage = `<@${lateUsersFive[0]}> has not watched a video in their queue for greater than 5 days`;
             staffChan.send({
                 content: `<@438434841617367080>
 ${notifyMessage}`
