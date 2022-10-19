@@ -51,7 +51,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 
 See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
 
-*last updated: ${new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}*`
+*last updated: <t:${Math.round(new Date() / 1000)}:R>*`
     ],
 
     faqs: [
