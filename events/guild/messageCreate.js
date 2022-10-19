@@ -57,7 +57,7 @@ module.exports = {
             }
         }
 
-        // delete all messages in FAQ threa channel
+        // delete all messages in FAQ thread channel
         if (message?.channel.id === process.env.FAQ_CHAN && !message?.author.bot) {
             message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }

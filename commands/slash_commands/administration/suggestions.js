@@ -65,7 +65,7 @@ module.exports = {
                     .setFooter({ text: `Approved by ${user?.tag}` })
                     .setTimestamp()
 
-                // Edit the existing embed and add the approprate reaction
+                // Edit the existing embed and add the appropriate reaction
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_CONF}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
@@ -83,7 +83,7 @@ module.exports = {
                     .setFooter({ text: `Denied by ${user?.tag}` })
                     .setTimestamp()
 
-                // Edit the existing embed and add the approprate reaction
+                // Edit the existing embed and add the appropriate reaction
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
@@ -101,7 +101,7 @@ module.exports = {
                     .setFooter({ text: `Pigeonholed by ${user?.tag}` })
                     .setTimestamp()
 
-                // Edit the existing embed and add the approprate reaction
+                // Edit the existing embed and add the appropriate reaction
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_INFO}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 

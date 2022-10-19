@@ -190,35 +190,35 @@ module.exports = {
                 if (title) {
                     const editEmbed = EmbedBuilder.from(embed)
                         .setTitle(`${title}`)
-                    // Edit the existing embed and add the approprate reaction
+                    // Edit the existing embed and add the appropriate reaction
                     await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 }
 
                 if (description) {
                     const editEmbed = EmbedBuilder.from(embed)
                         .setDescription(`${description}`)
-                    // Edit the existing embed and add the approprate reaction
+                    // Edit the existing embed and add the appropriate reaction
                     await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 }
 
                 if (color) {
                     const editEmbed = EmbedBuilder.from(embed)
                         .setColor(`${color}`)
-                    // Edit the existing embed and add the approprate reaction
+                    // Edit the existing embed and add the appropriate reaction
                     await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 }
 
                 if (thumbnail) {
                     const editEmbed = EmbedBuilder.from(embed)
                         .setThumbnail(`${thumbnail}`)
-                    // Edit the existing embed and add the approprate reaction
+                    // Edit the existing embed and add the appropriate reaction
                     await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 }
 
                 if (image) {
                     const editEmbed = EmbedBuilder.from(embed)
                         .setImage(`${image}`)
-                    // Edit the existing embed and add the approprate reaction
+                    // Edit the existing embed and add the appropriate reaction
                     await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 }
 

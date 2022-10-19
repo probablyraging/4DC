@@ -27,7 +27,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const { member, guild, options } = interaction;
+        const { guild, options } = interaction;
 
         const reason = options.getString('reason');
 
