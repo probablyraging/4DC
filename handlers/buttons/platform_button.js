@@ -1,4 +1,3 @@
-const { platforms } = require('../../lists/roles-ids');
 const path = require('path');
 
 module.exports = async (interaction) => {

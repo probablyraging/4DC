@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const sdp = require('stop-discord-phishing');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -13,7 +13,6 @@ module.exports = async (message, client) => {
     
     const staffChan = client.channels.cache.get(process.env.STAFF_CHAN);
     const reason = 'Phishing link';
-    const timestamp = new Date().getTime();
 
     const member = message?.member;
 

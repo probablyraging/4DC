@@ -7,7 +7,6 @@ module.exports = {
     async execute(ban, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
-        const timestamp = new Date().getTime();
 
         setTimeout(async () => {
             const fetchedLogs = await guild.fetchAuditLogs({

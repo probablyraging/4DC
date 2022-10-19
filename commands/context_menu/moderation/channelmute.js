@@ -1,5 +1,4 @@
 const { ContextMenuInteraction, ApplicationCommandType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
-const path = require('path');
 
 module.exports = {
     name: `Channel Mute`,
