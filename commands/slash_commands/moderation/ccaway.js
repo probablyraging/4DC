@@ -1,7 +1,6 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { toggleAway, getAwayUsers } = require("../../../modules/creator_crew/utilities");
 const ccVideoQueue = require('../../../schemas/creator_crew/video_queue');
-const path = require('path');
 
 module.exports = {
     name: `ccaway`,

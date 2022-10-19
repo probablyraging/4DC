@@ -24,7 +24,6 @@ module.exports = {
             const muteLog = fetchedLogs.entries.first();
             const { executor, reason } = muteLog;
             const toReason = reason;
-            const timestamp = new Date().getTime();
 
             // Prevent repeated logs when timed out by AutoMod
             if (oldMember?.id === executor?.id) return;

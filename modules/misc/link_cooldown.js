@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const cooldown = new Set();
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
@@ -7,9 +7,6 @@ const path = require('path');
  */
 
 module.exports = async (message, client) => {
-    const reason = 'Link Cooldown';
-    const timestamp = new Date().getTime();
-
     const author = message?.author;
 
     const content = message?.content.toLocaleLowerCase();

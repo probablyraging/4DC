@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType } = require('discord.js');
 const path = require('path');
 
 module.exports = {

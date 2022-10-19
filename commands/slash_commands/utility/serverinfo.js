@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActivityType } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 

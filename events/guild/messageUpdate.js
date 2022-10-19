@@ -1,6 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
-const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
 
 module.exports = {
@@ -37,7 +35,6 @@ module.exports = {
         // ------- same as bl_links.js
         const member = newMessage?.member;
         let reason = 'Blacklisted Link';
-        const timestamp = new Date().getTime();
 
         let found = false;
 
