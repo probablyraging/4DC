@@ -235,7 +235,7 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#820922632227913759> Important updates and changes regarding the server
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
-<#851707143873626134> Find a load a useful resources to help in your creative process
+<#1012065026451963915> Find a load a useful resources to help in your creative process
 <#900243955847938078> Helpful videos for creators, from YouTube Creators
 <#887642369598570527> Look at all these awesome server boosters
 
