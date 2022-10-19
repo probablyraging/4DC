@@ -12,7 +12,7 @@ So if you're a youtuber, streamer, game developer, musician, or if you're just l
 > <#1005283113775157349> Familiarize yourself with the server channels
 > <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to and chat with the community
-> <#851707143873626134> Find some useful tips & tricks
+> <#1012065026451963915> Find some useful tips & tricks
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
