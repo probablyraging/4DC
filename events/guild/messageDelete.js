@@ -9,7 +9,7 @@ const path = require('path');
 module.exports = {
     name: 'messageDelete',
     async execute(message, client, Discord) {
-        if (message?.author.bot) return;
+        if (message?.author.bot || message?.channel.id === process.env.TEST_CHAN) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.MSGUP_CHAN);
