@@ -1,6 +1,8 @@
 const { ActivityType } = require('discord.js');
 
 module.exports = async (client) => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    client.user.setActivity(`${numberWithCommas(guild.memberCount)} users`, { type: ActivityType.Watching });
     setInterval(() => {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         client.user.setActivity(`${numberWithCommas(guild.memberCount)} users`, { type: ActivityType.Watching });
