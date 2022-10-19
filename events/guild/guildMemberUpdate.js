@@ -28,21 +28,6 @@ module.exports = {
             // Prevent repeated logs when timed out by AutoMod
             if (oldMember?.id === executor?.id) return;
 
-            let duration = oldMember.communicationDisabledUntilTimestamp - new Date().valueOf();
-            // if (duration < 3600000) {
-            //     if (duration <= 60000) {
-            //         duration = Math.ceil((duration / 1000) / 60) + ' minute';
-            //     } else {
-            //         duration = Math.ceil((duration / 1000) / 60) + ' minutes';
-            //     }
-            // } else {
-            //     if (duration <= 3600000) {
-            //         duration = Math.ceil((duration / 1000) / 60 / 60) + ' hour';
-            //     } else {
-            //         duration = Math.ceil((duration / 1000) / 60 / 60) + ' hours';
-            //     }
-            // }
-
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
