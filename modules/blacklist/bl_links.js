@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');

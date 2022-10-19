@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
@@ -9,9 +9,6 @@ module.exports = async (message, client) => {
      * This blacklist focuses on delting messages containing everyone and here pings
      */
     if (message?.member?.roles?.cache.has(process.env.STAFF_ROLE) || message?.deleted || message?.author.bot) return;
-    
-    const reason = 'Everyone or Here ping';
-    const timestamp = new Date().getTime();
 
     const contLow = message?.content.toLowerCase();
 

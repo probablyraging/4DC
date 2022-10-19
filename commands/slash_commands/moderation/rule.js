@@ -1,5 +1,4 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const index = require('../../../lists/index');
 const { rules } = require('../../../lists/rules');
 const path = require('path');
 

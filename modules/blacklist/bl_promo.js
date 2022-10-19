@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const blacklist = require('../../lists/blacklist');
 const res = new (require('rss-parser'))();
 const sleep = require("timers/promises").setTimeout;
@@ -15,7 +15,6 @@ module.exports = async (message, client) => {
     if (message?.deleted) return;
 
     let reason = 'Contains link';
-    const timestamp = new Date().getTime();
 
     const member = message?.member;
 

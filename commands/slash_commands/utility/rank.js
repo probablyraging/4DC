@@ -23,7 +23,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const { guild, channel, member, options } = interaction;
+        const { member, options } = interaction;
 
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 

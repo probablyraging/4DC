@@ -10,7 +10,6 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const { channel, member } = interaction;
 
         interaction.reply({
             content: `Creator Crew videos have moved to the Dashboard at **<https://www.forthecontent.xyz/creatorcrew>**

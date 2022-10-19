@@ -1,6 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
-const { ImgurClient } = require('imgur');
-const path = require('path');
+const { Message } = require('discord.js');
 /**
  * @param {Message} message 
  */

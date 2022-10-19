@@ -1,5 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder } = require("discord.js");
-const Canvas = require("canvas");
+const { ContextMenuInteraction, ApplicationCommandType } = require("discord.js");
 
 module.exports = {
     name: `test`,
@@ -12,8 +11,5 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
-
-        
-
     }
 }

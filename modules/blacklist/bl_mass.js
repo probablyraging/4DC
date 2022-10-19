@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message } = require('discord.js');
 const sleep = require("timers/promises").setTimeout;
 const path = require('path');
 /**
@@ -9,9 +9,6 @@ module.exports = async (message, client) => {
      * This blacklist focuses on not allowing mass mention spamming, usually done by server raid bots
      */
     if (message?.deleted) return;
-    
-    const reason = 'Mess Mentions';
-    const timestamp = new Date().getTime();
 
     const member = message?.member;
 

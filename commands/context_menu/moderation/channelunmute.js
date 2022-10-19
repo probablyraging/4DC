@@ -12,7 +12,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     async execute(interaction) {
-        const { client, member, guild, channel } = interaction;
+        const { member, guild, channel } = interaction;
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
