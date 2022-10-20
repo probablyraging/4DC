@@ -261,9 +261,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#851584454036029441> Count to 10,000 for an epic reward
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
-**VOICE CHANNELS**
-<#838305157771034624> Create your own voice channel to chill out in
-
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
