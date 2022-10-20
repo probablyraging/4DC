@@ -39,7 +39,7 @@ module.exports = {
         const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
 
         interaction.reply({
-            content: `*Please read the rules ${target}:*
+            content: `*Please read the <#898541066595209248> ${target}:*
 > ${process.env.BOT_DOC} **[Rule ${number}](<${url}>)** - ${rules[number - 1]}`
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     }
