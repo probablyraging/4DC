@@ -106,7 +106,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partner. More information here <https://support.google.com/youtube/answer/72851/>
 ⠀`,
 
-        `**How can I get more subsribers/views?**
+        `**How can I get more subscribers/views?**
 > There is no simple answer to this question, but it's going to take time, patience, and an understanding of the platform. Some strategies worth noting are;
 > <:minidot:923683258871472248> Start by doing your own research on SEO (Search Engine Optimization). SEO such as using good keywords, thumbnails, titles, and descriptions can drastically improve the chances of YouTube and Google choosing your content to fill their search results with when someone makes a search request using keywords that you've used. Find more information in <#851707143873626134>
 > <:minidot:923683258871472248> Your YouTube studio analytics page has a bunch of really useful information that can help give you an understanding of how to maximize your reach. Things such as time frames of when your audience is most active on YouTube, other channels/content that your audience watches, the age and gender of your audience, and so on. Use this information to better match your content and uploading schedule so that you are doing everything possible to make sure your audience is seeing not only your content, but the content they want to watch
