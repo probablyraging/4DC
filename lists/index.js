@@ -225,8 +225,8 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 **WELCOME**
 <#820909722458652674> Welcome to ForTheContent!
 <#898541066595209248> A list of the server rules. Read them, they're important
-<#1005283113775157349> You are here
 <#820922632227913759> Important updates and changes regarding the server
+<#1005283113775157349> You are here
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
 <#1012065026451963915> Find a load a useful resources to help in your creative process
@@ -235,9 +235,11 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 
 **CHATTING**
 <#820889004055855147> Introduce yourself, hang out, and chat with other server members
-<#845180182410428416> Everyone loves movies, TV and music, so they get their own channel
+<#845180817281253406> Share memes, images and other non-promotional type media here
 <#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
+<#851584454036029441> Count to 10,000 for an epic reward
+<#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
 **FORUMS**
 <#978553334854205450> Get assistance or support for specific topics
@@ -252,14 +254,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#998819701704630272> Links to currently live streaming server members, selected at random
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
 <#856719763187302441> Share your content with other server members *(unlocked at rank 5)*
-
-**MEDIA AND GAMES**
-<#845180817281253406> Share memes, images and other non-promotional type media here
-<#837041072168632360> Show off your epic *(or not so epic)* warstation
-<#848168241275731979> What's cookin', good lookin'?
-<#837941067450023937> Cats > dogs, change my mind
-<#851584454036029441> Count to 10,000 for an epic reward
-<#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
