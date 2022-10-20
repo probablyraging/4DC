@@ -5,7 +5,7 @@ module.exports = {
         `**WELCOME TO FORTHECONTENT**
 ForTheContent is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
 
-So if you're a youtuber, streamer, game developer, musician, or if you're just looking for somewhere to meet new people, you are in the right place!
+So if you're a content creator, influencer, game developer, musician, or if you're just looking for somewhere to meet new people, you are in the right place!
 
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules, these are important
