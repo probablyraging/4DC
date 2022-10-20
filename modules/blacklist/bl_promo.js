@@ -108,7 +108,7 @@ module.exports = async (message, client) => {
                     }
                 }, 600);
 
-                member?.timeout(60000, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+                member?.timeout(30000, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
 
                 let msgContent = message?.content || ` `;
                 if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
