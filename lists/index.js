@@ -153,10 +153,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > <:minidot:923683258871472248> Try to go live as often, and for as long as possibly. If you're doing short streams you are limiting the possibility of potential viewers finding you. By doing longer streams you are broadening the time frame of when people are active on Twitch and looking for streams to watch
 > <:minidot:923683258871472248> Ask your friends and family to watch and participate in your streams. Twitch's browse tab is ordered by viewer count, from largest to smallest. Smaller streamers are placed toward the bottom of the list of active streams, and this can often mean potential viewers will have to scroll through multiple pages of other streams before they see yours. By asking your friends and family to watch your streams, you are effectively increasing your view count, raising your position on the browse tab
 > <:minidot:923683258871472248> On top of the previous point, you should try to stream in categories that are getting a good amount of views but aren't overly saturated. Streaming popular titles like Fortnite and Call Of Duty, or in genres like Just Chatting will make it that much harder to find your stream, as these categories often have thousands of active streamers already. So when starting out it is often best to find categories that average a couple of thousand viewers, that also don't have too many people streaming at any one time
-> <:minidot:923683258871472248> Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams
-⠀`,
-
-        `If you have any further questions, or think there should be a question listed here that isn't already, feel free to head over to <#978553334854205450> and create a thread`
+> <:minidot:923683258871472248> Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams`
     ],
 
     usefullinks: [
@@ -199,10 +196,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Community Guidelines: <https://discord.com/guidelines>
 > Safety Center: <https://discord.com/safety>
 > Setting up Two-Factor Authentication: <https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication>
-> Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>
-⠀`,
-
-        `If you have found a useful link that isn't listed here already, feel free to head over to <#978553334854205450> and create a thread`
+> Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`
     ],
 
     creatorcrew: [
