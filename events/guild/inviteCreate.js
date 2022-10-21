@@ -8,10 +8,6 @@ module.exports = {
             code: invite.code,
             userId: invite.inviterId,
             uses: invite.uses
-        }, {
-            code: invite.code,
-            userId: invite.inviterId,
-            uses: invite.uses
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
     }
 }
