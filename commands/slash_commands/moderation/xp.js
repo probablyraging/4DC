@@ -4,16 +4,16 @@ const rankSchema = require('../../../schemas/misc/rank_schema');
 
 module.exports = {
     name: `xp`,
-    description: `Add to, remove from or reset a user's XP`,
+    description: `Reset a user's XP`,
     cooldown: 30,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `reset`,
-        description: `Reset a user's XP and Rank to 0`,
+        description: `Reset a user's XP`,
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: `username`,
-            description: `The user whos XP and Rank you want to reset`,
+            description: `The user whos XP you want to reset`,
             type: ApplicationCommandOptionType.User,
             required: true
         }],
@@ -64,7 +64,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                 interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${target}'s rank data has been reset to 0`,
+                    content: `${process.env.BOT_CONF} ${target}'s rank data has been reset`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
             }

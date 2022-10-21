@@ -9,7 +9,7 @@ function kFormatter(num) {
 
 module.exports = {
     name: `rank`,
-    description: `Fetch your, or someone else's rank`,
+    description: `Fetch a user's rank`,
     cooldown: 1200,
     type: ApplicationCommandType.ChatInput,
     options: [{
@@ -23,7 +23,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction
      */
     async execute(interaction) {
-        const { guild, channel, member, options } = interaction;
+        const { member, options } = interaction;
 
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 

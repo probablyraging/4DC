@@ -6,7 +6,7 @@ const path = require('path');
 
 module.exports = {
     name: `counting`,
-    description: `Information about the counting game`,
+    description: `Commands for the counting game`,
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [{

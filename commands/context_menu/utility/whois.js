@@ -58,12 +58,6 @@ module.exports = {
             permissions.push('Deafen Members');
             acknowledgements = 'Administrator';
         }
-        if (target?.permissions.has('ManageWebhooks')) {
-            permissions.push('Manage Webhooks');
-        }
-        if (target?.permissions.has('ManageEmojisAndStickers')) {
-            permissions.push('Manage Emojis and Stickers');
-        }
         if (permissions?.length == 0) {
             permissions.push('No Key Permissions Found');
         }

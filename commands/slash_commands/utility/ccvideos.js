@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = {
     name: `ccvideos`,
-    description: `Get Creator Crew videos that have been posted since you last posted a proof picture`,
+    description: ``,
     cooldown: 60,
     type: ApplicationCommandType.ChatInput,
     /**

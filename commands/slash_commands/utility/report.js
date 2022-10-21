@@ -1,6 +1,5 @@
-require("dotenv").config();
-const { addAttachment } = require("../../../modules/misc/report_attachment");
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
+const { addAttachment } = require("../../../modules/misc/report_attachment");
 
 module.exports = {
     name: "report",
