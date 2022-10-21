@@ -1,4 +1,3 @@
-const blacklist = require('../../lists/blacklist');
 const path = require('path');
 
 module.exports = {
@@ -7,7 +6,7 @@ module.exports = {
         if (oldMessage?.author?.bot || oldMessage?.channel.id === process.env.TEST_CHAN) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
+        const logChan = client.channels.cache.get(process.env.MSGLOG_CHAN);
 
         let original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
         let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
@@ -24,71 +23,9 @@ module.exports = {
                 .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
                 .setTimestamp()
 
-            msgUpChan.send({
+            logChan.send({
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-        }
-
-        /**
-         * blacklists for when a message is updated/edited
-         */
-        // ------- same as bl_links.js
-        const member = newMessage?.member;
-        let reason = 'Blacklisted Link';
-
-        let found = false;
-
-        if (newMessage?.deleted) return;
-
-        for (let i in blacklist.links) {
-            if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) {
-                if (i >= 0 && i <= 1) reason = 'Discord invite link';
-                if (i >= 2 && i <= 4) reason = 'Adult content link';
-                if (i >= 5 && i <= 13) reason = 'Shortened link';
-                found = true;
-            }
-        }
-
-        for (let e in blacklist.allChannels) {
-            if (found && newMessage?.channel.id === blacklist.allChannels[e]) {
-                if (member?.id !== process.env.OWNER_ID && !newMessage?.author?.bot) {
-                    member?.send({
-                        content: `${process.env.BOT_DENY} Blacklisted link detected. You have been timedout for 60 seconds to prevent spamming`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
-
-                    setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
-
-                    member?.timeout(60000, `${reason}`).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
-
-                    let msgContent = newMessage?.content || ` `;
-                    if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
-                }
-            }
-        }
-
-        // ------- same as bl_promo.js
-        // ignore links from the 'links' array to not cause double messages
-        for (let i in blacklist.links) {
-            if (newMessage?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
-        }
-
-        for (let i in blacklist.promo) {
-            if (newMessage?.content.toLowerCase().includes(blacklist.promo[i].toLowerCase())) found = true;
-        }
-
-        for (let e in blacklist.noLinkChannels) {
-            if (found && newMessage?.channel.id === blacklist.noLinkChannels[e] && !newMessage?.content.includes('tenor.com') && !newMessage?.author.bot) {
-                if (member?.id !== process.env.OWNER_ID && !newMessage?.member?.roles?.cache.has(process.env.RANK5_ROLE) && !newMessage?.member?.roles?.cache.has(process.env.VERIFIED_ROLE)) {
-                    member?.send({
-                        content: `${process.env.BOT_DENY} You must be rank 5 to post links in #${newMessage?.channel.name}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
-
-                    setTimeout(() => { newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
-
-                    let msgContent = newMessage?.content || ` `;
-                    if (newMessage?.content.length > 1000) msgContent = newMessage?.content.slice(0, 1000) + '...' || ` `;
-                }
-            }
         }
 
         // If a user edits their message in the counting game, delete their message and send the current number

@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'inviteCreate',
     async execute(invite, client, Discord) {
-        await inviteSchema.updateOne({
+        await inviteSchema.create({
             code: invite.code,
             userId: invite.inviterId,
             uses: invite.uses
@@ -12,8 +12,6 @@ module.exports = {
             code: invite.code,
             userId: invite.inviterId,
             uses: invite.uses
-        }, {
-            upsert: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
     }
 }

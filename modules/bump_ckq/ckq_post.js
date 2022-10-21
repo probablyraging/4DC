@@ -1,19 +1,14 @@
 const { Message } = require('discord.js');
 const timerSchema = require('../../schemas/misc/timer_schema');
-const blacklist = require('../../lists/blacklist');
 const path = require('path');
 /**
  * 
  * @param {Message} message 
  */
 module.exports = async (message) => {
-    if (message?.channel.id === process.env.CKQ_CHAN && !message?.author.bot) {
-        for (let i in blacklist.links) {
-            if (message?.content.toLowerCase().includes(blacklist.links[i].toLowerCase())) return;
-        }
-
+    if (message?.channel.id === process.env.SPOTLIGHT_CHAN && !message?.author.bot) {
         const ckqChannel = message?.channel;
-        const ckqRole = message?.guild.roles.cache.get(process.env.CKQ_ROLE);
+        const ckqRole = message?.guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
         const target = message?.member;
 
         function detectURLs(message) {

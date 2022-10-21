@@ -16,7 +16,7 @@ module.exports = {
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
-        const target = await fetchMsg.author;
+        const target = fetchMsg.author;
 
         channel.permissionOverwrites.edit(target.id, {
             SendMessages: null,

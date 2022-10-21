@@ -30,9 +30,6 @@ module.exports = async (message, client) => {
 
             setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
 
-            let msgContent = message?.content || ` `;
-            if (message?.content.length > 1000) msgContent = message?.content.slice(0, 1000) + '...' || ` `;
-
             const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
             staffChan.createWebhook(client.user.username, { avatar: avatarURL }).then(webhook => {
@@ -46,10 +43,8 @@ ${message?.author} posted a link that looks like a phishing link. Please review 
                 }, 10000);
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a webhook: `, err));
         }
-
         return isPhishing;
     }
-
     checkMessage(contLow);
     await sleep(300);
 }

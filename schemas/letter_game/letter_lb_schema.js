@@ -16,7 +16,7 @@ const letterLBSchema = mongoose.Schema({
     },
     avatar: {
         type: String,
-        required: true
+        required: false
     },
     correctCount: {
         type: String,

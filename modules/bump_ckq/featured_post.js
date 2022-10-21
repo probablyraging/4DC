@@ -1,4 +1,3 @@
-const { ActivityType } = require('discord.js');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
 

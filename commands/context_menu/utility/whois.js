@@ -22,7 +22,7 @@ module.exports = {
         });
 
         let acknowledgements = 'None';
-        permissions = [];
+        let permissions = [];
 
         if (target?.permissions.has('Administrator')) {
             permissions.push('Administrator');

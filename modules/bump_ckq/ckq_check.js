@@ -4,8 +4,8 @@ const path = require("path");
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const ckqChannel = guild.channels.cache.get(process.env.CKQ_CHAN);
-    const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
+    const ckqChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
+    const ckqRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
     setInterval(async () => {
         let dbTimestamp;

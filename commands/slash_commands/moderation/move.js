@@ -64,7 +64,7 @@ module.exports = {
             return value ? value + "\n" + newline : newline;
         }
 
-        const msgUpChan = client.channels.cache.get(process.env.MSGUP_CHAN);
+        const msgUpChan = client.channels.cache.get(process.env.MSGLOG_CHAN);
 
         function filterArr(value, index, self) {
             return self.indexOf(value) === index;
