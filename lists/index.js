@@ -238,7 +238,7 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#845180817281253406> Share memes, images and other non-promotional type media here
 <#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
-<#851584454036029441> Count to 10,000 for an epic reward
+<#851584454036029441> It basically explains itself
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
 **FORUMS**
@@ -253,7 +253,7 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#878229815541497857> Content sharing, but with a twist
 <#998819701704630272> Links to currently live streaming server members, selected at random
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
-<#856719763187302441> Share your content with other server members *(unlocked at rank 5)*
+<#856719763187302441> Share your content with other server members
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
