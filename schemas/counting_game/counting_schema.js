@@ -16,7 +16,7 @@ const countingSchema = mongoose.Schema({
     },
     avatar: {
         type: String,
-        required: true
+        required: false
     },
     saves: {
         type: Number,
