@@ -27,8 +27,8 @@ module.exports = {
 
         switch (options.getString('channel')) {
             case 'contentspotlight': {
-                const ckqChannel = guild.channels.cache.get(process.env.CKQ_CHAN);
-                const ckqRole = guild.roles.cache.get(process.env.CKQ_ROLE);
+                const ckqChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
+                const ckqRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
                 const ckqEmbed = new EmbedBuilder()
                     .setColor('#44eaff') // GREEN

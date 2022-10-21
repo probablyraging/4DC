@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { ContextMenuInteraction, ApplicationCommandType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -11,10 +11,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const { } = interaction;
-
-        const img = 'https://www.weebly.com/editor/uploads/1/2/6/0/126006118/custom_themes/656977109613806662/files/images/CHBoostRewards.png';
-
+        const img = 'https://www.forthecontent.xyz/images/creatorhub/booster_rewards.png';
         interaction.reply({
             files: [img],
             ephemeral: true

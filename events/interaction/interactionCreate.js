@@ -15,12 +15,19 @@ const path = require('path');
 module.exports = {
     name: 'interactionCreate',
     /**
-     * 
      * @param {CommandInteraction} interaction 
      * @param {client} client 
      */
     async execute(interaction, client, Discord) {
-        const { member } = interaction
+        const { member, channel } = interaction
+
+        // Ignore slash commands ran in DMs
+        if (channel.type === 1) {
+            return interaction.reply({
+                content: 'Command not available',
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
         let command = client.commands.get(interaction.commandName);
 
@@ -128,7 +135,7 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
                 && client.command.module(interaction.commandName);
 
-            command.execute(interaction, client)
+            command.execute(interaction, client);
 
             // log command usage
             console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);

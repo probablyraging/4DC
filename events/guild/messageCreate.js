@@ -3,13 +3,8 @@ const creatorCrew = require("../../modules/creator_crew/check_new_post");
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
-const blLinks = require('../../modules/blacklist/bl_links');
-const blPromo = require('../../modules/blacklist/bl_promo');
-const blMass = require('../../modules/blacklist/bl_mass');
-const blSpam = require('../../modules/blacklist/bl_spam');
-const blPhishing = require('../../modules/blacklist/bl_phishing');
-const blEveryone = require('../../modules/blacklist/bl_everyone');
-const autoModLog = require('../../modules/blacklist/automod_log');
+const blSpam = require('../../modules/blacklist/spam');
+const blPhishing = require('../../modules/blacklist/phishing');
 const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -29,12 +24,7 @@ module.exports = {
         // blacklist checks
         linkCooldown(message, client);
         blPhishing(message, client);
-        blPromo(message, client);
-        blLinks(message, client);
-        blMass(message, client);
         blSpam(message, client);
-        blEveryone(message, client);
-        autoModLog(message, client);
 
         // bump and ckq checks
         ckqPost(message);
