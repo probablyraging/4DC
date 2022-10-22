@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'inviteCreate',
     async execute(invite, client, Discord) {
+        if (!invite.inviterId) return;
         await inviteSchema.create({
             code: invite.code,
             userId: invite.inviterId,
