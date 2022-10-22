@@ -3,10 +3,10 @@ const statusCounter = require('../../modules/misc/activity_update');
 const ckqCheck = require('../../modules/bump_ckq/ckq_check');
 const bumpCheck = require('../../modules/bump_ckq/bump_check');
 const featuredCheck = require('../../modules/bump_ckq/featured_check');
-const liveNow = require('../../modules/misc/live_now');
 const mutesCheck = require('../../modules/misc/mutes_check');
+const databaseCleanup = require('../../modules/misc/database_cleanup');
+const liveNow = require('../../modules/misc/live_now');
 const autoYT = require('../../modules/misc/auto_yt');
-const rankSort = require('../../modules/rank/rank_sort');
 const cronjob = require('cron').CronJob;
 const mongo = require('../../mongo');
 const Canvas = require("canvas");
@@ -53,9 +53,9 @@ module.exports = {
         ckqCheck(client);
         bumpCheck(message, client, Discord);
         featuredCheck(client);
+        databaseCleanup(client);
         liveNow(client);
         autoYT(client);
-        rankSort(client);
         setupChecks(client);
 
         console.timeEnd('Time to online');

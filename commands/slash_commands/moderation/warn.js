@@ -1,6 +1,5 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const warnSchema = require('../../../schemas/misc/warn_schema');
-const ccWarnModel = require('../../../schemas/creator_crew/warn_schema');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const moment = require('moment');
@@ -249,88 +248,40 @@ ${banMsg}`,
 
             case 'list': {
                 const target = options.getMember('username');
-
                 const guildId = guild.id;
                 const userId = target.id;
-
-                let regWarning = 0;
-                let mcWarning = 0;
 
                 // regular warnings
                 const results = await warnSchema.find({ guildId, userId });
 
                 let warningEmbed = new EmbedBuilder()
-                    .setColor('#32BEA6')
-                    .setAuthor({ name: `Regular Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                    .setColor('#E04F5F')
+                    .setAuthor({ name: `Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                    .setFooter({ text: `Warning`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/warning_remove_icon.png' })
                     .setTimestamp()
 
-                if (results.length >= 1) {
-                    regWarning++;
+                if (results.length > 0) {
                     warnCount = `0`;
 
                     for (const warning of results) {
                         const { warnId, author, timestamp, reason } = warning
                         warnCount++
 
-                        warningEmbed.addFields({
-                            name: `#${warnCount}
-⠀
-Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
-                        },
-                            { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false },
-                            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false },
-                            {
-                                name: `Warned By`, value: `<@${author}>
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
-                            })
-                    }
-                }
-
-                // creator crew warnings
-                const results2 = await ccWarnModel.find({ userId });
-
-                let mcWarningEmbed = new EmbedBuilder()
-                    .setColor('#bdeb34')
-                    .setAuthor({ name: `Creator Crew Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                    .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
-                    .setTimestamp()
-
-                if (results2.length >= 1) {
-                    mcWarning++;
-                    warnCount = `0`;
-
-                    for (const warning of results2) {
-                        const { warnId, warnedBy, timestamp, reason } = warning
-                        warnCount++
+                        const executor = guild.members.cache.get(author);
 
                         warningEmbed.addFields({
-                            name: `#${warnCount}
-⠀
-Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
-                        },
-                            { name: `Date`, value: `\`\`\`${moment(timestamp).format('llll')}\`\`\``, inline: false },
-                            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false },
-                            {
-                                name: `Warned By`, value: `<@${author}>
+                            name: `#${warnCount}`,
+                            value: `**Member:** ${target?.user.tag} *(${target?.id})*
+**Warned By:** ${executor.user.tag} *(${executor.id})*
+**Date:** <t:${Math.round(timestamp / 1000)}> (<t:${Math.round(timestamp / 1000)}:R>)
+**Warning ID:** ${warnId}
+**Reason:** ${reason}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
-                            })
+                        });
                     }
-                }
 
-                if (regWarning >= 1 && mcWarning >= 1) {
-                    interaction.reply({
-                        embeds: [warningEmbed, mcWarningEmbed],
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                } else if (regWarning >= 1) {
                     interaction.reply({
                         embeds: [warningEmbed],
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                } else if (mcWarning >= 1) {
-                    interaction.reply({
-                        embeds: [mcWarningEmbed],
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 } else {
@@ -339,7 +290,6 @@ Warning ID`, value: `\`\`\`${warnId}\`\`\``, inline: false
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
-
                 break;
             }
         }

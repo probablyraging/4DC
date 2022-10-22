@@ -1,6 +1,5 @@
 const ccVideoModel = require('../../schemas/creator_crew/video_schema');
 const ccProofModel = require('../../schemas/creator_crew/proof_schema');
-const ccWarnModel = require('../../schemas/creator_crew/warn_schema');
 const path = require('path');
 
 function msToHumanTime(milliseconds) {
@@ -160,23 +159,6 @@ async function getAwayUsers() {
     }
 }
 
-async function getWarnings(userId) {
-    // If we have a userId, find the warnings for the user - else find all warnings
-    let query = userId ? ccWarnModel.find({ userId: userId }) : ccWarnModel.find();
-    let results = await query.sort('timestamp').exec()
-        .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching all Creator Crew warnings: `, err));
-    if (!results || results.length === 0) {
-        return [];
-    } else {
-        return results;
-    }
-}
-
-async function deleteWarning(warnId) {
-    ccWarnModel.deleteOne({ warnId: warnId }).exec()
-        .catch(err => console.error(`${path.basename(__filename)} There was a problem deleting videos from non-Creator Crew members: `, err));
-}
-
 module.exports = {
     msToHumanTime,
     timeElapsedBetweenTimestamps,
@@ -191,7 +173,5 @@ module.exports = {
     getVideosNotFromUsers,
     attachmentIsImage,
     toggleAway,
-    getAwayUsers,
-    getWarnings,
-    deleteWarning
+    getAwayUsers
 }
