@@ -42,6 +42,10 @@ module.exports = {
                 // Get the array of current channel tags and push the solved tag
                 let tagsToApply = channel.appliedTags;
                 tagsToApply.push('1033879593775538196');
+                // Threads can only have a max of 5 tags, so we shift the array until only 5 tags remain
+                while (tagsToApply.length > 5) {
+                    tagsToApply.shift();
+                }
                 (await channel.setName(`[SOLVED] ${channel.name}`)).edit({ appliedTags: tagsToApply, archived: true, locked: true });
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Thread has been closed and marked as solved`,
