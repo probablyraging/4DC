@@ -58,6 +58,7 @@ module.exports = {
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
+            // Only allow the owner to run the command without supplying a target
             if (!target && member.id !== process.env.OWNER_ID) {
                 return interaction.editReply({
                     content: `${process.env.BOT_INFO} You must include a username`,
@@ -68,12 +69,12 @@ module.exports = {
                     let i = 0;
                     const filtered = [];
 
-                    (await fetchMsg).filter(msg => {
+                    fetchMsg.filter(msg => {
                         if (msg.author.id === target.id && amount > i) {
                             filtered.push(msg);
                             i++;
                         }
-                    })
+                    });
                     channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
                         interaction.editReply({
                             content: `${process.env.BOT_CONF} ${deleted.size} messages from ${target} deleted in ${channel}`,
@@ -81,6 +82,15 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     });
                 } else {
+                    let i = 0;
+                    const filtered = [];
+
+                    fetchMsg.filter(msg => {
+                        if (!msg.system && amount > i) {
+                            filtered.push(msg);
+                            i++;
+                        }
+                    });
                     channel.bulkDelete(amount, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
                         interaction.editReply({
                             content: `${process.env.BOT_CONF} ${deleted.size} messages deleted in ${channel}`,
