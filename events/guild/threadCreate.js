@@ -10,7 +10,7 @@ module.exports = {
         if (newlyCreated && thread.parentId === process.env.REVIEW_CHAN) {
             setTimeout(() => {
                 thread.send({
-                    content: `This forum is focused on providing feedback about specific aspects of the creation process
+                    content: `This forum is focused on providing feedback about specific aspects of the creation process and not the overall video, graphic or other
 <:minidot:923683258871472248> Is your post specific about what you want feedback on?
 <:minidot:923683258871472248> Have you provided timestamps of the areas you want reviewed?
 <:minidot:923683258871472248> Can you share references to what you would like to achieve?
