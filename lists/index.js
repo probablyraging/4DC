@@ -12,7 +12,8 @@ So if you're a content creator, influencer, game developer, musician, or if you'
 > <#1005283113775157349> Familiarize yourself with the server channels
 > <#948052750611120228> Give your profile some flair
 > <#820889004055855147> Introduce yourself to and chat with the community
-> <#1012065026451963915> Find some useful tips & tricks
+> <#1012065026451963915> Browse the communities useful resources
+> <#1031881286429724722> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
