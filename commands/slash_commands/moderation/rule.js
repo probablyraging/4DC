@@ -36,7 +36,7 @@ module.exports = {
         const number = options.getString('number');
         const target = options.getMember('username');
 
-        const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`
+        const url = `https://discord.com/channels/${process.env.GUILD_ID}/${process.env.RULE_CHAN}`;
 
         interaction.reply({
             content: `*Please read the <#898541066595209248> ${target}:*

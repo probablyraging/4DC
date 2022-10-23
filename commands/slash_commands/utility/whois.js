@@ -70,17 +70,6 @@ module.exports = {
         if (target?.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';
         if (!target?.presence?.status || target?.presence?.status === 'undefined') targetStatus = 'Offline';
 
-        const roles = guild.members.cache.get(target?.id)._roles.length;
-        let roleList = `None`;
-        if (roles > 0) roleList = `<@&${guild.members.cache.get(target?.id)._roles.join('>, <@&')}>`;
-
-        if (roleList && roleList.length > 1024) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} Role field exceeds 1024 characters`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
         if (acknowledgements && acknowledgements.length > 1024) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} Acknowledgements field exceeds 1024 characters`,
@@ -99,11 +88,11 @@ module.exports = {
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setColor('Random')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
-            .addFields({ name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>`, inline: true },
-                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}:R>`, inline: true },
-                { name: `Status`, value: `${targetStatus}`, inline: true },
-                { name: `Roles`, value: `${roleList}`, inline: false },
-                { name: `Acknowledgements`, value: `${acknowledgements}`, inline: true },
+            .addFields({ name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}>
+*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
+                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}>
+*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
+                { name: `Acknowledgements`, value: `${acknowledgements}`, inline: false },
                 { name: `Permissions`, value: `${permissions.join(`, `)}`, inline: false })
             .setFooter({ text: target?.id })
             .setTimestamp()
