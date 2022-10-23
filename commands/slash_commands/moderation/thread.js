@@ -25,13 +25,13 @@ module.exports = {
 
         // Only allow this command to be ran in threads channels in the help and advice forum
         if (!channel.isThread()) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_DENY} This is not a thread channel`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
         if (channel.parentId !== process.env.HELP_CHAN) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${process.env.BOT_DENY} This command can only be used in a <#${process.env.HELP_CHAN}> thread`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
