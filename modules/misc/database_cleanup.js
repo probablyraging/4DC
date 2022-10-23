@@ -54,7 +54,7 @@ module.exports = async (client) => {
     const results = await lastLetterSchema.find();
     for (const data of results) {
         const { userId } = data;
-        const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the warning system that no longer exists`));
+        const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the last letter collection that no longer exists`));
         if (!exists) {
             await lastLetterSchema.deleteOne({ userId: userId })
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
@@ -67,7 +67,7 @@ module.exports = async (client) => {
         const results = await countingSchema.find();
         for (const data of results) {
             const { userId } = data;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the warning system that no longer exists`));
+            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the counting collection that no longer exists`));
             if (!exists) {
                 await countingSchema.deleteOne({ userId: userId })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
