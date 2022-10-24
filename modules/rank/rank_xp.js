@@ -118,6 +118,8 @@ module.exports = async (message, client) => {
                 let lv30 = guild.roles.cache.get(process.env.RANK30_ROLE);
                 let lv35 = guild.roles.cache.get(process.env.RANK35_ROLE);
                 let lv40 = guild.roles.cache.get(process.env.RANK40_ROLE);
+                let lv45 = guild.roles.cache.get(process.env.RANK45_ROLE);
+                let lv50 = guild.roles.cache.get(process.env.RANK50_ROLE);
 
                 if (levelMath === 5) {
                     message?.member?.roles.add(lv5)
@@ -165,6 +167,18 @@ module.exports = async (message, client) => {
                     message?.member?.roles.add(lv40)
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
                     message?.member?.roles.remove(lv35)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                }
+                if (levelMath === 45) {
+                    message?.member?.roles.add(lv45)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                    message?.member?.roles.remove(lv40)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                }
+                if (levelMath === 50) {
+                    message?.member?.roles.add(lv50)
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                    message?.member?.roles.remove(lv45)
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 }
             }
