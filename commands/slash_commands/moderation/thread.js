@@ -46,7 +46,10 @@ module.exports = {
                 while (tagsToApply.length > 5) {
                     tagsToApply.shift();
                 }
-                (await channel.setName(`[SOLVED] ${channel.name}`)).edit({ appliedTags: tagsToApply, archived: true, locked: true });
+                // Thread names can only be 100 chars long
+                let channelName = channel.name;
+                if (channelName.length >= 100) channelName = channel.name.slice(0, 90);
+                (await channel.setName(`[SOLVED] ${channelName}`)).edit({ appliedTags: tagsToApply, archived: true, locked: true });
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Thread has been closed and marked as solved`,
                     ephemeral: true
