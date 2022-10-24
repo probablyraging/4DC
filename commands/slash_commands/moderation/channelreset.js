@@ -34,7 +34,7 @@ module.exports = {
                     .setColor('#44eaff') // GREEN
                     .setTitle(`:crown: Content Spotlight`)
                     .setDescription(`**What Is It?**
-Every 5 hours the channel will unlock, allowing everyone to post a single link to their content, the person who claims the channel will also be given the <@&878229140992589906> role. The channel will then be locked again for 5 hours allowing that person's content to be centre of attention`)
+                    Every 5 hours the channel will unlock, allowing anyone to post a single link to their content to claim the channel. The channel will then be locked again, allowing that person's content to be centre of attention for the next 5 hours. The person who claims the channel will also be given the <@&878229140992589906> role to stand out in chat`)
 
                 const searchFor = 'currentTime';
 
