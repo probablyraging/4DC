@@ -21,35 +21,43 @@ module.exports = {
         // Ignore DM messages
         if (message?.channel.type === 1) return;
 
-        // blacklist checks
+        // Blacklist checks
         linkCooldown(message, client);
         blPhishing(message, client);
         blSpam(message, client);
 
-        // bump and ckq checks
+        // Bump and ckq checks
         ckqPost(message);
         bumpPost(message);
 
-        // game checks
+        // Game checks
         lastLetter(message, client);
         countingGame(message, client);
 
-        // misc checks
+        // Misc checks
         rankXP(message, client);
         creatorCrew(message, client);
         resPost(message, client);
         suggestionPost(message);
 
-        // delete posts containing tweets in the insider channel
+        // Delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.INSIDER_CHAN) {
             if (message?.content.toLowerCase().includes("tweet")) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
         }
 
-        // delete all messages in FAQ thread channel
+        // Delete all messages in FAQ thread channel
         if (message?.channel.id === process.env.FAQ_CHAN && !message?.author.bot) {
             message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
+
+        // Delete links in media channel if user is new to the server
+        if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot) {
+            const twelveHours = 12 * 60 * 60 * 1000;
+            if ((new Date() - message.member.joinedTimestamp) < twelveHours) {
+                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            }
         }
     }
 };
