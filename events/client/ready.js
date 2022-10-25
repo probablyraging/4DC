@@ -7,6 +7,7 @@ const mutesCheck = require('../../modules/misc/mutes_check');
 const databaseCleanup = require('../../modules/misc/database_cleanup');
 const liveNow = require('../../modules/misc/live_now');
 const autoYT = require('../../modules/misc/auto_yt');
+const reminder = require('../../modules/misc/reminder');
 const cronjob = require('cron').CronJob;
 const mongo = require('../../mongo');
 const Canvas = require("canvas");
@@ -57,6 +58,7 @@ module.exports = {
         liveNow(client);
         autoYT(client);
         setupChecks(client);
+        reminder(client);
 
         console.timeEnd('Time to online');
     }
