@@ -9,6 +9,7 @@ module.exports = async (client) => {
         let reminder = new EmbedBuilder()
             .setColor("#e3dd34")
             .setTitle('Friendly Reminder')
+            .setURL('https://discord.com/channels/820889004055855144/820889004055855147')
             .setDescription(`Hey, we would just like to remind you that chatting with other creators in <#820889004055855147> is a much more effective way to get eyes on your content!`)
             .setThumbnail('https://i.imgur.com/7XiWKZL.png')
 
