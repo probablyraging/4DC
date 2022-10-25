@@ -39,7 +39,7 @@ By participating in this server, you agree to follow [ForTheContent's Server Rul
 > Do not post self-promotional content outside of the 'CONTENT SHARE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites, or spam
 
 **4. Advertising servers and paid products**
-> Advertising of other discord servers, offering or requesting paid services, products, and other promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>
+> Advertising of other discord servers, offering or requesting paid services excluding video editors and graphics designers, paid products, and other promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>
 
 **5. Posts against platform ToS**
 > We do not allow posts that break the various platform's Terms of Services. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
