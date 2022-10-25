@@ -223,7 +223,7 @@ module.exports = async (message, client) => {
                         await countingCurrent.updateOne({
                             searchFor: 'currentCount'
                         }, {
-                            currentRecord: currentCount
+                            currentRecord: currentCount + 1
                         }, {
                             upsert: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
