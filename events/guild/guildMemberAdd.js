@@ -14,9 +14,9 @@ module.exports = {
             setTimeout(function () {
                 webhook.send({
                     content: `Welcome to the server ${member}! Feel free to introduce yourself using our [introduction template](<https://discord.com/channels/820889004055855144/820889004055855147/1027187295398408202) when you're ready`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(wh => {
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                     setTimeout(() => {
-                        wh.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
+                        webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
                     }, 300000);
                 })
                 setTimeout(() => {
