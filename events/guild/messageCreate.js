@@ -53,10 +53,13 @@ module.exports = {
         }
 
         // Delete links in media channel if user is new to the server
-        if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot) {
-            const twelveHours = 12 * 60 * 60 * 1000;
-            if ((new Date() - message.member.joinedTimestamp) < twelveHours) {
-                message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
+        const twelveHours = 12 * 60 * 60 * 1000;
+        if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < twelveHours) {
+            for (let i in promoLinks) {
+                if (message?.content.includes(twoHours[i])) {
+                    message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                }
             }
         }
     }
