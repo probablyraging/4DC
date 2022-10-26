@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
         if (oldMessage?.author?.bot || oldMessage?.channel.id === process.env.TEST_CHAN) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        const logChan = client.channels.cache.get(process.env.MSGLOG_CHAN);
+        const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
 
         let original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
         let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
@@ -20,7 +21,7 @@ module.exports = {
                     { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
                     { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
                     { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
-                .setFooter({ text: guild.name, iconURL: guild.iconURL({ dynamic: true }) })
+                .setFooter({ text: `Edit • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/edit_icon.png' })
                 .setTimestamp()
 
             logChan.send({
