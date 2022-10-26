@@ -2,7 +2,6 @@ const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOption
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
-const moment = require('moment');
 const path = require('path');
 
 module.exports = {
@@ -156,12 +155,14 @@ ${banMsg}`,
                 } else {
                     let dmFail = false;
 
-                    target.send({
+                    await target.send({
                         content: `${target} - you received a warning in ${guild.name}
 \`\`\`${reason}\`\`\``
                     }).catch(() => dmFail = true);
 
-                    let replyMsg = dmFail ? `${process.env.BOT_DENY} Your warning was added\n${process.BOT_DENY} I could not send ${target} a notification` : `${process.env.BOT_CONF} Your warning was added`;
+                    console.log(dmFail);
+
+                    let replyMsg = dmFail ? `${process.env.BOT_CONF} Your warning was added\n${process.env.BOT_DENY} I could not send ${target} a notification` : `${process.env.BOT_CONF} Your warning was added`;
 
                     if (reason && reason.length > 1024) {
                         return interaction.reply({
