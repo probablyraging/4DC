@@ -13,7 +13,7 @@ module.exports = {
         generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
             setTimeout(function () {
                 webhook.send({
-                    content: `Welcome to the server ${member}! Feel free to introduce yourself using our [introduction template](<https://discord.com/channels/820889004055855144/820889004055855147/1027187295398408202) when you're ready`
+                    content: `Welcome to the server ${member}! Feel free to introduce yourself using the [introduction template](<https://discord.com/channels/820889004055855144/820889004055855147/1027187295398408202>) found in the pinned messages when you're ready`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                     setTimeout(() => {
                         webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
