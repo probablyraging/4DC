@@ -28,7 +28,11 @@ module.exports = async (message, client) => {
                     filter.forEach(m => {
                         filtered.push(m);
                     });
-                    channel.bulkDelete(filtered).catch(err => console.error(`${path.basename(__filename)} There was a problem bulk deleting messages: `, err));
+                    try {
+                        channel.bulkDelete(filtered);
+                    } catch {
+                        // An error here is likely due to link_cooldown.js having already deleted the message
+                    }
                 }
                 // Tiemout the user for 5 minutes and notify them
                 const member = message?.member;
