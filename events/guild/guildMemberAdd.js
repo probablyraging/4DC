@@ -1,4 +1,5 @@
 const inviteSchema = require('../../schemas/misc/invite_schema');
+const newUsers = new Set();
 const path = require('path');
 
 module.exports = {
@@ -9,21 +10,28 @@ module.exports = {
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
         const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
 
-        // Send a welcome message in the general channel
-        generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
-            setTimeout(function () {
-                webhook.send({
-                    content: `Welcome to the server ${member}! Feel free to introduce yourself when you're ready, or just say hi`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
-                    setTimeout(() => {
-                        webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
-                    }, 300000);
-                })
-                setTimeout(() => {
-                    webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                }, 5000);
-            }, 10000);
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+        // Add new users to a set
+        newUsers.add(member);
+        // Check if we have any new users and send a welcome message in the general channel
+        setInterval(() => {
+            if (newUsers.size > 0) {
+                generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
+                    setTimeout(function () {
+                        webhook.send({
+                            content: `Welcome to the server ${Array.from(newUsers).join(', ')}! Feel free to introduce yourself when you're ready, or just say hi`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
+                            setTimeout(() => {
+                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
+                            }, 300000);
+                        })
+                        setTimeout(() => {
+                            webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        }, 5000);
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                newUsers.clear();
+            }
+        }, 30000);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
