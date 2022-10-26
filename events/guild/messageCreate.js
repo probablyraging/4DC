@@ -57,7 +57,7 @@ module.exports = {
         const twelveHours = 12 * 60 * 60 * 1000;
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < twelveHours) {
             for (let i in promoLinks) {
-                if (message?.content.includes(twoHours[i])) {
+                if (message?.content.includes(promoLinks[i])) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 }
             }
