@@ -2,55 +2,42 @@ module.exports = {
     welcome: [
         `https://www.forthecontent.xyz/images/creatorhub/banner_welcome.png`,
 
-        `**WELCOME TO FORTHECONTENT**
-ForTheContent is a growing community of content creators, developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with useful resources to help you grow your online presence
+        `ForTheContent is a growing community of content creators, developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with useful resources to help you grow your online presence
+
+**NEW TO DISCORD?**
+Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
 
 **GETTING STARTED**
-> <#898541066595209248> Read the server rules, these are important
-> <#1005283113775157349> Familiarize yourself with the server channels
-> <#948052750611120228> Give your profile some flair
+> <#1005283113775157349> Information about the server channels and roles
+> <#948052750611120228> Express yourself with some profile flair
 > <#820889004055855147> Introduce yourself to and chat with the community
 > <#1012065026451963915> Browse the communities useful resources
 > <#1033734609013317692> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
+⠀`,
 
-**NEW TO DISCORD?**
-Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
+        `https://www.forthecontent.xyz/images/creatorhub/banner_rules.png`,
 
-**YOUR AGREEMENT**
-By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)`,
+        `By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
+                
+> **1.** Messages, usernames, avatars, banners, bios, or linked accounts containing harmful, offensive, or explicit content has no place in this server. This may result in a ban without warning
+> **2.** Do not send multiple messages repeatedly or send purposeless messages in an attempt to gain XP
+> **3.** Do not post self-promotional content outside of the 'CONTENT SHARE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites, or spam
+> **4.** Advertising of other discord servers, offering or requesting paid services excluding video editors and graphics designers, and other paid products or promotional content is only permitted in <#${process.env.PREM_CHAN}>
+> **5.** We do not allow posts that break the various platform's Terms of Services. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
+> **6.** Do not publicly discuss other members' bans, mutes, message deletions, or other moderating actions. If you have a concern, please DM a staff member privately
+> **7.** For moderating purposes, please keep your messages in English
+
+See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
+
+*last updated: <t:${Math.round(new Date() / 1000)}:R>*`
     ],
 
     rules: [
         `https://www.forthecontent.xyz/images/creatorhub/banner_rules.png`,
 
-        `To keep ForTheContent a safe and positive experience for everyone, you are required to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
-        
-**1. Harmful, offensive, or explicit content**
-> Messages, usernames, avatars, banners, bios, or linked accounts containing harmful, offensive, or explicit content has no place in this server. This may result in a ban without warning
-
-**2. Spamming and flooding**
-> Sending multiple messages repeatedly or sending purposeless messages in an attempt to gain XP
-
-**3. Self-promotion and unsolicited DMs**
-> Do not post self-promotional content outside of the 'CONTENT SHARE' section. This includes sending other server members unsolicited DMs containing promotional content, server invites, or spam
-
-**4. Advertising servers and paid products**
-> Advertising of other discord servers, offering or requesting paid services excluding video editors and graphics designers, and other paid products or promotional content is only permitted in <#${process.env.PREM_CHAN}>
-
-**5. Posts against platform ToS**
-> We do not allow posts that break the various platform's Terms of Services. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
-
-**6. Moderator discretion**
-> Do not publicly discuss other members' bans, mutes, message deletions, or other moderating actions. If you have a concern, please DM a staff member privately
-
-**7.  English only**
-> For moderating purposes, please keep your messages in English
-
-See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
-
-*last updated: <t:${Math.round(new Date() / 1000)}:R>*`
+        ``
     ],
 
     faqs: [
@@ -217,12 +204,11 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
     ],
 
     servermap: [
-        `https://www.forthecontent.xyz/images/creatorhub/banner_servermap.png`,
+        `https://www.forthecontent.xyz/images/creatorhub/banner_channels.png`,
 
         `**A handy guide to help you navigate the server channels**
         
 **WELCOME**
-<#820909722458652674> Welcome to ForTheContent!
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
 <#1005283113775157349> You are here
@@ -243,10 +229,10 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 **FORUMS**
 <#978553334854205450> Get assistance or support for specific topics
 <#978691673842389053> Get some constructive feedback on your graphics or videos
-<#978694637088804884> Looking for something specific? Like new friends? Find them here`,
+<#978694637088804884> Looking for something specific? Like new friends? Find them here
+⠀`,
 
-        `⠀
-**CONTENT SHARE**
+        `**CONTENT SHARE**
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#841568782992277524> An elite group of super supportive server members
 <#878229815541497857> Content sharing, but with a twist
@@ -257,7 +243,42 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
 <#987212586007281674> It's like a revolving door
-<#995882451446546502> All of these people are on Santa's naughty list`
+<#995882451446546502> All of these people are on Santa's naughty list
+⠀`,
+
+        `https://www.forthecontent.xyz/images/creatorhub/banner_roles.png`,
+
+        `**A handy guide to help you understand the server roles**
+
+**STAFF**
+<@&1033563360660291615> A joint staff role for both server admins and mods
+<@&885919072791973898> ForTheContent administrators
+<@&931054970327932928> ForTheContent moderators
+
+**MEMBERS**
+<@&1012098388361236630> ForTheContent blog writers
+<@&839527054465826867> Displays currently live streaming server boosters
+<@&878229140992589906> Awarded to the user who claimed the #content-spotlight
+<@&998861546530820207> Displays a randomly selected user who is currently live streaming
+<@&821876910253670442> Our generous server boosters
+
+**RANKS**
+<@&1033910783400230953> The highest rank on the server, only the most elite will reach this rank
+<@&1033910403455012944> Rewarded when a user reaches rank 45
+<@&1032783497984753694> Rewarded when a user reaches rank 40
+<@&1032782969091407873> Rewarded when a user reaches rank 35
+<@&846419141892112384> Rewarded when a user reaches rank 30
+<@&846418906520354866> Rewarded when a user reaches rank 25
+<@&846418761674129409> Rewarded when a user reaches rank 20
+<@&846418567263420437> Rewarded when a user reaches rank 15
+<@&846417898351362098> Rewarded when a user reaches rank 10
+<@&846418078317412403> The very first rank on the server
+<@&846007549621960705> Automatically received at rank 10, used by 4DC
+
+**NOTIFICATIONS**
+<@&852348066618015744> Get notified when a new server announcement is made
+<@&852348258495627314> Get notified when a free game is posted in #game-deals 
+<@&879248157161177139> Get notified when the server is ready to be bumped again`,
     ]
 }
 
