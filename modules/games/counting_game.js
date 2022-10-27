@@ -195,6 +195,12 @@ module.exports = async (message, client) => {
 
                 // keep track of the current count and the previous counter
                 async function updateCurrentCount() {
+                    // Todo: can be deleted
+                    if ((currentCount + 1) === 5000) {
+                        message.channel.send({
+                            content: `:tada: Half way there! I see absolutely no possible scenario in which anyone fails 3 times in a row and resets the count. 😏 Good luck! :fingers_crossed:`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
                     await countingCurrent.updateOne({
                         searchFor: 'currentCount'
                     }, {

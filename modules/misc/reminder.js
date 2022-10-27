@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const cronjob = require('cron').CronJob;
 const path = require('path');
 
 module.exports = async (client) => {
@@ -13,7 +14,7 @@ module.exports = async (client) => {
         .setDescription(`Hey, we would just like to remind you that chatting with other creators in <#820889004055855147> is a much more effective way to get eyes on your content!`)
         .setThumbnail('https://i.imgur.com/7XiWKZL.png')
 
-    // Check for previous reminder message, delete and repost if older than 2 hours
+    // On ready, check for previous reminder message, delete and repost if older than 2 hours
     setTimeout(async () => {
         let found = false;
         await promoChan.messages.fetch({ limit: 100 }).then(messages => {
@@ -36,7 +37,7 @@ module.exports = async (client) => {
     }, 300000);
 
     // Periodically check if we need to resend the reminder
-    setInterval(async () => {
+    const reminderJob = new cronjob('0 */2 * * *', async function () {
         found = false;
         await promoChan.messages.fetch({ limit: 100 }).then(messages => {
             messages.forEach(async message => {
@@ -55,5 +56,7 @@ module.exports = async (client) => {
         if (!found) {
             promoChan.send({ embeds: [reminder] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
-    }, 7200000);
+    });
+    
+    reminderJob.start();
 }

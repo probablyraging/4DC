@@ -33,7 +33,7 @@ module.exports = {
                     newUsers.clear();
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
             }
-        }, 60000);
+        }, 180000);
 
         // Joins/leaves log channel
         joinLeaveChan.send({

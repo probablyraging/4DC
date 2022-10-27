@@ -3,9 +3,7 @@ module.exports = {
         `https://www.forthecontent.xyz/images/creatorhub/banner_welcome.png`,
 
         `**WELCOME TO FORTHECONTENT**
-ForTheContent is a growing community of content creators, game developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with the necessary resources you need to help you grow your online presence.
-
-So if you're a content creator, influencer, game developer, musician, or if you're just looking for somewhere to meet new people, you are in the right place!
+ForTheContent is a growing community of content creators, developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with useful resources to help you grow your online presence
 
 **GETTING STARTED**
 > <#898541066595209248> Read the server rules, these are important
@@ -252,7 +250,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#841568782992277524> An elite group of super supportive server members
 <#878229815541497857> Content sharing, but with a twist
-<#998819701704630272> Links to currently live streaming server members, selected at random
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
 <#856719763187302441> Share your content with other server members
 
