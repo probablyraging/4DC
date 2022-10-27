@@ -10,28 +10,30 @@ module.exports = {
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
         const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
 
-        // Add new users to a set
-        newUsers.add(member);
-        // Check if we have any new users and send a welcome message in the general channel
-        setInterval(() => {
+        // Add all new user to a set
+        newUsers.add(member.id);
+        // Periodically check our set size send a welcome message in the general channel
+        setInterval(async () => {
             if (newUsers.size > 0) {
-                generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
-                    setTimeout(function () {
-                        webhook.send({
-                            content: `Welcome to the server ${Array.from(newUsers).join(', ')}! Feel free to introduce yourself when you're ready, or just say hi`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
-                            setTimeout(() => {
-                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err))
-                            }, 300000);
-                        })
+                await generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
+                    if (newUsers.size === 0) return;
+                    await webhook.send({
+                        content: `Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! Feel free to introduce yourself when you're ready, or just say hi`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                         setTimeout(() => {
-                            webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                        }, 5000);
-                    }, 10000);
+                            // Delete the webhook message after five minutes
+                            webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err));
+                        }, 300000);
+                    })
+                    setTimeout(() => {
+                        // Delete the webhook
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 5000);
+                    // Clear the set
+                    newUsers.clear();
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-                newUsers.clear();
             }
-        }, 30000);
+        }, 60000);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
