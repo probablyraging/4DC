@@ -14,7 +14,7 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'contentspotlight', value: 'contentspotlight' },
-        { name: 'featuredchannel', value: 'featuredchannel' }]
+    /*{ name: 'featuredchannel', value: 'featuredchannel' }*/]
     }],
     /**
      * 
@@ -72,24 +72,24 @@ module.exports = {
                 break;
             }
 
-            case 'featuredchannel': {
-                const featuredChan = guild.channels.cache.get(process.env.FEATURED_CHAN);
-                const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
-                const results = await timerSchema.find({ searchFor: 'featuredTime' });
-                for (const data of results) {
-                    const { previouslyFeatured } = data;
-                    featuredRole.members.each(member => {
-                        member.roles.remove(featuredRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
-                    })
-                    featuredRandomPicker(client, previouslyFeatured);
-                }
-                interaction.editReply({
-                    content: `${[process.env.BOT_CONF]} ${featuredChan} has been reset`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            // case 'featuredchannel': {
+            //     const featuredChan = guild.channels.cache.get(process.env.FEATURED_CHAN);
+            //     const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
+            //     const results = await timerSchema.find({ searchFor: 'featuredTime' });
+            //     for (const data of results) {
+            //         const { previouslyFeatured } = data;
+            //         featuredRole.members.each(member => {
+            //             member.roles.remove(featuredRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+            //         })
+            //         featuredRandomPicker(client, previouslyFeatured);
+            //     }
+            //     interaction.editReply({
+            //         content: `${[process.env.BOT_CONF]} ${featuredChan} has been reset`,
+            //         ephemeral: true
+            //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                break;
-            }
+            //     break;
+            // }
         }
     }
 }
