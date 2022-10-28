@@ -41,7 +41,7 @@ module.exports = {
         suggestionPost(message);
 
         // Delete posts containing tweets in the insider channel
-        if (message?.channel.id === process.env.INSIDER_CHAN) {
+        if (message?.channel.id === process.env.NEWS_CHAN) {
             if (message?.content.toLowerCase().includes("tweet")) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
