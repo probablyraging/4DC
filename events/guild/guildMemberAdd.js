@@ -18,7 +18,7 @@ module.exports = {
                 await generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                     if (newUsers.size === 0) return;
                     await webhook.send({
-                        content: `Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourself when you're ready :slight_smile:`
+                        content: `We have a new friend! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourself when you're ready :slight_smile:`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                         setTimeout(() => {
                             // Delete the webhook message after five minutes
