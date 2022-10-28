@@ -40,13 +40,6 @@ module.exports = {
         resPost(message, client);
         suggestionPost(message);
 
-        // Delete posts containing tweets in the insider channel
-        if (message?.channel.id === process.env.NEWS_CHAN) {
-            if (message?.content.toLowerCase().includes("tweet")) {
-                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-            }
-        }
-
         // Delete all messages in FAQ thread channel
         if (message?.channel.id === process.env.FAQ_CHAN && !message?.author.bot) {
             message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
