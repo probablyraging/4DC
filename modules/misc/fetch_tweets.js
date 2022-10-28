@@ -7,7 +7,7 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const testChan = guild.channels.cache.get(process.env.NEWS_CHAN);
 
-    const twitterUserIds = ['10228272', '4436380092', '3065618342'] // YouTube, TwitchDev, Discord
+    const twitterUserIds = ['10228272', '309366491', '3065618342'] // YouTube, Twitch, Discord
 
     const youtube = new cronjob('0 */2 * * *', async function () {
         let results = await tweetsSchema.find();
