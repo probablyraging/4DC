@@ -10,6 +10,7 @@ const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const suggestionPost = require('../../modules/misc/suggestion_post');
+const stickyReminder = require('../../modules/misc/sticky_reminder');
 const path = require('path');
 
 module.exports = {
@@ -39,6 +40,7 @@ module.exports = {
         creatorCrew(message, client);
         resPost(message, client);
         suggestionPost(message);
+        stickyReminder(message, client);
 
         // Delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.NEWS_CHAN) {
