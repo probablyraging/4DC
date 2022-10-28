@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const testChan = guild.channels.cache.get(process.env.INSIDER_CHAN);
+    const newsChan = guild.channels.cache.get(process.env.NEWS_CHAN);
     const twitterUserIds = ['3031071234', '309366491', '3065618342'] // YouTube, Twitch, Discord
     const youtube = new cronjob('0 */2 * * *', async function () {
         let results = await tweetsSchema.find();
@@ -26,7 +26,7 @@ module.exports = async (client) => {
                 if (i === 0) user = 'youtube';
                 if (i === 1) user = 'twitchdev';
                 if (i === 2) user = 'discord';
-                await testChan.send({
+                await newsChan.send({
                     content: `https://twitter.com/${user}/status/${data.data[0].id}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
