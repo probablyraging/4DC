@@ -38,6 +38,7 @@ module.exports = {
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
+                    content: `Consider becoming a server booster to get access to these cool server perks that can help people find your content easier`,
                     files: [img]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
                 .then(msg => {
