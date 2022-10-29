@@ -23,7 +23,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                             setTimeout(() => {
                                 // Delete the webhook message after five minutes
-                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err));
+                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
                             }, 300000);
                         });
                     } else if (newUsers.size > 1) {
@@ -32,7 +32,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
                             setTimeout(() => {
                                 // Delete the webhook message after five minutes
-                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleted a webhook message: `, err));
+                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
                             }, 300000);
                         });
                     }
