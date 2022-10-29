@@ -12,7 +12,7 @@ module.exports = {
 
         // Add all new user to a set
         newUsers.add(member.id);
-        // Periodically check our set size send a welcome message in the general channel
+        // Periodically check our set size and send a welcome message in the general channel if needed
         setInterval(async () => {
             if (newUsers.size > 0) {
                 await generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
@@ -91,5 +91,6 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         });
-    }
+    },
+    newUsers
 }

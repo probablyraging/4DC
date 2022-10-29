@@ -11,6 +11,7 @@ const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyReminder = require('../../modules/misc/sticky_reminder');
+const { newUsers } = require('../guild/guildMemberAdd');
 const path = require('path');
 
 module.exports = {
@@ -41,6 +42,9 @@ module.exports = {
         resPost(message, client);
         suggestionPost(message);
         stickyReminder(message, client);
+
+        // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from guildMemberAdd.js)
+        if (newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
 
         // Delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.NEWS_CHAN) {
