@@ -66,12 +66,6 @@ module.exports = {
 
                         const inviter = client.users.cache.get(userId);
 
-                        inviteChan.send({
-                            content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
-                            allowedMentions: { parse: [] },
-                            failIfNotExists: false
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
                         await inviteSchema.updateOne({
                             code: code
                         }, {
@@ -79,6 +73,20 @@ module.exports = {
                         }, {
                             upsert: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                        if (userId === process.env.DISBOARD_ID) {
+                            return inviteChan.send({
+                                content: `${member.user.tag} was invited by ${inviter.tag} who now has **${9347 + parseInt(i.uses)}** invites`,
+                                allowedMentions: { parse: [] },
+                                failIfNotExists: false
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        }
+
+                        inviteChan.send({
+                            content: `${member.user.tag} was invited by ${inviter.tag} who now has **${i.uses}** invites`,
+                            allowedMentions: { parse: [] },
+                            failIfNotExists: false
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
                 });
             }
