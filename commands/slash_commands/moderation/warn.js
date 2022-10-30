@@ -160,8 +160,6 @@ ${banMsg}`,
 \`\`\`${reason}\`\`\``
                     }).catch(() => dmFail = true);
 
-                    console.log(dmFail);
-
                     let replyMsg = dmFail ? `${process.env.BOT_CONF} Your warning was added\n${process.env.BOT_DENY} I could not send ${target} a notification` : `${process.env.BOT_CONF} Your warning was added`;
 
                     if (reason && reason.length > 1024) {
