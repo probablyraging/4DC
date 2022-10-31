@@ -256,7 +256,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <@&931054970327932928> ForTheContent moderators
 
 **MEMBERS**
-<@&1012098388361236630> ForTheContent blog writers
 <@&839527054465826867> Displays currently live streaming server boosters
 <@&878229140992589906> Awarded to the user who claimed the #content-spotlight
 <@&998861546530820207> Displays a randomly selected user who is currently live streaming
