@@ -7,7 +7,7 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
-        // If a user in the newUsers set leaves the server, we can remove them from the set (Extends from guildMemberAdd.js)
+        // If a user in the newUsers set leaves the server, we can remove them from the set (Extends from welcome_check.js)
         if (newUsers.has(member.id)) newUsers.delete(member.id);
 
         // Joins/leaves log channel

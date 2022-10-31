@@ -8,6 +8,7 @@ const databaseCleanup = require('../../modules/misc/database_cleanup');
 const liveNow = require('../../modules/misc/live_now');
 const autoYT = require('../../modules/misc/auto_yt');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
+const welcomeCheck = require('../../modules/misc/welcome_check');
 const cronjob = require('cron').CronJob;
 const mongo = require('../../mongo');
 const Canvas = require("canvas");
@@ -60,6 +61,7 @@ module.exports = {
         autoYT(client);
         setupChecks(client);
         fetchTweets(client);
+        welcomeCheck(client);
 
         console.timeEnd('Time to online');
     }
