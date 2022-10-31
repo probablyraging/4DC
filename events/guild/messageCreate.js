@@ -44,7 +44,7 @@ module.exports = {
         stickyReminder(message, client);
 
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from guildMemberAdd.js)
-        if (!message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
+        if (message?.channel.id === process.env.GENERAL_CHAN && !message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
 
         // Delete posts containing tweets in the insider channel
         if (message?.channel.id === process.env.NEWS_CHAN) {
