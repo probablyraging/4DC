@@ -95,12 +95,20 @@ module.exports = {
                 }
 
                 const guildId = guild.id;
-                const userId = target.id;
-                const username = target.user.tag;
+                const userId = target?.id;
+                const username = target?.user.tag;
                 const authorTag = member.user.tag;
                 const warnId = uuidv4();
                 const author = member.id;
                 const timestamp = new Date().getTime();
+
+                // If the target user cannot be found
+                if (!userId || !username) {
+                    return interaction.reply({
+                        content: `${process.env.BOT_DENY} The was an issue finding the user you are trying to warn`,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
 
                 // Log to channel
                 let log = new EmbedBuilder()
