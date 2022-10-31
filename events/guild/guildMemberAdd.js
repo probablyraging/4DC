@@ -15,34 +15,22 @@ module.exports = {
         // Periodically check our set size and send a welcome message in the general channel if needed
         setInterval(async () => {
             if (newUsers.size > 0) {
-                await generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
-                    if (newUsers.size === 0) return;
-                    if (newUsers.size === 1) {
-                        await webhook.send({
-                            content: `We have a new friend! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourself, shout yourself out *(no links)*, or just join the chat :slight_smile:`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
-                            setTimeout(() => {
-                                // Delete the webhook message after five minutes
-                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
-                            }, 300000);
-                        });
-                    } else if (newUsers.size > 1) {
-                        await webhook.send({
-                            content: `We have some new friends! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourselves, shout yourselves out *(no links)*, or just join the chat :slight_smile:`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err)).then(webhookMessage => {
-                            setTimeout(() => {
-                                // Delete the webhook message after five minutes
-                                webhookMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
-                            }, 300000);
-                        });
-                    }
-                    setTimeout(() => {
-                        // Delete the webhook
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 5000);
-                    // Clear the set
-                    newUsers.clear();
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                if (newUsers.size === 0) return;
+                if (newUsers.size === 1) {
+                    generalChan.send({
+                        content: `We have a new friend! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourself, shout yourself out *(no links)*, or just join the chat :slight_smile:`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err)).then(message => {
+                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
+                    });
+                } else if (newUsers.size > 1) {
+                    generalChan.send({
+                        content: `We have some new friends! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to introduce yourselves, shout yourselves out *(no links)*, or just join the chat :slight_smile:`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err)).then(message => {
+                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook message: `, err));
+                    });
+                }
+                // Clear the set
+                newUsers.clear();
             }
         }, 180000);
 
