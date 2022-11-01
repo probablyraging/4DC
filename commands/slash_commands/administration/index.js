@@ -219,47 +219,47 @@ module.exports = {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 // Colors
-                const btnColorsOne = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('color-blue')
-                            .setLabel('Blue')
-                            .setEmoji('996661870461210655')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('color-red')
-                            .setLabel('Red')
-                            .setEmoji('996661868011716670')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('color-green')
-                            .setLabel('Green')
-                            .setEmoji('996661865784545302')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('color-orange')
-                            .setLabel('Orange')
-                            .setEmoji('996661864371081336')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('color-yellow')
-                            .setLabel('Yellow')
-                            .setEmoji('996661862714327080')
-                            .setStyle(ButtonStyle.Secondary)
-                    );
-                const btnColorsTwo = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('color-pink')
-                            .setLabel('Pink')
-                            .setEmoji('996661860080304138')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('color-purple')
-                            .setLabel('Purple')
-                            .setEmoji('996661858025099275')
-                            .setStyle(ButtonStyle.Secondary)
-                    );
+                // const btnColorsOne = new ActionRowBuilder()
+                //     .addComponents(
+                //         new ButtonBuilder()
+                //             .setCustomId('color-blue')
+                //             .setLabel('Blue')
+                //             .setEmoji('996661870461210655')
+                //             .setStyle(ButtonStyle.Secondary),
+                //         new ButtonBuilder()
+                //             .setCustomId('color-red')
+                //             .setLabel('Red')
+                //             .setEmoji('996661868011716670')
+                //             .setStyle(ButtonStyle.Secondary),
+                //         new ButtonBuilder()
+                //             .setCustomId('color-green')
+                //             .setLabel('Green')
+                //             .setEmoji('996661865784545302')
+                //             .setStyle(ButtonStyle.Secondary),
+                //         new ButtonBuilder()
+                //             .setCustomId('color-orange')
+                //             .setLabel('Orange')
+                //             .setEmoji('996661864371081336')
+                //             .setStyle(ButtonStyle.Secondary),
+                //         new ButtonBuilder()
+                //             .setCustomId('color-yellow')
+                //             .setLabel('Yellow')
+                //             .setEmoji('996661862714327080')
+                //             .setStyle(ButtonStyle.Secondary)
+                //     );
+                // const btnColorsTwo = new ActionRowBuilder()
+                //     .addComponents(
+                //         new ButtonBuilder()
+                //             .setCustomId('color-pink')
+                //             .setLabel('Pink')
+                //             .setEmoji('996661860080304138')
+                //             .setStyle(ButtonStyle.Secondary),
+                //         new ButtonBuilder()
+                //             .setCustomId('color-purple')
+                //             .setLabel('Purple')
+                //             .setEmoji('996661858025099275')
+                //             .setStyle(ButtonStyle.Secondary)
+                //     );
 
                 const btnPlatformsOne = new ActionRowBuilder()
                     .addComponents(
@@ -418,11 +418,11 @@ module.exports = {
 
                 await channel.send({ content: `https://www.forthecontent.xyz/images/creatorhub/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
 
-                await channel.send({
-                    content: `**Press a button below to add your role. Press it again to remove it**
+//                 await channel.send({
+//                     content: `**Press a button below to add your role. Press it again to remove it**
 
-**Choose your nickname color**`, components: [btnColorsOne, btnColorsTwo]
-                }).catch(err => console.error(`Could not send a message: `, err));
+// **Choose your nickname color**`, components: [btnColorsOne, btnColorsTwo]
+//                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `⠀
