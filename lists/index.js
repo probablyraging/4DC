@@ -256,10 +256,10 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <@&931054970327932928> ForTheContent moderators
 
 **MEMBERS**
+<@&821876910253670442> Our generous server boosters
 <@&839527054465826867> Displays currently live streaming server boosters
 <@&878229140992589906> Awarded to the user who claimed the #content-spotlight
 <@&998861546530820207> Displays a randomly selected user who is currently live streaming
-<@&821876910253670442> Our generous server boosters
 
 **RANKS**
 <@&1033910783400230953> The highest rank on the server, only the most elite will reach this rank
