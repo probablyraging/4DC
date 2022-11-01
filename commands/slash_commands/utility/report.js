@@ -19,7 +19,14 @@ module.exports = {
     async execute(interaction) {
         const { options } = interaction;
 
-        const attachment = options.getAttachment('proof')
+        const attachment = options.getAttachment('proof');
+
+        if (!attachment.contentType.includes('image')) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
         addAttachment(1, attachment.url);
 
