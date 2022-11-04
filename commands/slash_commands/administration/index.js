@@ -425,7 +425,8 @@ module.exports = {
 //                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
-                    content: `⠀
+                    content: `**Press a button below to add your role. Press it again to remove it**
+
 **Choose your content types**`, components: [btnPlatformsOne, btnPlatformsTwo, btnPlatformsThree]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
