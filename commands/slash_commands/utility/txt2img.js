@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     name: `txt2img`,
     description: `Get an AI generated image from a text prompt`,
-    cooldown: 30,
+    cooldown: 15,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: "prompt",
