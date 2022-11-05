@@ -86,7 +86,7 @@ module.exports = {
             "session_hash": "37s89n1ekua"
         }
 
-        const resolve = await fetch('https://a633e53cc2ed4d00.gradio.app/api/predict/', {
+        const resolve = await fetch(`${process.env.SB_URL}api/predict/`, {
             headers: { "Content-Type": "application/json" },
             method: 'post',
             body: JSON.stringify(dataJson)
@@ -96,7 +96,7 @@ module.exports = {
         const parsePath = imgPath.replaceAll('\\', '/');
 
         // Fetch and send image
-        const resolve2 = await fetch(`https://a633e53cc2ed4d00.gradio.app/file=${parsePath}`, {
+        const resolve2 = await fetch(`${process.env.SB_URL}file=${parsePath}`, {
             headers: { "Content-Type": "application/json" },
             method: 'get',
         });
@@ -114,8 +114,7 @@ module.exports = {
         interaction.editReply({
             content: `**Prompt**: \`${prompt}\`
 **Author**: ${member}
-> Get an AI generated image by using the </TXT2IMG:1038366383425200188> command
-> Check the pinned post for some cool filters`,
+> Get an AI generated image by using the </txt2img:1038366383425200188> command`,
             files: [attachment],
             components: [button],
             ephemeral: false
