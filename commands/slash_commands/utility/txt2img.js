@@ -86,7 +86,7 @@ module.exports = {
             "session_hash": "37s89n1ekua"
         }
 
-        const resolve = await fetch(`${process.env.SB_URL}api/predict/`, {
+        const resolve = await fetch(`${process.env.SD_URL}api/predict/`, {
             headers: { "Content-Type": "application/json" },
             method: 'post',
             body: JSON.stringify(dataJson)
@@ -96,7 +96,7 @@ module.exports = {
         const parsePath = imgPath.replaceAll('\\', '/');
 
         // Fetch and send image
-        const resolve2 = await fetch(`${process.env.SB_URL}file=${parsePath}`, {
+        const resolve2 = await fetch(`${process.env.SD_URL}file=${parsePath}`, {
             headers: { "Content-Type": "application/json" },
             method: 'get',
         });
