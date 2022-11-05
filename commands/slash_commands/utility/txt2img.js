@@ -25,7 +25,7 @@ module.exports = {
 
         const prompt = options.getString(`prompt`);
 
-        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude'];
+        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'piss', 'fucking', 'add', 'cunt', 'pussy', 'pissing', 'shit', 'shitting', 'cock', 'dick', 'sex', 'anus'];
 
         for (let i in filter) {
             if (prompt.includes(filter[i])) {
