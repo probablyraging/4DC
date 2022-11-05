@@ -25,7 +25,7 @@ module.exports = {
 
         const prompt = options.getString(`prompt`);
 
-        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'piss', 'fucking', 'add', 'cunt', 'pussy', 'pissing', 'shit', 'shitting', 'cock', 'dick', 'sex', 'anus'];
+        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'piss', 'fucking', 'add', 'cunt', 'pussy', 'pissing', 'shit', 'shitting', 'cock', 'dick', 'sex', 'anus', 'sexy', 'seduce', ];
 
         for (let i in filter) {
             if (prompt.includes(filter[i])) {
@@ -86,7 +86,7 @@ module.exports = {
             "session_hash": "37s89n1ekua"
         }
 
-        const resolve = await fetch('https://df98e7377e413e99.gradio.app/api/predict/', {
+        const resolve = await fetch('https://a633e53cc2ed4d00.gradio.app/api/predict/', {
             headers: { "Content-Type": "application/json" },
             method: 'post',
             body: JSON.stringify(dataJson)
@@ -96,7 +96,7 @@ module.exports = {
         const parsePath = imgPath.replaceAll('\\', '/');
 
         // Fetch and send image
-        const resolve2 = await fetch(`https://df98e7377e413e99.gradio.app/file=${parsePath}`, {
+        const resolve2 = await fetch(`https://a633e53cc2ed4d00.gradio.app/file=${parsePath}`, {
             headers: { "Content-Type": "application/json" },
             method: 'get',
         });
