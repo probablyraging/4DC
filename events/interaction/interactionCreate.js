@@ -113,9 +113,6 @@ module.exports = {
             if (interaction.customId === 'report-close') {
                 reportButton(interaction);
             }
-            if (interaction.customId === 'report-image' || interaction.customId === 'delete-image') {
-                reportImageButton(interaction);
-            }
         }
 
         // Modal submit handler
