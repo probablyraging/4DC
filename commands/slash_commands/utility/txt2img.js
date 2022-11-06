@@ -55,6 +55,7 @@ module.exports = {
             }
 
             if (data.includes('process_completed')) {
+                const jsonData = JSON.parse(data.toString());
                 const imageRaw = jsonData.output.data[0][0];
                 const image = imageRaw.replace(/(\r\n|\n|\r)/gm, '');
                 const buf = Buffer.from(image.split(",")[1], 'base64');
