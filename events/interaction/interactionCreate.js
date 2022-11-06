@@ -8,6 +8,7 @@ const genderButton = require('../../handlers/buttons/gender_button');
 const customButton = require('../../handlers/buttons/custom_button');
 const reportButton = require('../../handlers/buttons/report_button');
 const reportModal = require('../../handlers/modals/report_modal');
+const reportImageButton = require('../../handlers/buttons/txt2img_button');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
 const path = require('path');
@@ -111,6 +112,9 @@ module.exports = {
             }
             if (interaction.customId === 'report-close') {
                 reportButton(interaction);
+            }
+            if (interaction.customId === 'report-image' || interaction.customId === 'delete-image') {
+                reportImageButton(interaction);
             }
         }
 
