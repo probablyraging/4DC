@@ -115,7 +115,7 @@ module.exports = {
             );
 
         interaction.editReply({
-            content: `**Prompt**: \`${prompt.replaceAll('`', '')}\`
+            content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
 **Author**: ${member}
 > Use the </txt2img:1038366383425200188> command to get an AI generated image`,
             files: [attachment],
