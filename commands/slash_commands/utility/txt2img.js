@@ -103,11 +103,15 @@ module.exports = {
         const data2 = await resolve2.buffer();
         const attachment = new AttachmentBuilder(data2, "test.png");
 
-        const button = new ActionRowBuilder()
+        const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setCustomId('report-image')
-                    .setLabel('Report Images ONLY If They Break Server Rules')
+                    .setLabel('Report This Image')
+                    .setStyle(ButtonStyle.Danger),
+                new ButtonBuilder()
+                    .setCustomId('delete-image')
+                    .setLabel('Delete My Image')
                     .setStyle(ButtonStyle.Danger)
             );
 
@@ -116,7 +120,7 @@ module.exports = {
 **Author**: ${member}
 > Get an AI generated image by using the </txt2img:1038366383425200188> command`,
             files: [attachment],
-            components: [button],
+            components: [buttons],
             ephemeral: false
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
