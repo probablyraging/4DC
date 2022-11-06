@@ -58,7 +58,9 @@ module.exports = {
                 const imageRaw = jsonData.output.data[0][0];
                 const image = imageRaw.replace(/(\r\n|\n|\r)/gm, '');
                 const buf = Buffer.from(image.split(",")[1], 'base64');
-                const attachment = new AttachmentBuilder(buf, "test.png");
+                const cleanPrompt = prompt.slice(0, 56).replace(/[^\w\s]/gi, '')
+                const fileName = cleanPrompt.replace(/\s/g, '_')
+                const attachment = new AttachmentBuilder(buf, { name: `${fileName}.png` });
 
                 const buttons = new ActionRowBuilder()
                     .addComponents(
