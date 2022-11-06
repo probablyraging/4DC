@@ -1,6 +1,7 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { Buffer } = require('node:buffer');
 const WebSocket = require('ws');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
@@ -58,9 +59,9 @@ module.exports = {
                 const imageRaw = jsonData.output.data[0][0];
                 const image = imageRaw.replace(/(\r\n|\n|\r)/gm, '');
                 const buf = Buffer.from(image.split(",")[1], 'base64');
-                const cleanPrompt = prompt.slice(0, 56).replace(/[^\w\s]/gi, '')
+                const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '')
                 const fileName = cleanPrompt.replace(/\s/g, '_')
-                const attachment = new AttachmentBuilder(buf, { name: `${fileName}.png` });
+                const attachment = new AttachmentBuilder(buf, { name: `${fileName}_${new Date()}.png` });
 
                 const buttons = new ActionRowBuilder()
                     .addComponents(
