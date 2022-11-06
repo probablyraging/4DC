@@ -48,7 +48,6 @@ module.exports = {
         });
 
         ws.on('message', async function message(data) {
-            console.log(JSON.parse(data.toString()));
             if (data.includes('send_data')) {
                 const body = { "fn_index": 1, "data": [`${prompt}`], "session_hash": "xhx1zj7bng" };
                 ws.send(JSON.stringify(body));
