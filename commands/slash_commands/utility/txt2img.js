@@ -25,12 +25,12 @@ module.exports = {
 
         const prompt = options.getString(`prompt`);
 
-        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'piss', 'fucking', 'add', 'cunt', 'pussy', 'pissing', 'shit', 'shitting', 'cock', 'dick', 'sex', 'anus', 'sexy', 'seduce', ];
+        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'fucking', 'ass', 'cunt', 'pussy', 'piss', 'shit', 'cock', 'dick', 'sex', 'anus', 'seduce', 'kill', 'dead', 'death', 'dying', 'murder', 'slaughter'];
 
         for (let i in filter) {
             if (prompt.includes(filter[i])) {
                 return interaction.editReply({
-                    content: 'Please keep it SFW, creep',
+                    content: 'Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning',
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
