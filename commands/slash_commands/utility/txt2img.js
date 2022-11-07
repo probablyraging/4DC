@@ -91,7 +91,7 @@ module.exports = {
                     content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
 **Author**: ${member}
 
-Create your own AI generated image with the </txt2img:1038366383425200188> command`,
+Create your own AI generated image with the </txt2img:${interaction.commandId}> command`,
                     files: [attachment],
                     components: [buttons]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
