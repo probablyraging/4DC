@@ -99,6 +99,7 @@ Create your own AI generated image with the </txt2img:1038366383425200188> comma
                     var Sightengine = new SightengineClient(process.env.SE_USER, process.env.SE_TOKEN);
                     Sightengine.checkNudityForURL(imgUrl, function (error, result) {
                         if (result.safe < 0.30) {
+                            if (result.partial_tag === 'chest') return;
                             interaction.editReply({
                                 content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
 **Author**: ${member}
