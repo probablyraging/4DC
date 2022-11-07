@@ -96,7 +96,7 @@ Create your own AI generated image with the </txt2img:1038366383425200188> comma
                     components: [buttons]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
                     const imgUrl = int.attachments.first().url;
-                    var Sightengine = new SightengineClient('1769320776', '7LHwMmbcTvsnYSsT2tEd');
+                    var Sightengine = new SightengineClient(process.env.SE_USER, process.env.SE_TOKEN);
                     Sightengine.checkNudityForURL(imgUrl, function (error, result) {
                         if (result.safe < 0.30) {
                             interaction.editReply({
