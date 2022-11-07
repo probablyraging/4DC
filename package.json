@@ -28,6 +28,7 @@
         "lint": "^0.7.0",
         "mongoose": "^5.12.10",
         "nodemon": "^2.0.19",
+        "nudity-filter": "^0.1.2",
         "open-graph-scraper": "^4.11.1",
         "os": "^0.1.2",
         "pm2": "^5.1.2",

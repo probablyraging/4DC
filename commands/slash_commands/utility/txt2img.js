@@ -1,7 +1,7 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { Buffer } = require('node:buffer');
 const WebSocket = require('ws');
-const { v4: uuidv4 } = require('uuid');
+const SightengineClient = require('../../../node_modules/nudity-filter/sightengine');
 const path = require('path');
 
 module.exports = {
@@ -56,7 +56,19 @@ module.exports = {
 
             if (data.includes('process_completed')) {
                 const jsonData = JSON.parse(data.toString());
+                if (jsonData.output.error) {
+                    return interaction.editReply({
+                        content: `${member} An error occurred, please try again`,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+
                 const imageRaw = jsonData.output.data[0][0];
+                if (!imageRaw) {
+                    return interaction.editReply({
+                        content: `${member} An error occurred, please try again`,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
+
                 const image = imageRaw.replace(/(\r\n|\n|\r)/gm, '');
                 const buf = Buffer.from(image.split(",")[1], 'base64');
                 const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '')
@@ -82,7 +94,22 @@ module.exports = {
 Create your own AI generated image with the </txt2img:1038366383425200188> command`,
                     files: [attachment],
                     components: [buttons]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+                    const imgUrl = int.attachments.first().url;
+                    var Sightengine = new SightengineClient('1769320776', '7LHwMmbcTvsnYSsT2tEd');
+                    Sightengine.checkNudityForURL(imgUrl, function (error, result) {
+                        if (result.safe < 0.30) {
+                            interaction.editReply({
+                                content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
+**Author**: ${member}
+
+Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`,
+                                files: [],
+                                components: []
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
+                        }
+                    })
+                })
             }
         });
     }

@@ -3,7 +3,6 @@ const Canvas = require("canvas");
 const fetch = require('node-fetch');
 const { Buffer } = require('node:buffer');
 
-
 module.exports = {
     name: `test`,
     description: `dummy command`,
