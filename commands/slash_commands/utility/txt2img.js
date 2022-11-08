@@ -129,6 +129,7 @@ module.exports = {
                         files: [imgOne],
                         components: [buttons]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    ws.close();
                     nsfwCheck(interaction, int, prompt, member);
                 }
             }
@@ -145,6 +146,7 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                 int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
             }, 7000);
         });
+        ws.close();
     }
     if (count === 2) {
         if (imgBaseArr.length < 2) {
@@ -174,6 +176,8 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                     files: [attachment],
                     components: [buttons]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+
+                ws.close();
 
                 nsfwCheck(interaction, int, prompt, member);
 
@@ -214,6 +218,8 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                         files: [attachment],
                         components: [buttons]
                     }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+
+                    ws.close();
 
                     nsfwCheck(interaction, int, prompt, member);
 
@@ -260,6 +266,8 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                             files: [attachment],
                             components: [buttons]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+
+                        ws.close();
 
                         nsfwCheck(interaction, int, prompt, member);
 
