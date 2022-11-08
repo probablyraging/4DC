@@ -78,7 +78,7 @@ module.exports = {
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
         // Connect to SD websocket
-        var ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
+        ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
         ws.on('open', function () {
             const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
             ws.send(JSON.stringify(body));
