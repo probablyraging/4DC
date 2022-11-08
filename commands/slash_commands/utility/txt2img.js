@@ -221,7 +221,6 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
     }
     if (count === 4) {
         if (imgBaseArr.length !== 4) {
-        console.log(imgBaseArr.length);
         return interaction.editReply({
                 content: `${member} An error occurred, please try again`,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
