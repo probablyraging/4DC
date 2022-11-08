@@ -112,7 +112,7 @@ module.exports = {
                     });
                 }
 
-                let imgBaseArr = [];
+                imgBaseArr = [];
                 jsonData.output.data[0].forEach(img => {
                     const replace = img.replace(/(\r\n|\n|\r)/gm, '');
                     imgBaseArr.push({ data: replace.split(",")[1], name: `${fileName}_${uuidv4()}.png` });
@@ -298,4 +298,5 @@ Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
         }
     });
+    imgBaseArr = [];
 }
