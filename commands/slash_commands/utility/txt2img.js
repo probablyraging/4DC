@@ -34,6 +34,8 @@ module.exports = {
         const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '');
         const fileName = cleanPrompt.replace(/\s/g, '_');
 
+        console.log(member.user.tag - prompt);
+
         const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
