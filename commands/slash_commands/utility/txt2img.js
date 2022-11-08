@@ -137,15 +137,22 @@ module.exports = {
 }
 
 async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
+    if (count === null) {
+        interaction.editReply({
+            content: `${member} Not enough results for this prompt`,
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+            setTimeout(() => {
+                int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+            }, 7000);
+        });
+    }
     if (count === 2) {
         if (imgBaseArr.length < 2) {
-            return interaction.editReply({
-                content: `${member} An error occurred, please try again`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
+            const count = null;
+            interaction.editReply({
+                content: `${member} Not enough results - trying again with count: ${count}`,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
         const filePath = `./res/images/${uuidv4()}.png`;
         const filePath2 = `./res/images/${uuidv4()}.png`;
@@ -177,13 +184,11 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
     }
     if (count === 3) {
         if (imgBaseArr.length < 3) {
-            return interaction.editReply({
-                content: `${member} An error occurred, please try again`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
+            const count = 2;
+            interaction.editReply({
+                content: `${member} Not enough results - trying again with count: ${count}`,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
         const filePath = `./res/images/${uuidv4()}.png`;
         const filePath2 = `./res/images/${uuidv4()}.png`;
@@ -221,13 +226,11 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
     }
     if (count === 4) {
         if (imgBaseArr.length !== 4) {
-        return interaction.editReply({
-                content: `${member} An error occurred, please try again`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
+            const count = 3;
+            interaction.editReply({
+                content: `${member} Not enough results - trying again with count: ${count}`,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
         const filePath = `./res/images/${uuidv4()}.png`;
         const filePath2 = `./res/images/${uuidv4()}.png`;
