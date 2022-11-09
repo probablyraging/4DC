@@ -11,7 +11,6 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <#1005283113775157349> Information about the server channels and roles
 > <#948052750611120228> Express yourself with some profile flair
 > <#820889004055855147> Introduce yourself to and chat with the community
-> <#1012065026451963915> Browse the communities useful resources
 > <#1033734609013317692> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
@@ -214,7 +213,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 <#1005283113775157349> You are here
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
-<#1012065026451963915> Find a load a useful resources to help in your creative process
 <#900243955847938078> Helpful videos for creators, from YouTube Creators
 <#887642369598570527> Look at all these awesome server boosters
 
