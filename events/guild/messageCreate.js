@@ -38,7 +38,6 @@ module.exports = {
         // Misc checks
         rankXP(message, client);
         creatorCrew(message, client);
-        resPost(message, client);
         suggestionPost(message);
         stickyReminder(message, client);
 
