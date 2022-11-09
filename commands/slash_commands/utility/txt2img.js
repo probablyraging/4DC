@@ -102,7 +102,7 @@ module.exports = {
                     });
                 }
 
-                if (!jsonData.output.data[0][0]) {
+                if (jsonData.output.data.length === 0) {
                     return interaction.editReply({
                         content: `${member} An error occurred, please try again`,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
