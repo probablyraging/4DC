@@ -113,7 +113,7 @@ module.exports = {
 
                 if (jsonData.output.data.length === 0) {
                     return interaction.editReply({
-                        content: `${member} An error occurred, please try again`,
+                        content: `${member} Unable to generate an image, please try again`,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
                         setTimeout(() => {
                             int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
