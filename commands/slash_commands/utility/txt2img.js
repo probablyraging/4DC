@@ -80,6 +80,15 @@ module.exports = {
         // Connect to SD websocket
         ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
         ws.on('open', function () {
+            if (ws.readyState !== 1) {
+                return interaction.editReply({
+                    content: `${member} An error occurred, please try again`,
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+                    setTimeout(() => {
+                        int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+                    }, 7000);
+                });
+            }
             const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
             ws.send(JSON.stringify(body));
         });
