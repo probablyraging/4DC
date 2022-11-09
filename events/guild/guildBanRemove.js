@@ -22,7 +22,7 @@ module.exports = {
                 .setColor("#4fe059")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*`)
-                .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: './res/images/unban_icon.png' })
+                .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: 'https://i.imgur.com/zlJ21Wg.png' })
                 .setTimestamp();
 
             logChan.send({

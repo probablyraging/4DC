@@ -118,7 +118,7 @@ module.exports = {
 **Channel:** ${targetChan}
 **Duration:** ${duration}
 **Reason:** ${reason}`)
-                    .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: './res/images/mute_icon.png' })
+                    .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: 'https://i.imgur.com/LOAhPjU.png' })
                     .setTimestamp();
 
                 logChan.send({
@@ -147,7 +147,7 @@ module.exports = {
                     .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
 **Channel:** ${targetChan}`)
-                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: './res/images/unmute_icon.png' })
+                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://i.imgur.com/bCghXGD.png' })
                     .setTimestamp();
 
                 logChan.send({

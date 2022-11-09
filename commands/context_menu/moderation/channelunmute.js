@@ -28,7 +28,7 @@ module.exports = {
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
 **Channel:** ${channel}`)
-            .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: './res/images/unmute_icon.png' })
+            .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://i.imgur.com/LOAhPjU.png' })
             .setTimestamp();
 
         logChan.send({
