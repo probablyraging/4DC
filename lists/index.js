@@ -66,7 +66,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 ⠀`,
 
         `**How can I apply for a staff role?**
-> We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by visiting the [ForTheContent Dashboard](https://www.forthecontent.xyz), logging in with your Discord account and filling out the staff application form. Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
+> We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by filling out [this form](https://docs.google.com/forms/d/1W7K6WtKes3otlWYiSO_vdZ-dg9f4H0xS-g87gvhGvqY). Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
 > To make a report, you can use the </report:1031245457902555213> command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
