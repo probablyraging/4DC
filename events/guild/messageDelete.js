@@ -44,7 +44,7 @@ module.exports = {
                 .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
                     { name: `Channel`, value: `${message?.channel}`, inline: true },
                     { name: `Message`, value: `\`\`\`${content}\`\`\``, inline: false })
-                .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: './res/images/creatorhub/delete_icon.png' })
+                .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: './res/images/delete_icon.png' })
                 .setTimestamp()
 
             if ((new Date() - timestamp) < 10000) {

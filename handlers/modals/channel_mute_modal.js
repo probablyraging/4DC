@@ -67,7 +67,7 @@ module.exports = async (interaction) => {
 **Channel:** ${channel}
 **Duration:** ${duration}
 **Reason:** ${reason}`)
-        .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: './res/images/creatorhub/mute_icon.png' })
+        .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: './res/images/mute_icon.png' })
         .setTimestamp();
 
     logChan.send({

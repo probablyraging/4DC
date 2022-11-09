@@ -11,7 +11,7 @@ module.exports = {
      * @param {ContextMenuInteraction} interaction 
      */
     execute(interaction) {
-        const img = './res/images/creatorhub/booster_rewards.png';
+        const img = './res/images/booster_rewards.png';
         interaction.reply({
             files: [img],
             ephemeral: true

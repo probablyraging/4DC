@@ -1,6 +1,6 @@
 module.exports = {
     welcome: [
-        `./res/images/creatorhub/banner_welcome.png`,
+        `./res/images/banner_welcome.png`,
 
         `ForTheContent is a growing community of content creators, developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with useful resources to help you grow your online presence
 
@@ -16,7 +16,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 ⠀`,
 
-        `./res/images/creatorhub/banner_rules.png`,
+        `./res/images/banner_rules.png`,
 
         `By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
@@ -34,13 +34,13 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     ],
 
     rules: [
-        `./res/images/creatorhub/banner_rules.png`,
+        `./res/images/banner_rules.png`,
 
         ``
     ],
 
     faqs: [
-        `./res/images/creatorhub/banner_serverfaq.png`,
+        `./res/images/banner_serverfaq.png`,
 
         `**When/how can I share my content?**
 > Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to them when posting. You can bypass this rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the </rank:1031245457902555212> command
@@ -72,7 +72,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > To make a report, you can use the </report:1031245457902555213> command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
 ⠀`,
 
-        `./res/images/creatorhub/banner_youtubefaq.png`,
+        `./res/images/banner_youtubefaq.png`,
 
         `**How do I get started?**
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
@@ -109,7 +109,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos4
 ⠀`,
 
-        `./res/images/creatorhub/banner_twitchfaq.png`,
+        `./res/images/banner_twitchfaq.png`,
 
         `**How do I get started?**
 > Streaming on Twitch is simple, all you need is a broadcasting program such as [OBS](<https://obsproject.com>), [Streamlabs OBS](<https://streamlabs.com>), [XSplit](<https://www.xsplit.com>), or any other alternative. Once you have chosen a program to use, you can head over to your [settings](<https://dashboard.twitch.tv/settings/stream>) page on Twitch, grab your stream key and go live right away. Though you might want to take some time to learn the program you're using, fine-tune your video and audio settings and set up some overlays and notification alerts
@@ -142,7 +142,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     ],
 
     usefullinks: [
-        `./res/images/creatorhub/banner_usefullinks.png`,
+        `./res/images/banner_usefullinks.png`,
 
         `**Official YouTube Links**
 > Help Center: <https://support.google.com/youtube/>
@@ -185,7 +185,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     ],
 
     servermap: [
-        `./res/images/creatorhub/banner_channels.png`,
+        `./res/images/banner_channels.png`,
 
         `**A handy guide to help you navigate the server channels**
         
@@ -225,7 +225,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#995882451446546502> All of these people are on Santa's naughty list
 ⠀`,
 
-        `./res/images/creatorhub/banner_roles.png`,
+        `./res/images/banner_roles.png`,
 
         `**A handy guide to help you understand the server roles**
 

@@ -397,7 +397,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Secondary)
                     );
 
-                await channel.send({ content: `./res/images/creatorhub/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
+                await channel.send({ content: `./res/images/banner_selfroles.png` }).catch(err => console.error(`Could not send a message: `, err));
 
 //                 await channel.send({
 //                     content: `**Press a button below to add your role. Press it again to remove it**

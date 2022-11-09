@@ -21,7 +21,7 @@ module.exports = {
                     { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
                     { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
                     { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
-                .setFooter({ text: `Edit • ${uuidv4()}`, iconURL: './res/images/creatorhub/edit_icon.png' })
+                .setFooter({ text: `Edit • ${uuidv4()}`, iconURL: './res/images/edit_icon.png' })
                 .setTimestamp()
 
             logChan.send({

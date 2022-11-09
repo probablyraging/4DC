@@ -31,7 +31,7 @@ module.exports = {
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
 
         // Booster rewards
-        const img = './res/images/creatorhub/booster_rewards.png';
+        const img = './res/images/booster_rewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
