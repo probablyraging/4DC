@@ -105,7 +105,7 @@ module.exports = async (message) => {
                         .setDescription(`Consider leaving an honest review of the server by [**CLICKING HERE**](https://disboard.org/review/create/820889004055855144)
         
 ${savesMessage}`)
-                        .setImage('https://www.forthecontent.xyz/images/creatorhub/FTC_Bump.png')
+                        .setImage('./res/images/creatorhub/FTC_Bump.png')
 
                     // Fetch and delete the previous bump ping message
                     await message?.channel.messages.fetch({ limit: 3 }).then(fetched => {

@@ -118,7 +118,7 @@ module.exports = {
 **Channel:** ${targetChan}
 **Duration:** ${duration}
 **Reason:** ${reason}`)
-                    .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/mute_icon.png' })
+                    .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: './res/images/creatorhub/mute_icon.png' })
                     .setTimestamp();
 
                 logChan.send({
@@ -147,7 +147,7 @@ module.exports = {
                     .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
 **Channel:** ${targetChan}`)
-                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/unmute_icon.png' })
+                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: './res/images/creatorhub/unmute_icon.png' })
                     .setTimestamp();
 
                 logChan.send({

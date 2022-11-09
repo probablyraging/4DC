@@ -32,7 +32,7 @@ module.exports = async (message, client, Discord) => {
                     .setAuthor({ name: `${client?.user.tag}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
 **Channel:** ${targetChan}`)
-                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/unmute_icon.png' })
+                    .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: './res/images/creatorhub/unmute_icon.png' })
                     .setTimestamp();
 
                 logChan.send({

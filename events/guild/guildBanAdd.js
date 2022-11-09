@@ -24,7 +24,7 @@ module.exports = {
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${ban?.user.tag} *(${ban?.user.id})*
 **Reason:** ${toReason}`)
-                .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: 'https://www.forthecontent.xyz/images/creatorhub/ban_icon.png' })
+                .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: './res/images/creatorhub/ban_icon.png' })
                 .setTimestamp();
 
             logChan.send({
