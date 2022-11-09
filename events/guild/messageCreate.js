@@ -5,7 +5,6 @@ const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
 const blSpam = require('../../modules/blacklist/spam');
 const blPhishing = require('../../modules/blacklist/phishing');
-const resPost = require('../../modules/misc/resource_post');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
