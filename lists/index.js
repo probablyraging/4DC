@@ -184,24 +184,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`
     ],
 
-    creatorcrew: [
-        `**What Is Creator Crew?**
-Creator Crew is a channel for supporting your fellow content creators in a few different ways, such as views, likes and watch time. These analytics can help with having YouTube recommend your content more, and getting your content featured on the home pages of others. If you'd like to join the group, please DM a staff member
-⠀
-**How It Works**
-\`1.\` Visit the [**ForTheContent Dashboard**](https://www.forthecontent.xyz/creatorcrew) and sign in
-\`2.\` Press play on all, or as many videos as you want
-\`3.\` Press the like button below all the videos you're watching
-\`4.\` Leave the videos to play for 10 minutes - the status indicator will turn green when successfully completed (liked and watched)
-\`5. (optional)\` If you actually enjoy someone's content, consider leaving a comment with something relating to the video
-⠀
-**Please Note**
-\`1.\` You can only post one link every 24 hours
-\`2.\` You must watch your video queue at least once every 3 days, if a video is only than 3 days, staff will be notified
-\`4.\` Contact a staff member if you need to be set as away
-\`5.\` Click the INFORMATION button on the Creator Crew dashboard for more information`
-    ],
-
     servermap: [
         `https://www.forthecontent.xyz/images/creatorhub/banner_channels.png`,
 
@@ -232,7 +214,6 @@ Creator Crew is a channel for supporting your fellow content creators in a few d
 
         `**CONTENT SHARE**
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
-<#841568782992277524> An elite group of super supportive server members
 <#878229815541497857> Content sharing, but with a twist
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
 <#856719763187302441> Share your content with other server members

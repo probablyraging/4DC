@@ -17,7 +17,6 @@ module.exports = {
         { name: 'servermap', value: 'servermap' },
         { name: 'faqs', value: 'faqs' },
         { name: 'usefullinks', value: 'usefullinks' },
-        { name: 'creatorcrew', value: 'creatorcrew' },
         { name: 'selfroles', value: 'selfroles' },
         { name: 'featuredstream', value: 'featuredstream' }]
     }],
@@ -187,24 +186,6 @@ module.exports = {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-                break;
-            }
-
-            // CREATOR CREW
-            case 'creatorcrew': {
-                const response = new EmbedBuilder()
-                    .setColor('#32BEA6')
-                    .setDescription(`${index.creatorcrew}`)
-
-                channel.send({
-                    embeds: [response]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} Done`,

@@ -31,9 +31,7 @@ module.exports = {
             { name: 'Rule 5 - behaviour breaking platform ToS', value: '5' },
             { name: 'Rule 6 - openly discussing moderator actions', value: '6' },
             { name: 'Rule 7 - messages not in English', value: '7' },
-            { name: 'Custom', value: 'Custom' },
-            { name: 'Lack of tabs in screenshot', value: 'lack_of_tabs' },
-            { name: 'Has not posted proof', value: 'has_not_posted_proof' }]
+            { name: 'Custom', value: 'Custom' }]
         },
         {
             name: `custom`,

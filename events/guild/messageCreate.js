@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const creatorCrew = require("../../modules/creator_crew/check_new_post");
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const ckqPost = require('../../modules/bump_ckq/ckq_post');
 const bumpPost = require('../../modules/bump_ckq/bump_post');
@@ -37,7 +36,6 @@ module.exports = {
 
         // Misc checks
         rankXP(message, client);
-        creatorCrew(message, client);
         suggestionPost(message);
         stickyReminder(message, client);
 

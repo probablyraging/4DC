@@ -1,8 +1,20 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const timerSchema = require('../../../schemas/misc/timer_schema');
-const { msToHumanTime } = require("../../../modules/creator_crew/utilities");
 const path = require('path');
+
+function msToHumanTime(milliseconds) {
+    let hours = milliseconds / (1000 * 60 * 60);
+    let hoursFloor = Math.floor(hours);
+
+    let minutes = (hours - hoursFloor) * 60;
+    let minutesFloor = Math.floor(minutes);
+
+    let seconds = (minutes - minutesFloor) * 60;
+    let secondFloor = Math.floor(seconds);
+
+    return hoursFloor + " hours, " + minutesFloor + " minutes and " + secondFloor + " seconds";
+}
 
 module.exports = {
     name: `counting`,
