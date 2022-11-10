@@ -1,11 +1,25 @@
 const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const SightengineClient = require('../../../node_modules/nudity-filter/sightengine');
 const { Buffer } = require('node:buffer');
-const WebSocket = require('ws');
 const Canvas = require("canvas");
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const fs = require('fs');
+const WebSocket = require('ws');
+const wait = require("timers/promises").setTimeout;
+
+function notifyError(interaction, member, err) {
+    console.error(`${path.basename(__filename)} - ${err}`);
+    return interaction.editReply({
+        content: `${member} ${err}, please try again`,
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+        setTimeout(() => {
+            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+        }, 7000);
+    });
+}
+
+loading = false;
 
 module.exports = {
     name: `txt2img`,
@@ -34,8 +48,6 @@ module.exports = {
         const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '');
         const fileName = cleanPrompt.replace(/\s/g, '_');
 
-        console.log(member.user.tag, prompt);
-
         const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -50,17 +62,6 @@ module.exports = {
 
         await interaction.deferReply();
 
-        if (count && count < 1 || count > 4) {
-            return interaction.editReply({
-                content: 'Count must be between 1-4',
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
-        }
-
         const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'fucking', 'cunt', 'pussy', 'piss', 'shit', 'dick', 'sex', 'anus', 'seduce', 'seductive'];
 
         for (let i in filter) {
@@ -68,58 +69,53 @@ module.exports = {
             if (regex.test(prompt)) {
                 return interaction.editReply({
                     content: 'Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning',
-                    ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
         }
 
+        if (count && count < 1 || count > 4) {
+            return interaction.editReply({
+                content: 'Count must be between 1-4',
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+                setTimeout(() => {
+                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+                }, 7000);
+            });
+        }
+
+        if (loading) {
+            interaction.editReply({
+                content: `${member} your prompt has been added to the queue`,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
+            await wait(2000);
+        }
+
         interaction.editReply({
-            content: `${member} Tiny little worker robots are creating your image and it may take up to 30 seconds`,
+            content: `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`,
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-        // Connect to SD websocket
+        loading = true;
         ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
-        ws.on('open', function () {
-            if (ws.readyState !== 1) {
-                return interaction.editReply({
-                    content: `${member} An error occurred, please try again`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                    setTimeout(() => {
-                        int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                    }, 7000);
-                });
-            }
+
+        // Connect to SD websocket
+        ws.on('open', async function () {
+            if (ws.readyState === 1) loading = false;
+            if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
             const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
             ws.send(JSON.stringify(body));
         });
 
         ws.on('message', async function message(data) {
             if (data.includes('send_data')) {
-                const body = { "fn_index": 1, "data": [`${prompt}`], "session_hash": "xhx1zj7bng" };
+                if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
+                const body = { "fn_index": 1, "data": [`${prompt}`] };
                 ws.send(JSON.stringify(body));
             }
 
             if (data.includes('process_completed')) {
                 const jsonData = JSON.parse(data.toString());
-                if (jsonData.output.error) {
-                    return interaction.editReply({
-                        content: `${member} An error occurred, please try again`,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                        setTimeout(() => {
-                            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                        }, 7000);
-                    });
-                }
-
-                if (!jsonData.output.data) {
-                    return interaction.editReply({
-                        content: `${member} Unable to generate an image, please try again`,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                        setTimeout(() => {
-                            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                        }, 7000);
-                    });
-                }
+                if (jsonData.output.error) return notifyError(interaction, member, 'could not parse json data');
+                if (!jsonData.output.data) return notifyError(interaction, member, 'an image could not be generated');
 
                 let imgBaseArr = [];
                 jsonData.output.data[0].forEach(img => {
@@ -131,6 +127,7 @@ module.exports = {
 
                 if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
                 if (!count || count === 1) {
+                    if (!imgBaseArr[0]?.data) return notifyError(interaction, member, 'an image could not be generated');
                     const buf = Buffer.from(imgBaseArr[0].data, 'base64');
                     const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
                     const int = await interaction.editReply({
@@ -146,15 +143,7 @@ module.exports = {
 }
 
 async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
-    if (count === null) {
-        interaction.editReply({
-            content: `${member} Not enough results for this prompt`,
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-            setTimeout(() => {
-                int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-            }, 7000);
-        });
-    }
+    if (count === null) return notifyError(interaction, member, 'an image could not be generated');
     if (count === 2) {
         if (imgBaseArr.length < 2) {
             const count = null;
