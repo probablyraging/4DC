@@ -111,7 +111,7 @@ module.exports = {
                     });
                 }
 
-                if (jsonData.output.data.length === 0) {
+                if (!jsonData.output.data) {
                     return interaction.editReply({
                         content: `${member} Unable to generate an image, please try again`,
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
