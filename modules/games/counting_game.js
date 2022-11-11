@@ -11,32 +11,20 @@ module.exports = async (message, client) => {
     if (message?.channel.id === process.env.COUNT_CHAN && !message?.author.bot) {
         let failed = false;
 
-        if (!message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE)) {
-            // if the user doesn't have rank 5 or higher, they need to have atleast 1 save to play
-            const results = await countingSchema.find({ userId: message.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-            if (results.length > 0) {
-                for (const data of results) {
-                    currentSaves = data.saves;
-                }
-            } else {
-                currentSaves = 0;
-            }
-            // If the user doesn't exist in the database or they have no saves
-            if (currentSaves === 0) {
-                message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
-                return message.reply({
-                    content: `${process.env.BOT_DENY} You must be \`rank 5\` OR have at least \`1 save\` to play the counting game. Learn how to get a save by using the \`/counting save\` command`,
-                    allowedMentions: { repliedUser: true },
-                    failIfNotExists: false
-                }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
-                    .then(msg => {
-                        setTimeout(() => {
-                            msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
-                        }, 10000);
-                    });
-            } else {
-                initGame();
-            }
+        // if the user is newer than a day, they have to wait to play
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        if ((new Date() - message?.author.joinedTimestamp) < twentyFourHours) {
+            message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+            return message.reply({
+                content: `${process.env.BOT_DENY} You're new to the server. We require new members to wait **24 hours** before they can play the counting game`,
+                allowedMentions: { repliedUser: true },
+                failIfNotExists: false
+            }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
+                .then(msg => {
+                    setTimeout(() => {
+                        msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                    }, 10000);
+                });
         } else {
             initGame();
         }
