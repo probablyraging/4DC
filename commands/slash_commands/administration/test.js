@@ -2,6 +2,11 @@ const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, Applicatio
 const Canvas = require("canvas");
 const fetch = require('node-fetch');
 const { Buffer } = require('node:buffer');
+const path = require("path");
+
+function numberWithCommas(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 module.exports = {
     name: `test`,

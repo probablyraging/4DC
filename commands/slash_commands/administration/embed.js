@@ -147,10 +147,7 @@ module.exports = {
                     .then(() => {
                         interaction.editReply({
                             content: `${process.env.BOT_CONF} Embed created and sent`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
-                            .then(() => setTimeout(() => {
-                                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-                            }, 1500));
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     });
 
                     break;

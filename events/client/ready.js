@@ -8,6 +8,7 @@ const liveNow = require('../../modules/misc/live_now');
 const autoYT = require('../../modules/misc/auto_yt');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
 const welcomeCheck = require('../../modules/misc/welcome_check');
+const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const cronjob = require('cron').CronJob;
 const mongo = require('../../mongo');
 const Canvas = require("canvas");
@@ -29,6 +30,7 @@ module.exports = {
 
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
+        Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
 
         // Booster rewards
         const img = './res/images/booster_rewards.png';
@@ -57,6 +59,7 @@ module.exports = {
         autoYT(client);
         fetchTweets(client);
         welcomeCheck(client);
+        leaderboardUpdate(client)
 
         console.timeEnd('Time to online');
     }
