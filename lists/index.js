@@ -216,6 +216,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
+<#1040381607674130492> Real time leaderboards for server ranks and games
 <#987212586007281674> It's like a revolving door
 <#995882451446546502> All of these people are on Santa's naughty list
 ⠀`,
