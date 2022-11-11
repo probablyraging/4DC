@@ -15,7 +15,7 @@ function numberWithCommas(x) {
 }
 
 module.exports = async (client) => {
-    const leaderboards = new cronjob('*/10 * * * *', async function () {
+    // const leaderboards = new cronjob('*/10 * * * *', async function () {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const leaderboardChan = guild.channels.cache.get(process.env.LB_CHAN);
 
@@ -50,19 +50,19 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#5cb6fc";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(results[0].xp)}`, 800, 134);
-                        ctx.fillText(`${numberWithCommas(results[1].xp)}`, 800, 214);
-                        ctx.fillText(`${numberWithCommas(results[2].xp)}`, 800, 294);
-                        ctx.fillText(`${numberWithCommas(results[3].xp)}`, 800, 374);
-                        ctx.fillText(`${numberWithCommas(results[4].xp)}`, 800, 454);
+                        ctx.fillText(`${numberWithCommas(results[0].xp)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(results[1].xp)}`, 760, 214);
+                        ctx.fillText(`${numberWithCommas(results[2].xp)}`, 760, 294);
+                        ctx.fillText(`${numberWithCommas(results[3].xp)}`, 760, 374);
+                        ctx.fillText(`${numberWithCommas(results[4].xp)}`, 760, 454);
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`xp`, 820, 134);
-                        ctx.fillText(`xp`, 820, 214);
-                        ctx.fillText(`xp`, 820, 294);
-                        ctx.fillText(`xp`, 820, 374);
-                        ctx.fillText(`xp`, 820, 454);
+                        ctx.fillText(`XP`, 780, 134);
+                        ctx.fillText(`XP`, 780, 214);
+                        ctx.fillText(`XP`, 780, 294);
+                        ctx.fillText(`XP`, 780, 374);
+                        ctx.fillText(`XP`, 780, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_rank_bg2.png");
@@ -89,19 +89,19 @@ module.exports = async (client) => {
                         // Values
                         ctx2.fillStyle = "#5cb6fc";
                         ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(results[5].xp)}`, 800, 46);
-                        ctx2.fillText(`${numberWithCommas(results[6].xp)}`, 800, 126);
-                        ctx2.fillText(`${numberWithCommas(results[7].xp)}`, 800, 206);
-                        ctx2.fillText(`${numberWithCommas(results[8].xp)}`, 800, 286);
-                        ctx2.fillText(`${numberWithCommas(results[9].xp)}`, 800, 366);
+                        ctx2.fillText(`${numberWithCommas(results[5].xp)}`, 760, 46);
+                        ctx2.fillText(`${numberWithCommas(results[6].xp)}`, 760, 126);
+                        ctx2.fillText(`${numberWithCommas(results[7].xp)}`, 760, 206);
+                        ctx2.fillText(`${numberWithCommas(results[8].xp)}`, 760, 286);
+                        ctx2.fillText(`${numberWithCommas(results[9].xp)}`, 760, 366);
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`xp`, 820, 46);
-                        ctx2.fillText(`xp`, 820, 126);
-                        ctx2.fillText(`xp`, 820, 206);
-                        ctx2.fillText(`xp`, 820, 286);
-                        ctx2.fillText(`xp`, 820, 366);
+                        ctx2.fillText(`XP`, 780, 46);
+                        ctx2.fillText(`XP`, 780, 126);
+                        ctx2.fillText(`XP`, 780, 206);
+                        ctx2.fillText(`XP`, 780, 286);
+                        ctx2.fillText(`XP`, 780, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "rank_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "rank_lb2.png" });
@@ -148,19 +148,19 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#85f9b3";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].msgCount)}`, 800, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].msgCount)}`, 800, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].msgCount)}`, 800, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].msgCount)}`, 800, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].msgCount)}`, 800, 454);
+                        ctx.fillText(`${numberWithCommas(dataArr[0].msgCount)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].msgCount)}`, 760, 214);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].msgCount)}`, 760, 294);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].msgCount)}`, 760, 374);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].msgCount)}`, 760, 454);
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`msgs`, 820, 134);
-                        ctx.fillText(`msgs`, 820, 214);
-                        ctx.fillText(`msgs`, 820, 294);
-                        ctx.fillText(`msgs`, 820, 374);
-                        ctx.fillText(`msgs`, 820, 454);
+                        ctx.fillText(`MSGS`, 780, 134);
+                        ctx.fillText(`MSGS`, 780, 214);
+                        ctx.fillText(`MSGS`, 780, 294);
+                        ctx.fillText(`MSGS`, 780, 374);
+                        ctx.fillText(`MSGS`, 780, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_message_bg2.png");
@@ -187,19 +187,19 @@ module.exports = async (client) => {
                         // Values
                         ctx2.fillStyle = "#85f9b3";
                         ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].msgCount)}`, 800, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].msgCount)}`, 800, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].msgCount)}`, 800, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].msgCount)}`, 800, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].msgCount)}`, 800, 366);
+                        ctx2.fillText(`${numberWithCommas(dataArr[5].msgCount)}`, 760, 46);
+                        ctx2.fillText(`${numberWithCommas(dataArr[6].msgCount)}`, 760, 126);
+                        ctx2.fillText(`${numberWithCommas(dataArr[7].msgCount)}`, 760, 206);
+                        ctx2.fillText(`${numberWithCommas(dataArr[8].msgCount)}`, 760, 286);
+                        ctx2.fillText(`${numberWithCommas(dataArr[9].msgCount)}`, 760, 366);
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`msgs`, 820, 46);
-                        ctx2.fillText(`msgs`, 820, 126);
-                        ctx2.fillText(`msgs`, 820, 206);
-                        ctx2.fillText(`msgs`, 820, 286);
-                        ctx2.fillText(`msgs`, 820, 366);
+                        ctx2.fillText(`MSGS`, 780, 46);
+                        ctx2.fillText(`MSGS`, 780, 126);
+                        ctx2.fillText(`MSGS`, 780, 206);
+                        ctx2.fillText(`MSGS`, 780, 286);
+                        ctx2.fillText(`MSGS`, 780, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "message_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "message_lb2.png" });
@@ -246,19 +246,19 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#eaf986";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].counts)}`, 800, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].counts)}`, 800, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].counts)}`, 800, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].counts)}`, 800, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].counts)}`, 800, 454);
+                        ctx.fillText(`${numberWithCommas(dataArr[0].counts)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].counts)}`, 760, 214);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].counts)}`, 760, 294);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].counts)}`, 760, 374);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].counts)}`, 760, 454);
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`points`, 820, 134);
-                        ctx.fillText(`points`, 820, 214);
-                        ctx.fillText(`points`, 820, 294);
-                        ctx.fillText(`points`, 820, 374);
-                        ctx.fillText(`points`, 820, 454);
+                        ctx.fillText(`POINTS`, 780, 134);
+                        ctx.fillText(`POINTS`, 780, 214);
+                        ctx.fillText(`POINTS`, 780, 294);
+                        ctx.fillText(`POINTS`, 780, 374);
+                        ctx.fillText(`POINTS`, 780, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_count_bg2.png");
@@ -285,19 +285,19 @@ module.exports = async (client) => {
                         // Values
                         ctx2.fillStyle = "#eaf986";
                         ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].counts)}`, 800, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].counts)}`, 800, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].counts)}`, 800, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].counts)}`, 800, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].counts)}`, 800, 366);
+                        ctx2.fillText(`${numberWithCommas(dataArr[5].counts)}`, 760, 46);
+                        ctx2.fillText(`${numberWithCommas(dataArr[6].counts)}`, 760, 126);
+                        ctx2.fillText(`${numberWithCommas(dataArr[7].counts)}`, 760, 206);
+                        ctx2.fillText(`${numberWithCommas(dataArr[8].counts)}`, 760, 286);
+                        ctx2.fillText(`${numberWithCommas(dataArr[9].counts)}`, 760, 366);
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`points`, 820, 46);
-                        ctx2.fillText(`points`, 820, 126);
-                        ctx2.fillText(`points`, 820, 206);
-                        ctx2.fillText(`points`, 820, 286);
-                        ctx2.fillText(`points`, 820, 366);
+                        ctx2.fillText(`POINTS`, 780, 46);
+                        ctx2.fillText(`POINTS`, 780, 126);
+                        ctx2.fillText(`POINTS`, 780, 206);
+                        ctx2.fillText(`POINTS`, 780, 286);
+                        ctx2.fillText(`POINTS`, 780, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "count_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "count_lb2.png" });
@@ -344,19 +344,19 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#f39f54";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].correctCount)}`, 800, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].correctCount)}`, 800, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].correctCount)}`, 800, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].correctCount)}`, 800, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].correctCount)}`, 800, 454);
+                        ctx.fillText(`${numberWithCommas(dataArr[0].correctCount)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].correctCount)}`, 760, 214);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].correctCount)}`, 760, 294);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].correctCount)}`, 760, 374);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].correctCount)}`, 760, 454);
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`points`, 820, 134);
-                        ctx.fillText(`points`, 820, 214);
-                        ctx.fillText(`points`, 820, 294);
-                        ctx.fillText(`points`, 820, 374);
-                        ctx.fillText(`points`, 820, 454);
+                        ctx.fillText(`POINTS`, 780, 134);
+                        ctx.fillText(`POINTS`, 780, 214);
+                        ctx.fillText(`POINTS`, 780, 294);
+                        ctx.fillText(`POINTS`, 780, 374);
+                        ctx.fillText(`POINTS`, 780, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_letter_bg2.png");
@@ -383,19 +383,19 @@ module.exports = async (client) => {
                         // Values
                         ctx2.fillStyle = "#f39f54";
                         ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].correctCount)}`, 800, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].correctCount)}`, 800, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].correctCount)}`, 800, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].correctCount)}`, 800, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].correctCount)}`, 800, 366);
+                        ctx2.fillText(`${numberWithCommas(dataArr[5].correctCount)}`, 760, 46);
+                        ctx2.fillText(`${numberWithCommas(dataArr[6].correctCount)}`, 760, 126);
+                        ctx2.fillText(`${numberWithCommas(dataArr[7].correctCount)}`, 760, 206);
+                        ctx2.fillText(`${numberWithCommas(dataArr[8].correctCount)}`, 760, 286);
+                        ctx2.fillText(`${numberWithCommas(dataArr[9].correctCount)}`, 760, 366);
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`points`, 820, 46);
-                        ctx2.fillText(`points`, 820, 126);
-                        ctx2.fillText(`points`, 820, 206);
-                        ctx2.fillText(`points`, 820, 286);
-                        ctx2.fillText(`points`, 820, 366);
+                        ctx2.fillText(`POINTS`, 780, 46);
+                        ctx2.fillText(`POINTS`, 780, 126);
+                        ctx2.fillText(`POINTS`, 780, 206);
+                        ctx2.fillText(`POINTS`, 780, 286);
+                        ctx2.fillText(`POINTS`, 780, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "letter_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "letter_lb2.png" });
@@ -415,6 +415,6 @@ module.exports = async (client) => {
                 }
             });
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching message: `, err));
-    });
-    leaderboards.start();
+    // });
+    // leaderboards.start();
 }
