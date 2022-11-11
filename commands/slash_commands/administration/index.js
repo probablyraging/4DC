@@ -14,7 +14,7 @@ module.exports = {
         required: true,
         choices: [{ name: 'welcome', value: 'welcome' },
         { name: 'rules', value: 'rules' },
-        { name: 'servermap', value: 'servermap' },
+        { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
         { name: 'usefullinks', value: 'usefullinks' },
         { name: 'selfroles', value: 'selfroles' },
@@ -63,7 +63,7 @@ module.exports = {
                 break;
             }
 
-            // WELCOME
+            // RULES
             case 'rules': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -91,8 +91,8 @@ module.exports = {
                 break;
             }
 
-            // SERVER MAP
-            case 'servermap': {
+            // SERVER GUIDE
+            case 'serverguide': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
