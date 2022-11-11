@@ -187,6 +187,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
 <#1005283113775157349> You are here
+<#1040530300515647548> Find answers to frequently asked question
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
 <#900243955847938078> Helpful videos for creators, from YouTube Creators
