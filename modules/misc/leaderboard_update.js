@@ -15,7 +15,7 @@ function numberWithCommas(x) {
 }
 
 module.exports = async (client) => {
-    const leaderboards = new cronjob('0 */2 * * *', async function () {
+    const leaderboards = new cronjob('*/10 * * * *', async function () {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const leaderboardChan = guild.channels.cache.get(process.env.LB_CHAN);
 
@@ -409,7 +409,7 @@ module.exports = async (client) => {
                     // Timer
                     if (message?.content.includes('timer_lb') || message?.content.includes('update')) {
                         message.edit({
-                            content: `*Leaderboards update <t:${Math.round((new Date() / 1000) + 7200)}:R>*`
+                            content: `*Leaderboards update <t:${Math.round((new Date() / 1000) + 600)}:R>*`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
                 }
