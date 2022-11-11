@@ -58,11 +58,11 @@ module.exports = async (client) => {
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`XP`, 820, 134);
-                        ctx.fillText(`XP`, 820, 214);
-                        ctx.fillText(`XP`, 820, 294);
-                        ctx.fillText(`XP`, 820, 374);
-                        ctx.fillText(`XP`, 820, 454);
+                        ctx.fillText(`xp`, 820, 134);
+                        ctx.fillText(`xp`, 820, 214);
+                        ctx.fillText(`xp`, 820, 294);
+                        ctx.fillText(`xp`, 820, 374);
+                        ctx.fillText(`xp`, 820, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_rank_bg2.png");
@@ -97,11 +97,11 @@ module.exports = async (client) => {
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`XP`, 820, 46);
-                        ctx2.fillText(`XP`, 820, 126);
-                        ctx2.fillText(`XP`, 820, 206);
-                        ctx2.fillText(`XP`, 820, 286);
-                        ctx2.fillText(`XP`, 820, 366);
+                        ctx2.fillText(`xp`, 820, 46);
+                        ctx2.fillText(`xp`, 820, 126);
+                        ctx2.fillText(`xp`, 820, 206);
+                        ctx2.fillText(`xp`, 820, 286);
+                        ctx2.fillText(`xp`, 820, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "rank_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "rank_lb2.png" });
@@ -254,11 +254,11 @@ module.exports = async (client) => {
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`counts`, 820, 134);
-                        ctx.fillText(`counts`, 820, 214);
-                        ctx.fillText(`counts`, 820, 294);
-                        ctx.fillText(`counts`, 820, 374);
-                        ctx.fillText(`counts`, 820, 454);
+                        ctx.fillText(`points`, 820, 134);
+                        ctx.fillText(`points`, 820, 214);
+                        ctx.fillText(`points`, 820, 294);
+                        ctx.fillText(`points`, 820, 374);
+                        ctx.fillText(`points`, 820, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_count_bg2.png");
@@ -293,11 +293,11 @@ module.exports = async (client) => {
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`counts`, 820, 46);
-                        ctx2.fillText(`counts`, 820, 126);
-                        ctx2.fillText(`counts`, 820, 206);
-                        ctx2.fillText(`counts`, 820, 286);
-                        ctx2.fillText(`counts`, 820, 366);
+                        ctx2.fillText(`points`, 820, 46);
+                        ctx2.fillText(`points`, 820, 126);
+                        ctx2.fillText(`points`, 820, 206);
+                        ctx2.fillText(`points`, 820, 286);
+                        ctx2.fillText(`points`, 820, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "count_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "count_lb2.png" });
