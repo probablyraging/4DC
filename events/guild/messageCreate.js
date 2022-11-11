@@ -49,11 +49,6 @@ module.exports = {
             }
         }
 
-        // Delete all messages in FAQ thread channel
-        if (message?.channel.id === process.env.FAQ_CHAN && !message?.author.bot) {
-            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-        }
-
         // Delete links in media channel if user is new to the server
         const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
         const twelveHours = 12 * 60 * 60 * 1000;
