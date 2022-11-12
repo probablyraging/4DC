@@ -50,8 +50,7 @@ module.exports = async (message) => {
                     embeds: [dgEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             } else {
-                if (!gameState || message?.content.split(' ').length > 1) return;
-                message?.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
+                if (gameState) message?.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
             }
         }
     }
