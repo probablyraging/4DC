@@ -840,7 +840,8 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
             .addFields({ name: `Category`, value: `${categoryChoice.charAt(0).toUpperCase() + categoryChoice.slice(1)}`, inline: true },
                 { name: `Hint *(${randWord.length} letters)*`, value: `${hint}`, inline: true })
             .setFooter({
-                text: `/sketchguess hint - get a hint`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
+                text: `/sketchguess hint - get a hint
+/sketchguess resend - fix broken drawing`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png'
             })
 
         // sometimes images aren't being attached to embed properly - hoping this solves that?
