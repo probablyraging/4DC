@@ -14,6 +14,8 @@ module.exports = async (message) => {
 
         for (const data of results) {
             const currentDrawer = data.currentDrawer;
+            const gameState = data.gameState;
+
             if (message?.author.id === currentDrawer) return;
 
             // when a user correctly guesses the word
@@ -47,6 +49,9 @@ module.exports = async (message) => {
                 message?.channel.send({
                     embeds: [dgEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            } else {
+                if (!gameState || message?.content.split(' ').length > 1) return;
+                message?.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
             }
         }
     }
