@@ -164,7 +164,7 @@ module.exports = {
                     // only allow the current drawer to submit their drawing
                     if (user?.id === currentDrawer || member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                         // if the drawing has already been submitted
-                        if (isSubmitted && !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
+                        if (isSubmitted || !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             return interaction.reply({
                                 content: `Your drawing has already been submitted
 If there was an error with the first embed, use \`/sketchguess resend\``,
@@ -775,7 +775,7 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
     page = await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page);
 
     // take a screenshot of the page and crop what we don't need
-    await page.screenshot({
+    if (page) await page.screenshot({
         clip: {
             x: 90, // top
             y: 130, // left
