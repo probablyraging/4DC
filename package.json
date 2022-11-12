@@ -40,7 +40,6 @@
         "ytdl-core": "^4.8.2"
     },
     "devDependencies": {
-        "@playwright/test": "^1.19.2",
         "eslint": "^8.4.1"
     }
 }
