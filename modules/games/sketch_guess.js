@@ -6,6 +6,7 @@ const path = require('path');
  * @param {Message} message 
  */
 module.exports = async (message) => {
+    let collector;
     if (message?.channel.id === process.env.SKETCH_CHAN && !message?.author.bot) {
         const guess = message?.content.toLowerCase();
         const guesser = message?.author;
@@ -14,7 +15,6 @@ module.exports = async (message) => {
 
         for (const data of results) {
             const currentDrawer = data.currentDrawer;
-            const gameState = data.gameState;
 
             if (message?.author.id === currentDrawer) return;
 
@@ -49,12 +49,13 @@ module.exports = async (message) => {
                 message?.channel.send({
                     embeds: [dgEmbed]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                
+                if (collector) collector.stop();
             }
         }
     }
 
     // when X amount of guesses have been sent, the initial embed will be pushed off screen so we should send it again
-    let collector;
     let count = 0;
     if (message?.channel.id === process.env.SKETCH_CHAN) {
         if (message.embeds.length >= 1) {
@@ -69,10 +70,9 @@ module.exports = async (message) => {
                         const results = await sketchSchema.find({});
 
                         for (const data of results) {
-                            const wasGuessed = data.wasGuessed;
-                            const hasEnded = data.hasEnded;
+                            const gameState = data.gameState;
 
-                            if (wasGuessed || hasEnded) return collector.stop();
+                            if (!gameState) return collector.stop();
 
                             count++;
 
@@ -92,9 +92,8 @@ module.exports = async (message) => {
                                         m?.channel.send({
                                             embeds: [embed]
                                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching an embed: `, err));
+                                    })/*.catch(err => console.error(`${path.basename(__filename)} There was a problem fetching an embed: `, err));*/
                                 }, 1500);
-
                             }
                         }
                         collectStop(m);
