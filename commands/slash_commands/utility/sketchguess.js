@@ -776,12 +776,12 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
 
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
-        // clip: {
-        //     x: 90, // top
-        //     y: 130, // left
-        //     width: 1530,
-        //     height: 865
-        // }
+        clip: {
+            x: 90, // top
+            y: 130, // left
+            width: 1530,
+            height: 865
+        }
     }).then(async image => {
         // close browser and cleanup
         await browser.close();
@@ -869,7 +869,7 @@ async function loadPage(channel, user, customId, websiteUrl, randWord, categoryC
 
     // go to the website
     await page.goto(websiteUrl);
-    
+
     await sleep(30000);
 
     // wait for the canvas to load
