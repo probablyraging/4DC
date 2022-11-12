@@ -773,7 +773,6 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
     // Load page once and then refresh it
     // await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page);
     page = await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page);
-    await sleep(30000);
 
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
@@ -898,6 +897,8 @@ async function loadPage(channel, user, customId, websiteUrl, randWord, categoryC
             elements[i].parentNode.removeChild(elements[i]);
         }
     }, selector);
+
+    await sleep(30000);
 
     return page;
 }
