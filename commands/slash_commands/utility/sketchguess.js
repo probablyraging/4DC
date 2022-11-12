@@ -769,10 +769,11 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
     let websiteUrl = `https://aggie.io/${customId}`;
 
     const browser = await webkit.launch();
+    let page = await browser.newPage();
     // Load page once and then refresh it
-    await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser);
+    await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page);
     await sleep(10000);
-    const page = await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser);
+    page = await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page);
 
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
@@ -859,9 +860,7 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
     });
 }
 
-async function loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser) {
-    const page = await browser.newPage();
-
+async function loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page) {
     // set our viewport
     await page.setViewportSize({
         width: 1920,
