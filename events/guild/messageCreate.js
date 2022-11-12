@@ -10,6 +10,7 @@ const rankXP = require('../../modules/rank/rank_xp');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyReminder = require('../../modules/misc/sticky_reminder');
 const { newUsers } = require('../guild/guildMemberAdd');
+const sketchGame = require('../../modules/games/sketch_guess');
 const path = require('path');
 
 module.exports = {
@@ -20,6 +21,8 @@ module.exports = {
     async execute(message, client) {
         // Ignore DM messages
         if (message?.channel.type === 1) return;
+
+        sketchGame(message);
 
         // Blacklist checks
         linkCooldown(message, client);
