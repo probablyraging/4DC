@@ -164,7 +164,7 @@ module.exports = {
                     // only allow the current drawer to submit their drawing
                     if (user?.id === currentDrawer || member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                         // if the drawing has already been submitted
-                        if (isSubmitted || !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
+                        if (isSubmitted && !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                             return interaction.reply({
                                 content: `Your drawing has already been submitted
 If there was an error with the first embed, use \`/sketchguess resend\``,
