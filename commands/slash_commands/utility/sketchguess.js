@@ -185,9 +185,6 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                        // the canvas can take a few seconds to update for others so we compendate for this
-                        await sleep(5000);
-
                         resending = false;
 
                         // fetch the drawing
@@ -237,9 +234,6 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                             content: `Resending your drawing. The current image will be replaced with the new one`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
-                        // the canvas can take a few seconds to update for others so we compensate for this
-                        await sleep(5000);
 
                         if (wasGuessed) return;
 
@@ -721,8 +715,8 @@ async function initGame(user, interaction, channel, options) {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
 
-            // sleep for 3 seconds before officially starting the round to allow the drawer time to load the webpage
-            await sleep(3000);
+            // sleep for 10 seconds before officially starting the round to allow the drawer time to load the webpage
+            await sleep(10000);
 
             const results = await sketchSchema.find({});
 
@@ -753,11 +747,12 @@ async function initGame(user, interaction, channel, options) {
                 const hasEnded = data.hasEnded;
                 const isSubmitted = data.isSubmitted;
                 const category = data.category;
+                const custId =  data.customId;
 
                 // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
                 if (wasGuessed || hasEnded || isSubmitted || fetchInProgress) return;
 
-                fetchDrawing(channel, user, customId, randWord, category);
+                fetchDrawing(channel, user, custId, randWord, category);
             }
         }
     }

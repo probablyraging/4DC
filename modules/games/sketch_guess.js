@@ -92,7 +92,7 @@ module.exports = async (message) => {
                                         m?.channel.send({
                                             embeds: [embed]
                                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                                    })/*.catch(err => console.error(`${path.basename(__filename)} There was a problem fetching an embed: `, err));*/
+                                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching an embed: `, err));
                                 }, 1500);
                             }
                         }
