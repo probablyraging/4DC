@@ -181,7 +181,7 @@ If there was an error with the first embed, use \`/sketchguess resend\``,
                         }
 
                         interaction.reply({
-                            content: `Your drawing has been sumbitted and will appear soon, this may take a few second..`,
+                            content: `Your drawing has been sumbitted, it may take a minute or two to show up..`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
@@ -860,7 +860,7 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
 }
 
 async function loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page) {
-    console.log('booprs');
+    console.log('Reloading page..');
     // set our viewport
     await page.setViewportSize({
         width: 1920,
@@ -870,7 +870,7 @@ async function loadPage(channel, user, customId, websiteUrl, randWord, categoryC
     // go to the website
     await page.goto(websiteUrl);
 
-    await sleep(30000);
+    await sleep(10000);
 
     // wait for the canvas to load
     // await page.waitForSelector('canvas[class="checker layer-thumb"]');
