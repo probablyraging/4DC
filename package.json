@@ -31,7 +31,6 @@
         "nudity-filter": "^0.1.2",
         "open-graph-scraper": "^4.11.1",
         "os": "^0.1.2",
-        "playwright": "^1.27.1",
         "pm2": "^5.1.2",
         "request": "^2.88.2",
         "rss-parser": "^3.12.0",
