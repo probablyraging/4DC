@@ -43,8 +43,8 @@ module.exports = async (message) => {
                 const dgEmbed = new EmbedBuilder()
                     .setAuthor({ name: `Correct Guess`, iconURL: 'https://cdn-icons-png.flaticon.com/512/610/610333.png' })
                     .setColor('#c0ff8c')
-                    .setDescription(`${guesser} guessed the word \`${guess.toUpperCase()}\` and won the round!`)
-                    .setFooter({ text: `• /sketchguess draw - start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
+                    .setDescription(`${guesser} guessed the word **${guess.toUpperCase()}** and won the round!`)
+                    .setFooter({ text: `/sketchguess draw - start a new round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                 message?.channel.send({
                     embeds: [dgEmbed]

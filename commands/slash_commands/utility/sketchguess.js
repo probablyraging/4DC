@@ -728,7 +728,7 @@ async function initGame(user, interaction, channel, options) {
                         .setAuthor({ name: `New Round`, iconURL: 'https://cdn-icons-png.flaticon.com/512/3767/3767273.png' })
                         .setColor('#a2ff91')
                         .setDescription(`${user} has **3 minutes** to draw their word`)
-                        .setImage('https://i.imgur.com/LA0Rzpk.jpg')
+                        .setImage('https://i.imgur.com/20hcFyW.jpg')
                         .setFooter({ text: `check back soon..`, iconURL: 'https://cdn-icons-png.flaticon.com/512/1479/1479689.png' })
 
                     channel?.send({
