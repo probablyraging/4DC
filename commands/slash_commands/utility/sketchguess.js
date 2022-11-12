@@ -776,12 +776,12 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
 
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
-        clip: {
-            x: 90, // top
-            y: 130, // left
-            width: 1530,
-            height: 865
-        }
+        // clip: {
+        //     x: 90, // top
+        //     y: 130, // left
+        //     width: 1530,
+        //     height: 865
+        // }
     }).then(async image => {
         // close browser and cleanup
         await browser.close();
@@ -860,6 +860,7 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
 }
 
 async function loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser, page) {
+    console.log('booprs');
     // set our viewport
     await page.setViewportSize({
         width: 1920,
@@ -868,19 +869,21 @@ async function loadPage(channel, user, customId, websiteUrl, randWord, categoryC
 
     // go to the website
     await page.goto(websiteUrl);
+    
+    await sleep(30000);
 
     // wait for the canvas to load
-    await page.waitForSelector('canvas[class="checker layer-thumb"]');
+    // await page.waitForSelector('canvas[class="checker layer-thumb"]');
 
     // if the page is stuck on 'loading', restart the function
-    // const divLoading = await page.locator('div[class="editor-long-task"]').count();
-    // if (divLoading === 1) {
-    //     fetchInProgress = false;
+    const divLoading = await page.locator('div[class="editor-long-task"]').count();
+    if (divLoading === 1) {
+        fetchInProgress = false;
 
-    //     await browser.close();
+        await browser.close();
 
-    //     return fetchDrawing(channel, user, customId, randWord, categoryChoice);
-    // }
+        return fetchDrawing(channel, user, customId, randWord, categoryChoice);
+    }
 
     // center and resize the canvas so we can see it all
     await page.locator('button[command="zoom-out"]').click();
@@ -897,8 +900,6 @@ async function loadPage(channel, user, customId, websiteUrl, randWord, categoryC
             elements[i].parentNode.removeChild(elements[i]);
         }
     }, selector);
-
-    await sleep(30000);
 
     return page;
 }
