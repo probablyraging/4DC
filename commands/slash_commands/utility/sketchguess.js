@@ -738,7 +738,7 @@ async function initGame(user, interaction, channel, options) {
             }
 
             // sleep for 3 minutes and then fetch the drawing
-            await sleep(180000);
+            await sleep(150000);
 
             const results2 = await sketchSchema.find({});
 
@@ -747,11 +747,10 @@ async function initGame(user, interaction, channel, options) {
                 const hasEnded = data.hasEnded;
                 const isSubmitted = data.isSubmitted;
                 const category = data.category;
-                const custId =  data.customId;
+                const custId = data.urlId;
 
                 // if the drawing was manually submitted, guessed or if the round has ended, we can stop here
                 if (wasGuessed || hasEnded || isSubmitted || fetchInProgress) return;
-
                 fetchDrawing(channel, user, custId, randWord, category);
             }
         }
@@ -768,48 +767,12 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
 
     // fetch the drawing from the website
     let websiteUrl = `https://aggie.io/${customId}`;
+
     const browser = await webkit.launch();
-    const page = await browser.newPage();
-
-    // set our viewport
-    await page.setViewportSize({
-        width: 1920,
-        height: 1080
-    });
-
-    // go to the website
-    await page.goto(websiteUrl);
-
-    // wait for the canvas to load
-    await page.waitForSelector('div[class="editor-canvas"]', {
-        hidden: false
-    });
-
-    // if the page is stuck on 'loading', restart the function
-    const divLoading = await page.locator('div[class="editor-long-task"]').count();
-    if (divLoading === 1) {
-        fetchInProgress = false;
-
-        await browser.close();
-
-        return fetchDrawing(channel, user, customId, randWord, categoryChoice);
-    }
-
-    // center and resize the canvas so we can see it all
-    await page.locator('button[command="zoom-out"]').click();
-    await sleep(300);
-    await page.locator('button[command="fit-on-screen"]').click();
-    await sleep(1000);
-
-    // remove tooltips that obstruct the canvas
-    let selector = '.tooltip';
-    await page.evaluate((s) => {
-        var elements = document.querySelectorAll(s);
-
-        for (var i = 0; i < elements.length; i++) {
-            elements[i].parentNode.removeChild(elements[i]);
-        }
-    }, selector);
+    // Load page once and then refresh it
+    await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser);
+    await sleep(10000);
+    const page = await loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser);
 
     // take a screenshot of the page and crop what we don't need
     await page.screenshot({
@@ -894,4 +857,48 @@ async function fetchDrawing(channel, user, customId, randWord, categoryChoice) {
         // the drawing has been fetching process is complete, we can reset this
         fetchInProgress = false;
     });
+}
+
+async function loadPage(channel, user, customId, websiteUrl, randWord, categoryChoice, browser) {
+    const page = await browser.newPage();
+
+    // set our viewport
+    await page.setViewportSize({
+        width: 1920,
+        height: 1080
+    });
+
+    // go to the website
+    await page.goto(websiteUrl);
+
+    // wait for the canvas to load
+    await page.waitForSelector('canvas[class="checker layer-thumb"]');
+
+    // if the page is stuck on 'loading', restart the function
+    // const divLoading = await page.locator('div[class="editor-long-task"]').count();
+    // if (divLoading === 1) {
+    //     fetchInProgress = false;
+
+    //     await browser.close();
+
+    //     return fetchDrawing(channel, user, customId, randWord, categoryChoice);
+    // }
+
+    // center and resize the canvas so we can see it all
+    await page.locator('button[command="zoom-out"]').click();
+    await sleep(300);
+    await page.locator('button[command="fit-on-screen"]').click();
+    await sleep(1000);
+
+    // remove tooltips that obstruct the canvas
+    let selector = '.tooltip';
+    await page.evaluate((s) => {
+        var elements = document.querySelectorAll(s);
+
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].parentNode.removeChild(elements[i]);
+        }
+    }, selector);
+
+    return page;
 }
