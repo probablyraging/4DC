@@ -37,12 +37,12 @@ module.exports = {
         type: ApplicationCommandOptionType.Subcommand,
         usage: `/sketchguess submit`,
     },
-    {
+    /*{
         name: `resend`,
         description: `Resend your drawing if there was an error`,
         type: ApplicationCommandOptionType.Subcommand,
         usage: `/sketchguess resend`,
-    },
+    },*/
     {
         name: `link`,
         description: `Resend your link incase you need it`,
