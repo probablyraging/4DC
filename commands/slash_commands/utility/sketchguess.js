@@ -738,7 +738,7 @@ async function initGame(user, interaction, channel, options) {
             }
 
             // sleep for 3 minutes and then fetch the drawing
-            await sleep(10000);
+            await sleep(150000);
 
             const results2 = await sketchSchema.find({});
 
