@@ -867,7 +867,6 @@ module.exports = {
         'javelin',
         'jaw',
         'jaws',
-        'jayleno',
         'jayz',
         'jazz',
         'jeans',

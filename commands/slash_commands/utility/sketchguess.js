@@ -649,7 +649,8 @@ The word was \`${currentWord.toUpperCase()}\``)
 async function initGame(user, interaction, channel, options) {
     categoryChoice = options.getString('category');
     const category = eval(categoryChoice);
-    const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18); // unique room code can only be 24 chars long
+    // const customId = uuidv4().slice(0, Math.random() * (24 - 18) + 18); // unique room code can only be 24 chars long
+    const customId = user.id;
     const canvasUrl = `https://aggie.io/${customId}`;
     const randNum = Math.floor(Math.random() * category.length); // random number
     const randWord = category[randNum]; // pick a random word from the list
