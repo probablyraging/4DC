@@ -51,10 +51,6 @@ module.exports = {
         const buttons = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('report-image')
-                    .setLabel('Report This Image')
-                    .setStyle(ButtonStyle.Danger),
-                new ButtonBuilder()
                     .setCustomId('delete-image')
                     .setLabel('Delete My Image')
                     .setStyle(ButtonStyle.Danger)

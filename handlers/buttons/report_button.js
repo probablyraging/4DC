@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const path = require('path');
 
 module.exports = async (interaction) => {
     const { client, guild, user } = interaction;
