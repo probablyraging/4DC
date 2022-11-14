@@ -208,7 +208,7 @@ module.exports = {
         'brush',
         'bubble',
         'bubbles',
-        'buckel',
+        'buckle',
         'bucket',
         'buckle',
         'buffalo',
