@@ -183,17 +183,6 @@ module.exports = async (message, client) => {
 
                 // keep track of the current count and the previous counter
                 async function updateCurrentCount() {
-                    // Todo: can be deleted
-                    if ((currentCount + 1) === 10000) {
-                        message?.channel.send({
-                            content: `Nice! You managed to count to **10,000** :tada: You're a special little human!
-
-For all your hard work I have prepared a super secret reward for the **first 5 people** who claim it.
-
-Claim your super secret reward now by using the \`/claim\` command` })
-                            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                        message?.channel.edit({ name: 'count-to-20000' }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel name: `, err));
-                    }
                     await countingCurrent.updateOne({
                         searchFor: 'currentCount'
                     }, {
