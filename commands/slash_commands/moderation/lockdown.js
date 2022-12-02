@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `lockdown`,
     description: `Prevent everyone from sending messages in all channels`,
+    defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{

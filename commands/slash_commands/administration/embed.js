@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
     options: [{

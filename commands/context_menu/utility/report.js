@@ -6,7 +6,6 @@ const path = require('path');
 module.exports = {
     name: `Report Message`,
     description: ``,
-    permission: ``,
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**

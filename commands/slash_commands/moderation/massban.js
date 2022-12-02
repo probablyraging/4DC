@@ -168,6 +168,7 @@ async function createMassBanRequest(interaction) {
 module.exports = {
     name: `massban`,
     description: `Ban a list of users who have been in the server for less than a day.`,
+    defaultMemberPermissions: ['ManageRoles'],
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [

@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
     name: `serverinfo`,
     description: `Get information and stats about the server`,
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**

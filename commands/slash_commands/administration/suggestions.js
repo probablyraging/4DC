@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `suggestions`,
     description: `Approve or deny a suggestions`,
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [{

@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
 	name: `info`,
 	description: `Information regarding individual topics`,
+    defaultMemberPermissions: ['BanMembers'],
 	cooldown: 3,
 	type: ApplicationCommandType.ChatInput,
 	options: [{

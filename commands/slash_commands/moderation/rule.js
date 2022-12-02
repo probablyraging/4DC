@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
     name: `rule`,
     description: `Remind a user to not be an a-hole`,
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{

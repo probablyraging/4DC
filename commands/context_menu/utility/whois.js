@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
     name: `Whois`,
     description: ``,
-    permission: ``,
     cooldown: 5,
     type: ApplicationCommandType.User,
     /**

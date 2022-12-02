@@ -5,6 +5,7 @@ const rankSchema = require('../../../schemas/misc/rank_schema');
 module.exports = {
     name: `xp`,
     description: `Reset a user's XP`,
+    defaultMemberPermissions: ['ManageRoles'],
     cooldown: 30,
     type: ApplicationCommandType.ChatInput,
     options: [{

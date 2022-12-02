@@ -3,6 +3,7 @@ const { ContextMenuInteraction, ApplicationCommandType, ActionRowBuilder, TextIn
 module.exports = {
     name: `Channel Mute`,
     description: ``,
+    defaultMemberPermissions: ['BanMembers'],
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**

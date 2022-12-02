@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     name: `channelreset`,
     description: `Manually reset a timed channel`,
+    defaultMemberPermissions: ['BanMembers'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{

@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     name: `autoyt`,
     description: `Add or remove a user from the AUTOYT list`,
+    defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{

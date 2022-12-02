@@ -5,6 +5,7 @@ const path = require("path");
 module.exports = {
     name: `move`,
     description: `Move a message to a specific channel. Move up to 5 messages at a time`,
+    defaultMemberPermissions: ['BanMembers'],
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [

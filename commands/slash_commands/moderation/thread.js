@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
     name: `thread`,
     description: `Mark a help and advice thread as solved or closed`,
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
     options: [{
