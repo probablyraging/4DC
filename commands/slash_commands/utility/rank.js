@@ -19,8 +19,7 @@ module.exports = {
         required: false,
     }],
     /**
-     *
-     * @param {ContextMenuInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { member, options } = interaction;

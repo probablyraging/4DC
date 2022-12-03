@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -26,8 +26,7 @@ module.exports = {
         required: false,
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     execute(interaction) {
         const { options } = interaction;

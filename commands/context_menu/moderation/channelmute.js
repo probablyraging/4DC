@@ -1,14 +1,12 @@
-const { ContextMenuInteraction, ApplicationCommandType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
 
 module.exports = {
     name: `Channel Mute`,
-    description: ``,
     defaultMemberPermissions: ['BanMembers'],
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { channel } = interaction;

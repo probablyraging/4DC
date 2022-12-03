@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
 const path = require('path');
 
 module.exports = {
@@ -16,8 +16,7 @@ module.exports = {
         { name: 'Close', value: 'close' }]
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { options, channel } = interaction;

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -7,8 +7,7 @@ module.exports = {
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     execute(interaction) {
         const img = './res/images/booster_rewards.png';

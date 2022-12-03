@@ -74,7 +74,6 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         }, 2000);
 
-
         // if a user deletes there post in CKQ before the timer is up, open the channel to be reposted in
         if (message?.channel.id === process.env.SPOTLIGHT_CHAN && !message?.author.bot) {
             const guild = client.guilds.cache.get(process.env.GUILD_ID);

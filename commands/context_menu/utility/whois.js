@@ -1,14 +1,12 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
     name: `Whois`,
-    description: ``,
     cooldown: 5,
     type: ApplicationCommandType.User,
     /**
-     *
-     * @param {ContextMenuInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { guild } = interaction;

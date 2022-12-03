@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { featuredRandomPicker } = require('../../../modules/bump_ckq/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
@@ -18,8 +18,7 @@ module.exports = {
     /*{ name: 'featuredchannel', value: 'featuredchannel' }*/]
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { client, guild, options } = interaction;

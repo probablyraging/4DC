@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
 const massbanSchema = require('../../../schemas/misc/mass_ban_schema');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
@@ -6,7 +6,7 @@ const { EmbedBuilder } = require('discord.js');
 /**
  * Deny a mass ban request.
  *
- * @param {ContextMenuInteraction} interaction
+ * @param {CommandInteraction} interaction
  * @param {String} users The users to ban
  * @param {String} reason The reason for banning the users
  */
@@ -41,7 +41,7 @@ async function banUsers(interaction, users, reason) {
 /**
  * Deny a mass ban request.
  *
- * @param {ContextMenuInteraction} interaction
+ * @param {CommandInteraction} interaction
  */
 async function approveMassBan(interaction) {
     let { member, guild, options } = interaction;
@@ -93,7 +93,7 @@ async function approveMassBan(interaction) {
 /**
  * Approve a mass ban request.
  *
- * @param {ContextMenuInteraction} interaction
+ * @param {CommandInteraction} interaction
  */
 async function denyMassBan(interaction) {
     let { options, member, guild } = interaction;
@@ -129,7 +129,7 @@ async function denyMassBan(interaction) {
 /**
  * Create a mass ban request modal.
  *
- * @param {ContextMenuInteraction} interaction
+ * @param {CommandInteraction} interaction
  */
 async function createMassBanRequest(interaction) {
     const modal = new ModalBuilder()
@@ -202,8 +202,7 @@ module.exports = {
     ],
 
     /**
-     *
-     * @param {ContextMenuInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         let { options } = interaction;

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
 const { addAttachment } = require("../../../modules/misc/report_attachment");
 
 module.exports = {
@@ -13,8 +13,7 @@ module.exports = {
         required: true
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { options } = interaction;

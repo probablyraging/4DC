@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const SightengineClient = require('../../../node_modules/nudity-filter/sightengine');
 const { Buffer } = require('node:buffer');
 const Canvas = require("canvas");
@@ -38,8 +38,7 @@ module.exports = {
         required: false
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { options, member } = interaction;

@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 const rankSchema = require('../../../schemas/misc/rank_schema');
 
@@ -20,8 +20,7 @@ module.exports = {
         }],
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { member, options } = interaction;

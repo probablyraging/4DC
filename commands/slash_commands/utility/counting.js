@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
@@ -32,8 +32,7 @@ module.exports = {
         type: ApplicationCommandOptionType.Subcommand,
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { member, guild, client, options } = interaction;

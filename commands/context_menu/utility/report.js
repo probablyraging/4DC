@@ -1,16 +1,14 @@
-const { EmbedBuilder, ContextMenuInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const { addCooldown, hasCooldown, removeCooldown } = require('../../../modules/misc/report_cooldown');
 const path = require('path');
 
 module.exports = {
     name: `Report Message`,
-    description: ``,
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**
-     *
-     * @param {ContextMenuInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { client, user, guild, channel } = interaction;

@@ -19,7 +19,6 @@ module.exports = {
         required: false
     }],
     /**
-     * 
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {

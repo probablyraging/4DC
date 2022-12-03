@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -56,10 +56,8 @@ module.exports = {
             required: true
         }],
     }],
-
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { member, guild, channel, options } = interaction;

@@ -68,28 +68,6 @@ module.exports = {
             }
         }
 
-        // Select menu handler
-        if (interaction.type === InteractionType.MessageComponent) {
-            if (interaction.customId === 'color-select') {
-                colorSelect(interaction);
-            }
-            if (interaction.customId === 'platform-select') {
-                platformSelect(interaction);
-            }
-            if (interaction.customId === 'age-select') {
-                ageSelect(interaction);
-            }
-            if (interaction.customId === 'region-select') {
-                regionSelect(interaction);
-            }
-            if (interaction.customId === 'gender-select') {
-                genderSelect(interaction);
-            }
-            if (interaction.customId === 'custom-select') {
-                customSelect(interaction);
-            }
-        }
-
         // Button submit handler
         if (interaction.isButton()) {
             if (interaction.customId.split('-')[0] === 'color') {

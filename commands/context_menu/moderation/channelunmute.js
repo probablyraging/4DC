@@ -1,16 +1,14 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = {
     name: `Channel Unmute`,
-    description: ``,
     defaultMemberPermissions: ['BanMembers'],
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { member, guild, channel } = interaction;

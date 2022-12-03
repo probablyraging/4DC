@@ -1,14 +1,12 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
 const path = require('path');
 
 module.exports = {
     name: `Avatar`,
-    description: ``,
     cooldown: 5,
     type: ApplicationCommandType.User,
     /**
-     *
-     * @param {ContextMenuInteraction} interaction
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const target = await interaction.guild.members.fetch(interaction.targetId).catch(() => {

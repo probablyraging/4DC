@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -22,8 +22,7 @@ module.exports = {
         { name: 'featuredstream', value: 'featuredstream' }]
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         let { client, guild, channel, options } = interaction;
@@ -56,10 +55,7 @@ module.exports = {
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -84,10 +80,7 @@ module.exports = {
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -112,10 +105,7 @@ module.exports = {
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -150,10 +140,7 @@ module.exports = {
                     }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -188,10 +175,7 @@ module.exports = {
                     }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -432,10 +416,7 @@ module.exports = {
 **Choose your optional pings**`, components: [btnCustoms]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -452,10 +433,7 @@ A server member who is currently streaming on either Twitch or YouTube will be p
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }

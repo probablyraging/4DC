@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
 const fetch = require('node-fetch');
 const path = require('path');
 
@@ -9,8 +9,7 @@ module.exports = {
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { guild } = interaction;

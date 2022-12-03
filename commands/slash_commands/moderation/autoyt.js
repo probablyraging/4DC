@@ -1,4 +1,4 @@
-const { ContextMenuInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
@@ -38,8 +38,7 @@ module.exports = {
         }],
     }],
     /**
-     * 
-     * @param {ContextMenuInteraction} interaction 
+     * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
         const { options } = interaction;
