@@ -95,11 +95,21 @@ module.exports = async (client) => {
                 guild.members.cache.get(liveBoosterArr[i].id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
+                // Check if user has already manually posted their own link, if so we don't post it
+                let boostAlreadyPosted = false;
+                let shareAlreadyPosted = false;
+                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url)) boostAlreadyPosted = true;
+                });
+                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url)) shareAlreadyPosted = true;
+                });
+
                 if (!cooldown.has(liveBoosterArr[i]?.id)) {
-                    boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                    if (!boostAlreadyPosted) boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                    contentShare.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
+                    if (!shareAlreadyPosted) contentShare.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                     // we only allow the bot to send one notification every 6 hours
