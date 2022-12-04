@@ -3,6 +3,6 @@ module.exports = {
         name: "4dc",
         script: "./index.js",
         watch: true,
-        ignore_watch: ["./res/images"],
+        ignore_watch: ["./res/temp"],
     }]
 }
