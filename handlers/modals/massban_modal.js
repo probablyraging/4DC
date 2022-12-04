@@ -27,7 +27,7 @@ module.exports = async (interaction) => {
         { name: `User List to Ban`, value: `trimmedListString`, inline: true })
 
     staffChannel.send({
-        content: `<@&${process.env.STAFF_ROLE}>`,
+        content: `<@&${process.env.ADMIN_ROLE}>`,
         embeds: [staffEmbed]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 

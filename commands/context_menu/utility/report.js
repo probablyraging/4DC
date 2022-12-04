@@ -36,7 +36,7 @@ module.exports = {
                         .setStyle(ButtonStyle.Danger)
                 );
 
-            await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}> <@&${process.env.MOD_ROLE}>`, embeds: [reportEmbed], components: [button] }).catch((err) => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+            await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed], components: [button] }).catch((err) => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
             addCooldown(user.id);
 

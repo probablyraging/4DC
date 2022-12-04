@@ -20,7 +20,7 @@ module.exports = async (client) => {
 
             // if the user isn't a booster or staff member, we can remove them from the database
             const member = guild.members.cache.get(userId);
-            if (!member?.roles?.cache.has(process.env.BOOST_ROLE) && !member?.roles?.cache.has(process.env.STAFF_ROLE) && !member?.roles?.cache.has(process.env.MOD_ROLE)) {
+            if (!member?.roles?.cache.has(process.env.BOOST_ROLE) && !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
                 await ytNotificationSchema.findOneAndRemove({ userId })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 
