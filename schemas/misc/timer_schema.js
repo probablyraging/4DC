@@ -17,4 +17,4 @@ const timerSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('ckTimer', timerSchema)
+module.exports = mongoose.model('timer', timerSchema)

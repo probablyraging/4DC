@@ -5,8 +5,8 @@ const path = require('path');
 
 module.exports = {
     name: `reset`,
-    description: `Manually reset a timed features`,
-    defaultMemberPermissions: ['BanMembers'],
+    description: `Manually reset timed features`,
+    defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{
