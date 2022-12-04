@@ -21,7 +21,5 @@ ForTheContent is not responsible for any monetary loss when paying for a service
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }, 3000);
         }
-
-        console.log(oldThread);
     }
 }
