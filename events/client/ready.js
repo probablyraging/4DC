@@ -1,7 +1,7 @@
 const statusCounter = require('../../modules/misc/activity_update');
-const ckqCheck = require('../../modules/bump_ckq/ckq_check');
-const bumpCheck = require('../../modules/bump_ckq/bump_check');
-const featuredCheck = require('../../modules/bump_ckq/featured_check');
+const spotlightCheck = require('../../modules/timers/spotlight_check');
+const bumpCheck = require('../../modules/timers/bump_check');
+const featuredCheck = require('../../modules/timers/featured_check');
 const mutesCheck = require('../../modules/misc/mutes_check');
 const databaseCleanup = require('../../modules/misc/database_cleanup');
 const liveNow = require('../../modules/misc/live_now');
@@ -51,7 +51,7 @@ module.exports = {
         boostTimer.start();
         mutesCheck(message, client, Discord);
         statusCounter(client);
-        ckqCheck(client);
+        spotlightCheck(client);
         bumpCheck(message, client, Discord);
         featuredCheck(client);
         databaseCleanup(client);

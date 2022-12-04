@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/misc/link_cooldown');
-const ckqPost = require('../../modules/bump_ckq/ckq_post');
-const bumpPost = require('../../modules/bump_ckq/bump_post');
+const spotlightPost = require('../../modules/timers/spotlight_post');
+const bumpPost = require('../../modules/timers/bump_post');
 const blSpam = require('../../modules/blacklist/spam');
 const blPhishing = require('../../modules/blacklist/phishing');
 const lastLetter = require('../../modules/games/last_letter');
@@ -26,8 +26,8 @@ module.exports = {
         blPhishing(message, client);
         blSpam(message, client);
 
-        // Bump and ckq checks
-        ckqPost(message);
+        // Bump and spotlight checks
+        spotlightPost(message);
         bumpPost(message);
 
         // Game checks

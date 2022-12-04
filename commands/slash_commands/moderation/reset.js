@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { featuredRandomPicker } = require('../../../modules/bump_ckq/featured_post');
+const { featuredRandomPicker } = require('../../../modules/timers/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
 
@@ -27,18 +27,18 @@ module.exports = {
 
         switch (options.getString('option')) {
             case 'contentspotlight': {
-                const ckqChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
-                const ckqRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
+                const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
+                const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
-                (await ckqChannel.messages.fetch()).forEach(message => {
+                (await spotlightChannel.messages.fetch()).forEach(message => {
                     if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 });
 
-                ckqRole.members.each(member => {
-                    member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                spotlightRole.members.each(member => {
+                    member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 });
 
-                ckqChannel.permissionOverwrites.edit(guild.id, {
+                spotlightChannel.permissionOverwrites.edit(guild.id, {
                     SendMessages: true,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
@@ -51,7 +51,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                 interaction.editReply({
-                    content: `${[process.env.BOT_CONF]} ${ckqChannel} has been reset`,
+                    content: `${[process.env.BOT_CONF]} ${spotlightChannel} has been reset`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 

@@ -7,8 +7,8 @@ const path = require('path');
  */
 module.exports = async (message) => {
     if (message?.channel.id === process.env.SPOTLIGHT_CHAN && !message?.author.bot) {
-        const ckqChannel = message?.channel;
-        const ckqRole = message?.guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
+        const spotlightChannel = message?.channel;
+        const spotlightRole = message?.guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
         const target = message?.member;
 
         function detectURLs(message) {
@@ -22,21 +22,21 @@ module.exports = async (message) => {
         } else {
             if (detectURLs(message.content.toLowerCase()).length > 1) {
                 target?.send({
-                    content: `${process.env.BOT_DENY} You can only post 1 link in #${ckqChannel.name}`
+                    content: `${process.env.BOT_DENY} You can only post 1 link in #${spotlightChannel.name}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
                 return setTimeout(() => { message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)) }, 600);
             }
         }
 
-        ckqChannel.permissionOverwrites.edit(message?.guildId, {
+        spotlightChannel.permissionOverwrites.edit(message?.guildId, {
             SendMessages: false,
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-        target?.roles?.add(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+        target?.roles?.add(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         const myDate = new Date();
         // Add 5 hours to the current time
-        const timestamp = myDate.setHours(myDate.getHours() + 5);
+        const timestamp = myDate.setHours(myDate.getHours() + 24);
 
         await timerSchema.updateOne({
             timer: 'spotlight'

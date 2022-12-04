@@ -4,8 +4,8 @@ const path = require("path");
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const ckqChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
-    const ckqRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
+    const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
+    const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
     setInterval(async () => {
         let dbTimestamp;
@@ -20,15 +20,15 @@ module.exports = async (client) => {
         const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
 
         if (dbTimestamp && nowTime > dbTimestamp) {
-            (await ckqChannel.messages.fetch()).forEach(message => {
+            (await spotlightChannel.messages.fetch()).forEach(message => {
                 if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             });
 
-            await ckqRole.members.each(member => {
-                member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+            await spotlightRole.members.each(member => {
+                member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             });
 
-            await ckqChannel.permissionOverwrites.edit(guild.id, {
+            await spotlightChannel.permissionOverwrites.edit(guild.id, {
                 SendMessages: true,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 

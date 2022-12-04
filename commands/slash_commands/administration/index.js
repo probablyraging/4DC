@@ -19,7 +19,7 @@ module.exports = {
         { name: 'faqs', value: 'faqs' },
         { name: 'usefullinks', value: 'usefullinks' },
         { name: 'selfroles', value: 'selfroles' },
-        { name: 'featuredstream', value: 'featuredstream' }]
+        { name: 'spotlight', value: 'spotlight' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -421,15 +421,15 @@ module.exports = {
                 break;
             }
 
-            // FEATURED STREAM
-            case 'featuredstream': {
+            // SPOTLIGHT CHANNEL
+            case 'spotlight': {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 const liveNowEmbed = new EmbedBuilder()
                     .setColor("#9c59ff")
-                    .setTitle(`🎥 Featured Stream`)
+                    .setTitle(`:crown: Content Spotlight`)
                     .setDescription(`**What Is It?**
-A server member who is currently streaming on either Twitch or YouTube will be picked at random to be featured in this channel, they will also be given the <@&998861546530820207> role. After 2 hours, the channel will be reset and a new streamer will be featured`);
+Every 24 hours the channel will unlock, allowing anyone to post a single link to their content to claim the channel. The channel will then be locked again, allowing that person's content to be centre of attention for the next 24 hours. The person who claims the channel will also be given the <@&878229140992589906> role to stand out in chat`);
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
