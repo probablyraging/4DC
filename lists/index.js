@@ -181,8 +181,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     servermap: [
         `https://i.imgur.com/DzeC8I8.png`,
 
-        `**A handy guide to help you navigate the server channels**
-        
+        `⠀
 **WELCOME**
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
@@ -223,31 +222,30 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 
         `https://i.imgur.com/fbGTTcI.png`,
 
-        `**A handy guide to help you understand the server roles**
-
+        `⠀
 **STAFF**
 <@&1033563360660291615> A joint staff role for both server admins and mods
 <@&885919072791973898> ForTheContent administrators
 <@&931054970327932928> ForTheContent moderators
 
 **MEMBERS**
-<@&821876910253670442> Our generous server boosters
+<@&821876910253670442> View server booster perks with the /boost commannd
 <@&839527054465826867> Displays currently live streaming server boosters
 <@&878229140992589906> Awarded to the user who claimed the #content-spotlight
 <@&998861546530820207> Displays a randomly selected user who is currently live streaming
 
-**RANKS**
-<@&1033910783400230953> The highest rank on the server, only the most elite will reach this rank
-<@&1033910403455012944> Rewarded when a user reaches rank 45
-<@&1032783497984753694> Rewarded when a user reaches rank 40
-<@&1032782969091407873> Rewarded when a user reaches rank 35
-<@&846419141892112384> Rewarded when a user reaches rank 30
-<@&846418906520354866> Rewarded when a user reaches rank 25
-<@&846418761674129409> Rewarded when a user reaches rank 20
-<@&846418567263420437> Rewarded when a user reaches rank 15
-<@&846417898351362098> Rewarded when a user reaches rank 10
-<@&846418078317412403> The very first rank on the server
-<@&846007549621960705> Automatically received at rank 10, used by 4DC
+**RANKS AND REWARDS**
+<@&1033910783400230953> Access to all server booster perks upon request
+<@&1033910403455012944> Nothing new
+<@&1032783497984753694> Nothing new
+<@&1032782969091407873> Nothing new
+<@&846419141892112384> Permanent custom role and role icon upon request
+<@&846418906520354866> Access to our giveaway channel for free products and game keys
+<@&846418761674129409> Nothing new
+<@&846418567263420437> Nothing new
+<@&846417898351362098> Nothing new
+<@&846418078317412403> Embed link previews in self-promotion channels and the ability to post non-promotional links in most channels
+*rank rewards can be unlocked immediately by becoming a server booster*
 
 **NOTIFICATIONS**
 <@&852348066618015744> Get notified when a new server announcement is made

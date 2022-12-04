@@ -49,15 +49,19 @@ module.exports = async (message, client) => {
         });
 
         // get a random number between 15 and 25
-        function randomNum(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) + min);
+        function randomNum() {
+            if (message?.member?.roles.cache.has(process.env.BOOST_ROLE)) {
+                return Math.floor(Math.random() * (50 - 30 + 1) + 30);
+            } else {
+                return Math.floor(Math.random() * (25 - 15 + 1) + 15);
+            }
         }
 
         for (const data of results) {
             let { xp, xxp, xxxp, level, msgCount } = data;
 
             let msgMath = parseInt(msgCount) + 1;
-            let random = randomNum(15, 25);
+            let random = randomNum();
             let xpMath = parseInt(xp) + random;
             let xxpMath = parseInt(xxp) + random;
 
