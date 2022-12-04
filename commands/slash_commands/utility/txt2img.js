@@ -147,8 +147,8 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
-        const filePath = `./res/images/${uuidv4()}.png`;
-        const filePath2 = `./res/images/${uuidv4()}.png`;
+        const filePath = `./res/temp/${uuidv4()}.png`;
+        const filePath2 = `./res/temp/${uuidv4()}.png`;
         fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
             fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
                 // Create canvas based on image count
@@ -183,9 +183,9 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
-        const filePath = `./res/images/${uuidv4()}.png`;
-        const filePath2 = `./res/images/${uuidv4()}.png`;
-        const filePath3 = `./res/images/${uuidv4()}.png`;
+        const filePath = `./res/temp/${uuidv4()}.png`;
+        const filePath2 = `./res/temp/${uuidv4()}.png`;
+        const filePath3 = `./res/temp/${uuidv4()}.png`;
         fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
             fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
                 fs.writeFile(filePath3, imgBaseArr[2].data, 'base64', async function () {
@@ -225,10 +225,10 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
         }
-        const filePath = `./res/images/${uuidv4()}.png`;
-        const filePath2 = `./res/images/${uuidv4()}.png`;
-        const filePath3 = `./res/images/${uuidv4()}.png`;
-        const filePath4 = `./res/images/${uuidv4()}.png`;
+        const filePath = `./res/temp/${uuidv4()}.png`;
+        const filePath2 = `./res/temp/${uuidv4()}.png`;
+        const filePath3 = `./res/temp/${uuidv4()}.png`;
+        const filePath4 = `./res/temp/${uuidv4()}.png`;
         fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
             fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
                 fs.writeFile(filePath3, imgBaseArr[2].data, 'base64', async function () {
