@@ -38,13 +38,10 @@ module.exports = async (message) => {
         // Add 5 hours to the current time
         const timestamp = myDate.setHours(myDate.getHours() + 5);
 
-        const searchFor = 'currentTime';
-
         await timerSchema.updateOne({
-            searchFor
+            timer: 'spotlight'
         }, {
-            timestamp,
-            searchFor
+            timestamp
         }, {
             upsert: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

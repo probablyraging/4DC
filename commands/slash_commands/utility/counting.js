@@ -41,7 +41,7 @@ module.exports = {
             case 'save': {
                 const results = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                const bumpResults = await timerSchema.find({ searchFor: 'bumpTime' })
+                const bumpResults = await timerSchema.find({ timer: 'bump' })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 const guildResults = await countingSchema.find({ userId: guild.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));

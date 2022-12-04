@@ -24,21 +24,18 @@ module.exports = async (message) => {
                 if (embed.description.toLowerCase().includes('bump done!')) {
                     message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
-                    const myDate = new Date();
                     // Add two hours to the current time
+                    const myDate = new Date();
                     const timestamp = myDate.setHours(myDate.getHours() + 2);
-
-                    const searchFor = 'bumpTime';
 
                     message?.channel.permissionOverwrites.edit(message?.guild.id, {
                         SendMessages: false,
                     })
 
                     await timerSchema.updateOne({
-                        searchFor
+                        timer: 'bump'
                     }, {
-                        timestamp,
-                        searchFor
+                        timestamp
                     }, {
                         upsert: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

@@ -6,7 +6,7 @@ module.exports = (client) => {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
         const currentTime = new Date().valueOf();
-        const results = await timerSchema.find({ searchFor: 'featuredTime' });
+        const results = await timerSchema.find({ timer: 'featured' });
         for (const data of results) {
             const { timestamp, previouslyFeatured } = data;
             if (timestamp < currentTime) {

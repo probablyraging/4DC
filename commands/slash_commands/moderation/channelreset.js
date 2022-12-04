@@ -4,18 +4,18 @@ const timerSchema = require('../../../schemas/misc/timer_schema');
 const path = require('path');
 
 module.exports = {
-    name: `channelreset`,
-    description: `Manually reset a timed channel`,
+    name: `reset`,
+    description: `Manually reset a timed features`,
     defaultMemberPermissions: ['BanMembers'],
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `channel`,
+        name: `option`,
         description: `The channel you want to reset`,
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'contentspotlight', value: 'contentspotlight' },
-    /*{ name: 'featuredchannel', value: 'featuredchannel' }*/]
+        { name: 'featuredstreamer', value: 'featuredstreamer' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -25,41 +25,27 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        switch (options.getString('channel')) {
+        switch (options.getString('option')) {
             case 'contentspotlight': {
                 const ckqChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
                 const ckqRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
-                const ckqEmbed = new EmbedBuilder()
-                    .setColor('#44eaff') // GREEN
-                    .setTitle(`:crown: Content Spotlight`)
-                    .setDescription(`**What Is It?**
-                    Every 5 hours the channel will unlock, allowing anyone to post a single link to their content to claim the channel. The channel will then be locked again, allowing that person's content to be centre of attention for the next 5 hours. The person who claims the channel will also be given the <@&878229140992589906> role to stand out in chat`)
+                (await ckqChannel.messages.fetch()).forEach(message => {
+                    if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                });
 
-                const searchFor = 'currentTime';
-
-                setTimeout(() => ckqChannel.bulkDelete(10).catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)
-                }).then(ckqChannel.send({
-                    embeds: [ckqEmbed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err))), 100);
-
-                setTimeout(() => ckqRole.members.each(member => {
+                ckqRole.members.each(member => {
                     member.roles.remove(ckqRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-                }), 200);
+                });
 
-                setTimeout(() => ckqChannel.permissionOverwrites.edit(guild.id, {
+                ckqChannel.permissionOverwrites.edit(guild.id, {
                     SendMessages: true,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err)), 300);
-
-                await timerSchema.findOneAndRemove({ searchFor });
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
                 await timerSchema.updateOne({
-                    timestamp: 'null',
-                    searchFor
+                    timer: 'spotlight'
                 }, {
                     timestamp: 'null',
-                    searchFor
                 }, {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
@@ -72,24 +58,23 @@ module.exports = {
                 break;
             }
 
-            // case 'featuredchannel': {
-            //     const featuredChan = guild.channels.cache.get(process.env.FEATURED_CHAN);
-            //     const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
-            //     const results = await timerSchema.find({ searchFor: 'featuredTime' });
-            //     for (const data of results) {
-            //         const { previouslyFeatured } = data;
-            //         featuredRole.members.each(member => {
-            //             member.roles.remove(featuredRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
-            //         })
-            //         featuredRandomPicker(client, previouslyFeatured);
-            //     }
-            //     interaction.editReply({
-            //         content: `${[process.env.BOT_CONF]} ${featuredChan} has been reset`,
-            //         ephemeral: true
-            //     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            case 'featuredstreamer': {
+                const featuredRole = guild.roles.cache.get(process.env.FEATURED_ROLE);
+                const results = await timerSchema.find({ timer: 'featured' });
+                for (const data of results) {
+                    const { previouslyFeatured } = data;
+                    featuredRole.members.each(member => {
+                        member.roles.remove(featuredRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+                    })
+                    featuredRandomPicker(client, previouslyFeatured);
+                }
+                interaction.editReply({
+                    content: `${[process.env.BOT_CONF]} Featured streamer has been reset`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-            //     break;
-            // }
+                break;
+            }
         }
     }
 }

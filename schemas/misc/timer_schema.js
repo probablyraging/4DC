@@ -6,7 +6,7 @@ const timerSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    searchFor: {
+    timer: {
         type: String,
         required: true
     },
