@@ -24,9 +24,8 @@ module.exports = async (client) => {
 
         staffRole?.members?.forEach(async member => {
             for (let i = 0; i < 7; i++) {
-                if (member?.presence?.activities[i]?.name === 'Twitch') {
-
-                    liveStaff.push({ username: member?.user?.username, id: member?.user?.id, url: member?.presence?.activities[i]?.url })
+                if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
+                    liveStaff.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
                 }
             }
         });
@@ -69,9 +68,8 @@ module.exports = async (client) => {
 
         boostRole?.members?.forEach(async member => {
             for (let i = 0; i < 7; i++) {
-                if (member?.presence?.activities[i]?.name === 'Twitch') {
-
-                    liveBooster.push({ username: member?.user?.username, id: member?.user?.id, url: member?.presence?.activities[i]?.url })
+                if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
+                    liveBooster.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
                 }
             }
         });
@@ -129,7 +127,7 @@ module.exports = async (client) => {
 
         liveRole?.members?.forEach(async member => {
             for (let i = 0; i < member?.presence?.activities?.length; i++) {
-                if (member?.presence?.activities[i]?.name === 'Twitch') {
+                if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
                     liveNow.set(member?.id);
                 }
             }
