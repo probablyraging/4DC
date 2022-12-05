@@ -63,7 +63,8 @@ module.exports = {
             const regex = new RegExp(`\\b${filter[i]}\\b`, 'gi');
             if (regex.test(prompt)) {
                 return interaction.editReply({
-                    content: 'Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning',
+                    content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
+Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
         }
