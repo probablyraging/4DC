@@ -45,7 +45,7 @@ module.exports = {
 		if (choice === 'connections') {
 			interaction.reply({
 				content: `*Information for ${target}:*
-> ${process.env.BOT_DOC} Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings ⚙️ > Connections**`
+> ${process.env.BOT_DOC} Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**`
 			}).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 		}
 
