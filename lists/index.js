@@ -37,29 +37,29 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://i.imgur.com/4qnr530.png`,
 
         `**When/how can I share my content?**
-> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to them when posting. You can bypass this rank requirements by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the </rank:1031245457902555212> command
+> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to your message when posting links. You can bypass this rank requirement by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command
 
 **Can I advertise my own server or paid service?**
-> Advertising, as well as looking for other discord servers, paid services and products, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
+> Advertising, as well as looking for - discord servers, paid services and products *(excluding video and graphic editing)*, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
 
 **What is server boosting?**
-> Server boosting is a fun way to support ForTheContent by helping us unlock awesome server perks. On top of that, becoming a server booster allows you to bypass most of the rank requirements on the server, and you also get some extra perks which you can find by using the </boost:1031245457835429998> command
-
-**How do I rank up?**
-> Upon joining the server you will be 'unranked' or 'rank 0'. Every minute that you're chatting in the server, you randomly gain between 15 and 25 XP that goes towards your rank. The next ranks are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of 5. The higher you rank, the more server features you unlock, such as, content share channels, game channels, permission to post links outside of the 'CONTENT SHARE' section, etc. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the </rank:1031245457902555212> command. *You will not gain XP for posting messages in the CONTENT SHARE section!*
+> Server boosting is a fun way to support ForTheContent. By becoming a server booster you will be able to bypass most of the rank requirements associated with certain channels, and you also get some extra perks to use such as double XP, automatic content sharing, access to our giveaway channel, and more, which you can find by using the </boost:1031245457835429998> command
 ⠀`,
 
-        `**How do I link my channels/socials?**
-> Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them; in the bottom left of Discord, go to **Settings :gear: > Connections**
+        `**How does the rank/XP system work?**
+> Every newcomer starts at Rank 0, the next ranks you unlock are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of five. For every message that you send in the server you will randomly gain between 15 and 25 XP that goes toward your rank. Reaching new ranks unlocks rewards for you to use in the server, those rewards can be found in <#1005283113775157349>. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command. You will not gain XP for posting messages in the CONTENT SHARE section
+        
+**How do I link my channels/socials?**
+> Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)
 
 **Will people here actually watch my videos?**
 > This server's sole purpose isn't for self promotion, it's just one of the benefits. Think of it as another way to get eyes on your content, but keep in mind that most of us here are also content creators so we're probably not your target audience, that doesn't mean people wont watch them. The community members here are super supportive to those who are active, helpful and supportive to others
-
-**Why do people keep DMing me spam and promo content?**
-> Unfortunately this is just a part of Discord. We try to remove as many of these spam accounts as possible, but we also recommend you disable DMs from people you aren't friends with, by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members
 ⠀`,
 
-        `**How can I apply for a staff role?**
+        `**Why do people keep DMing me spam and promo content?**
+> Unfortunately this is just a part of Discord. We try to remove as many of these spam accounts as possible, but we also recommend you disable DMs from people you aren't friends with, by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members
+        
+**How can I apply for a staff role?**
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by filling out [this form](https://docs.google.com/forms/d/1W7K6WtKes3otlWYiSO_vdZ-dg9f4H0xS-g87gvhGvqY). Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 **How can I report someone for breaking the rules?**
@@ -73,7 +73,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like [OBS](<https://obsproject.com>)
 > <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
 > <:minidot:923683258871472248> A photo editing suite, such as [GIMP](<https://www.gimp.org/>) *(free)* or [Adobe Photoshop](<https://www.adobe.com/au/products/photoshop.html>) *(paid)*. You can also download some free thumbnails templates from [FreePik](<https://www.freepik.com/free-photos-vectors/youtube-thumbnail>) and [Fotor](<https://www.fotor.com/youtube-thumbnail/templates/>). This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
-> Take the time to do some research about the gear and software you plan to use. Use the <#851707143873626134> channel to find a list of free and paid software, as well as other gear and software you might want
+> Take the time to do some research about the gear and software you plan to use. Each option can vary in difficulty to use and some are better suited for biginners while others are better suited for people with prior experience
 ⠀`,
 
         `**How do I get monetized?**
@@ -82,7 +82,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > <:minidot:923683258871472248> 4000 watch time hours (over a 12-month period)
 > <:minidot:923683258871472248> 2FA enabled on your account
 > <:minidot:923683258871472248> 0 community strikes
-> Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partner. More information here <https://support.google.com/youtube/answer/72851/>
+> Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partnership. More information here <https://support.google.com/youtube/answer/72851/>
 ⠀`,
 
         `**How can I get more subscribers/views?**
@@ -132,10 +132,9 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > <:minidot:923683258871472248> Try to go live as often, and for as long as possibly. If you're doing short streams you are limiting the possibility of potential viewers finding you. By doing longer streams you are broadening the time frame of when people are active on Twitch and looking for streams to watch
 > <:minidot:923683258871472248> Ask your friends and family to watch and participate in your streams. Twitch's browse tab is ordered by viewer count, from largest to smallest. Smaller streamers are placed toward the bottom of the list of active streams, and this can often mean potential viewers will have to scroll through multiple pages of other streams before they see yours. By asking your friends and family to watch your streams, you are effectively increasing your view count, raising your position on the browse tab
 > <:minidot:923683258871472248> On top of the previous point, you should try to stream in categories that are getting a good amount of views but aren't overly saturated. Streaming popular titles like Fortnite and Call Of Duty, or in genres like Just Chatting will make it that much harder to find your stream, as these categories often have thousands of active streamers already. So when starting out it is often best to find categories that average a couple of thousand viewers, that also don't have too many people streaming at any one time
-> <:minidot:923683258871472248> Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams`
-    ],
+> <:minidot:923683258871472248> Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams
+⠀`,
 
-    usefullinks: [
         `https://i.imgur.com/hN2ix8t.png`,
 
         `**Official YouTube Links**

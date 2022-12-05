@@ -17,7 +17,6 @@ module.exports = {
         { name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
-        { name: 'usefullinks', value: 'usefullinks' },
         { name: 'selfroles', value: 'selfroles' },
         { name: 'spotlight', value: 'spotlight' }]
     }],
@@ -138,41 +137,6 @@ module.exports = {
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 20000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-
-                break;
-            }
-
-            // USEFUL LINKS
-            case 'usefullinks': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.usefullinks.length; i++) {
-                        setTimeout(function () {
-                            if (channel.type === 15) {
-                                webhook.send({
-                                    content: `${index.usefullinks[i]}`,
-                                    threadId: threadId,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                            } else {
-                                webhook.send({
-                                    content: `${index.usefullinks[i]}`,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                            }
-                        }, i * 1000);
-                    }
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
