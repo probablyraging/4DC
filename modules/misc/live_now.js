@@ -50,6 +50,7 @@ module.exports = async (client) => {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                 if (!cooldown.has(liveStaffArr[i]?.id)) {
+                    if (liveStaffArr[i]?.url === null) return;
                     contentShare.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
@@ -104,6 +105,7 @@ module.exports = async (client) => {
                 });
 
                 if (!cooldown.has(liveBoosterArr[i]?.id)) {
+                    if (liveBoosterArr[i]?.url === null) return;
                     if (!boostAlreadyPosted) boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
