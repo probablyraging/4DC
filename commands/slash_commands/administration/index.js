@@ -253,6 +253,11 @@ module.exports = {
                             .setCustomId('platform-photographer')
                             .setLabel('Photographer')
                             .setEmoji('1003104549629870230')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('platform-artist')
+                            .setLabel('Artist')
+                            .setEmoji('1049261103219212288')
                             .setStyle(ButtonStyle.Secondary)
                     );
 
@@ -348,11 +353,11 @@ module.exports = {
 
                 await channel.send({ content: `https://i.imgur.com/LOJ7arf.png` }).catch(err => console.error(`Could not send a message: `, err));
 
-//                 await channel.send({
-//                     content: `**Press a button below to add your role. Press it again to remove it**
+                //                 await channel.send({
+                //                     content: `**Press a button below to add your role. Press it again to remove it**
 
-// **Choose your nickname color**`, components: [btnColorsOne, btnColorsTwo]
-//                 }).catch(err => console.error(`Could not send a message: `, err));
+                // **Choose your nickname color**`, components: [btnColorsOne, btnColorsTwo]
+                //                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 await channel.send({
                     content: `**Press a button below to add your role. Press it again to remove it**

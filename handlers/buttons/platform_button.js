@@ -14,6 +14,7 @@ module.exports = async (interaction) => {
     const roleWriter = process.env.PLATFORM_WRITER;
     const roleMusician = process.env.PLATFORM_MUSICIAN;
     const rolePhotographer = process.env.PLATFORM_PHOTOGRAPHER;
+    const roleArtist = process.env.PLATFORM_ARTIST;
 
     await interaction.deferUpdate();
 
@@ -113,6 +114,15 @@ module.exports = async (interaction) => {
             member?.roles?.remove(rolePhotographer).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
         } else {
             member?.roles?.add(rolePhotographer).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
+        }
+    }
+
+    if (customId.split('-')[1] === 'artist') {
+        // If user already has this role, remove it
+        if (member?.roles?.cache.has(roleArtist)) {
+            member?.roles?.remove(roleArtist).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a user's role: `, err));
+        } else {
+            member?.roles?.add(roleArtist).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));
         }
     }
 }

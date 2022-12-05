@@ -185,19 +185,25 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
 <#1005283113775157349> You are here
-<#1040530300515647548> Find answers to frequently asked question
 <#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
-<#900243955847938078> Helpful videos for creators, from YouTube Creators
+<#900243955847938078> Stay up to date with trends and platform changes
+<#1043302855941042206> Grab an occasional free game or product here
 <#887642369598570527> Look at all these awesome server boosters
 
 **CHATTING**
 <#820889004055855147> Introduce yourself, hang out, and chat with other server members
 <#845180817281253406> Share memes, images and other non-promotional type media here
+<#1049263519255777301> Let us know who you are, what you do, and where we can find your content
 <#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
+<#1038766290246062100> Create AI generated images based of written prompts
 <#851584454036029441> It basically explains itself
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
+
+**RESOURCES**
+<#1040530300515647548> Find answers to common questions as well as some useful links
+<#1049118939164188743> Useful resources for content creators
 
 **FORUMS**
 <#978553334854205450> Get assistance or support for specific topics
@@ -210,6 +216,9 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#878229815541497857> Content sharing, but with a twist
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
 <#856719763187302441> Share your content with other server members
+
+**VOICE CHAT**
+<#1038671738764017765> Create a new voice channel to hang out in
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
