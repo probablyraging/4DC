@@ -93,8 +93,14 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
     // Fetch the user's db entry
     const results = await tokensSchema.find({ userId: member.id });
     const tokens = results[0]?.tokens;
-    // If the user doesn't have enough tokens to complete the purchase
-    if (tokens < cost) {
+    // If the user doesn't have enough tokens to complete the purchase, or if they don't have a db entry yet
+    if (results.length === 0) {
+        interaction.editReply({
+            content: `${process.env.BOT_DENY} You need **${cost}** more tokens to buy **${itemName}**`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        return false;
+    }
+    if (ftokens < cost) {
         interaction.editReply({
             content: `${process.env.BOT_DENY} You need **${cost - tokens}** more tokens to buy **${itemName}**`
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
