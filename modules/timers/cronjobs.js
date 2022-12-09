@@ -2,6 +2,7 @@ const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -51,15 +52,15 @@ module.exports = async (client) => {
 
     // Fetch all last letter entries and remove non-existent users - runs once per week (Tuesday 00:00)
     const lastLetterCheck = new cronjob('0 0 * * 2', async function () {
-    const results = await lastLetterSchema.find();
-    for (const data of results) {
-        const { userId } = data;
-        const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the last letter collection that no longer exists`));
-        if (!exists) {
-            await lastLetterSchema.deleteOne({ userId: userId })
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+        const results = await lastLetterSchema.find();
+        for (const data of results) {
+            const { userId } = data;
+            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the last letter collection that no longer exists`));
+            if (!exists) {
+                await lastLetterSchema.deleteOne({ userId: userId })
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            }
         }
-    }
     });
 
     // Fetch all counting game entries and remove non-existent users - runs once per week (Wednesday 00:00)
@@ -75,8 +76,26 @@ module.exports = async (client) => {
         }
     });
 
+    // Reset all daily token caps - runs once per week (Wednesday 00:00)
+    const tokenCapReset = new cronjob('0 0 * * *', async function () {
+        const results = await tokensSchema.find();
+        for (const data of results) {
+            const { userId } = data;
+            if (userId === '438434841617367080') {
+                await tokensSchema.updateOne({
+                    userId: userId
+                }, {
+                    dailyTokens: 0
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            }
+        }
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
+    tokenCapReset.start()
 }

@@ -34,14 +34,15 @@ module.exports = async (message, client) => {
         }
         // Update the user's tokens
         for (const data of results) {
-            const { tokens, dailyTokens } = data;
+            let { tokens, dailyTokens } = data;
             // Hard cap of earning 50 tokens per day
+            if (isNaN(dailyTokens)) dailyTokens = 0;
             if ((dailyTokens + 1) > 50) return;
             await tokensSchema.updateOne({
                 userId: message?.author.id
             }, {
                 tokens: tokens + 1,
-                dailyToken: dailyTokens + 1
+                dailyTokens: dailyTokens + 1
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

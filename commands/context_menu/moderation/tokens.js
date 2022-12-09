@@ -44,9 +44,14 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens as an award for their he
 
         // Add the desired amount of tokens
         for (const data of results) {
-            const { tokens, dailyTokens } = data;
+            let { tokens, dailyTokens } = data;
             // Hard cap of earning 50 tokens per day
-            if ((dailyTokens + 10) > 50) return;
+            if (isNaN(dailyTokens)) dailyTokens = 0;
+            if ((dailyTokens + 10) > 50) {
+                return interaction.editReply({
+                    content: `${process.env.BOT_DENY} This would exceed the user's daily cap. This user can only earn **${50 - dailyTokens}** more tokens today`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+            }
             await tokensSchema.updateOne({
                 userId: target.id
             }, {
