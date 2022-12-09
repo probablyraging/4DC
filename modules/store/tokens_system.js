@@ -1,8 +1,8 @@
 const { Message } = require('discord.js');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
-const path = require('path');
 const tokensLimit = new Set();
-const increments = new Set();
+const increment = new Map();
+const path = require('path');
 /**
  * 
  * @param {Message} message 
@@ -57,13 +57,23 @@ module.exports = async (message, client) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
 
-            // Log when a user's tokens increase or decrease
-            tokenLog.send({
-                content: `${process.env.TOKENS_UP} ${message?.author} gained **1** token for a message they sent, they now have **${tokens + 1}** tokens`,
-                allowedMentions: {
-                    parse: []
+            // Only log in increments of 5
+            if (increment.has(message?.member.id)) {
+                if (increment.get(message?.member.id) === 4) {
+                    // Log when a user's tokens increase or decrease
+                    tokenLog.send({
+                        content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${tokens + 1}** tokens`,
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    increment.delete(message?.member.id);
+                } else {
+                    increment.set(message?.member.id, increment.get(message?.member.id) + 1);
                 }
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            } else {
+                increment.set(message?.member.id, 1);
+            }
         }
         // Add user to tokensLimit for 60 seconds to prevent spamming for tokens
         tokensLimit.add(message?.author.id);
