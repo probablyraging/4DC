@@ -10,7 +10,7 @@ module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
     // Tokens earning is disabled in these channels
-    const disabletokens = [process.env.CONTENT_SHARE, process.env.BOT_CHAN]
+    const disabletokens = [process.env.CONTENT_SHARE, process.env.BOT_CHAN, process.env.COUNT_CHAN, process.env.LL_CHAN];
     if (!message?.author.bot && !tokensLimit.has(message?.author.id)) {
         // If the message is in a tokens disabled channel, don't add tokens
         if (disabletokens.includes(message?.channel.id)) return;
