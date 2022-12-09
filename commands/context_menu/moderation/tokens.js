@@ -38,10 +38,7 @@ module.exports = {
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member}
-${process.env.TOKENS_UP} ${member} gained **10** tokens as an award for their helpful post, they now have **10** tokens`,
-                allowedMentions: {
-                    parse: []
-                }
+${process.env.TOKENS_UP} ${member} gained **10** tokens as an award for their helpful post, they now have **10** tokens`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
@@ -59,10 +56,7 @@ ${process.env.TOKENS_UP} ${member} gained **10** tokens as an award for their he
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member}
-${process.env.TOKENS_UP} ${member} gained **10** tokens as an award for their helpful post, they now have **${tokens + 10}** tokens`,
-                allowedMentions: {
-                    parse: []
-                }
+${process.env.TOKENS_UP} ${member} gained **10** tokens as an award for their helpful post, they now have **${tokens + 10}** tokens`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
