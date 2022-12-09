@@ -100,7 +100,7 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         return false;
     }
-    if (ftokens < cost) {
+    if (tokens < cost) {
         interaction.editReply({
             content: `${process.env.BOT_DENY} You need **${cost - tokens}** more tokens to buy **${itemName}**`
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));

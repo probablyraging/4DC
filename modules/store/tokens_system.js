@@ -2,6 +2,7 @@ const { Message } = require('discord.js');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');
 const tokensLimit = new Set();
+const increments = new Set();
 /**
  * 
  * @param {Message} message 

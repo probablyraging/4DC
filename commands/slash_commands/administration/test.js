@@ -1,6 +1,8 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager } = require("discord.js");
 const path = require("path");
 
+const test = new Set();
+
 module.exports = {
     name: `test`,
     description: `dummy command`,
@@ -12,6 +14,9 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
-        
+
+        test.add({ nane: 'bob', count: 3 })
+        console.log(test);
+
     }
 }
