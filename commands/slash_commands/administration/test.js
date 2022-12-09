@@ -1,7 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager } = require("discord.js");
-const Canvas = require("canvas");
-const fetch = require('node-fetch');
-const { Buffer } = require('node:buffer');
+const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require("path");
 
 module.exports = {
@@ -15,6 +13,11 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
+
+        const results = await tokensSchema.find({ userId: member.id })
+
+        console.log((results[0]?.emojiorsticker - new Date()));
+
         
     }
 }

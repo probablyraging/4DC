@@ -1,5 +1,6 @@
 const path = require('path');
 const streamSchema = require('../../schemas/misc/stream_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const cooldown = new Set();
 /**
  * @param {Message} message 
@@ -8,7 +9,7 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
-    const boostRole = guild.roles.cache.get(process.env.BOOST_ROLE);
+    const boostRole = guild.roles.cache.get(process.env.BOOSTER_ROLE);
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
 
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
@@ -59,6 +60,56 @@ module.exports = async (client) => {
 
                     setTimeout(() => {
                         cooldown.delete(liveStaffArr[i]?.id)
+                    }, 1000 * 21600);
+                }
+            }
+        }
+
+        // Tokens item check
+        const results = await tokensSchema.find();
+
+        liveMember = [];
+
+        results.forEach(async result => {
+            if ((result?.twitchauto - new Date()) > 1 || result?.twitchauto === true) {
+                const member = await guild.members.fetch(result.userId);
+                for (let i = 0; i < 7; i++) {
+                    if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
+                        liveMember.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
+                    }
+                }
+            }
+        });
+
+        let liveMemberArr = liveMember.filter(filterArr);
+
+        for (let i = 0; i < liveMemberArr?.length; i++) {
+            const userId = liveMemberArr[i]?.id;
+
+            const results2 = await streamSchema.find({ userId: userId })
+
+            if (results2?.length < 1) {
+                await streamSchema.updateOne({
+                    userId,
+                }, {
+                    userId,
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                guild.members.cache.get(liveMemberArr[i]?.id).roles.add(liveRole)
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+
+                if (!cooldown.has(liveMemberArr[i]?.id)) {
+                    if (liveMemberArr[i]?.url === null) return;
+                    contentShare.send({ content: `**${liveMemberArr[i]?.username}** just went live - ${liveMemberArr[i]?.url}` })
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                    // we only allow the bot to send one notification every 6 hours
+                    cooldown.add(liveMemberArr[i]?.id)
+
+                    setTimeout(() => {
+                        cooldown.delete(liveMemberArr[i]?.id)
                     }, 1000 * 21600);
                 }
             }

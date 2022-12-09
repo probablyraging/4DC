@@ -1,6 +1,5 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const { ImgurClient } = require('imgur');
-const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const letterCurrents = require('../../schemas/letter_game/letter_currents_schema');
 const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
@@ -17,7 +16,7 @@ function get64bin(int) {
 
 module.exports = {
     name: 'messageDelete',
-    async execute(message, client, Discord) {
+    async execute(message, client) {
         if (message?.author.bot || message?.channel.id === process.env.TEST_CHAN) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -73,31 +72,6 @@ module.exports = {
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         }, 2000);
-
-        // if a user deletes there post in the spotlight channel before the timer is up, open the channel to be reposted in
-        if (message?.channel.id === process.env.SPOTLIGHT_CHAN && !message?.author.bot) {
-            const guild = client.guilds.cache.get(process.env.GUILD_ID);
-            const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
-            const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
-
-            (await spotlightChannel.messages.fetch()).forEach(message => {
-                if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-            });
-
-            message?.member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-
-            spotlightChannel.permissionOverwrites.edit(guild.id, {
-                SendMessages: true,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
-
-            await timerSchema.updateOne({
-                timer: 'spotlight'
-            }, {
-                timestamp: "null",
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-        }
 
         // If a user deletes their count in the counting game, send the current number
         if (message?.channel.id === process.env.COUNT_CHAN && !message.author.bot) {

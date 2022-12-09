@@ -1,5 +1,6 @@
 const { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
 const rankSchema = require("../../../schemas/misc/rank_schema");
+const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
 const path = require("path");
 
@@ -32,7 +33,8 @@ module.exports = {
         // Load default images
         const background = await Canvas.loadImage("./res/images/rankbg.png");
 
-        const results = await rankSchema.find({ id: targetId }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+        const results = await rankSchema.find({ id: targetId });
+        const results2 = await tokensSchema.find({ userId: targetId });
 
         if (results.length === 0) {
             return interaction.editReply({
@@ -78,10 +80,21 @@ module.exports = {
             let xp3 = kFormatter(xxp);
             let count = kFormatter(msgCount);
 
+            // Tokens
+            let tokenBal;
+            if (results2.length === 0) tokenBal = 0; 
+            for (const data of results2) {
+                let { tokens } = data;
+                tokenBal = tokens
+            }
+            ctx.font = "22px grotesk";
+            ctx.fillStyle = "#ffffff";
+            ctx.fillText(`Tokens: ${tokenBal}`, 243, 220);
+
             // message count
             ctx.font = "22px grotesk";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(`Message Count: ${count}`, 243, 220);
+            ctx.fillText(`Message Count: ${count}`, 243, 190);
 
             // current xp and xp needed
             ctx.font = "16px grotesk";

@@ -7,6 +7,12 @@ const regionButton = require('../../handlers/buttons/region_button');
 const genderButton = require('../../handlers/buttons/gender_button');
 const customButton = require('../../handlers/buttons/custom_button');
 const reportButton = require('../../handlers/buttons/report_button');
+const storeEpicButton = require('../../handlers/buttons/store/store_epic');
+const storeLegendaryButton = require('../../handlers/buttons/store/store_legendary');
+const storeRareButton = require('../../handlers/buttons/store/store_rare');
+const storeCommonButton = require('../../handlers/buttons/store/store_common');
+const storeRankButton = require('../../handlers/buttons/store/store_rank');
+const storeInfoButton = require('../../handlers/buttons/store/store_info');
 const reportModal = require('../../handlers/modals/report_modal');
 const reportImageButton = require('../../handlers/buttons/txt2img_button');
 const massbanModal = require('../../handlers/modals/massban_modal');
@@ -23,7 +29,7 @@ module.exports = {
         const { member, channel } = interaction
 
         // Ignore slash commands ran in DMs
-        if (channel.type === 1) {
+        if (channel.type === 1 && interaction.customId.split('-')[0] !== 'storeinfo') {
             return interaction.reply({
                 content: 'Command not available',
                 ephemeral: true
@@ -70,6 +76,7 @@ module.exports = {
 
         // Button submit handler
         if (interaction.isButton()) {
+            // Self Roles
             if (interaction.customId.split('-')[0] === 'color') {
                 colorButton(interaction);
             }
@@ -88,6 +95,26 @@ module.exports = {
             if (interaction.customId.split('-')[0] === 'custom') {
                 customButton(interaction);
             }
+            // Tokens Store
+            if (interaction.customId.split('-')[0] === 'storeepic') {
+                storeEpicButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storelegendary') {
+                storeLegendaryButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storerare') {
+                storeRareButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storecommon') {
+                storeCommonButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storerank') {
+                storeRankButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storeinfo') {
+                storeInfoButton(interaction);
+            }
+            // Reports
             if (interaction.customId === 'report-close') {
                 reportButton(interaction);
             }
@@ -106,6 +133,22 @@ module.exports = {
             }
             if (interaction.customId === 'channel-mute-modal') {
                 channelMuteModal(interaction);
+            }
+            // Tokens Store
+            if (interaction.customId.split('-')[0] === 'storeepic') {
+                storeEpicButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storelegendary') {
+                storeLegendaryButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storerare') {
+                storeRareButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storecommon') {
+                storeCommonButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'storerank') {
+                storeRankButton(interaction);
             }
         }
 

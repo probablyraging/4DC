@@ -1,12 +1,13 @@
 const { Message, EmbedBuilder } = require('discord.js');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');
 /**
  * 
  * @param {Message} message 
  */
-module.exports = async (message) => {
+module.exports = async (message, client) => {
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === '302050872383242240') {
         // delete the warning about regular commands
         if (message?.content.toLowerCase().includes('regular commands are being replaced')) {
@@ -95,12 +96,51 @@ module.exports = async (message) => {
                         }
                     }
 
+                    // Add tokens to the user
+                    const tokenLog = client.channels.cache.get(process.env.CREDITLOG_CHAN);
+                    const results2 = await tokensSchema.find({ userId: bumpUser });
+
+                    // Check to see if the user is in our database yet, if not, add them
+                    if (results2.length === 0) {
+                        await tokensSchema.create({
+                            userId: bumpUser,
+                            tokens: 5
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        // Log when a user's tokens increase or decrease
+                        tokenLog.send({
+                            content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **5** tokens`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
+                    // Update the user's tokens
+                    for (const data of results2) {
+                        const { tokens } = data;
+                        await tokensSchema.updateOne({
+                            userId: bumpUser
+                        }, {
+                            tokens: tokens + 5,
+                        }, {
+                            upsert: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                        // Log when a user's tokens increase or decrease
+                        tokenLog.send({
+                            content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **${tokens + 5}** tokens`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
+
                     const bumpConfirm = new EmbedBuilder()
                         .setColor('#32B9FF')
                         .setTitle(`${message?.interaction?.user.username}`)
                         .setURL('https://disboard.org/review/create/820889004055855144')
                         .setDescription(`Consider leaving an honest review of the server [**HERE**](https://disboard.org/review/create/820889004055855144)
-        
+
+You earned \`5\` tokens for the tokens store
 ${savesMessage}`)
                         .setImage('https://i.imgur.com/xDAlBKp.png')
 

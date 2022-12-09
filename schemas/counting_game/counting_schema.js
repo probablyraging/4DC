@@ -8,11 +8,11 @@ const countingSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: true
+        required: false
     },
     discriminator: {
         type: String,
-        required: true
+        required: false
     },
     avatar: {
         type: String,

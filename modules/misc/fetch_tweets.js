@@ -20,7 +20,7 @@ module.exports = async (client) => {
             const resolve = await fetch(`https://api.twitter.com/2/users/${twitterUserIds[i]}/tweets?exclude=retweets,replies&tweet.fields=source`, { headers: { "Authorization": `Bearer ${process.env.TAPI_BEARER_TOKEN}` } });
             const data = await resolve.json();
 
-            if (!results[0].ids.includes(data.data[0].id)) {
+            if (!results[0]?.ids.includes(data.data[0].id)) {
                 tweetIdsArr.push(data.data[0].id);
                 let user;
                 if (i === 0) user = 'youtube';

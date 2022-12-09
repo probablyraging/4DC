@@ -35,7 +35,7 @@ module.exports = async (message) => {
         target?.roles?.add(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
         const myDate = new Date();
-        // Add 5 hours to the current time
+        // Add 24 hours to the current time
         const timestamp = myDate.setHours(myDate.getHours() + 24);
 
         await timerSchema.updateOne({

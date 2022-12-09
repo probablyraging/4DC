@@ -1,0 +1,73 @@
+const { Message } = require('discord.js');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
+const path = require('path');
+const tokensLimit = new Set();
+/**
+ * 
+ * @param {Message} message 
+ */
+module.exports = async (message, client) => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
+    // Tokens earning is disabled in these channels
+    const disabletokens = [process.env.CONTENT_SHARE, process.env.BOT_CHAN]
+    if (!message?.author.bot && !tokensLimit.has(message?.author.id)) {
+        // If the message is in a tokens disabled channel, don't add tokens
+        if (disabletokens.includes(message?.channel.id)) return;
+        // Fetch the user's db entry
+        const results = await tokensSchema.find({ userId: message?.author.id });
+        // Check to see if the user is in our database yet, if not, add them
+        if (results.length === 0) {
+            await tokensSchema.create({
+                userId: message?.author.id,
+                tokens: 1
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            // Log when a user's tokens increase or decrease
+            tokenLog.send({
+                content: `${process.env.TOKENS_UP} ${message?.author} gained **1** token for a message they sent, they now have **1** tokens`,
+                allowedMentions: {
+                    parse: []
+                }
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
+        // Update the user's tokens
+        for (const data of results) {
+            const { tokens } = data;
+            await tokensSchema.updateOne({
+                userId: message?.author.id
+            }, {
+                tokens: tokens + 1,
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            // If it's the user's first time earning 5 tokens, let them know how to spend them
+            if (!results[0]?.initialNotification && (tokens + 1) === 5) {
+                tokenLog.send({
+                    content: `${process.env.TOKENS_UP} ${message?.author} you just earnt your first **5** tokens! Head over to the <#1049791650060324954> to spend them`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                // Add a db entry so we don't notify them again
+                await tokensSchema.updateOne({
+                    userId: message?.author.id
+                }, {
+                    initialNotification: true,
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            }
+
+            // Log when a user's tokens increase or decrease
+            tokenLog.send({
+                content: `${process.env.TOKENS_UP} ${message?.author} gained **1** token for a message they sent, they now have **${tokens + 1}** tokens`,
+                allowedMentions: {
+                    parse: []
+                }
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
+        // Add user to tokensLimit for 60 seconds to prevent spamming for tokens
+        tokensLimit.add(message?.author.id);
+        setTimeout(() => {
+            tokensLimit.delete(message?.author.id)
+        }, 60000);
+    }
+}

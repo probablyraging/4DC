@@ -8,6 +8,7 @@ const liveNow = require('../../modules/misc/live_now');
 const autoYT = require('../../modules/misc/auto_yt');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
 const welcomeCheck = require('../../modules/misc/welcome_check');
+const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const cronjob = require('cron').CronJob;
 const mongo = require('../../mongo');
@@ -59,6 +60,7 @@ module.exports = {
         autoYT(client);
         fetchTweets(client);
         welcomeCheck(client);
+        storeCheck(client);
         leaderboardUpdate(client)
 
         console.timeEnd('Time to online');

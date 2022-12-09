@@ -42,7 +42,7 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(results[0].id).user.username}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(results[0]?.id).user.username}`, 78, 134);
                         ctx.fillText(`${guild.members.cache.get(results[1].id).user.username}`, 78, 214);
                         ctx.fillText(`${guild.members.cache.get(results[2].id).user.username}`, 78, 294);
                         ctx.fillText(`${guild.members.cache.get(results[3].id).user.username}`, 78, 374);
@@ -50,7 +50,7 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#5cb6fc";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(results[0].xp)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(results[0]?.xp)}`, 760, 134);
                         ctx.fillText(`${numberWithCommas(results[1].xp)}`, 760, 214);
                         ctx.fillText(`${numberWithCommas(results[2].xp)}`, 760, 294);
                         ctx.fillText(`${numberWithCommas(results[3].xp)}`, 760, 374);

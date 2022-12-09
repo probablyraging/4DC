@@ -13,6 +13,10 @@ const ytNotificationSchema = mongoose.Schema({
     videoIds: {
         type: Array,
         required: true
+    },
+    timestamp: {
+        type: Date,
+        required: false
     }
 
 });

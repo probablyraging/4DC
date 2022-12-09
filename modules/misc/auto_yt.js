@@ -1,4 +1,5 @@
 const ytNotificationSchema = require('../../schemas/misc/yt_notification_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');
 const res = new (require('rss-parser'))();
 
@@ -13,19 +14,22 @@ module.exports = async (client) => {
             if (err) return console.log(`Unable to fetch AUTOYT feed`);
         });
 
-        const results = await ytNotificationSchema.find({});
+        const results = await ytNotificationSchema.find();
 
         for (const data of results) {
             const { channelId, videoIds, userId } = data;
 
-            // if the user isn't a booster or staff member, we can remove them from the database
+            // Fetch tokens store user's that might have an active sub
+            const results2 = await tokensSchema.find({ userId: userId });
+
+            // if the user isn't a booster, staff member or tokens sub, we can remove them from the database
             const member = guild.members.cache.get(userId);
-            if (!member?.roles?.cache.has(process.env.BOOST_ROLE) && !member?.roles?.cache.has(process.env.STAFF_ROLE)) {
+            if (!member?.roles?.cache.has(process.env.BOOSTER_ROLE) && !member?.roles?.cache.has(process.env.STAFF_ROLE) && (results2[0]?.youtubeauto - new Date()) < 1 && results2[0]?.youtubeauto !== true) {
                 await ytNotificationSchema.findOneAndRemove({ userId })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 
                 staffChan.send({
-                    content: `${member} has been removed from the **AUTOYT** list because they're no longer a staff member or server booster`
+                    content: `${member} has been removed from the **YouTube Auto** list as they're no longer a staff member, server booster or tokens subscriber`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
 

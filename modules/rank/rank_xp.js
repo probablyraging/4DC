@@ -1,5 +1,6 @@
 const { Message } = require('discord.js');
 const rankSchema = require('../../schemas/misc/rank_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');
 const xpLimit = new Set();
 /**
@@ -48,9 +49,11 @@ module.exports = async (message, client) => {
             return b.xp - a.xp;
         });
 
-        // get a random number between 15 and 25
+        const results2 = await tokensSchema.find({ userId: message?.author.id });
+
+        // get a random number
         function randomNum() {
-            if (message?.member?.roles.cache.has(process.env.BOOST_ROLE)) {
+            if (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (results2[0]?.doublexp - new Date()) > 1) {
                 return Math.floor(Math.random() * (50 - 30 + 1) + 30);
             } else {
                 return Math.floor(Math.random() * (25 - 15 + 1) + 15);

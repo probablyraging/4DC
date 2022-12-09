@@ -70,6 +70,8 @@ module.exports = {
         const { client, member, guild, user, options } = interaction;
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
+        await interaction.deferReply({ ephemeral: true });
+
         switch (options.getSubcommand()) {
             case 'add': {
                 const target = options.getMember('username');
@@ -86,7 +88,7 @@ module.exports = {
                 if (reason === 'Custom') reason = `${custom}`;
 
                 if (reason === 'null') {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -102,7 +104,7 @@ module.exports = {
 
                 // If the target user cannot be found
                 if (!userId || !username) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} The was an issue finding the user you are trying to warn`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -147,13 +149,13 @@ module.exports = {
                     let banMsg = banFail ? `${process.env.BOT_DENY} I could not ban ${target}` : `${process.env.BOT_CONF} ${target} was banned`;
 
                     if (reason && reason.length > 1024) {
-                        return interaction.reply({
+                        return interaction.editReply({
                             content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
-                    interaction.reply({
+                    interaction.editReply({
                         content: `${process.env.BOT_CONF} Your warning was added
 ${banMsg}`,
                         ephemeral: true
@@ -169,13 +171,13 @@ ${banMsg}`,
                     let replyMsg = dmFail ? `${process.env.BOT_CONF} Your warning was added\n${process.env.BOT_DENY} I could not send ${target} a notification` : `${process.env.BOT_CONF} Your warning was added`;
 
                     if (reason && reason.length > 1024) {
-                        return interaction.reply({
+                        return interaction.editReply({
                             content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                     }
 
-                    interaction.reply({
+                    interaction.editReply({
                         content: `${replyMsg}`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -190,7 +192,7 @@ ${banMsg}`,
                 const results = await warnSchema.find({ warnId: warning });
 
                 if (results.length >= 1) {
-                    await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
+                    await warnSchema.findOneAndRemove({ warnId: warning }).then(() => interaction.editReply({
                         content: `${process.env.BOT_CONF} Warning '${warning}' removed`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
@@ -217,7 +219,7 @@ ${banMsg}`,
                     const results2 = await ccWarnModel.find({ warnId: warning });
 
                     if (results2.length >= 1) {
-                        await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.reply({
+                        await ccWarnModel.findOneAndRemove({ warnId: warning }).then(() => interaction.editReply({
                             content: `${process.env.BOT_CONF} Warning '${warning}' removed`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)));
@@ -241,7 +243,7 @@ ${banMsg}`,
                         }
 
                     } else {
-                        interaction.reply({
+                        interaction.editReply({
                             content: `${process.env.BOT_DENY} Warning '${warning}' does not exist or has already been deleted`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -285,12 +287,12 @@ ${banMsg}`,
                         });
                     }
 
-                    interaction.reply({
+                    interaction.editReply({
                         embeds: [warningEmbed],
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 } else {
-                    interaction.reply({
+                    interaction.editReply({
                         content: 'This user has no warnings',
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
