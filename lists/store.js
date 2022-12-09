@@ -493,9 +493,9 @@ Some store items require you to contact a staff member after purchasing them. Pl
 
 Staff have the right to add and remove tokens from user's accounts if necessary. If you believe your tokens balance was altered by mistake, please contact <@${process.env.OWNER_ID}>
 
-There is currently a hard cap of being able to earn 50 tokens per day, one this cap is reached you won't earn token until the 24 hour timer resets
+There is currently a hard cap of being able to earn 50 tokens per day. Once this cap is reached you won't earn tokens. Token cap timers reset at midnight AEST
 
-While most store items are handled automatically, some require manual finalization and real world money to be completed. There may be up to a 1-week delay for delivery of **epic tier** items
+While most store items are handled automatically, some require manual finalization. There may be up to a 1-week delay for delivery of **epic tier** items
     
-Tokens will not be refunded if they are used for buying or gifting, even if accidental. Tokens may be refunded if an error that is out of your control occurs`,
+Tokens will not be refunded if they are used for buying or gifting, even if accidental. Tokens may be refunded if an error occurs that is out of your control`,
 }
