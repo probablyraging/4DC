@@ -36,7 +36,7 @@ module.exports = async (message, client) => {
             let results = await countingCurrent.find();
 
             // If the entry doesn't exist, create it
-            if (results < 1) {
+            if (results.length < 1) {
                 await countingCurrent.create({
                     currentCount: 0,
                     currentRecord: 0,
@@ -51,7 +51,7 @@ module.exports = async (message, client) => {
                 currentRecord = data.currentRecord;
 
                 // if the same person counted two numbers is a row            
-                if (message.author.id === data.previousCounter) {
+                if (message?.author.id === data.previousCounter) {
                     message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                     return message.reply({
                         content: `${process.env.BOT_DENY} You can't count two numbers in a row. You must wait for another player to count first`,
@@ -67,7 +67,7 @@ module.exports = async (message, client) => {
 
                 // if the new number didn't increase by 1 from the previous number
                 if (!failed && parseInt(message.content) !== currentCount + 1) {
-                    failReason = `${message.author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${message.content}\``;
+                    failReason = `${message?.author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${message.content}\``;
                     failed = true
                     await checkForPersonalSaves();
                     return;
@@ -87,7 +87,7 @@ module.exports = async (message, client) => {
 
                 // check if the user has a personal save to use, if not try and use a guild save
                 async function checkForPersonalSaves() {
-                    const results = await countingSchema.find({ userId: message.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     for (const data of results) {
                         const { saves } = data;
                         if (saves >= 1) {
@@ -104,11 +104,11 @@ module.exports = async (message, client) => {
 
                 // if we use a user's personal save, we need to subtract it from the database entry
                 async function usePersonalSave() {
-                    const results = await countingSchema.find({ userId: message.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     for (const data of results) {
                         const { saves } = data;
                         await countingSchema.updateOne({
-                            userId: message.author.id
+                            userId: message?.author.id
                         }, {
                             saves: saves - 1
                         }, {
@@ -152,14 +152,14 @@ module.exports = async (message, client) => {
 
                 // every time a user makes a correct count, we add that to their count in the database
                 async function updateUsersCount() {
-                    const results = await countingSchema.find({ userId: message.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                    if (results === 0) {
+                    const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    if (results.length === 0) {
                         // if user doesn't exist in the satabase yet, create an entry for them
-                        await countingSchema.creator({
-                            userId: message.author.id,
-                            username: message.author.username,
-                            discriminator: message.author.discriminator,
-                            avatar: message.author.avatar,
+                        await countingSchema.create({
+                            userId: message?.author.id,
+                            username: message?.author.username,
+                            discriminator: message?.author.discriminator,
+                            avatar: message?.author.avatar,
                             counts: 1,
                             saves: 0
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
@@ -167,11 +167,11 @@ module.exports = async (message, client) => {
                         for (const data of results) {
                             const { counts, saves } = data;
                             await countingSchema.updateOne({
-                                userId: message.author.id
+                                userId: message?.author.id
                             }, {
-                                username: message.author.username,
-                                discriminator: message.author.discriminator,
-                                avatar: message.author.avatar,
+                                username: message?.author.username,
+                                discriminator: message?.author.discriminator,
+                                avatar: message?.author.avatar,
                                 counts: counts + 1,
                                 saves: saves
                             }, {
@@ -187,7 +187,7 @@ module.exports = async (message, client) => {
                         searchFor: 'currentCount'
                     }, {
                         currentCount: currentCount + 1,
-                        previousCounter: message.author.id
+                        previousCounter: message?.author.id
                     }, {
                         upsert: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

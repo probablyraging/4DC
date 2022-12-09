@@ -1,4 +1,4 @@
-const { genders } = require('../../lists/roles-ids');
+const { genders } = require('../../../lists/roles-ids');
 const path = require('path');
 
 module.exports = async (interaction) => {

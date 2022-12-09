@@ -106,7 +106,7 @@ ${process.env.TOKENS_DOWN} ${member} gave away **${amount}** ${tokenAmount}, the
             let { tokens, dailyTokens } = data;
             // Hard cap of earning 50 tokens per day
             if (isNaN(dailyTokens)) dailyTokens = 0;
-            if ((dailyTokens + amount) > 50) {
+            if ((dailyTokens + amount) > 75) {
                 return interaction.editReply({
                     content: `${process.env.BOT_DENY} This would exceed the user's daily cap. This user can only earn **${50 - dailyTokens}** more tokens today`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));

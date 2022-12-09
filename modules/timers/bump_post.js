@@ -119,7 +119,7 @@ module.exports = async (message, client) => {
                         let { tokens, dailyTokens } = data;
                         // Hard cap of earning 50 tokens per day
                         if (isNaN(dailyTokens)) dailyTokens = 0;
-                        if ((dailyTokens + 5) > 50) return;
+                        if ((dailyTokens + 5) > 75) return;
                         await tokensSchema.updateOne({
                             userId: bumpUser
                         }, {

@@ -1,4 +1,4 @@
-const { regions } = require('../../lists/roles-ids');
+const { regions } = require('../../../lists/roles-ids');
 const path = require('path');
 
 module.exports = async (interaction) => {
