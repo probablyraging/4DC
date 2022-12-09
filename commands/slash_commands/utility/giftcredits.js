@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     name: `gifttokens`,
     description: `Gift another user some of your own tokens`,
-    cooldown: 3,
+    cooldown: 60,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `user`,
@@ -87,10 +87,7 @@ module.exports = {
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_GIFT} ${member} gifted **${amount}** ${tokenAmount} to ${user}
-${process.env.TOKENS_DOWN} ${member} lossed **${amount}** ${tokenAmount}, they now have **${tokens - amount}** tokens`,
-                allowedMentions: {
-                    parse: []
-                }
+${process.env.TOKENS_DOWN} ${member} lossed **${amount}** ${tokenAmount}, they now have **${tokens - amount}** tokens`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
