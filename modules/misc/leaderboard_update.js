@@ -3,6 +3,7 @@ const Canvas = require("canvas");
 const rankSchema = require('../../schemas/misc/rank_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const letterSchema = require('../../schemas/letter_game/letter_lb_schema');
+const tokensSchema =  require('../../schemas/misc/tokens_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 /**
@@ -399,6 +400,96 @@ module.exports = async (client) => {
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "letter_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "letter_lb2.png" });
+
+                        message.edit({
+                            content: '',
+                            files: [attachment, attachment2]
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+                    }
+
+                    // Tokens
+                    if (message?.content.includes('tokens_lb') || message?.attachments.first()?.name.includes('tokens_lb')) {
+                        const results = await tokensSchema.find().limit(10).sort({ tokens: -1 });
+                        // Image 1
+                        const background = await Canvas.loadImage("./res/images/leaderboard_tokens_bg.png");
+                        const canvas = Canvas.createCanvas(930, 480);
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+                        // Position
+                        ctx.font = "900 30px redhatdisplay";
+                        ctx.fillStyle = "#fff";
+                        ctx.textAlign = "center";
+                        ctx.fillText(`1`, 31, 134);
+                        ctx.fillText(`2`, 32, 214);
+                        ctx.fillText(`3`, 32, 294);
+                        ctx.fillText(`4`, 32, 374);
+                        ctx.fillText(`5`, 32, 454);
+                        // Username
+                        ctx.font = "900 38px redhatdisplay";
+                        ctx.textAlign = "left";
+                        ctx.fillText(`${guild.members.cache.get(results[0].userId).user.username}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(results[1].userId).user.username}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(results[2].userId).user.username}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(results[3].userId).user.username}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(results[4].userId).user.username}`, 78, 454);
+                        // Values
+                        ctx.fillStyle = "#b952e0";
+                        ctx.textAlign = "right";
+                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 760, 134);
+                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 760, 214);
+                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 760, 294);
+                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 760, 374);
+                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 760, 454);
+                        // XP
+                        ctx.fillStyle = "#fff";
+                        ctx.textAlign = "left";
+                        ctx.fillText(`TOKENS`, 780, 134);
+                        ctx.fillText(`TOKENS`, 780, 214);
+                        ctx.fillText(`TOKENS`, 780, 294);
+                        ctx.fillText(`TOKENS`, 780, 374);
+                        ctx.fillText(`TOKENS`, 780, 454);
+
+                        // Image 2
+                        const background2 = await Canvas.loadImage("./res/images/leaderboard_tokens_bg2.png");
+                        const canvas2 = Canvas.createCanvas(930, 420);
+                        const ctx2 = canvas2.getContext("2d");
+                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
+                        ctx2.font = "900 30px redhatdisplay";
+                        ctx2.fillStyle = "#fff";
+                        ctx2.textAlign = "center";
+                        // Position
+                        ctx2.fillText(`6`, 32, 46);
+                        ctx2.fillText(`7`, 33, 126);
+                        ctx2.fillText(`8`, 33, 206);
+                        ctx2.fillText(`9`, 33, 286);
+                        ctx2.fillText(`10`, 33, 366);
+                        // Username
+                        ctx2.font = "900 38px redhatdisplay";
+                        ctx2.textAlign = "left";
+                        ctx2.fillText(`${guild.members.cache.get(results[5].userId).user.username}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(results[6].userId).user.username}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(results[7].userId).user.username}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(results[8].userId).user.username}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(results[9].userId).user.username}`, 78, 366);
+                        // Values
+                        ctx2.fillStyle = "#b952e0";
+                        ctx2.textAlign = "right";
+                        ctx2.fillText(`${numberWithCommas(results[5].tokens)}`, 760, 46);
+                        ctx2.fillText(`${numberWithCommas(results[6].tokens)}`, 760, 126);
+                        ctx2.fillText(`${numberWithCommas(results[7].tokens)}`, 760, 206);
+                        ctx2.fillText(`${numberWithCommas(results[8].tokens)}`, 760, 286);
+                        ctx2.fillText(`${numberWithCommas(results[9].tokens)}`, 760, 366);
+                        // XP
+                        ctx2.fillStyle = "#fff";
+                        ctx2.textAlign = "left";
+                        ctx2.fillText(`TOKENS`, 780, 46);
+                        ctx2.fillText(`TOKENS`, 780, 126);
+                        ctx2.fillText(`TOKENS`, 780, 206);
+                        ctx2.fillText(`TOKENS`, 780, 286);
+                        ctx2.fillText(`TOKENS`, 780, 366);
+
+                        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "tokens_lb1.png" });
+                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "tokens_lb2.png" });
 
                         message.edit({
                             content: '',
