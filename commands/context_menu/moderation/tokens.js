@@ -44,11 +44,14 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens as an award for their he
 
         // Add the desired amount of tokens
         for (const data of results) {
-            const { tokens } = data;
+            const { tokens, dailyTokens } = data;
+            // Hard cap of earning 50 tokens per day
+            if ((dailyTokens + 10) > 50) return;
             await tokensSchema.updateOne({
                 userId: target.id
             }, {
                 tokens: tokens + 10,
+                dailyTokens: dailyTokens + 10
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

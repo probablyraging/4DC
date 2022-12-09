@@ -103,13 +103,15 @@ ${process.env.TOKENS_DOWN} ${member} lossed **${amount}** ${tokenAmount}, they n
         }
 
         for (const data of results2) {
-            const { tokens } = data;
-
+            const { tokens, dailyTokens } = data;
+            // Hard cap of earning 50 tokens per day
+            if ((dailyTokens + amount) > 50) return;
             // Add the desired amount of tokens
             await tokensSchema.updateOne({
                 userId: user.id
             }, {
                 tokens: tokens + amount,
+                dailyTokens: dailyTokens + amount
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

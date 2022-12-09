@@ -21,7 +21,8 @@ module.exports = async (message, client) => {
         if (results.length === 0) {
             await tokensSchema.create({
                 userId: message?.author.id,
-                tokens: 1
+                tokens: 1,
+                dailyTokens: 1
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             // Log when a user's tokens increase or decrease
             tokenLog.send({
@@ -33,11 +34,14 @@ module.exports = async (message, client) => {
         }
         // Update the user's tokens
         for (const data of results) {
-            const { tokens } = data;
+            const { tokens, dailyTokens } = data;
+            // Hard cap of earning 50 tokens per day
+            if ((dailyTokens + 1) > 50) return;
             await tokensSchema.updateOne({
                 userId: message?.author.id
             }, {
                 tokens: tokens + 1,
+                dailyToken: dailyTokens + 1
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

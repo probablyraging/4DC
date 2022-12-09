@@ -10,6 +10,10 @@ const tokensSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    dailyTokens: {
+        type: Number,
+        required: true
+    },
     initialNotification: {
         type: Boolean,
         required: false
