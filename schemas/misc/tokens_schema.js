@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { dbTwo } = require('../../mongo');
 
 const tokensSchema = mongoose.Schema({
 
@@ -49,4 +50,4 @@ const tokensSchema = mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('tokens', tokensSchema)
+module.exports = dbTwo.model('tokens', tokensSchema);

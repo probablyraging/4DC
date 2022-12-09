@@ -25,7 +25,6 @@ module.exports = async (client) => {
             }
             // Set each user's current rank position
             newPositionArr.push({ pos: currentPosition, id: id });
-
         }
         // Assign the new rank position to each user
         for (let i = 0; i < newPositionArr.length; i++) {

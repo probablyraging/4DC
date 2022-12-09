@@ -11,7 +11,7 @@ const welcomeCheck = require('../../modules/misc/welcome_check');
 const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const cronjob = require('cron').CronJob;
-const mongo = require('../../mongo');
+const { dbOne } = require('../../mongo');
 const Canvas = require("canvas");
 const path = require('path');
 
@@ -20,14 +20,10 @@ module.exports = {
     once: true,
     async execute(message, client, Discord) {
         console.log('Client is online!');
+        console.timeEnd('Time to online');
 
-        await mongo().then(mongoose => {
-            try {
-                console.log('Connected to database');
-            } catch (err) {
-                console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err);
-            }
-        });
+        // Connect to database
+        dbOne.then(() => console.log('Connected to database')).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
 
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
@@ -38,7 +34,7 @@ module.exports = {
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({
-                    content: `Consider becoming a server booster to get access to these cool server perks that can help people find your content easier`,
+                    content: `Consider becoming a server booster to get access to these cool server perks`,
                     files: [img]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
                 .then(msg => {
@@ -62,7 +58,5 @@ module.exports = {
         welcomeCheck(client);
         storeCheck(client);
         leaderboardUpdate(client)
-
-        console.timeEnd('Time to online');
     }
 };
