@@ -39,8 +39,13 @@ module.exports = async (client) => {
         if ((results[0]?.timestamp - new Date()) < 1) {
             // Draw random winner from available tickets
             const winner = await drawWinner(guild);
-            // If no winner was able to be picked
-            if (!winner) return;
+            // If no winner was able to be picked, delete the current message
+            if (!winner) {
+                (await spotlightChannel.messages.fetch()).forEach(message => {
+                    if (!message.embeds.length > 0) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                });
+                return
+            }
             // Delete all messages that aren't an embed
             (await spotlightChannel.messages.fetch()).forEach(message => {
                 if (!message.embeds.length > 0) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
