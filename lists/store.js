@@ -455,7 +455,7 @@ Use the buttons below for more details about individual items`,
         
 *Learn how to earn your first tokens by clicking the **How To Earn Tokens** button below*`,
 
-    earn: `There are currently 4 ways to earn tokens, they are],
+    earn: `There are currently 4 ways to earn tokens, they are;
     
 **Sending messages *(chatting)* in the server**
      <:minidot:923683258871472248> 1 token per message

@@ -11,7 +11,7 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const { guild, channel, member } = interaction;
+        const { guild, channel, member, message } = interaction;
 
         await interaction.deferReply({ ephemeral: true });
 
@@ -41,6 +41,18 @@ module.exports = {
                 userId: target.id,
                 tokens: 10
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            // Mark the member's daily award as used
+            await tokensSchema.updateOne({
+                userId: member.id
+            }, {
+                availableAward: false
+            }, {
+                upset: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            // Add a reaction to the user's message
+            fetchMsg.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
 
             // Log when a user's tokens increase or decrease
             tokenLog.send({
@@ -76,6 +88,10 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens a thank you for their he
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+            // Add a reaction to the user's message
+            fetchMsg.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
+
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member}
