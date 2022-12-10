@@ -53,6 +53,7 @@ module.exports = async (client) => {
             await spotlightChannel.createWebhook({ name: winner.member.displayName, avatar: winner.member.user.displayAvatarURL() }).then(async webhook => {
                 await webhook.send({
                     content: `Today's spotlight winner is ${winner.member}
+Buy entry tickets from <#1049791650060324954> to have your content featured here
 
 ${winner.draw.message}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
