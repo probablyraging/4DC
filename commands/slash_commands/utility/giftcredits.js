@@ -108,7 +108,7 @@ ${process.env.TOKENS_DOWN} ${member} gave away **${amount}** ${tokenAmount}, the
             if (isNaN(dailyTokens)) dailyTokens = 0;
             if ((dailyTokens + amount) > 75) {
                 return interaction.editReply({
-                    content: `${process.env.BOT_DENY} This would exceed the user's daily cap. This user can only earn **${50 - dailyTokens}** more tokens today`
+                    content: `${process.env.BOT_DENY} This would exceed ${user}'s daily token cap. They can only earn **${75 - dailyTokens}** more tokens today`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
             }
             // Add the desired amount of tokens

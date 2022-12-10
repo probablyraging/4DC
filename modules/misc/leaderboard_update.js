@@ -443,11 +443,11 @@ module.exports = async (client) => {
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`TOKENS`, 780, 134);
-                        ctx.fillText(`TOKENS`, 780, 214);
-                        ctx.fillText(`TOKENS`, 780, 294);
-                        ctx.fillText(`TOKENS`, 780, 374);
-                        ctx.fillText(`TOKENS`, 780, 454);
+                        ctx.fillText(`TOKENS`, 770, 134);
+                        ctx.fillText(`TOKENS`, 770, 214);
+                        ctx.fillText(`TOKENS`, 770, 294);
+                        ctx.fillText(`TOKENS`, 770, 374);
+                        ctx.fillText(`TOKENS`, 770, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_tokens_bg2.png");
@@ -482,11 +482,11 @@ module.exports = async (client) => {
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`TOKENS`, 780, 46);
-                        ctx2.fillText(`TOKENS`, 780, 126);
-                        ctx2.fillText(`TOKENS`, 780, 206);
-                        ctx2.fillText(`TOKENS`, 780, 286);
-                        ctx2.fillText(`TOKENS`, 780, 366);
+                        ctx2.fillText(`TOKENS`, 770, 46);
+                        ctx2.fillText(`TOKENS`, 770, 126);
+                        ctx2.fillText(`TOKENS`, 770, 206);
+                        ctx2.fillText(`TOKENS`, 770, 286);
+                        ctx2.fillText(`TOKENS`, 770, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "tokens_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "tokens_lb2.png" });

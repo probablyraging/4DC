@@ -13,7 +13,11 @@ const tokensSchema = mongoose.Schema({
     },
     dailyTokens: {
         type: Number,
-        required: true
+        required: false
+    },
+    availableAward: {
+        type: Boolean,
+        required: false
     },
     initialNotification: {
         type: Boolean,

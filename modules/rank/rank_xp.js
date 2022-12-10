@@ -15,8 +15,11 @@ module.exports = async (message, client) => {
 
     let results;
     if (!message?.author?.bot && !xpLimit.has(message?.author?.id)) {
+        // If the message is in an XP disabled channel, don't add XP
+        if (disableXP.includes(message?.channel?.id)) return;
+
         results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-        // check to see if the user is in our database yet, if not, add them
+        // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
             await rankSchema.create({
                 rank: 0,
@@ -32,26 +35,9 @@ module.exports = async (message, client) => {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
 
-        // if the message is in an XP disabled channel, don't add XP
-        if (disableXP.includes(message?.channel?.id)) return;
-
-        // find all entries, sort them based on their 'xp' and assign each user a 'rank'
-        const sort = await rankSchema.find().catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-        sortArr = [];
-        for (const data of sort) {
-            const { id, xp } = data;
-
-            sortArr.push({ id, xp });
-        }
-
-        sortArr.sort(function (a, b) {
-            return b.xp - a.xp;
-        });
-
+        // Fetch users with an active sub to double XP
         const results2 = await tokensSchema.find({ userId: message?.author.id });
-
-        // get a random number
+        // Get a random number
         function randomNum() {
             if (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (results2[0]?.doublexp - new Date()) > 1) {
                 return Math.floor(Math.random() * (50 - 30 + 1) + 30);
@@ -63,30 +49,18 @@ module.exports = async (message, client) => {
         for (const data of results) {
             let { xp, xxp, xxxp, level, msgCount } = data;
 
-            let msgMath = parseInt(msgCount) + 1;
             let random = randomNum();
             let xpMath = parseInt(xp) + random;
             let xxpMath = parseInt(xxp) + random;
 
-            let xxpInt = parseInt(xxp);
             let xxxpInt = parseInt(xxxp);
             let newUsername = message?.author?.username;
             let newDiscrim = message?.author?.discriminator;
 
-            // get a users current rank position
-            rankPosArr = [];
-            for (let i = 0; i < sortArr.length; i++) {
-                await rankPosArr.push({ pos: i + 1, id: sortArr[i].id, xp: sortArr[i].xp });
-            }
-
-            const findInArr = await rankPosArr.find(m => m?.id === message?.author?.id);
-            rankPos = findInArr?.pos;
-
-            // update user's xp and xxp per 1 message, per 60 seconds
+            // Update user's xp and xxp every message, once every 60 seconds
             await rankSchema.updateOne({
                 id: message?.author?.id
             }, {
-                rank: rankPos,
                 username: newUsername,
                 discrim: newDiscrim,
                 avatar: message?.author.avatar,
@@ -96,7 +70,7 @@ module.exports = async (message, client) => {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-            // when a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
+            // When a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
             if (xxpMath > xxxpInt) {
                 let levelMath = parseInt(level) + 1;
                 let exponential = 5 * Math.pow(levelMath, 2) + (50 * levelMath) + 100 - 0;
@@ -112,6 +86,7 @@ module.exports = async (message, client) => {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
+                // Send the user a notification and add and remove the appropriate roles for them
                 botChan.send({
                     content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
@@ -191,16 +166,13 @@ module.exports = async (message, client) => {
             }
         }
         // add user to xpLimit for 60 seconds to prevent spamming for xp
-        xpLimit.add(message?.author?.id)
-
+        xpLimit.add(message?.author?.id);
         setTimeout(() => {
-            xpLimit.delete(message?.author?.id)
+            xpLimit.delete(message?.author?.id);
         }, 60000);
     }
-
-    // count all new messages towards msgCount
+    // Count all new messages towards msgCount
     if (!results) results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
     for (const data of results) {
         let { msgCount } = data;
 

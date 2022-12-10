@@ -451,7 +451,7 @@ Use the buttons below for more details about individual items`,
 \`\`\`Yes\`\`\``,
     ],
 
-    home: `Tokens are the name of ForTheContent's spendable and exchangeable currency. They can be used to buy server perks, promote your content, unlock channels and you can even trade them in for real cash prizes!
+    home: `Tokens are the name of ForTheContent's virtual currency. They can be used to buy server perks, promote your content, unlock channels, and you can even trade them in for real cash prizes!
         
 *Learn how to earn your first tokens by clicking the **How To Earn Tokens** button below*`,
 

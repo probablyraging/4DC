@@ -48,12 +48,15 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 
         `**How does the rank/XP system work?**
 > Every newcomer starts at Rank 0, the next ranks you unlock are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of five. For every message that you send in the server you will randomly gain between 15 and 25 XP that goes toward your rank. Reaching new ranks unlocks rewards for you to use in the server, those rewards can be found in <#1005283113775157349>. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command. You will not gain XP for posting messages in the CONTENT SHARE section
+
+**What are Tokens?**
+> Tokens are the name of ForTheContent's virtual currency. They can be used to buy server perks, promote your content, unlock channels, and you can even trade them in for real cash prizes! To learn how you can start earning tokens, click the green INFORMATION button in <#1049791650060324954>
         
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)
 
 **Will people here actually watch my videos?**
-> This server's sole purpose isn't for self promotion, it's just one of the benefits. Think of it as another way to get eyes on your content, but keep in mind that most of us here are also content creators so we're probably not your target audience, that doesn't mean people wont watch them. The community members here are super supportive to those who are active, helpful and supportive to others
+> This server's sole purpose isn't for self-promotion, it's just one of the benefits. Think of it as another way to get eyes on your content, but keep in mind that most of us here are also content creators so we're probably not your target audience, but that doesn't mean people won't watch them. The community members here are super supportive of those who are active, helpful, and supportive of others
 ⠀`,
 
         `**Why do people keep DMing me spam and promo content?**

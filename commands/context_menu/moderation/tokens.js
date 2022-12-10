@@ -28,6 +28,13 @@ module.exports = {
         // Fetch the user's db entry
         const results = await tokensSchema.find({ userId: target.id });
 
+        // If staff already awarded someone today
+        if (results[0].availableAward === false) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} You have already given out your daily award. You can only give one award per day`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
             await tokensSchema.create({
@@ -49,9 +56,18 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens a thank you for their he
             if (isNaN(dailyTokens)) dailyTokens = 0;
             if ((dailyTokens + 10) > 75) {
                 return interaction.editReply({
-                    content: `${process.env.BOT_DENY} This would exceed the user's daily cap. This user can only earn **${50 - dailyTokens}** more tokens today`
+                    content: `${process.env.BOT_DENY} This would exceed ${target}'s daily token cap. They can only earn **${75 - dailyTokens}** more tokens today`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
             }
+            // Mark the member's daily award as used
+            await tokensSchema.updateOne({
+                userId: member.id
+            }, {
+                availableAward: false
+            }, {
+                upset: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
             await tokensSchema.updateOne({
                 userId: target.id
             }, {
@@ -60,7 +76,6 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens a thank you for their he
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member}

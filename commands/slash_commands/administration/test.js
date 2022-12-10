@@ -12,6 +12,5 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
-
     }
 }

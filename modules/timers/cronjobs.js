@@ -76,25 +76,63 @@ module.exports = async (client) => {
     });
 
     // Reset all daily token caps - runs once per week (Wednesday 00:00)
-    const tokenCapReset = new cronjob('0 0 * * *', async function () {
+    const tokenReset = new cronjob('0 0 * * *', async function () {
         const results = await tokensSchema.find();
         for (const data of results) {
-            const { userId } = data;
-            if (userId === '438434841617367080') {
+            const { userId, availableAward } = data;
+            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the tokens collection that no longer exists`));
+            if (!exists) {
+                await countingSchema.deleteOne({ userId: userId })
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            }
+            // Reset staff available award
+            if (availableAward === false) {
                 await tokensSchema.updateOne({
                     userId: userId
                 }, {
-                    dailyTokens: 0
+                    availableAward: true
                 }, {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
+            // Reset all user's token cap
+            await tokensSchema.updateOne({
+                userId: userId
+            }, {
+                dailyTokens: 0
+            }, {
+                upsert: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
+    });
+
+    // Check for expired premium ads and send a notification
+    const premiumAdsCheck = new cronjob('0 */6 * * *', async function () {
+        const testChan = guild.channels.cache.get(process.env.TEST_CHAN);
+        const premiumChan = await guild.channels.fetch('907446635435540551');
+        const premiumAds = await premiumChan.messages.fetch();
+
+        premiumAds.forEach(message => {
+            if (!message.author.bot) {
+                let adLength;
+                if (message.content.toLowerCase().split('\n')[0].includes('1 week')) adLength = 24 * 60 * 60 * 7 * 1000;
+                if (message.content.toLowerCase().split('\n')[0].includes('1 month')) adLength = 24 * 60 * 60 * 28 * 1000;
+                if (message.content.toLowerCase().split('\n')[0].includes('3 month')) adLength = 24 * 60 * 60 * 28 * 3 * 1000;
+                if (message.content.toLowerCase().split('\n')[0].includes('6 month')) adLength = 24 * 60 * 60 * 28 * 6 * 1000;
+
+                if ((new Date() - message.createdTimestamp) > adLength) {
+                    testChan.send({
+                        content: `<@${process.env.OWNER_ID}> A premium ad has expired - ${message.url}`
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }
+            }
+        });
     });
 
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
-    tokenCapReset.start()
+    tokenReset.start();
+    premiumAdsCheck.start();
 }
