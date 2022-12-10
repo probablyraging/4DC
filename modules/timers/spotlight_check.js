@@ -41,7 +41,7 @@ module.exports = async (client) => {
             const winner = await drawWinner(guild);
             // Delete all messages that aren't an embed
             (await spotlightChannel.messages.fetch()).forEach(message => {
-                if (!message.embeds.length > 0) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                if (message.author.id !== client.user.id) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             });
             // Remove the spotlight role from all users
             await spotlightRole.members.each(member => {
@@ -54,7 +54,7 @@ module.exports = async (client) => {
                 await webhook.send({
                     content: `Today's spotlight winner is ${winner.member}
 
-${winner.draw.message}`
+${winner.draw.message}\n\n${winner.draw.url}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                 webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));

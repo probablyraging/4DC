@@ -61,7 +61,7 @@ module.exports = {
                 const winner = await drawWinner(guild);
                 // Delete all messages that aren't an embed
                 (await spotlightChannel.messages.fetch()).forEach(message => {
-                    if (!message.embeds.length > 0) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    if (message.author.id !== client.user.id) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 });
                 // Remove the spotlight role from all users
                 await spotlightRole.members.each(member => {

@@ -1,5 +1,5 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
-const tokensSchema = require('../../schemas/misc/tokens_schema');
+const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 
 // Modal to confirm purchase
@@ -31,13 +31,21 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
     const input4 = new TextInputBuilder()
         .setCustomId('input4')
         .setLabel(`Message`)
-        .setPlaceholder('Be sure to include your link')
         .setStyle(2)
         .setMinLength(1)
         .setMaxLength(1024)
         .setRequired(true)
     const row4 = new ActionRowBuilder().addComponents([input4]);
     if (interaction.customId === 'storecommon-five') modal.addComponents(row4);
+    const input7 = new TextInputBuilder()
+        .setCustomId('input7')
+        .setLabel(`Video or channel URL`)
+        .setStyle(1)
+        .setMinLength(1)
+        .setMaxLength(1024)
+        .setRequired(true)
+    const row7 = new ActionRowBuilder().addComponents([input7]);
+    if (interaction.customId === 'storecommon-five') modal.addComponents(row7);
     // Custom Role
     const input5 = new TextInputBuilder()
         .setCustomId('input5')

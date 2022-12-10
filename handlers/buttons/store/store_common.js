@@ -1,11 +1,16 @@
 const { CommandInteraction, InteractionType } = require("discord.js");
-const { confirmationModal, completePurchase, checkConfirmation } = require('../../../modules/store/store_functions');
+const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const spotlightSchema = require("../../../schemas/misc/spotlight_schema");
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
+
+function detectURLs(message) {
+    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+    return message.match(urlRegex)
+}
 
 /**
  * @param {CommandInteraction} interaction 
@@ -205,14 +210,33 @@ module.exports = async (interaction) => {
         }
 
         const message = interaction.fields.getTextInputValue('input4');
+        const url = interaction.fields.getTextInputValue('input7');
+
+        // We only allow one URLs and only in the URL field
+        if (detectURLs(message) > 0) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} You cannot include a URL in the message field`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+        if (detectURLs(url) > 1) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} You can only include one URL`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
+        // Determine cost based off how many tickets
         cost = cost * amount;
+        
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage)) {
             // Add a new db entry every time someone buys a ticket
             for (let i = 0; i < amount; i++) {
                 await spotlightSchema.create({
                     userId: member.id,
-                    message: message
+                    message: message,
+                    url: url
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
         }
@@ -265,7 +289,7 @@ module.exports = async (interaction) => {
     if (itemIndex === 'seven') {
         // This item is free for server boosters
         if (member.roles.cache.has(process.env.BOOSTER_ROLE)) cost = 0;
-        
+
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
 

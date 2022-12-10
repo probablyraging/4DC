@@ -1,6 +1,5 @@
 const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/misc/link_cooldown');
-const spotlightPost = require('../../modules/timers/spotlight_post');
 const bumpPost = require('../../modules/timers/bump_post');
 const blSpam = require('../../modules/blacklist/spam');
 const blPhishing = require('../../modules/blacklist/phishing');
@@ -28,7 +27,6 @@ module.exports = {
         blSpam(message, client);
 
         // Bump and spotlight checks
-        spotlightPost(message);
         bumpPost(message, client);
 
         // Game checks

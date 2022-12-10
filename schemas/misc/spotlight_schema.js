@@ -9,6 +9,10 @@ const spotlightSchema = mongoose.Schema({
     message: {
         type: String,
         required: false
+    },
+    url: {
+        type: String,
+        required: false
     }
 
 });

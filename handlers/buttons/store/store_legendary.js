@@ -1,5 +1,5 @@
 const { CommandInteraction, InteractionType } = require("discord.js");
-const { confirmationModal, completePurchase, checkConfirmation } = require('../../../modules/store/store_functions');
+const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 

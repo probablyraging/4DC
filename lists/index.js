@@ -260,7 +260,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <@&846418761674129409> Nothing new
 <@&846418567263420437> Nothing new
 <@&846417898351362098> Nothing new
-<@&846418078317412403> Embed link previews in self-promotion channels and the ability to post non-promotional links in most channels
+<@&846418078317412403> Permission to post non-promotional links in most channels
 *rank rewards can be unlocked immediately by becoming a server booster*
 
 **NOTIFICATIONS**
