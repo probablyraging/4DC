@@ -212,6 +212,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#978553334854205450> Get assistance or support for specific topics
 <#978691673842389053> Get some constructive feedback on your graphics or videos
 <#978694637088804884> Looking for something specific? Like new friends? Find them here
+<#1050986679919452231> Submit a question or provide answers for question of the day
 ⠀`,
 
         `**CONTENT SHARE**
@@ -222,6 +223,10 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 
 **VOICE CHAT**
 <#1038671738764017765> Create a new voice channel to hang out in
+
+**TOKENS**
+<#1049791650060324954> Spend your tokens on fun server perks
+<#1049697878311976970> A log channel for tokens gained and lossed
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
