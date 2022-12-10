@@ -51,8 +51,8 @@ module.exports = {
 
         // Delete links in media channel if user is new to the server
         const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
-        const twelveHours = 12 * 60 * 60 * 1000;
-        if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < twelveHours) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
             for (let i in promoLinks) {
                 if (message?.content.includes(promoLinks[i])) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
