@@ -399,7 +399,7 @@ module.exports = {
                     .setColor("#9c59ff")
                     .setTitle(`:crown: Content Spotlight`)
                     .setDescription(`**How Does It Work?**
-Everyone who has bought entry tickets will be in the draw to have their content featured in the channel for 24 hours. The more tickets you buy, the better chance you have to win. A new winner will be chosen every day. Entry tickets don't roll over to the next day, you will need to buy more tickets to enter the next draw. You can buy entry tickets from the <#1049791650060324954> channel by using your server tokens`);
+Buy entry tickets from <#1049791650060324954> to have your content featured here. The more tickets you buy, the better your chance of winning`);
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
