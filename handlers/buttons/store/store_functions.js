@@ -39,7 +39,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
     if (interaction.customId === 'storecommon-five') modal.addComponents(row4);
     const input7 = new TextInputBuilder()
         .setCustomId('input7')
-        .setLabel(`Video or channel URL`)
+        .setLabel(`Content URL`)
         .setStyle(1)
         .setMinLength(1)
         .setMaxLength(1024)

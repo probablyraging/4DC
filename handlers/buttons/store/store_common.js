@@ -213,22 +213,22 @@ module.exports = async (interaction) => {
         const url = interaction.fields.getTextInputValue('input7');
 
         // We only allow one URLs and only in the URL field
-        if (detectURLs(message) > 0) {
+        if (detectURLs(message)?.length > 0) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} You cannot include a URL in the message field`,
+                content: `${process.env.BOT_DENY} You cannot include a URL in the message field, please use the Content URL field instead`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
-        if (detectURLs(url) > 1) {
+        if (detectURLs(url)?.length > 1) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} You can only include one URL`,
+                content: `${process.env.BOT_DENY} You can only submit one URL`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
 
         // Determine cost based off how many tickets
         cost = cost * amount;
-        
+
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage)) {
             // Add a new db entry every time someone buys a ticket
