@@ -8,7 +8,7 @@
 
 4DC is a multipurpose discord.js v14 bot created for the <a href="https://discord.gg/forthecontent">**ForTheContent**</a> Discord server.
 
-With 30+ custom slash commands and useful features including; general moderation, suspicious link filters ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), custom blacklist, warning system, rank and xp economy with custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), invite tracker, youtube upload notifications, stable diffusion txt2img generator ([stable-diffusion](https://github.com/CompVis/stable-diffusion)), custom games, command help menu, reporting system, and much more..
+With 30+ custom slash commands and useful features including; general moderation, suspicious link filters ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), custom blacklist, warning system, rank and xp economy with custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), virtual currency economy and item store, invite tracker, youtube upload notifications, txt2img generator ([stable-diffusion](https://github.com/CompVis/stable-diffusion)), custom games, command help menu, reporting system, and much more..
 
 This repo is actively being maintained and updated to include the newest discord.js releases and Discord API changes.
 
