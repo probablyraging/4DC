@@ -3,6 +3,7 @@ const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
+const inviteSchema = require('../../schemas/misc/invite_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -75,7 +76,7 @@ module.exports = async (client) => {
         }
     });
 
-    // Reset all daily token caps - runs once per week (Wednesday 00:00)
+    // Reset all daily token caps - runs once per day (00:00)
     const tokenReset = new cronjob('0 0 * * *', async function () {
         const results = await tokensSchema.find();
         for (const data of results) {
@@ -129,10 +130,28 @@ module.exports = async (client) => {
         });
     });
 
+    // Check for invite codes that no longer exist - runs once per week (Thursday 00:00)
+    const invitesCheck = new cronjob('0 0 * * 4', async function () {
+        const invites = await guild.invites.fetch();
+        let invitesArr = [];
+        invites.forEach(invite => {
+            invitesArr.push(invite.code);
+        });
+        const results = await inviteSchema.find();
+        for (const data of results) {
+            const { code } = data;
+            if (!invitesArr.includes(code)) {
+                await inviteSchema.deleteOne({ code: code })
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            }
+        }
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
     tokenReset.start();
     premiumAdsCheck.start();
+    invitesCheck.start();
 }
