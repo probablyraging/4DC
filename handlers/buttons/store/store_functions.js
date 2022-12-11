@@ -125,7 +125,7 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
     // Log when a user's tokens increase or decrease
     tokenLog.send({
         content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**
-${process.env.TOKENS_DOWN} ${member} lossed **${cost}** while shopping, they now have **${tokens - cost}** tokens`,
+${process.env.TOKENS_DOWN} ${member} lossed **${cost}** tokens, they now have **${tokens - cost}** tokens`,
         allowedMentions: {
             parse: []
         }
