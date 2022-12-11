@@ -75,23 +75,23 @@ module.exports = {
 
         // If a user deletes their count in the counting game, send the current number
         if (message?.channel.id === process.env.COUNT_CHAN && !message.author.bot) {
-            // Check if message contained a number, and do some other checks to prevent false flags
-            const containsNumbers = /\d/.test(message?.content);
+            // Check if message contained a number, and do some other checks to prevent false positives
+            const containsNumbers = /^\d+$/.test(message?.content);
             if (!containsNumbers) return;
             const results = await countingSchema.find({ userId: message?.author?.id });
             let currentSaves = 0;
             for (const data of results) {
                 currentSaves = data.saves;
             }
-            if ((currentSaves > 0 || message?.member?.roles.cache.has(process.env.RANK5_ROLE) || message?.member?.roles.cache.has(process.env.VERIFIED_ROLE))) {
-                // Fetch the current count from the database
-                const results = await countingCurrent.find({ searchFor: 'currentCount' });
-                for (const data of results) {
-                    message?.channel.send({
-                        content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
+            // Fetch the current count from the database
+            const results2 = await countingCurrent.find({ searchFor: 'currentCount' });
+            for (const data of results2) {
+                // Only do notify if the message was the current count
+                if (message?.author.id !== data.previousCounter) return;
+                message?.channel.send({
+                    content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
 The current count is \`${data.currentCount}\``
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                }
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         }
 

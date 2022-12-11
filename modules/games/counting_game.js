@@ -9,8 +9,6 @@ module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     if (message?.channel.id === process.env.COUNT_CHAN && !message?.author.bot) {
-        let failed = false;
-
         // if the user is newer than a day, they have to wait to play
         const twentyFourHours = 24 * 60 * 60 * 1000;
         if ((new Date() - message?.author.joinedTimestamp) < twentyFourHours) {
@@ -66,9 +64,8 @@ module.exports = async (message, client) => {
                 }
 
                 // if the new number didn't increase by 1 from the previous number
-                if (!failed && parseInt(message.content) !== currentCount + 1) {
+                if (parseInt(message.content) !== currentCount + 1) {
                     failReason = `${message?.author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${message.content}\``;
-                    failed = true
                     await checkForPersonalSaves();
                     return;
                 } else {
@@ -88,6 +85,11 @@ module.exports = async (message, client) => {
                 // check if the user has a personal save to use, if not try and use a guild save
                 async function checkForPersonalSaves() {
                     const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    // if the user doesn't have any saves to use, check to see if there is a guild save to use
+                    if (results.length === 0) {
+                        // if the user doesn't have any saves to use, check to see if there is a guild save to use
+                        return checkForGuildSaves();
+                    }
                     for (const data of results) {
                         const { saves } = data;
                         if (saves >= 1) {

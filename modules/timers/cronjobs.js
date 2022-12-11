@@ -68,6 +68,8 @@ module.exports = async (client) => {
         const results = await countingSchema.find();
         for (const data of results) {
             const { userId } = data;
+            // Ignore the entry for the guild saves
+            if (userId === process.env.GUILD_ID) return;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the counting collection that no longer exists`));
             if (!exists) {
                 await countingSchema.deleteOne({ userId: userId })

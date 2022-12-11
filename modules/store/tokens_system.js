@@ -62,16 +62,26 @@ module.exports = async (message, client) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             }
 
-            // Only log in increments of 5
+            // Only log in increments of 5 - account for token cap
             if (increment.has(message?.member.id)) {
                 if (increment.get(message?.member.id) === 4) {
-                    // Log when a user's tokens increase or decrease
-                    tokenLog.send({
-                        content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${tokens + 5}** tokens`,
-                        allowedMentions: {
-                            parse: []
-                        }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    if ((75 - dailyTokens) >= 5) {
+                        // Log when a user's tokens increase or decrease
+                        tokenLog.send({
+                            content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${tokens + 5}** tokens`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    } else {
+                        // Log when a user's tokens increase or decrease
+                        tokenLog.send({
+                            content: `${process.env.TOKENS_UP} ${message?.author} gained **${75 - dailyTokens}** tokens while chatting in the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
                     increment.delete(message?.member.id);
                 } else {
                     increment.set(message?.member.id, increment.get(message?.member.id) + 1);
@@ -83,7 +93,7 @@ module.exports = async (message, client) => {
         // Add user to tokensLimit for 60 seconds to prevent spamming for tokens
         tokensLimit.add(message?.author.id);
         setTimeout(() => {
-            tokensLimit.delete(message?.author.id)
+            tokensLimit.delete(message?.author.id);
         }, 60000);
     }
 }
