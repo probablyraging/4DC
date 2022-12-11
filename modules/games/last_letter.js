@@ -132,11 +132,17 @@ module.exports = async (message, client) => {
             const response = await resolve.json();
             const error = response?.error;
             if (!error) {
-                const sections = response.parse.sections;
                 // If the response contains an English entry
+                const sections = response.parse.sections;
+                let sectionsArr = [];
                 sections.forEach(section => {
-                    if (section.line === 'English') passGameAndUpdateDatabase();
+                    sectionsArr.push(section.anchor)
                 });
+                if (sectionsArr.includes('English')) {
+                    passGameAndUpdateDatabase();
+                } else {
+                    dictionaryCheckTwo(wordToCheck);
+                }
             } else {
                 dictionaryCheckTwo(wordToCheck);
             }
@@ -148,11 +154,17 @@ module.exports = async (message, client) => {
             const response = await resolve.json();
             const error = response?.error;
             if (!error) {
-                const sections = response.parse.sections;
                 // If the response contains an English entry
+                const sections = response.parse.sections;
+                let sectionsArr = [];
                 sections.forEach(section => {
-                    if (section.line === 'English') passGameAndUpdateDatabase();
+                    sectionsArr.push(section.anchor)
                 });
+                if (sectionsArr.includes('English')) {
+                    passGameAndUpdateDatabase();
+                } else {
+                    dictionaryCheckTwo(wordToCheck);
+                }
             } else {
                 dictionaryCheckThree();
             }
@@ -164,11 +176,18 @@ module.exports = async (message, client) => {
             const response = await resolve.json();
             const error = response?.error;
             if (!error) {
-                const sections = response.parse.sections;
                 // If the response contains an English entry
+                const sections = response.parse.sections;
+                let sectionsArr = [];
                 sections.forEach(section => {
-                    if (section.line === 'English') passGameAndUpdateDatabase();
+                    sectionsArr.push(section.anchor)
                 });
+                if (sectionsArr.includes('English')) {
+                    passGameAndUpdateDatabase();
+                } else {
+                    failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}> \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
+                    return failGame();
+                }
             } else {
                 failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` isn't in the English dictionary - <https://en.wiktionary.org/wiki/${message.content.toLowerCase()}> \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
                 return failGame();
