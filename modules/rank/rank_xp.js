@@ -39,7 +39,7 @@ module.exports = async (message, client) => {
         const results2 = await tokensSchema.find({ userId: message?.author.id });
         // Get a random number
         function randomNum() {
-            if (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (results2[0]?.doublexp - new Date()) > 1) {
+            if ((results2[0]?.doublexp - new Date()) > 1) {
                 return Math.floor(Math.random() * (50 - 30 + 1) + 30);
             } else {
                 return Math.floor(Math.random() * (25 - 15 + 1) + 15);
