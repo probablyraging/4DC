@@ -87,7 +87,7 @@ module.exports = {
             // Log when a user's tokens increase or decrease
             tokenLog.send({
                 content: `${process.env.TOKENS_GIFT} ${member} gifted **${amount}** ${tokenAmount} to ${user}
-${process.env.TOKENS_DOWN} ${member} gave away **${amount}** ${tokenAmount}, they now have **${tokens - amount}** tokens`
+${process.env.TOKENS_DOWN} ${member} lost **${amount}** ${tokenAmount}, they now have **${tokens - amount}** tokens`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 

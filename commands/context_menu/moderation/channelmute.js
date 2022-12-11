@@ -12,14 +12,21 @@ module.exports = {
     async execute(interaction) {
         const { channel } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
-
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
+        const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
         // If the target is already muted in this channel
-        if (!channel.permissionsFor(target.id).has(PermissionFlagsBits.SendMessages)) {
-            return interaction.editReply({
+        if (permissionInChannel === undefined) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
+
+        // If the target is already muted in this channel
+        if (permissionInChannel === false) {
+            return interaction.reply({
                 content: `${process.env.BOT_DENY} ${target} is already muted in ${channel}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

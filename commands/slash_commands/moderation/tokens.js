@@ -174,7 +174,7 @@ ${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} magically
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
                         content: `${process.env.TOKENS_MANUAL} ${member} removed **${amount}** ${tokenAmount} from ${user}
-${process.env.TOKENS_DOWN} ${member} lossed **${amount}** ${tokenAmount} magically, they now have **${tokens - amount}** tokens`,
+${process.env.TOKENS_DOWN} ${member} lost **${amount}** ${tokenAmount}, they now have **${tokens - amount}** tokens`,
                         allowedMentions: {
                             parse: []
                         }

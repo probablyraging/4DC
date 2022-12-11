@@ -18,10 +18,20 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
+        const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-        if (channel.permissionsFor(target.id).has(PermissionFlagsBits.SendMessages)) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${target} is not muted in ${channel}`,
+        // If the target is already muted in this channel
+        if (permissionInChannel === undefined) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
+
+        // If the target is already muted in this channel
+        if (permissionInChannel === true) {
+            return interaction.reply({
+                content: `${process.env.BOT_DENY} ${target} is already muted in ${channel}`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }

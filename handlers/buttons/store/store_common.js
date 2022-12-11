@@ -201,8 +201,8 @@ module.exports = async (interaction) => {
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
 
-        const amount = interaction.fields.getTextInputValue('input3');
-        if (isNaN(amount)) {
+        const amount = parseInt(interaction.fields.getTextInputValue('input3'));
+        if (isNaN(amount) || amount < 1 || amount > 99) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} Amount must be a number from 1-99`,
                 ephemeral: true
@@ -226,7 +226,7 @@ module.exports = async (interaction) => {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
 
-        // Determine cost based off how many tickets
+        // Determine cost based off amount purcahsed
         cost = cost * amount;
 
         // Attempt to complete the purchase and continue if successful
@@ -252,8 +252,24 @@ module.exports = async (interaction) => {
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
 
+        const amount = parseInt(interaction.fields.getTextInputValue('input8'));
+        if (isNaN(amount) || amount < 1 || amount > 2) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} Amount must be a number from 1-2`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
         // Add a counting save to the user
         const results = await countingSchema.find({ userId: member.id });
+
+        // If amount is more saves than the user can have
+        if (results.length > 0 && (results[0]?.saves + (amount)) > 2) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} You can only have a max of **2** personal saves at a time. You already have **${results[0]?.saves}/2** saves`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
 
         // If user already has max saves
         if (results.length > 0 && results[0]?.saves >= 2) {
@@ -269,7 +285,7 @@ module.exports = async (interaction) => {
             if (results.length === 0) {
                 await countingSchema.create({
                     userId: member.id,
-                    saves: 1,
+                    saves: amount,
                     counts: 0
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
             } else {
@@ -277,7 +293,7 @@ module.exports = async (interaction) => {
                 await countingSchema.updateOne({
                     userId: member.id
                 }, {
-                    saves: results[0]?.saves + 1,
+                    saves: results[0]?.saves + amount,
                 }, {
                     upsert: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));

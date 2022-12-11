@@ -70,9 +70,20 @@ module.exports = {
                 const targetChan = options.getChannel('channel');
                 const reason = options.getString('reason');
                 let duration = options.getString('duration') || `0`;
+                const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
+
+                await interaction.deferReply({ ephemeral: true });
+
+                // If the target is already muted in this channel
+                if (permissionInChannel === false) {
+                    return interaction.editReply({
+                        content: `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
 
                 if (reason && reason.length > 1024) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -124,7 +135,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                interaction.reply({
+                interaction.editReply({
                     content: `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -135,6 +146,17 @@ module.exports = {
             case 'remove': {
                 const target = options.getMember('username');
                 const targetChan = options.getChannel('channel');
+                const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
+
+                await interaction.deferReply({ ephemeral: true });
+
+                // If the target is already muted in this channel
+                if (permissionInChannel === true) {
+                    return interaction.editReply({
+                        content: `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`,
+                        ephemeral: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }
 
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: null,
@@ -153,7 +175,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                interaction.reply({
+                interaction.editReply({
                     content: `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

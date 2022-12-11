@@ -46,6 +46,17 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setRequired(true)
     const row7 = new ActionRowBuilder().addComponents([input7]);
     if (interaction.customId === 'storecommon-five') modal.addComponents(row7);
+    // Game Saves
+    const input8 = new TextInputBuilder()
+        .setCustomId('input8')
+        .setLabel(`Amount (max 2)`)
+        .setPlaceholder('Total cost will be (cost * amount)')
+        .setStyle(1)
+        .setMinLength(1)
+        .setMaxLength(2)
+        .setRequired(true)
+    const row8 = new ActionRowBuilder().addComponents([input8]);
+    if (interaction.customId === 'storecommon-six') modal.addComponents(row8);
     // Custom Role
     const input5 = new TextInputBuilder()
         .setCustomId('input5')
@@ -125,7 +136,7 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
     // Log when a user's tokens increase or decrease
     tokenLog.send({
         content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**
-${process.env.TOKENS_DOWN} ${member} lossed **${cost}** tokens, they now have **${tokens - cost}** tokens`,
+${process.env.TOKENS_DOWN} ${member} lost **${cost}** tokens, they now have **${tokens - cost}** tokens`,
         allowedMentions: {
             parse: []
         }

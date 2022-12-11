@@ -226,7 +226,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 
 **TOKENS**
 <#1049791650060324954> Spend your tokens on fun server perks
-<#1049697878311976970> A log channel for tokens gained and lossed
+<#1049697878311976970> A log channel for tokens gained and lost
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
