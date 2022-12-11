@@ -24,7 +24,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > **2.** Do no send other server members unsolicited DMs containing promotional content, server invites, services, or spam
 > **3.** Advertising of other discord servers, offering or requesting paid services *(not including video/graphic editing)*, and other paid products or promotional content is only permitted in <#${process.env.PREM_CHAN}>
 > **4.** We do not allow posts that break the various platform's ToS. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
-> **5.** Do not post self-promotional content outside of the 'CONTENT SHARE' section
+> **5.** Do not post promotional content outside of the 'CONTENT SHARE' section
 > **6.** Do not send repeated or purposeless messages in an attempt to gain XP or tokens
 > **7.** For moderating purposes, please keep your messages in English
 
