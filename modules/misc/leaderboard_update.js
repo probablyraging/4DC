@@ -16,7 +16,7 @@ function numberWithCommas(x) {
 }
 
 module.exports = async (client) => {
-    const leaderboards = new cronjob('*/30 * * * *', async function () {
+    // const leaderboards = new cronjob('*/30 * * * *', async function () {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const leaderboardChan = guild.channels.cache.get(process.env.LB_CHAN);
 
@@ -506,6 +506,6 @@ module.exports = async (client) => {
                 }
             });
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching message: `, err));
-    });
-    leaderboards.start();
+    // });
+    // leaderboards.start();
 }
