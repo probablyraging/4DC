@@ -493,7 +493,7 @@ Some store items require you to contact a staff member after purchasing them. Pl
 
 Staff have the right to add and remove tokens from user's accounts if necessary. If you believe your tokens balance was altered by mistake, please contact <@${process.env.OWNER_ID}>
 
-There is currently a hard cap of being able to earn 50 tokens per day. Once this cap is reached you won't earn tokens. Token cap timers reset at midnight AEST
+There is currently a hard cap of being able to earn 75 tokens per day. Once this cap is reached you won't earn tokens. Token cap timers reset at midnight AEST
 
 While most store items are handled automatically, some require manual finalization. There may be up to a 1-week delay for delivery of **epic tier** items
     

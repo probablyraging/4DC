@@ -97,7 +97,7 @@ ${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} from a st
 
                 for (const data of results) {
                     let { tokens, dailyTokens } = data;
-                    // Hard cap of earning 50 tokens per day
+                    // Hard cap of earning 75 tokens per day
                     if (isNaN(dailyTokens)) dailyTokens = 0;
                     if ((dailyTokens + amount) > 75) {
                         return interaction.editReply({

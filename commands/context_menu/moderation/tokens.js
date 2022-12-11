@@ -64,7 +64,7 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens a thank you for their he
         // Add the desired amount of tokens
         for (const data of results) {
             let { tokens, dailyTokens } = data;
-            // Hard cap of earning 50 tokens per day
+            // Hard cap of earning 75 tokens per day
             if (isNaN(dailyTokens)) dailyTokens = 0;
             if ((dailyTokens + 10) > 75) {
                 return interaction.editReply({

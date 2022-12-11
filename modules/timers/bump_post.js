@@ -117,7 +117,7 @@ module.exports = async (message, client) => {
                     // Update the user's tokens
                     for (const data of results2) {
                         let { tokens, dailyTokens } = data;
-                        // Hard cap of earning 50 tokens per day
+                        // Hard cap of earning 75 tokens per day
                         if (isNaN(dailyTokens)) dailyTokens = 0;
                         if ((75 - dailyTokens) < 5) {
                             await tokensSchema.updateOne({
