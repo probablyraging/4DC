@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -13,9 +13,18 @@ module.exports = {
     async execute(interaction) {
         const { member, guild, channel } = interaction;
 
+        await interaction.deferReply({ ephemeral: true });
+
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
+
+        if (channel.permissionsFor(target.id).has(PermissionFlagsBits.SendMessages)) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} ${target} is not muted in ${channel}`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
         channel.permissionOverwrites.edit(target.id, {
             SendMessages: null,
@@ -34,7 +43,7 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        interaction.reply({
+        interaction.editReply({
             content: `${process.env.BOT_CONF} ${target} was unmuted in ${channel}`,
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

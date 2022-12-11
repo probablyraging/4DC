@@ -1,4 +1,5 @@
-const { CommandInteraction, ApplicationCommandType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, PermissionFlagsBits, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
+const path = require('path');
 
 module.exports = {
     name: `Channel Mute`,
@@ -11,8 +12,18 @@ module.exports = {
     async execute(interaction) {
         const { channel } = interaction;
 
+        await interaction.deferReply({ ephemeral: true });
+
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
+
+        // If the target is already muted in this channel
+        if (!channel.permissionsFor(target.id).has(PermissionFlagsBits.SendMessages)) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} ${target} is already muted in ${channel}`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
         const modal = new ModalBuilder()
             .setTitle('Channel Mute')
