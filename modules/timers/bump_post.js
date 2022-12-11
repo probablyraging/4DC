@@ -119,15 +119,25 @@ module.exports = async (message, client) => {
                         let { tokens, dailyTokens } = data;
                         // Hard cap of earning 50 tokens per day
                         if (isNaN(dailyTokens)) dailyTokens = 0;
-                        if ((dailyTokens + 5) > 75) return;
-                        await tokensSchema.updateOne({
-                            userId: bumpUser
-                        }, {
-                            tokens: tokens + 5,
-                            dailyTokens: dailyTokens + 5
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        if ((75 - dailyTokens) < 5) {
+                            await tokensSchema.updateOne({
+                                userId: bumpUser
+                            }, {
+                                tokens: tokens + (75 - dailyTokens),
+                                dailyTokens: dailyTokens + (75 - dailyTokens)
+                            }, {
+                                upsert: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        } else {
+                            await tokensSchema.updateOne({
+                                userId: bumpUser
+                            }, {
+                                tokens: tokens + 5,
+                                dailyTokens: dailyTokens + 5
+                            }, {
+                                upsert: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        }
 
                         // Log when a user's tokens increase or decrease
                         tokenLog.send({
