@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const letterCurrent = mongoose.Schema({
-
     lastLetter: {
         type: String,
         required: true
@@ -30,7 +29,6 @@ const letterCurrent = mongoose.Schema({
         type: String,
         required: true
     }
-
 });
 
 module.exports = mongoose.model('lettercurrent', letterCurrent)

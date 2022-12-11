@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const ytNotificationSchema = mongoose.Schema({
-
     userId: {
         type: String,
         required: true
@@ -18,7 +17,6 @@ const ytNotificationSchema = mongoose.Schema({
         type: Date,
         required: false
     }
-
 });
 
 module.exports = mongoose.model('ytnotifications', ytNotificationSchema)

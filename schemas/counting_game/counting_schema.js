@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const countingSchema = mongoose.Schema({
-
     userId: {
         type: String,
         required: true
@@ -26,7 +25,6 @@ const countingSchema = mongoose.Schema({
         type: Number,
         required: true
     }
-
 });
 
 module.exports = mongoose.model('countinggame', countingSchema)

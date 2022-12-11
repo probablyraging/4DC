@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { dbTwo } = require('../../mongo');
 
 const qotdSchema = mongoose.Schema({
     guildId: {
@@ -16,4 +15,4 @@ const qotdSchema = mongoose.Schema({
     }
 });
 
-module.exports = dbTwo.model('qotd', qotdSchema);
+module.exports = mongoose.model('qotd', qotdSchema);

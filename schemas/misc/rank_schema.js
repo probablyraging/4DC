@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const { dbTwo } = require('../../mongo');
 
 const rankSchema = mongoose.Schema({
-
     rank: {
         type: Number,
         required: false
@@ -42,8 +40,7 @@ const rankSchema = mongoose.Schema({
     xxxp: {
         type: Number,
         required: true
-    },
-
+    }
 });
 
-module.exports = dbTwo.model('ranks', rankSchema);
+module.exports = mongoose.model('ranks', rankSchema);

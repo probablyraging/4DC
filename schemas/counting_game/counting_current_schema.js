@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const countingCurrent = mongoose.Schema({
-
     currentCount: {
         type: Number,
         required: true
@@ -18,7 +17,6 @@ const countingCurrent = mongoose.Schema({
         type: String,
         required: true
     }
-
 });
 
 module.exports = mongoose.model('countingcurrent', countingCurrent)

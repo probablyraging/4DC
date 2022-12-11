@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const massbanSchema = new mongoose.Schema({
-
     id: {
         type: String,
         required: true,
@@ -27,7 +26,7 @@ const massbanSchema = new mongoose.Schema({
         type: String,
         required: true,
         default: "PENDING"
-    },
+    }
 });
 
 module.exports = mongoose.model('massbans', massbanSchema);

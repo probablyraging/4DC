@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const timerSchema = mongoose.Schema({
-
     timestamp: {
         type: String,
         required: true
@@ -14,7 +13,6 @@ const timerSchema = mongoose.Schema({
         type: String,
         required: false
     }
-
 });
 
 module.exports = mongoose.model('timer', timerSchema)

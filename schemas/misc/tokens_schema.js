@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const { dbTwo } = require('../../mongo');
 
 const tokensSchema = mongoose.Schema({
-
     userId: {
         type: String,
         required: true
@@ -51,7 +49,6 @@ const tokensSchema = mongoose.Schema({
         type: mongoose.SchemaTypes.Mixed,
         required: false
     }
-
 });
 
-module.exports = dbTwo.model('tokens', tokensSchema);
+module.exports = mongoose.model('tokens', tokensSchema);

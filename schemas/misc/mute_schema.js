@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const muteSchema = mongoose.Schema({
-
     timestamp: {
         type: String,
         required: true
@@ -13,8 +12,7 @@ const muteSchema = mongoose.Schema({
     channelId: {
         type: String,
         required: true
-    } 
-
+    }
 });
 
 module.exports = mongoose.model('mutes', muteSchema)

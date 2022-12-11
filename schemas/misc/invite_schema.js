@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const inviteSchema = mongoose.Schema({
-
     code: {
         type: String,
         required: true
@@ -13,8 +12,7 @@ const inviteSchema = mongoose.Schema({
     uses: {
         type: String,
         required: true
-    },
-
+    }
 });
 
 module.exports = mongoose.model('invites', inviteSchema)
