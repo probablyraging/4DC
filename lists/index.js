@@ -21,7 +21,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
         `By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
 > **1.** Messages, usernames, avatars, banners, profiles, or linked accounts containing harmful, offensive, or explicit content has no place in this server. This may result in a ban without warning
-> **2.** Do no send other server members unsolicited DMs containing promotional content, server invites, services, or spam
+> **2.** Dot no send other server members unsolicited DMs containing promotional content, server invites, services, or spam
 > **3.** Advertising of other discord servers, offering or requesting paid services *(not including video/graphic editing)*, and other paid products or promotional content is only permitted in <#${process.env.PREM_CHAN}>
 > **4.** We do not allow posts that break the various platform's ToS. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
 > **5.** Do not post promotional content outside of the 'CONTENT SHARE' section
