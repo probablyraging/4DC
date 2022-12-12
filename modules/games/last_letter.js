@@ -128,6 +128,7 @@ module.exports = async (message, client) => {
 
         // Check if the dictionary contains a lowercase version of the word
         async function dictionaryCheckOne(wordToCheck) {
+            console.log('1');
             const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${wordToCheck}`);
             const response = await resolve.json();
             const error = response?.error;
@@ -150,6 +151,7 @@ module.exports = async (message, client) => {
 
         // Check if the dictionary contains a capitilized version of the word
         async function dictionaryCheckTwo(wordToCheck) {
+            console.log('2');
             const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${capitalizeFirstLetter(wordToCheck)}`);
             const response = await resolve.json();
             const error = response?.error;
@@ -163,7 +165,7 @@ module.exports = async (message, client) => {
                 if (sectionsArr.includes('English')) {
                     passGameAndUpdateDatabase();
                 } else {
-                    dictionaryCheckTwo(wordToCheck);
+                    dictionaryCheckThree(wordToCheck);
                 }
             } else {
                 dictionaryCheckThree();
@@ -172,6 +174,7 @@ module.exports = async (message, client) => {
 
         // Check if the dictionary contains an exact matching version of the word
         async function dictionaryCheckThree() {
+            console.log('3');
             const resolve = await fetch(`https://en.wiktionary.org/w/api.php?action=parse&format=json&page=${message.content}`);
             const response = await resolve.json();
             const error = response?.error;
