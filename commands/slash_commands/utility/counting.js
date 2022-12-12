@@ -43,6 +43,8 @@ module.exports = {
     async execute(interaction) {
         const { member, guild, client, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true });
+
         switch (options.getSubcommand()) {
             case 'save': {
                 const results = await countingSchema.find({ userId: member.id })
@@ -87,7 +89,7 @@ module.exports = {
                             for (const guildData of guildResults) {
                                 const guildSaves = guildData.saves;
 
-                                interaction.reply({
+                                interaction.editReply({
                                     content: `You currently have \`${saves}/2\` saves
 The guild currently has \`${guildSaves}/3 saves\`
 
@@ -118,7 +120,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
                 // if the user isn't in the database
                 if (results.length === 0) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -129,7 +131,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
                     // if the user doesn't have any saves
                     if (saves === 0) {
-                        return interaction.reply({
+                        return interaction.editReply({
                             content: `You have \`0 saves\`. Learn how to earn saves by using the \`/counting save\` command`,
                             ephemeral: true
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -139,7 +141,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
                             // If the amount of saves to donate is more than the max allowed guild saves
                             if ((guildSaves + amount / 4) > 3) {
-                                return interaction.reply({
+                                return interaction.editReply({
                                     content: `This would exceed the max amount of saves the guild can have. The guild currently has \`${guildSaves}/3\` saves`,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -147,7 +149,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
                             // If the user doesn't have enough saves
                             if (saves < amount) {
-                                return interaction.reply({
+                                return interaction.editReply({
                                     content: `You don't have enough saves. You currently have \`${saves}/2\``,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -155,7 +157,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
                             // if the guild already has the max amount of saves
                             if (guildSaves === 3) {
-                                return interaction.reply({
+                                return interaction.editReply({
                                     content: `The guild currently has \`3/3\` saves`,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
@@ -185,14 +187,12 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                                 failIfNotExists: false
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                            if (guildSaves === 3) {
-                                return interaction.reply({
-                                    content: `You have donated \`${amount} personal saves\` to the guild
+                            return interaction.editReply({
+                                content: `You have donated \`${amount} personal saves\` to the guild
 > You now have \`${saves - amount}/2 personal saves\` left
 > The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
                     }
                 }
