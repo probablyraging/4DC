@@ -279,6 +279,9 @@ module.exports = async (interaction) => {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
 
+        // Determine cost based off amount purcahsed
+        cost = cost * amount;
+
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage)) {
             // If user doesn't have an entry yet

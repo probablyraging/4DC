@@ -30,6 +30,12 @@ module.exports = {
         name: `donatesave`,
         description: `Donate a personal save to the guild. 1 personal save = .25 guild saves`,
         type: ApplicationCommandOptionType.Subcommand,
+        options: [{
+            name: `amount`,
+            description: `How many saves you would like to donate (defaults to 1 if left blank)`,
+            type: ApplicationCommandOptionType.Number,
+            required: false,
+        }],
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -102,6 +108,9 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
             }
 
             case 'donatesave': {
+                let amount = options.getNumber('amount');
+                if (!amount) amount = 1;
+
                 const results = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 const guildResults = await countingSchema.find({ userId: guild.id })
@@ -128,6 +137,22 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                         for (const guildData of guildResults) {
                             const guildSaves = guildData.saves;
 
+                            // If the amount of saves to donate is more than the max allowed guild saves
+                            if ((guildSaves + amount / 4) > 3) {
+                                return interaction.reply({
+                                    content: `This would exceed the max amount of saves the guild can have. The guild currently has \`${guildSaves}/3\` saves`,
+                                    ephemeral: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                            }
+
+                            // If the user doesn't have enough saves
+                            if (saves < amount) {
+                                return interaction.reply({
+                                    content: `You don't have enough saves. You currently have \`${saves}/2\``,
+                                    ephemeral: true
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                            }
+
                             // if the guild already has the max amount of saves
                             if (guildSaves === 3) {
                                 return interaction.reply({
@@ -140,7 +165,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             await countingSchema.updateOne({
                                 userId: member.id
                             }, {
-                                saves: saves - 1
+                                saves: saves - amount
                             }, {
                                 upsert: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
@@ -149,29 +174,22 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             await countingSchema.updateOne({
                                 userId: guild.id
                             }, {
-                                saves: guildSaves + 0.25
+                                saves: guildSaves + (amount / 4)
                             }, {
                                 upsert: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                             client.channels.cache.get(process.env.COUNT_CHAN).send({
-                                content: `${member} donated \`1 personal save\`. The guild now has \`${guildSaves + 0.25}/3 saves\``,
+                                content: `${member} donated \`${amount} personal save\`. The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,
                                 allowedMentions: { repliedUser: true },
                                 failIfNotExists: false
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                             if (guildSaves === 3) {
                                 return interaction.reply({
-                                    content: `You have donated \`1 personal save\` to the guild
-> You now have \`${saves - 1}/2 personal saves\` left
-> The guild now has \`3/3 saves\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            } else {
-                                return interaction.reply({
-                                    content: `You have donated \`1 personal save\` to the guild
-> You now have \`${saves - 1}/2 personal saves\` left
-> The guild now has \`${guildSaves + 0.25}/3 saves\``,
+                                    content: `You have donated \`${amount} personal saves\` to the guild
+> You now have \`${saves - amount}/2 personal saves\` left
+> The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,
                                     ephemeral: true
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                             }
