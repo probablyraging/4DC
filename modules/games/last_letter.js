@@ -214,7 +214,7 @@ module.exports = async (message, client) => {
             // React to the message with a pass
             message.react(process.env.BOT_CONF);
             // We only need to store the previous 10 words
-            if (previousUsedWords.length >= 10) {
+            if (previousUsedWords.length >= 5) {
                 previousUsedWords.shift();
                 previousUsedWords.push(message.content.toLowerCase());
             } else {
