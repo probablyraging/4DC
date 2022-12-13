@@ -435,19 +435,19 @@ module.exports = async (client) => {
                         // Values
                         ctx.fillStyle = "#e08eff";
                         ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 830, 134);
-                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 830, 214);
-                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 830, 294);
-                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 830, 374);
-                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 830, 454);
+                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 820, 134);
+                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 820, 214);
+                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 820, 294);
+                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 820, 374);
+                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 820, 454);
                         // XP
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "left";
-                        ctx.fillText(`TOKENS`, 850, 134);
-                        ctx.fillText(`TOKENS`, 850, 214);
-                        ctx.fillText(`TOKENS`, 850, 294);
-                        ctx.fillText(`TOKENS`, 850, 374);
-                        ctx.fillText(`TOKENS`, 850, 454);
+                        ctx.fillText(`TOKENS`, 840, 134);
+                        ctx.fillText(`TOKENS`, 840, 214);
+                        ctx.fillText(`TOKENS`, 840, 294);
+                        ctx.fillText(`TOKENS`, 840, 374);
+                        ctx.fillText(`TOKENS`, 840, 454);
 
                         // Image 2
                         const background2 = await Canvas.loadImage("./res/images/leaderboard_tokens_bg2.png");
@@ -474,19 +474,19 @@ module.exports = async (client) => {
                         // Values
                         ctx2.fillStyle = "#e08eff";
                         ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(results[5].tokens)}`, 830, 46);
-                        ctx2.fillText(`${numberWithCommas(results[6].tokens)}`, 830, 126);
-                        ctx2.fillText(`${numberWithCommas(results[7].tokens)}`, 830, 206);
-                        ctx2.fillText(`${numberWithCommas(results[8].tokens)}`, 830, 286);
-                        ctx2.fillText(`${numberWithCommas(results[9].tokens)}`, 830, 366);
+                        ctx2.fillText(`${numberWithCommas(results[5].tokens)}`, 820, 46);
+                        ctx2.fillText(`${numberWithCommas(results[6].tokens)}`, 820, 126);
+                        ctx2.fillText(`${numberWithCommas(results[7].tokens)}`, 820, 206);
+                        ctx2.fillText(`${numberWithCommas(results[8].tokens)}`, 820, 286);
+                        ctx2.fillText(`${numberWithCommas(results[9].tokens)}`, 820, 366);
                         // XP
                         ctx2.fillStyle = "#fff";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`TOKENS`, 850, 46);
-                        ctx2.fillText(`TOKENS`, 850, 126);
-                        ctx2.fillText(`TOKENS`, 850, 206);
-                        ctx2.fillText(`TOKENS`, 850, 286);
-                        ctx2.fillText(`TOKENS`, 850, 366);
+                        ctx2.fillText(`TOKENS`, 840, 46);
+                        ctx2.fillText(`TOKENS`, 840, 126);
+                        ctx2.fillText(`TOKENS`, 840, 206);
+                        ctx2.fillText(`TOKENS`, 840, 286);
+                        ctx2.fillText(`TOKENS`, 840, 366);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "tokens_lb1.png" });
                         const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "tokens_lb2.png" });
