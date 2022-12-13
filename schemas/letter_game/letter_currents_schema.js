@@ -25,6 +25,10 @@ const letterCurrent = mongoose.Schema({
         type: Array,
         required: true
     },
+    processing: {
+        type: Boolean,
+        required: true
+    },
     searchFor: {
         type: String,
         required: true

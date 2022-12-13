@@ -16,6 +16,11 @@ module.exports = async (message, client) => {
         // Get current level from the database
         let results = await letterCurrents.find();
 
+        // Ignore if still processing previous word
+        if (results[0].processing === true) {
+            return message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
+
         // If the entry doesn't exist, create it
         if (results < 1) {
             await letterCurrents.create({
@@ -24,6 +29,7 @@ module.exports = async (message, client) => {
                 currentRecord: 0,
                 previousUsedWords: [],
                 previousSubmitter: 'null',
+                status: 'null',
                 searchFor: 'letterCurrents'
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
             results = await letterCurrents.find();
@@ -38,6 +44,13 @@ module.exports = async (message, client) => {
             previousSubmitter = data.previousSubmitter;
             failed = false;
             deleted = false;
+
+            // Set status as processing. We do this because it can take a while for the bot to process the current word and we want to ignore words submitted during that time
+            await letterCurrents.updateOne({ 
+                searchFor: 'letterCurrents' 
+            },{
+                processing: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
 
             // Get the first letter of the newly submitted word
             const firstLetter = message.content.charAt(0).toLowerCase();
@@ -227,7 +240,8 @@ module.exports = async (message, client) => {
                 previousWord: message.content.toLowerCase(),
                 currentLevel: currentLevel,
                 previousUsedWords: previousUsedWords,
-                previousSubmitter: message.author.id
+                previousSubmitter: message.author.id,
+                processing: false
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
@@ -333,7 +347,8 @@ module.exports = async (message, client) => {
             }, {
                 currentLevel: 0,
                 previousUsedWords: [],
-                previousSubmitter: message.author.id
+                previousSubmitter: message.author.id,
+                processing: false
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
