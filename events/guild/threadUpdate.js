@@ -8,7 +8,7 @@ module.exports = {
      */
     async execute(oldThread, newThread, client) {
         // Disclaimer for paid services in looking for stuff channel
-        if (newThread.parentId === process.env.LFS_CHAN && !oldThread.appliedTags.includes('1034360626245550090') && newThread.appliedTags.includes('1034360626245550090')) {
+        if (newThread.parentId === process.env.COMMISSIONS_CHAN && !oldThread.appliedTags.includes('1052097998928224286') && newThread.appliedTags.includes('1052097998928224286')) {
             setTimeout(() => {
                 newThread.send({
                     content: `This thread has been tagged as a Paid Service

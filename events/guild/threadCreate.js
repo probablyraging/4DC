@@ -23,7 +23,7 @@ If you need to edit your title or post, please do so now or it may be deleted`
         }
 
         // Disclaimer for paid services in looking for stuff channel
-        if (newlyCreated && thread.parentId === process.env.LFS_CHAN && thread.appliedTags.includes('1034360626245550090')) {
+        if (newlyCreated && thread.parentId === process.env.COMMISSIONS_CHAN && thread.appliedTags.includes('1052097998928224286')) {
             setTimeout(() => {
                 thread.send({
                     content: `This thread has been tagged as a Paid Service
