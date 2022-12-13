@@ -37,8 +37,8 @@ module.exports = async (client) => {
         }
     });
 
-    // Fetch all warnings and remove non-existent users - runs once per week (Monday 00:00)
-    const warnsCheck = new cronjob('0 0 * * 1', async function () {
+    // Fetch all warnings and remove non-existent users - runs once per month, on the first day of the month (Monday 00:00)
+    const warnsCheck = new cronjob('0 0 1 * *', async function () {
         const results = await warnSchema.find();
         for (const data of results) {
             const { userId } = data;
