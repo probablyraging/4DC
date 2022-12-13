@@ -171,6 +171,14 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Discord Integration: <https://support.discord.com/hc/en-us/articles/212112068-Twitch-Integration-FAQ/>
 ⠀`,
 
+        `**Official TikTok Links**
+> Help Center: <https://support.tiktok.com/>
+> Community Guidelines: <https://www.tiktok.com/community-guidelines?lang=en>
+> General FAQ: <https://www.tiktokus.info/faqs/>
+> Recommendations System: <https://newsroom.tiktok.com/en-us/how-tiktok-recommends-videos-for-you>
+> Monetization and Advertising: <https://support.tiktok.com/en/business-and-creator/creator-and-business-accounts>
+⠀`,
+
         `**Official Discord Links**
 > Beginner's Guide: <https://support.discord.com/hc/en-us/articles/360045138571-Beginner-s-Guide-to-Discord>
 > Support Center: <https://support.discord.com>
