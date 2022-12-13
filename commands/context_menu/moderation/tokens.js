@@ -56,8 +56,7 @@ module.exports = {
 
             // Log when a user's tokens increase or decrease
             tokenLog.send({
-                content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made
-${process.env.TOKENS_UP} ${target} gained **10** tokens, they now have **10** tokens`
+                content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made, they now have **10** tokens`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
 
@@ -90,7 +89,7 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens, they now have **10** to
 
                 // Log when a user's tokens increase or decrease
                 tokenLog.send({
-                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **${75 - dailyTokens}** tokens by ${member} for a helpful post they made`
+                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **${75 - dailyTokens}** tokens by ${member} for a helpful post they made, they now have **${tokens + (75 - dailyTokens)} tokens**`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.editReply({
@@ -120,7 +119,7 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens, they now have **10** to
 
                 // Log when a user's tokens increase or decrease
                 tokenLog.send({
-                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made`
+                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made, they now have **${tokens + 10}** tokens`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.editReply({

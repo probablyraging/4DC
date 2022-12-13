@@ -87,8 +87,7 @@ module.exports = {
 
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
-                        content: `${process.env.TOKENS_MANUAL} ${member} added **${amount}** ${tokenAmount} to ${user}
-${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} from a staff member, they now have **${tokens + amount}** tokens`,
+                        content: `${process.env.TOKENS_MANUAL} ${member} added **${amount}** ${tokenAmount} to ${user}, they now have **${amount}** tokens`,
                         allowedMentions: {
                             parse: []
                         }
@@ -119,8 +118,7 @@ ${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} from a st
 
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
-                        content: `${process.env.TOKENS_MANUAL} ${member} added **${amount}** ${tokenAmount} to ${user}
-${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} magically, they now have **${tokens + amount}** tokens`,
+                        content: `${process.env.TOKENS_MANUAL} ${member} added **${amount}** ${tokenAmount} to ${user}, they now have **${tokens + amount}** tokens`,
                         allowedMentions: {
                             parse: []
                         }
@@ -173,7 +171,7 @@ ${process.env.TOKENS_UP} ${member} gained **${amount}** ${tokenAmount} magically
 
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
-                        content: `${process.env.TOKENS_MANUAL} ${member} removed **${amount}** ${tokenAmount} from ${user}`,
+                        content: `${process.env.TOKENS_MANUAL} ${member} removed **${amount}** ${tokenAmount} from ${user}, they now have **${tokens - amount}** tokens`,
                         allowedMentions: {
                             parse: []
                         }

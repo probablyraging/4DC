@@ -135,7 +135,7 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
     // Log when a user's tokens increase or decrease
     tokenLog.send({
-        content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**`,
+        content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**, they now have **${tokens - cost}** tokens`,
         allowedMentions: {
             parse: []
         }

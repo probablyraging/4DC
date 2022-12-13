@@ -24,13 +24,6 @@ module.exports = async (message, client) => {
                 tokens: 1,
                 dailyTokens: 1
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-            // Log when a user's tokens increase or decrease
-            tokenLog.send({
-                content: `${process.env.TOKENS_UP} ${message?.author} received their very **1st** token for a message they sent, they now have a whopping **1** tokens`,
-                allowedMentions: {
-                    parse: []
-                }
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
         // Update the user's tokens
         for (const data of results) {
