@@ -74,6 +74,8 @@ module.exports = async (message, client) => {
                             }
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     } else {
+                        // Don't log if no tokans were gained
+                        if (75 - dailyTokens <= 0) return; 
                         // Log when a user's tokens increase or decrease
                         tokenLog.send({
                             content: `${process.env.TOKENS_UP} ${message?.author} gained **${75 - dailyTokens}** tokens while chatting in the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,

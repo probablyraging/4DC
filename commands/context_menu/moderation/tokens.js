@@ -66,41 +66,67 @@ ${process.env.TOKENS_UP} ${target} gained **10** tokens, they now have **10** to
             let { tokens, dailyTokens } = data;
             // Hard cap of earning 75 tokens per day
             if (isNaN(dailyTokens)) dailyTokens = 0;
-            if ((dailyTokens + 10) > 75) {
-                return interaction.editReply({
-                    content: `${process.env.BOT_DENY} This would exceed ${target}'s daily token cap. They can only earn **${75 - dailyTokens}** more tokens today`
+            if ((75 - dailyTokens) < 10) {
+                await tokensSchema.updateOne({
+                    userId: target.id
+                }, {
+                    tokens: tokens + (75 - dailyTokens),
+                    dailyTokens: dailyTokens + (75 - dailyTokens)
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                // Mark the member's daily award as used
+                await tokensSchema.updateOne({
+                    userId: member.id
+                }, {
+                    availableAward: false
+                }, {
+                    upset: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                // Add a reaction to the user's message
+                fetchMsg.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
+
+                // Log when a user's tokens increase or decrease
+                tokenLog.send({
+                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **${75 - dailyTokens}** tokens by ${member} for a helpful post they made`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                interaction.editReply({
+                    content: `${process.env.BOT_CONF} ${75 - dailyTokens} tokens successfully awarded to ${target}`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+            } else {
+                await tokensSchema.updateOne({
+                    userId: target.id
+                }, {
+                    tokens: tokens + 10,
+                    dailyTokens: dailyTokens + 10
+                }, {
+                    upsert: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                // Mark the member's daily award as used
+                await tokensSchema.updateOne({
+                    userId: member.id
+                }, {
+                    availableAward: false
+                }, {
+                    upset: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                // Add a reaction to the user's message
+                fetchMsg.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
+
+                // Log when a user's tokens increase or decrease
+                tokenLog.send({
+                    content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                interaction.editReply({
+                    content: `${process.env.BOT_CONF} 10 tokens successfully awarded to ${target}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
             }
-            // Mark the member's daily award as used
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                availableAward: false
-            }, {
-                upset: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-            await tokensSchema.updateOne({
-                userId: target.id
-            }, {
-                tokens: tokens + 10,
-                dailyTokens: dailyTokens + 10
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
-            // Add a reaction to the user's message
-            fetchMsg.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
-
-            // Log when a user's tokens increase or decrease
-            tokenLog.send({
-                content: `${process.env.TOKENS_AWARD} ${target} was awarded **10** tokens by ${member} for a helpful post they made
-${process.env.TOKENS_UP} ${target} gained **10** tokens, they now have **${tokens + 10}** tokens`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
-
-        interaction.editReply({
-            content: `${process.env.BOT_CONF} 10 tokens successfully awarded to ${target}`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
     }
 }

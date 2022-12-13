@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     name: `msg`,
-    description: `Send a direct message as the bot`,
+    description: `Send a direct message to a user`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
     type: ApplicationCommandType.ChatInput,
@@ -28,25 +28,37 @@ module.exports = {
     /**
      * @param {CommandInteraction} interaction 
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { options } = interaction;
 
         const target = options.getMember('username');
         const message = options.getString('message') || ` `;
         const image = options.getString('image');
 
+        await interaction.deferReply({ ephemeral: true });
+
         if (image) {
             target.send({
                 content: `${message}`,
                 files: [image]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }).catch(() => {
+                return interaction.editReply({
+                    content: `${process.env.BOT_DENY} I could not send a DM to this user`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            });
         } else {
             target.send({
                 content: `${message}`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }).catch(() => {
+                return interaction.editReply({
+                    content: `${process.env.BOT_DENY} I could not send a DM to this user`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            });
         }
 
-        interaction.reply({
+        interaction.editReply({
             content: `${process.env.BOT_CONF} Message sent`,
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
