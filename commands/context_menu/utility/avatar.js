@@ -9,12 +9,17 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const target = await interaction.guild.members.fetch(interaction.targetId).catch(() => {
-            interaction.reply({
+        const target = await interaction.guild.members.fetch(interaction.targetId);
+
+        await interaction.deferReply({ ephemeral: true });
+
+        // If target doesn't exist
+        if (!target) {
+            return interaction.editReply({
                 content: `${process.env.BOT_DENY} This user no longer exists`,
                 ephemeral: true,
             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        });
+        }
 
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
@@ -22,7 +27,7 @@ module.exports = {
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`);
 
-        interaction.reply({
+        interaction.editReply({
             embeds: [response],
             ephemeral: true,
         }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

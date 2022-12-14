@@ -18,6 +18,8 @@ module.exports = {
     async execute(interaction) {
         const { member, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true });
+
         const target = options.getMember(`username`) || member;
 
         const response = new EmbedBuilder()
@@ -26,7 +28,7 @@ module.exports = {
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 
-        interaction.reply({
+        interaction.editReply({
             embeds: [response],
             ephemeral: true
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
