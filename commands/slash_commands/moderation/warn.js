@@ -7,7 +7,7 @@ const path = require('path');
 module.exports = {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
-    defaultMemberPermissions: ['BanMembers'],
+    defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [{

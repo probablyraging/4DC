@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
     name: `Channel Unmute`,
-    defaultMemberPermissions: ['BanMembers'],
+    defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 5,
     type: ApplicationCommandType.Message,
     /**

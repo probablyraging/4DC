@@ -7,7 +7,7 @@ const path = require('path');
 module.exports = {
     name: `channelmute`,
     description: `Mute a user in a specific channel`,
-    defaultMemberPermissions: ['BanMembers'],
+    defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     options: [{

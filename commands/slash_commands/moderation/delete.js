@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: `delete`,
     description: `Delete a specific number of messages from a channel or user`,
-    defaultMemberPermissions: ['BanMembers'],
+    defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
     options: [{
         name: `amount`,
