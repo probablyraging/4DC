@@ -41,7 +41,7 @@ module.exports = {
 
         await target.send({
             content: `You have been banned from ForTheContent for "${reason}"\nJoin discord.gg/zt3RhvX3Gb for ban appeals`
-        }).catch(() => {})
+        }).catch(() => {});
 
         if (!deleteMessages) {
             // Ban user
