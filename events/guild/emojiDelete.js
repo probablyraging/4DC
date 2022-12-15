@@ -19,7 +19,7 @@ module.exports = {
         const found = protection.get(entry.executor.id);
 
         if (found) {
-            if (found >= 3) {
+            if (found >= 5) {
                 const member = await guild.members.fetch(entry.executor.id);
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
