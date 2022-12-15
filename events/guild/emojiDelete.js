@@ -3,7 +3,7 @@ const protection = new Map();
 
 module.exports = {
     name: 'emojiDelete',
-    async execute(thread, client, Discord) {
+    async execute(emoji, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.TEST_CHAN);
 

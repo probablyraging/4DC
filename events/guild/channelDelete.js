@@ -3,7 +3,7 @@ const protection = new Map();
 
 module.exports = {
     name: 'channelDelete',
-    async execute(role, client, Discord) {
+    async execute(channel, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.TEST_CHAN);
 
