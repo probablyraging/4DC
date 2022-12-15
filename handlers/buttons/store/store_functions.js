@@ -7,6 +7,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
     const modal = new ModalBuilder()
         .setTitle(`${itemName}`)
         .setCustomId(`${storeName}-${itemIndex}-confirm`)
+
     // YouTube Auto
     const input2 = new TextInputBuilder()
         .setCustomId('input2')
@@ -16,7 +17,8 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(56)
         .setRequired(true)
     const row2 = new ActionRowBuilder().addComponents([input2]);
-    if (interaction.customId === 'storecommon-two' || interaction.customId === 'storerare-three') modal.addComponents(row2);
+    if (interaction.customId === 'perm-two' || interaction.customId === 'temp-two') modal.addComponents(row2);
+
     // Spotlight Ticket
     const input3 = new TextInputBuilder()
         .setCustomId('input3')
@@ -27,7 +29,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(2)
         .setRequired(true)
     const row3 = new ActionRowBuilder().addComponents([input3]);
-    if (interaction.customId === 'storecommon-five') modal.addComponents(row3);
+    if (interaction.customId === 'misc-three') modal.addComponents(row3);
     const input4 = new TextInputBuilder()
         .setCustomId('input4')
         .setLabel(`Message`)
@@ -36,7 +38,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(1024)
         .setRequired(true)
     const row4 = new ActionRowBuilder().addComponents([input4]);
-    if (interaction.customId === 'storecommon-five') modal.addComponents(row4);
+    if (interaction.customId === 'misc-three') modal.addComponents(row4);
     const input7 = new TextInputBuilder()
         .setCustomId('input7')
         .setLabel(`Content URL`)
@@ -45,7 +47,8 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(1024)
         .setRequired(true)
     const row7 = new ActionRowBuilder().addComponents([input7]);
-    if (interaction.customId === 'storecommon-five') modal.addComponents(row7);
+    if (interaction.customId === 'misc-three') modal.addComponents(row7);
+
     // Game Saves
     const input8 = new TextInputBuilder()
         .setCustomId('input8')
@@ -56,27 +59,8 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(2)
         .setRequired(true)
     const row8 = new ActionRowBuilder().addComponents([input8]);
-    if (interaction.customId === 'storecommon-six') modal.addComponents(row8);
-    // Custom Role
-    const input5 = new TextInputBuilder()
-        .setCustomId('input5')
-        .setLabel(`Role Name`)
-        .setStyle(1)
-        .setMinLength(1)
-        .setMaxLength(64)
-        .setRequired(true)
-    const row5 = new ActionRowBuilder().addComponents([input5]);
-    if (interaction.customId === 'storerare-six' || interaction.customId === 'storelegendary-six') modal.addComponents(row5);
-    const input6 = new TextInputBuilder()
-        .setCustomId('input6')
-        .setLabel(`Role Color`)
-        .setPlaceholder('Must be a HEX color (e.g. #F4F4F4)')
-        .setStyle(1)
-        .setMinLength(7)
-        .setMaxLength(7)
-        .setRequired(false)
-    const row6 = new ActionRowBuilder().addComponents([input6]);
-    if (interaction.customId === 'storerare-six' || interaction.customId === 'storelegendary-six') modal.addComponents(row6);
+    if (interaction.customId === 'misc-two') modal.addComponents(row8);
+
     // Confirmation
     const input1 = new TextInputBuilder()
         .setCustomId('confirmation')

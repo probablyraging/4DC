@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -413,237 +413,124 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                 await interaction.deferReply({ ephemeral: true });
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
-                // Epic
                 const btn = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId('storeepic-one')
-                            .setLabel('⠀13200⠀⠀⠀')
+                            .setCustomId('perm-one')
+                            .setLabel('⠀⠀800⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storeepic-two')
-                            .setLabel('⠀6600⠀⠀')
+                            .setCustomId('perm-two')
+                            .setLabel('⠀⠀800⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storeepic-three')
-                            .setLabel('⠀⠀2200⠀ ⠀⠀')
+                            .setCustomId('perm-three')
+                            .setLabel('⠀⠀800⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
+                const info = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('info-perm-one')
+                            .setLabel('⠀ Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('info-perm-two')
+                            .setLabel('⠀ Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('info-perm-three')
+                            .setLabel('⠀Information⠀⠀')
+                            .setStyle(ButtonStyle.Secondary)
+                    );
 
                 await channel.send({
-                    files: ['./res/images/store_epic1.png'],
-                    components: [btn]
+                    content: bold('PERMANENT ACCESS'),
+                    files: ['./res/images/token_store_perm.png'],
+                    components: [btn, info]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
-                // Legendary
                 const btn2 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-one')
-                            .setLabel('⠀ 1400⠀⠀⠀')
+                            .setCustomId('temp-one')
+                            .setLabel('⠀ ⠀100⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-two')
-                            .setLabel('⠀1000⠀⠀')
+                            .setCustomId('temp-two')
+                            .setLabel('⠀ ⠀100⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-three')
-                            .setLabel('⠀⠀800⠀⠀ ⠀⠀')
+                            .setCustomId('temp-three')
+                            .setLabel('⠀ ⠀100⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
+                const info2 = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('info-temp-one')
+                            .setLabel('⠀ Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('info-temp-two')
+                            .setLabel('⠀ Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
+                        new ButtonBuilder()
+                            .setCustomId('info-temp-three')
+                            .setLabel('⠀Information⠀⠀')
+                            .setStyle(ButtonStyle.Secondary)
+                    );
 
                 await channel.send({
-                    content: `⠀\n⠀`,
-                    files: ['./res/images/store_legend1.png'],
-                    components: [btn2]
+                    content: bold('\n1 WEEK ACCESS'),
+                    files: ['./res/images/token_store_perm.png'],
+                    components: [btn2, info2]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 const btn3 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-four')
-                            .setLabel('⠀ 800⠀⠀⠀⠀')
+                            .setCustomId('misc-one')
+                            .setLabel('⠀ ⠀100⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-five')
-                            .setLabel('⠀800⠀⠀⠀')
+                            .setCustomId('misc-two')
+                            .setLabel('⠀⠀ ⠀5⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
-                            .setCustomId('storelegendary-six')
-                            .setLabel('⠀⠀600⠀⠀ ⠀⠀')
+                            .setCustomId('misc-three')
+                            .setLabel('⠀ ⠀ ⠀1⠀⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
-
-                await channel.send({
-                    files: ['./res/images/store_legend2.png'],
-                    components: [btn3]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                // Rare
-                const btn4 = new ActionRowBuilder()
+                const info3 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId('storerare-one')
-                            .setLabel('⠀ 600⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
+                            .setCustomId('info-misc-one')
+                            .setLabel('⠀ Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
-                            .setCustomId('storerare-two')
-                            .setLabel('⠀400⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
+                            .setCustomId('info-misc-two')
+                            .setLabel('⠀Information⠀')
+                            .setStyle(ButtonStyle.Secondary),
                         new ButtonBuilder()
-                            .setCustomId('storerare-three')
-                            .setLabel('⠀⠀300⠀⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
+                            .setCustomId('info-misc-three')
+                            .setLabel('⠀Information⠀⠀')
+                            .setStyle(ButtonStyle.Secondary)
                     );
 
                 await channel.send({
-                    content: `⠀\n⠀`,
-                    files: ['./res/images/store_rare1.png'],
-                    components: [btn4]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn5 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storerare-four')
-                            .setLabel('⠀ 300⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storerare-five')
-                            .setLabel('⠀300⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storerare-six')
-                            .setLabel('⠀⠀300⠀⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                await channel.send({
-                    files: ['./res/images/store_rare2.png'],
-                    components: [btn5]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn6 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storerare-seven')
-                            .setLabel('⠀ 100⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                await channel.send({
-                    files: ['./res/images/store_rare3.png'],
-                    components: [btn6]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                // Common
-                const btn7 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-one')
-                            .setLabel('⠀ 100⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-two')
-                            .setLabel('⠀ 50⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-three')
-                            .setLabel('⠀⠀ 50⠀⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                await channel.send({
-                    content: `⠀\n⠀`,
-                    files: ['./res/images/store_common1.png'],
-                    components: [btn7]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn8 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-four')
-                            .setLabel('⠀⠀ 50⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-five')
-                            .setLabel('⠀⠀5⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-six')
-                            .setLabel('⠀⠀⠀5⠀⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                await channel.send({
-                    files: ['./res/images/store_common2.png'],
-                    components: [btn8]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn9 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storecommon-seven')
-                            .setLabel('⠀ ⠀5⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                await channel.send({
-                    files: ['./res/images/store_common3.png'],
-                    components: [btn9]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn10 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('storerank-one')
-                            .setLabel('⠀⠀???⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storerank-two')
-                            .setLabel('⠀ 300⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storerank-three')
-                            .setLabel('⠀⠀ 50⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('storeinfo-btn')
-                            .setLabel('Information')
-                            .setEmoji('845719962428637194')
-                            .setStyle(ButtonStyle.Success)
-                    );
-
-                await channel.send({
-                    content: `⠀\n⠀`,
-                    files: ['./res/images/store_rank1.png'],
-                    components: [btn10]
+                    content: bold('\nMISCELLANEOUS'),
+                    files: ['./res/images/token_store_misc.png'],
+                    components: [btn3, info3]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 break;

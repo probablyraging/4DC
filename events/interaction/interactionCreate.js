@@ -7,11 +7,9 @@ const regionButton = require('../../handlers/buttons/roles/region_button');
 const genderButton = require('../../handlers/buttons/roles/gender_button');
 const customButton = require('../../handlers/buttons/roles/custom_button');
 const reportButton = require('../../handlers/buttons/misc/report_button');
-const storeEpicButton = require('../../handlers/buttons/store/store_epic');
-const storeLegendaryButton = require('../../handlers/buttons/store/store_legendary');
-const storeRareButton = require('../../handlers/buttons/store/store_rare');
-const storeCommonButton = require('../../handlers/buttons/store/store_common');
-const storeRankButton = require('../../handlers/buttons/store/store_rank');
+const storePermButton = require('../../handlers/buttons/store/store_perm');
+const storeTempButton = require('../../handlers/buttons/store/store_temp');
+const storeMiscButton = require('../../handlers/buttons/store/store_misc');
 const storeInfoButton = require('../../handlers/buttons/store/store_info');
 const reportModal = require('../../handlers/modals/report_modal');
 const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
@@ -96,22 +94,16 @@ module.exports = {
                 customButton(interaction);
             }
             // Tokens Store
-            if (interaction.customId.split('-')[0] === 'storeepic') {
-                storeEpicButton(interaction);
+            if (interaction.customId.split('-')[0] === 'perm') {
+                storePermButton(interaction);
             }
-            if (interaction.customId.split('-')[0] === 'storelegendary') {
-                storeLegendaryButton(interaction);
+            if (interaction.customId.split('-')[0] === 'temp') {
+                storeTempButton(interaction);
             }
-            if (interaction.customId.split('-')[0] === 'storerare') {
-                storeRareButton(interaction);
+            if (interaction.customId.split('-')[0] === 'misc') {
+                storeMiscButton(interaction);
             }
-            if (interaction.customId.split('-')[0] === 'storecommon') {
-                storeCommonButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'storerank') {
-                storeRankButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'storeinfo') {
+            if (interaction.customId.split('-')[0] === 'info') {
                 storeInfoButton(interaction);
             }
             // Reports
@@ -135,20 +127,14 @@ module.exports = {
                 channelMuteModal(interaction);
             }
             // Tokens Store
-            if (interaction.customId.split('-')[0] === 'storeepic') {
-                storeEpicButton(interaction);
+            if (interaction.customId.split('-')[0] === 'perm') {
+                storePermButton(interaction);
             }
-            if (interaction.customId.split('-')[0] === 'storelegendary') {
-                storeLegendaryButton(interaction);
+            if (interaction.customId.split('-')[0] === 'temp') {
+                storeTempButton(interaction);
             }
-            if (interaction.customId.split('-')[0] === 'storerare') {
-                storeRareButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'storecommon') {
-                storeCommonButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'storerank') {
-                storeRankButton(interaction);
+            if (interaction.customId.split('-')[0] === 'misc') {
+                storeMiscButton(interaction);
             }
         }
 
