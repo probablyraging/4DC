@@ -10,9 +10,8 @@
 
 With 30+ custom slash commands and useful features including; general moderation, mass event protection, suspicious link filters ([stop-discord-phishing](https://github.com/nikolaischunk/stop-discord-phishing)), custom blacklist, warning system, rank and xp economy with custom rank cards ([node-canvas](https://github.com/Automattic/node-canvas)), virtual currency economy and item store, invite tracker, youtube upload notifications, txt2img generator ([stable-diffusion](https://github.com/CompVis/stable-diffusion)), custom games, reporting system, and much more..
 
-This repo is actively being maintained and updated to include the newest discord.js releases and Discord API changes.
-
 # Note
+- This repo is actively being maintained and updated to include the latest discord.js releases and Discord API changes
 - While this project and all of its code is free to use and modify, it was created soley to run on a specific server and would not work elsewhere without some heavy modifying beforehand
 - The ForTheContent Discord server isn't for support for this project. Please DM me privately if you have any questions ProbablyRaging#7080
 
