@@ -32,9 +32,11 @@ module.exports = {
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: `amount`,
-            description: `How many saves you would like to donate (defaults to 1 if left blank)`,
+            description: `How many saves you would like to donate`,
             type: ApplicationCommandOptionType.Number,
-            required: false,
+            required: true,
+            choices: [{ name: '1', value: '1' },
+            { name: '2', value: '2' }]
         }],
     }],
     /**
@@ -111,7 +113,6 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
 
             case 'donatesave': {
                 let amount = options.getNumber('amount');
-                if (!amount) amount = 1;
 
                 const results = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
