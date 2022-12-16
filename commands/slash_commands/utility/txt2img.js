@@ -3,10 +3,15 @@ const SightengineClient = require('../../../node_modules/nudity-filter/sightengi
 const { Buffer } = require('node:buffer');
 const Canvas = require("canvas");
 const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+const fetch = require('node-fetch');
 const fs = require('fs');
 const WebSocket = require('ws');
 const wait = require("timers/promises").setTimeout;
+const path = require('path');
+
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
 function notifyError(interaction, member, err) {
     console.error(`${path.basename(__filename)} - ${err}`);
@@ -36,6 +41,15 @@ module.exports = {
         description: "How many images (1-4) the AI should generate",
         type: ApplicationCommandOptionType.Number,
         required: false
+    }, {
+        name: "resolution",
+        description: "Choose a resolution for your image",
+        type: ApplicationCommandOptionType.String,
+        required: false,
+        choices: [{ name: 'FHD [1920x1080]', value: '&input_width=1920&input_height=1080' },
+        { name: 'QHD [2560x1440]', value: '&input_width=2560&input_height=1440' },
+        { name: 'UHD 4K [3840x2160]', value: '&input_width=3840&input_height=2160' },
+        { name: 'MOBILE [1080x1920]', value: '&input_width=1080&input_height=1920' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -44,8 +58,10 @@ module.exports = {
         const { options, member } = interaction;
         const prompt = options.getString(`prompt`);
         const count = options.getNumber(`count`);
+        const resolution = options.getString('resolution');
         const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '');
         const fileName = cleanPrompt.replace(/\s/g, '_');
+        const timerStart = new Date();
 
         const buttons = new ActionRowBuilder()
             .addComponents(
@@ -79,6 +95,16 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             });
         }
 
+        if (count && resolution) {
+            return interaction.editReply({
+                content: `${member} The count option is unavailable when using a custom resolution`,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+                setTimeout(() => {
+                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+                }, 7000);
+            });
+        }
+
         if (loading) {
             interaction.editReply({
                 content: `${member} your prompt has been added to the queue`,
@@ -91,6 +117,22 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
         loading = true;
+        // If using a custom resolution
+        if (resolution) {
+            const url = process.env.AI_GEN1 + prompt + resolution + `&input_seed=${randomNum(100000000, 3000000000)}` + process.env.AI_GEN2 + uuidv4();
+            const imgUrl = await generateCustomResImage(interaction, member, url);
+            if (!imgUrl) return;
+            const img = new AttachmentBuilder(imgUrl, { name: `${fileName}_${uuidv4()}.png` });
+            const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
+            const int = await interaction.editReply({
+                content: responseContent,
+                files: [img],
+                components: [buttons]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            loading = false;
+            return nsfwCheck(interaction, int, prompt, member);
+        }
+
         ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
 
         // Connect to SD websocket
@@ -119,7 +161,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
                     imgBaseArr.push({ data: replace.split(",")[1], name: `${fileName}_${uuidv4()}.png` });
                 });
 
-                const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
+                const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
 
                 if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
                 if (!count || count === 1) {
@@ -268,7 +310,33 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
     }
 }
 
+async function generateCustomResImage(interaction, member, url) {
+    const resolve = await fetch(url)
+        .catch(() => {
+            interaction.editReply({
+                content: `${member} There was an error generating your prompt, please try again`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+                setTimeout(() => {
+                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+                }, 7000);
+            });
+        });
+    if (!resolve) await generateCustomResImage(interaction, member, url);
+    if (resolve && resolve.status !== 200) {
+        interaction.editReply({
+            content: `${member} There was an error generating your prompt, please try again`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+            setTimeout(() => {
+                int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+            }, 7000);
+        });
+        return null;
+    }
+    if (resolve) return resolve.url;
+}
+
 async function nsfwCheck(interaction, int, prompt, member) {
+    if (!int?.attachments) return;
     const imgUrl = int.attachments.first().url;
     var Sightengine = new SightengineClient(process.env.SE_USER, process.env.SE_TOKEN);
     Sightengine.checkNudityForURL(imgUrl, function (error, result) {
@@ -281,7 +349,7 @@ async function nsfwCheck(interaction, int, prompt, member) {
 Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`,
                 files: [],
                 components: []
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
     });
 }

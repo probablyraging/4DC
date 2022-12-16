@@ -13,7 +13,7 @@ module.exports = {
         });
 
         const entry = auditLog.entries.first();
-        if (entry.executor.id === process.env.OWNER_ID) return;
+        if (entry.executor.bot || entry.executor.id === process.env.OWNER_ID) return;
 
         // If a staff member deletes too many roles too suddenly
         const found = protection.get(entry.executor.id);
