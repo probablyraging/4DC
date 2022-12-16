@@ -8,6 +8,17 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setTitle(`${itemName}`)
         .setCustomId(`${storeName}-${itemIndex}-confirm`)
 
+    // If gifting
+    const input0 = new TextInputBuilder()
+        .setCustomId('input0')
+        .setLabel(`Giftee's User ID`)
+        .setStyle(1)
+        .setMinLength(1)
+        .setMaxLength(32)
+        .setRequired(true)
+    const row0 = new ActionRowBuilder().addComponents([input0]);
+    if (interaction.customId.includes('gift')) modal.addComponents(row0);
+
     // YouTube Auto
     const input2 = new TextInputBuilder()
         .setCustomId('input2')
@@ -29,7 +40,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(2)
         .setRequired(true)
     const row3 = new ActionRowBuilder().addComponents([input3]);
-    if (interaction.customId === 'misc-three') modal.addComponents(row3);
+    if (interaction.customId === 'misc-three' || interaction.customId.includes('giftmisc-three')) modal.addComponents(row3);
     const input4 = new TextInputBuilder()
         .setCustomId('input4')
         .setLabel(`Message`)
@@ -38,7 +49,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(1024)
         .setRequired(true)
     const row4 = new ActionRowBuilder().addComponents([input4]);
-    if (interaction.customId === 'misc-three') modal.addComponents(row4);
+    if (interaction.customId === 'misc-three' || interaction.customId.includes('giftmisc-three')) modal.addComponents(row4);
     const input7 = new TextInputBuilder()
         .setCustomId('input7')
         .setLabel(`Content URL`)
@@ -47,7 +58,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(1024)
         .setRequired(true)
     const row7 = new ActionRowBuilder().addComponents([input7]);
-    if (interaction.customId === 'misc-three') modal.addComponents(row7);
+    if (interaction.customId === 'misc-three' || interaction.customId.includes('giftmisc-three')) modal.addComponents(row7);
 
     // Game Saves
     const input8 = new TextInputBuilder()
@@ -59,7 +70,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(2)
         .setRequired(true)
     const row8 = new ActionRowBuilder().addComponents([input8]);
-    if (interaction.customId === 'misc-two') modal.addComponents(row8);
+    if (interaction.customId === 'misc-two' || interaction.customId.includes('giftmisc-two')) modal.addComponents(row8);
 
     // Confirmation
     const input1 = new TextInputBuilder()
@@ -89,8 +100,8 @@ async function checkConfirmation(interaction) {
 }
 
 // Check user's tokens balance
-async function completePurchase(interaction, cost, itemName, customMessage) {
-    const { guild, member } = interaction
+async function completePurchase(interaction, cost, itemName, customMessage, giftee) {
+    const { guild, member, customId } = interaction
 
     const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
     // Fetch the user's db entry
@@ -118,12 +129,18 @@ async function completePurchase(interaction, cost, itemName, customMessage) {
         upsert: true
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
     // Log when a user's tokens increase or decrease
-    tokenLog.send({
-        content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**, they now have **${tokens - cost}** tokens`,
-        allowedMentions: {
-            parse: []
-        }
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+    if (customId.includes('gift')) {
+        tokenLog.send({
+            content: `${process.env.TOKENS_GIFT} ${member} gifted ${giftee} **${itemName}** for **${cost}** tokens, they now have **${tokens - cost}** tokens`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+    } else {
+        tokenLog.send({
+            content: `${process.env.TOKENS_BUY} ${member} spent **${cost}** tokens to buy **${itemName}**, they now have **${tokens - cost}** tokens`,
+            allowedMentions: {
+                parse: []
+            }
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+    }
     // Confirmation
     interaction.editReply({
         content: `${process.env.BOT_CONF} Purchase approved! ${customMessage}`

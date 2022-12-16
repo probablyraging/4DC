@@ -14,7 +14,7 @@ function detectURLs(message) {
  * @param {CommandInteraction} interaction 
  */
 module.exports = async (interaction) => {
-    const { guild, member, customId } = interaction;
+    let { guild, member, customId } = interaction;
 
     const storeName = customId.split('-')[0];
     const itemIndex = customId.split('-')[1];
@@ -34,17 +34,27 @@ module.exports = async (interaction) => {
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
 
+        // If item is being purcahsed as a gift
+        if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (!member) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
         if ((results[0]?.doublexp - new Date()) > 1 || results[0]?.doublexp === true) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} You already have an active subscription for this item. If you need help, please contact a staff member`,
+                content: `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
 
         // Attempt to complete the purchase and continue if successful
-        if (await completePurchase(interaction, cost, itemName, customMessage)) {
+        if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // Future timestamp for auto expiry
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
@@ -69,6 +79,16 @@ module.exports = async (interaction) => {
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
 
+        // If item is being purcahsed as a gift
+        if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (!member) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
         const amount = parseInt(interaction.fields.getTextInputValue('input8'));
         if (isNaN(amount) || amount < 1 || amount > 2) {
             return interaction.editReply({
@@ -83,7 +103,7 @@ module.exports = async (interaction) => {
         // If amount is more saves than the user can have
         if (results.length > 0 && (results[0]?.saves + (amount)) > 2) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} You can only have a max of **2** personal saves at a time. You already have **${results[0]?.saves}/2** saves`,
+                content: `${process.env.BOT_DENY} You can only have a max of **2** personal saves at a time. ${member} already has **${results[0]?.saves}/2** saves`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
@@ -91,7 +111,7 @@ module.exports = async (interaction) => {
         // If user already has max saves
         if (results.length > 0 && results[0]?.saves >= 2) {
             return interaction.editReply({
-                content: `${process.env.BOT_DENY} You already have **2/2** saves`,
+                content: `${process.env.BOT_DENY} ${member} already has **2/2** saves`,
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         }
@@ -100,7 +120,7 @@ module.exports = async (interaction) => {
         cost = cost * amount;
 
         // Attempt to complete the purchase and continue if successful
-        if (await completePurchase(interaction, cost, itemName, customMessage)) {
+        if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // If user doesn't have an entry yet
             if (results.length === 0) {
                 await countingSchema.create({
@@ -131,6 +151,16 @@ module.exports = async (interaction) => {
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
 
+        // If item is being purcahsed as a gift
+        if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (!member) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
+
         const amount = parseInt(interaction.fields.getTextInputValue('input3'));
         if (isNaN(amount) || amount < 1 || amount > 99) {
             return interaction.editReply({
@@ -160,7 +190,7 @@ module.exports = async (interaction) => {
         cost = cost * amount;
 
         // Attempt to complete the purchase and continue if successful
-        if (await completePurchase(interaction, cost, itemName, customMessage)) {
+        if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // Add a new db entry every time someone buys a ticket
             for (let i = 0; i < amount; i++) {
                 await spotlightSchema.create({

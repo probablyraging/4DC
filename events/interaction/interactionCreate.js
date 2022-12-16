@@ -97,10 +97,19 @@ module.exports = {
             if (interaction.customId.split('-')[0] === 'perm') {
                 storePermButton(interaction);
             }
+            if (interaction.customId.split('-')[0] === 'giftperm') {
+                storePermButton(interaction);
+            }
             if (interaction.customId.split('-')[0] === 'temp') {
                 storeTempButton(interaction);
             }
+            if (interaction.customId.split('-')[0] === 'gifttemp') {
+                storeTempButton(interaction);
+            }
             if (interaction.customId.split('-')[0] === 'misc') {
+                storeMiscButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'giftmisc') {
                 storeMiscButton(interaction);
             }
             if (interaction.customId.split('-')[0] === 'info') {
@@ -130,10 +139,19 @@ module.exports = {
             if (interaction.customId.split('-')[0] === 'perm') {
                 storePermButton(interaction);
             }
+            if (interaction.customId.split('-')[0] === 'giftperm') {
+                storePermButton(interaction);
+            }
             if (interaction.customId.split('-')[0] === 'temp') {
                 storeTempButton(interaction);
             }
+            if (interaction.customId.split('-')[0] === 'gifttemp') {
+                storeTempButton(interaction);
+            }
             if (interaction.customId.split('-')[0] === 'misc') {
+                storeMiscButton(interaction);
+            }
+            if (interaction.customId.split('-')[0] === 'giftmisc') {
                 storeMiscButton(interaction);
             }
         }

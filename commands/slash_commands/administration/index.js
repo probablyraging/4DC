@@ -431,6 +431,24 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
+                const gift = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('giftperm-one')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('giftperm-two')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('giftperm-three')
+                            .setLabel('⠀⠀ Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success)
+                    );
                 const info = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -450,7 +468,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                 await channel.send({
                     content: bold('PERMANENT ACCESS'),
                     files: ['./res/images/token_store_perm.png'],
-                    components: [btn, info]
+                    components: [btn, gift, info]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 const btn2 = new ActionRowBuilder()
@@ -471,6 +489,24 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
+                const gift2 = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('gifttemp-one')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('gifttemp-two')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('gifttemp-three')
+                            .setLabel('⠀⠀ Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success)
+                    );
                 const info2 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -490,7 +526,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                 await channel.send({
                     content: bold('\n1 WEEK ACCESS'),
                     files: ['./res/images/token_store_perm.png'],
-                    components: [btn2, info2]
+                    components: [btn2, gift2, info2]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 const btn3 = new ActionRowBuilder()
@@ -511,6 +547,24 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
+                const gift3 = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('giftmisc-one')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('giftmisc-two')
+                            .setLabel('⠀⠀Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success),
+                        new ButtonBuilder()
+                            .setCustomId('giftmisc-three')
+                            .setLabel('⠀⠀ Gift⠀⠀⠀')
+                            .setEmoji('1053389293424480326')
+                            .setStyle(ButtonStyle.Success)
+                    );
                 const info3 = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
@@ -530,7 +584,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                 await channel.send({
                     content: bold('\nMISCELLANEOUS'),
                     files: ['./res/images/token_store_misc.png'],
-                    components: [btn3, info3]
+                    components: [btn3, gift3, info3]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 break;
