@@ -122,7 +122,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             const url = process.env.AI_GEN1 + prompt + resolution + `&input_seed=${randomNum(100000000, 3000000000)}` + process.env.AI_GEN2 + uuidv4();
             const imgUrl = await generateCustomResImage(interaction, member, url);
             if (!imgUrl) return;
-            const img = new AttachmentBuilder(imgUrl, { name: `${fileName}_${uuidv4()}.png` });
+            const img = new AttachmentBuilder(imgUrl, { name: `${fileName}_${uuidv4()}.jpg` });
             const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
             const int = await interaction.editReply({
                 content: responseContent,
