@@ -427,7 +427,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId('perm-three')
-                            .setLabel('⠀⠀800⠀⠀⠀')
+                            .setLabel('⠀⠀300⠀⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
@@ -467,7 +467,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setStyle(ButtonStyle.Primary),
                         new ButtonBuilder()
                             .setCustomId('temp-three')
-                            .setLabel('⠀ ⠀100⠀⠀⠀')
+                            .setLabel('⠀ ⠀30⠀ ⠀⠀')
                             .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
