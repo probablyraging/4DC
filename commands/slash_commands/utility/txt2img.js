@@ -37,19 +37,24 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true
     }, {
-        name: "count",
-        description: "How many images (1-4) the AI should generate",
-        type: ApplicationCommandOptionType.Number,
-        required: false
-    }, {
         name: "resolution",
         description: "Choose a resolution for your image",
         type: ApplicationCommandOptionType.String,
-        required: false,
-        choices: [{ name: 'FHD [1920x1080]', value: '&input_width=1920&input_height=1080' },
+        required: true,
+        choices: [{ name: 'Default [512x512]', value: 'default' },
+        { name: 'FHD [1920x1080]', value: '&input_width=1920&input_height=1080' },
         { name: 'QHD [2560x1440]', value: '&input_width=2560&input_height=1440' },
         { name: 'UHD 4K [3840x2160]', value: '&input_width=3840&input_height=2160' },
-        { name: 'MOBILE [1080x1920]', value: '&input_width=1080&input_height=1920' }]
+        { name: 'Mobile [1080x1920]', value: '&input_width=1080&input_height=1920' }]
+    }, {
+        name: "count",
+        description: "Batch generate up to 4 images per prompt",
+        type: ApplicationCommandOptionType.Number,
+        required: false,
+        choices: [{ name: '1', value: '1' },
+        { name: '2', value: '2' },
+        { name: '3', value: '3' },
+        { name: '4', value: '4' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -85,19 +90,9 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             }
         }
 
-        if (count && count < 1 || count > 4) {
+        if (count && resolution !== 'default') {
             return interaction.editReply({
-                content: 'Count must be between 1-4',
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
-        }
-
-        if (count && resolution) {
-            return interaction.editReply({
-                content: `${member} The count option is unavailable when using a custom resolution`,
+                content: `${member} The count option is only available when using the default custom resolution`,
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
                 setTimeout(() => {
                     int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
@@ -118,7 +113,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
 
         loading = true;
         // If using a custom resolution
-        if (resolution) {
+        if (resolution !== 'default') {
             const url = process.env.AI_GEN1 + prompt + resolution + `&input_seed=${randomNum(100000000, 3000000000)}` + process.env.AI_GEN2 + uuidv4();
             const imgUrl = await generateCustomResImage(interaction, member, url);
             if (!imgUrl) return;

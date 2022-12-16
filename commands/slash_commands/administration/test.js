@@ -1,4 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold } = require("discord.js");
+const { v4: uuidv4 } = require('uuid');
+const fetch = require('node-fetch');
 const path = require("path");
 
 module.exports = {
@@ -12,8 +14,6 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
-
-        
 
     }
 }
