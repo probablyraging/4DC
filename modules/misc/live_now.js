@@ -179,7 +179,6 @@ module.exports = async (client) => {
         const liveNow = new Map();
 
         liveRole?.members?.forEach(async member => {
-            console.log(member.id);
             for (let i = 0; i < member?.presence?.activities?.length; i++) {
                 if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
                     liveNow.set(member?.id);
