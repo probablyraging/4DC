@@ -20,10 +20,10 @@ module.exports = async (client) => {
     }
 
     setInterval(async () => {
-        // staff member check
+        // Staff member check
         liveStaff = [];
 
-        staffRole?.members?.forEach(async member => {
+        await staffRole?.members?.forEach(async member => {
             for (let i = 0; i < 7; i++) {
                 if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
                     liveStaff.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
@@ -68,9 +68,9 @@ module.exports = async (client) => {
         // Tokens item check
         const results = await tokensSchema.find();
 
-        liveMember = [];
+        let liveMember = [];
 
-        results.forEach(async result => {
+        await results.forEach(async result => {
             if ((result?.twitchauto - new Date()) > 1 || result?.twitchauto === true) {
                 const member = await guild.members.fetch(result.userId);
                 for (let i = 0; i < 7; i++) {
@@ -115,10 +115,10 @@ module.exports = async (client) => {
             }
         }
 
-        // booster member check
+        // Booster member check
         liveBooster = [];
 
-        boostRole?.members?.forEach(async member => {
+        await boostRole?.members?.forEach(async member => {
             for (let i = 0; i < 7; i++) {
                 if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
                     liveBooster.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
@@ -179,6 +179,7 @@ module.exports = async (client) => {
         const liveNow = new Map();
 
         liveRole?.members?.forEach(async member => {
+            console.log(member.id);
             for (let i = 0; i < member?.presence?.activities?.length; i++) {
                 if (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube') {
                     liveNow.set(member?.id);
