@@ -40,7 +40,7 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
         await target.send({
-            content: `You have been banned from ForTheContent for "${reason}"\nJoin discord.gg/zt3RhvX3Gb for ban appeals`
+            content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
         }).catch(() => {});
 
         if (!deleteMessages) {

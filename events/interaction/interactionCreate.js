@@ -13,6 +13,7 @@ const storeMiscButton = require('../../handlers/buttons/store/store_misc');
 const storeInfoButton = require('../../handlers/buttons/store/store_info');
 const reportModal = require('../../handlers/modals/report_modal');
 const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
+const banModal = require('../../handlers/modals/ban_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
 const path = require('path');
@@ -126,12 +127,18 @@ module.exports = {
 
         // Modal submit handler
         if (interaction.type === InteractionType.ModalSubmit) {
+            // Report
             if (interaction.customId === 'report-modal') {
                 reportModal(interaction);
+            }
+            // Bans
+            if (interaction.customId === 'ban-modal') {
+                banModal(interaction);
             }
             if (interaction.customId === 'massban-modal') {
                 massbanModal(interaction);
             }
+            // Mutes
             if (interaction.customId === 'channel-mute-modal') {
                 channelMuteModal(interaction);
             }
