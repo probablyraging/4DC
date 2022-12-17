@@ -383,7 +383,7 @@ module.exports = {
 
                 await channel.send({
                     content: `⠀
-**Choose your optional pings**`, components: [btnCustoms]
+**Choose your notification pings**`, components: [btnCustoms]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
