@@ -125,7 +125,12 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
                 content: responseContent,
                 files: [img],
                 components: [buttons]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            }).catch(() => {
+                interaction.editReply({
+                    content: `${member} This is taking a little longer than expected, hold tight`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                await generateCustomResImage(interaction, member, url);
+            });
             loading = false;
             return nsfwCheck(interaction, int, prompt, member);
         }
