@@ -125,7 +125,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
                 content: responseContent,
                 files: [img],
                 components: [buttons]
-            }).catch(() => {
+            }).catch(async () => {
                 interaction.editReply({
                     content: `${member} This is taking a little longer than expected, hold tight`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
