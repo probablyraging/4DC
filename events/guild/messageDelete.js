@@ -86,6 +86,8 @@ module.exports = {
             // Fetch the current count from the database
             const results2 = await countingCurrent.find({ searchFor: 'currentCount' });
             for (const data of results2) {
+                // Ignore if message was deleted by the bot
+                if (data.deletedByBot) return;
                 // Only do notify if the message was the current count
                 if (message?.author.id !== data.previousCounter) return;
                 message?.channel.send({

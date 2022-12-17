@@ -13,6 +13,10 @@ const countingCurrent = mongoose.Schema({
         type: String,
         required: true
     },
+    deletedByBot: {
+        type: Boolean,
+        required: false
+    },
     searchFor: {
         type: String,
         required: true

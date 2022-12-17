@@ -50,6 +50,24 @@ module.exports = async (message, client) => {
 
                 // if the same person counted two numbers is a row            
                 if (message?.author.id === data.previousCounter) {
+                    // Mark this as deleted by bot to not flag message as edited or deleted in messageDelete.js
+                    await countingCurrent.updateOne({
+                        searchFor: 'currentCount'
+                    }, {
+                        deletedByBot: true
+                    }, {
+                        upsert: true
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    setTimeout(async () => {
+                        // We can revert this shortly after
+                        await countingCurrent.updateOne({
+                            searchFor: 'currentCount'
+                        }, {
+                            deletedByBot: false
+                        }, {
+                            upsert: true
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    }, 2000);
                     message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                     return message.reply({
                         content: `${process.env.BOT_DENY} You can't count two numbers in a row. You must wait for another player to count first`,
@@ -57,7 +75,7 @@ module.exports = async (message, client) => {
                         failIfNotExists: false
                     }).catch(err => { console.error(`${path.basename(__filename)} There was a problem sending a message: `, err) })
                         .then(msg => {
-                            setTimeout(() => {
+                            setTimeout(async () => {
                                 msg.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                             }, 10000);
                         });
