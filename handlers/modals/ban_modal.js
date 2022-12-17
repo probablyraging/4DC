@@ -5,6 +5,8 @@ const path = require('path');
 module.exports = async (interaction) => {
     const { guild, member } = interaction;
 
+    await interaction.deferReply({ ephemeral: true });
+
     const targetId = interaction.fields.getTextInputValue('input1');
     const target = await guild.members.fetch(targetId).catch(() => { });
     const reason = interaction.fields.getTextInputValue('input2');
@@ -38,7 +40,7 @@ module.exports = async (interaction) => {
         embeds: [log]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-    interaction.reply({
+    interaction.editReply({
         content: `${target.user.tag} was banned from the server`,
         ephemeral: true
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
