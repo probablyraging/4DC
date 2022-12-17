@@ -42,10 +42,12 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'Default [512x512]', value: 'default' },
-        { name: 'FHD [1920x1080]', value: '&input_width=1920&input_height=1080' },
-        { name: 'QHD [2560x1440]', value: '&input_width=2560&input_height=1440' },
-        { name: 'UHD 4K [3840x2160]', value: '&input_width=3840&input_height=2160' },
-        { name: 'Mobile [1080x1920]', value: '&input_width=1080&input_height=1920' }]
+        { name: 'FHD 16:9 [1920x1080]', value: '&input_width=1920&input_height=1080' },
+        { name: 'QHD 16:9 [2560x1440]', value: '&input_width=2560&input_height=1440' },
+        { name: 'UHD 4K 16:9 [3840x2160]', value: '&input_width=3840&input_height=2160' },
+        { name: 'FHD 9:16 [1080x1920]', value: '&input_width=1920&input_height=1080' },
+        { name: 'QHD 9:16 [1440x2560]', value: '&input_width=1440&input_height=2560' },
+        { name: 'UHD 4K 9:16 [2160x3840]', value: '&input_width=2160&input_height=3840' }]
     }, {
         name: "count",
         description: "Batch generate up to 4 images per prompt",
