@@ -18,9 +18,9 @@ module.exports = async (interaction) => {
 
     const storeName = customId.split('-')[0];
     const itemIndex = customId.split('-')[1];
-    if (itemIndex === 'one') itemName = 'Twitch Auto', btnIndex = 0;
-    if (itemIndex === 'two') itemName = 'YouTube Auto', btnIndex = 1;
-    if (itemIndex === 'three') itemName = 'Link Embeds', btnIndex = 2;
+    if (itemIndex === 'one') itemName = 'Twitch Auto (permanent)', btnIndex = 0;
+    if (itemIndex === 'two') itemName = 'YouTube Auto (permanent)', btnIndex = 1;
+    if (itemIndex === 'three') itemName = 'Link Embeds (permanent)', btnIndex = 2;
     let cost = interaction.message.components[0].components[btnIndex].label.replaceAll('⠀', '').replaceAll(' ', '');
     let customMessage = ``;
 

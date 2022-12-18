@@ -18,7 +18,7 @@ module.exports = async (interaction) => {
 
     const storeName = customId.split('-')[0];
     const itemIndex = customId.split('-')[1];
-    if (itemIndex === 'one') itemName = 'Double XP', btnIndex = 0;
+    if (itemIndex === 'one') itemName = 'Double XP (1 week)', btnIndex = 0;
     if (itemIndex === 'two') itemName = 'Game Saves', btnIndex = 1;
     if (itemIndex === 'three') itemName = 'Spotlight Tickets', btnIndex = 2;
     let cost = interaction.message.components[0].components[btnIndex].label.replaceAll('⠀', '').replaceAll(' ', '');
