@@ -17,6 +17,7 @@ module.exports = async (message, client) => {
         // replace disboard reply with our own embed and do counting save stuff
         const bumpUser = message?.interaction?.user.id;
         let savesMessage;
+        let tokenMessage;
 
         if (message.embeds.length >= 1) {
             message?.channel.messages.fetch(message?.id).then(async fetched => {
@@ -137,6 +138,10 @@ module.exports = async (message, client) => {
                                         parse: []
                                     }
                                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                                tokenMessage = `You've already earned the max tokens for today`;
+                            } else {
+                                tokenMessage = `You earned \`${75 - dailyTokens}\` tokens for the tokens store`;
                             }
                         } else {
                             await tokensSchema.updateOne({
@@ -155,6 +160,8 @@ module.exports = async (message, client) => {
                                     parse: []
                                 }
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                            tokenMessage = `You earned \`5\` tokens for the tokens store`;
                         }
                     }
 
