@@ -58,20 +58,6 @@ module.exports = async (client) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
 
-            if (livenow !== true && livenow !== null && (livenow - new Date()) <= 0) {
-                await tokensSchema.updateOne({
-                    userId: userId
-                }, {
-                    livenow: null
-                }, {
-                    upset: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                // Log when a user's item expires
-                tokenLog.send({
-                    content: `${process.env.TOKENS_EXPIRE} ${member} your Live Now Role item expired. Buy it again now in the <#1049791650060324954> if you want to keep using it`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
-
             if (linkembeds !== true && linkembeds !== null && (linkembeds - new Date()) <= 0) {
                 await tokensSchema.updateOne({
                     userId: userId
@@ -85,22 +71,6 @@ module.exports = async (client) => {
                 // Log when a user's item expires
                 tokenLog.send({
                     content: `${process.env.TOKENS_EXPIRE} ${member} your Link Embeds item expired. Buy it again now in the <#1049791650060324954> if you want to keep using it`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
-
-            if (giveaways !== true && giveaways !== null && (giveaways - new Date()) <= 0) {
-                await tokensSchema.updateOne({
-                    userId: userId
-                }, {
-                    giveaways: null
-                }, {
-                    upset: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-                // Remove user's access to giveaway channel
-                giveawayChan.permissionOverwrites.delete(member.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-                // Log when a user's item expires
-                tokenLog.send({
-                    content: `${process.env.TOKENS_EXPIRE} ${member} your Giveaway Channel item expired. Buy it again now in the <#1049791650060324954> if you want to keep using it`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         }

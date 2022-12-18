@@ -46,9 +46,9 @@ module.exports = async (message, client) => {
             deleted = false;
 
             // Set status as processing. We do this because it can take a while for the bot to process the current word and we want to ignore words submitted during that time
-            await letterCurrents.updateOne({ 
-                searchFor: 'letterCurrents' 
-            },{
+            await letterCurrents.updateOne({
+                searchFor: 'letterCurrents'
+            }, {
                 processing: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
 
@@ -59,6 +59,7 @@ module.exports = async (message, client) => {
             if (!failed && message.content.split(' ').length > 1) {
                 failed = true;
                 message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                resetProcessing();
                 return message.reply({
                     content: `${process.env.BOT_DENY} To send chat messages, put a '> ' (greater than followed by a space) in front of your message`,
                     allowedMentions: { repliedUser: true },
@@ -76,6 +77,7 @@ module.exports = async (message, client) => {
             const test = !hasSymbol.test(message.content);
             if (!failed && test) {
                 failed = true;
+                resetProcessing();
                 message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                 return message.reply({
                     content: `${process.env.BOT_DENY} Your word cannot contain numbers or letters. Try again!`,
@@ -92,6 +94,7 @@ module.exports = async (message, client) => {
             // If the same user tries to add two messages in a row, delete the message and notify the user
             if (!failed && previousSubmitter === message.author.id) {
                 failed = true;
+                resetProcessing();
                 message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                 return message.reply({
                     content: `${process.env.BOT_DENY} You can't add two words in a row. You must wait for another player to submit a word first`,
@@ -108,6 +111,7 @@ module.exports = async (message, client) => {
             // If a message is not longer than 2 characters, delete the message and notify the user
             if (!failed && message.content.length <= 2) {
                 failed = true;
+                resetProcessing();
                 message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                 return message.reply({
                     content: `${process.env.BOT_DENY} All words must be longer than 2 characters. Try again!`,
@@ -352,6 +356,14 @@ module.exports = async (message, client) => {
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        }
+
+        async function resetProcessing() {
+            await letterCurrents.updateOne({ 
+                searchFor: 'letterCurrents' 
+            },{
+                processing: false
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
         }
 
         // Capitilize the first letter of a word
