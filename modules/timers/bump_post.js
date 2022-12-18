@@ -130,12 +130,14 @@ module.exports = async (message, client) => {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                             // Log when a user's tokens increase or decrease
-                            tokenLog.send({
-                                content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${75 - dailyTokens}** tokens for bumping the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            if (75 - dailyTokens > 0) {
+                                tokenLog.send({
+                                    content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${75 - dailyTokens}** tokens for bumping the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
+                                    allowedMentions: {
+                                        parse: []
+                                    }
+                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            }
                         } else {
                             await tokensSchema.updateOne({
                                 userId: bumpUser
