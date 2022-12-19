@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: "resource",
     description: "Create a new resource embed in the resource channel",
-    defaultMemberPermissions: ['ManageRoles'],
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [{
