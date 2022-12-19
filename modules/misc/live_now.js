@@ -50,6 +50,16 @@ module.exports = async (client) => {
                 guild.members.cache.get(liveStaffArr[i]?.id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
+                // Check if user has already manually posted their own link, if so we don't post it
+                let boostAlreadyPosted = false;
+                let shareAlreadyPosted = false;
+                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
+                });
+                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
+                });
+
                 if (!cooldown.has(liveStaffArr[i]?.id)) {
                     if (liveStaffArr[i]?.url === null) return;
                     contentShare.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
@@ -100,6 +110,16 @@ module.exports = async (client) => {
                 guild.members.cache.get(liveMemberArr[i]?.id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
+                // Check if user has already manually posted their own link, if so we don't post it
+                let boostAlreadyPosted = false;
+                let shareAlreadyPosted = false;
+                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
+                });
+                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
+                });
+
                 if (!cooldown.has(liveMemberArr[i]?.id)) {
                     if (liveMemberArr[i]?.url === null) return;
                     contentShare.send({ content: `**${liveMemberArr[i]?.username}** just went live - ${liveMemberArr[i]?.url}` })
@@ -149,10 +169,10 @@ module.exports = async (client) => {
                 let boostAlreadyPosted = false;
                 let shareAlreadyPosted = false;
                 (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveBoosterArr[i]?.url)) boostAlreadyPosted = true;
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
                 });
                 (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveBoosterArr[i]?.url)) shareAlreadyPosted = true;
+                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
                 });
 
                 if (!cooldown.has(liveBoosterArr[i]?.id)) {
