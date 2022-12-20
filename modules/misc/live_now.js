@@ -192,7 +192,7 @@ module.exports = async (client) => {
                 }
             }
         }
-    }, 10000);
+    }, 300000);
 
     // check live now role to see if someone stopped streaming
     setInterval(async () => {
