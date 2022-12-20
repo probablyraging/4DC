@@ -1,11 +1,5 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
-const colorButton = require('../../handlers/buttons/roles/color_buttons');
-const platformButton = require('../../handlers/buttons/roles/platform_button');
-const ageButton = require('../../handlers/buttons/roles/age_button');
-const regionButton = require('../../handlers/buttons/roles/region_button');
-const genderButton = require('../../handlers/buttons/roles/gender_button');
-const customButton = require('../../handlers/buttons/roles/custom_button');
 const reportButton = require('../../handlers/buttons/misc/report_button');
 const storePermButton = require('../../handlers/buttons/store/store_perm');
 const storeTempButton = require('../../handlers/buttons/store/store_temp');
@@ -75,25 +69,6 @@ module.exports = {
 
         // Button submit handler
         if (interaction.isButton()) {
-            // Self Roles
-            if (interaction.customId.split('-')[0] === 'color') {
-                colorButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'platform') {
-                platformButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'age') {
-                ageButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'region') {
-                regionButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'gender') {
-                genderButton(interaction);
-            }
-            if (interaction.customId.split('-')[0] === 'custom') {
-                customButton(interaction);
-            }
             // Tokens Store
             if (interaction.customId.split('-')[0] === 'perm') {
                 storePermButton(interaction);

@@ -9,11 +9,12 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 
 **GETTING STARTED**
 > <#1005283113775157349> Information about the server channels and roles
-> <#948052750611120228> Express yourself with some profile flair
 > <#820889004055855147> Introduce yourself to and chat with the community
 > <#1040530300515647548> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
+
+Don't forget to grab some profile flair from the Channels & Roles page
 ⠀`,
 
         `https://i.imgur.com/zD5ueDZ.png`,
@@ -196,7 +197,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
 <#1005283113775157349> You are here
-<#948052750611120228> Grab yourself some profile flair
 <#843127402435313724> Let us know how we can improve the server
 <#900243955847938078> Stay up to date with trends and platform changes
 <#1043302855941042206> Grab an occasional free game or product here
