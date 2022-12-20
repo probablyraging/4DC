@@ -20,6 +20,9 @@ module.exports = async (client) => {
     }
 
     setInterval(async () => {
+        let boostAlreadyPosted = false;
+        let shareAlreadyPosted = false;
+
         // Staff member check
         liveStaff = [];
 
@@ -51,8 +54,6 @@ module.exports = async (client) => {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                 // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
                 (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
                     if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
                 });
@@ -111,8 +112,6 @@ module.exports = async (client) => {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                 // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
                 (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
                     if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
                 });
@@ -166,8 +165,6 @@ module.exports = async (client) => {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
 
                 // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
                 (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
                     if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
                 });
