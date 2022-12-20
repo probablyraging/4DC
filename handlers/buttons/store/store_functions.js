@@ -28,7 +28,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
         .setMaxLength(56)
         .setRequired(true)
     const row2 = new ActionRowBuilder().addComponents([input2]);
-    if (interaction.customId === 'perm-two' || interaction.customId === 'temp-two') modal.addComponents(row2);
+    if (interaction.customId.includes('gifttemp-two') || interaction.customId.includes('giftperm-two') || interaction.customId === 'perm-two' || interaction.customId === 'temp-two') modal.addComponents(row2);
 
     // Spotlight Ticket
     const input3 = new TextInputBuilder()

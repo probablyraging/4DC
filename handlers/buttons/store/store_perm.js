@@ -39,7 +39,7 @@ module.exports = async (interaction) => {
 
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
         if (!member) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
@@ -72,7 +72,7 @@ module.exports = async (interaction) => {
     // Two
     if (itemIndex === 'two') {
         // If item is being purcahsed as a gift
-        if (customId.includes('gift')) {
+        if (customId.includes('gift') && interaction.member.id !== process.env.OWNER_ID) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} This item cannot be gifted`,
                 ephemeral: true
@@ -80,7 +80,7 @@ module.exports = async (interaction) => {
         }
 
         // This item is free for server boosters
-        if (member.roles.cache.has(process.env.BOOSTER_ROLE)) cost = 0;
+        if (member.roles.cache.has(process.env.BOOSTER_ROLE) && !customId.includes('gift')) cost = 0;
 
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
@@ -89,6 +89,16 @@ module.exports = async (interaction) => {
 
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
+
+        // If item is being purcahsed as a gift
+        if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
+        if (!member) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        }
 
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
@@ -100,7 +110,7 @@ module.exports = async (interaction) => {
         }
 
         // Attempt to complete the purchase and continue if successful
-        if (await completePurchase(interaction, cost, itemName, customMessage)) {
+        if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             const channelId = interaction.fields.getTextInputValue('input2');
             // Add expiry timestamp or boolean to user's db entry
             await tokensSchema.updateOne({
@@ -110,7 +120,7 @@ module.exports = async (interaction) => {
             }, {
                 upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
+            // Add the user to the youtube auto db
             try {
                 // We need to store a list of the user's current video IDs
                 const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
@@ -155,7 +165,7 @@ module.exports = async (interaction) => {
 
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
         if (!member) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
