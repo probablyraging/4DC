@@ -24,7 +24,7 @@ module.exports = async (interaction) => {
         .setDescription(`Mass Ban Request Needs Approval - use \`\/massban approve [id]\` or \`\/massban deny [id]\``)
         .addFields({ name: `Request ID`, value: id, inline: false },
         { name: `Reason`, value: reason, inline: false },
-        { name: `User List to Ban`, value: `trimmedListString`, inline: true })
+        { name: `User List to Ban`, value: trimmedListString, inline: true });
 
     staffChannel.send({
         content: `<@&${process.env.ADMIN_ROLE}>`,

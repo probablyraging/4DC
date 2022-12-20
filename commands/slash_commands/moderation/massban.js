@@ -58,6 +58,9 @@ async function approveMassBan(interaction) {
             interaction.editReply(`${process.env.BOT_DENY} The mass ban request with ID '${id}' cannot be approved by the same person who requested it`)
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         } else {
+            result.state = "BANNING";
+            result.save();
+
             const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
             let reason = result.reason;
 
@@ -84,6 +87,9 @@ async function approveMassBan(interaction) {
             interaction.editReply(`${process.env.BOT_CONF} The mass ban request with ID '${id}' has been approved`)
                 .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
+    } else if (result && result.state === "BANNING") {
+        interaction.editReply(`${process.env.BOT_INFO} The mass ban request with ID '${id}' has already been approved by another staff member`)
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
     } else {
         interaction.editReply(`${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`)
             .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
