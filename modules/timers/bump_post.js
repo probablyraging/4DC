@@ -131,7 +131,7 @@ module.exports = async (message, client) => {
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                             // Log when a user's tokens increase or decrease
-                            if (75 - dailyTokens > 0) {
+                            if ((75 - dailyTokens) > 0) {
                                 tokenLog.send({
                                     content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${75 - dailyTokens}** tokens for bumping the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
                                     allowedMentions: {
@@ -171,7 +171,7 @@ module.exports = async (message, client) => {
                         .setURL('https://disboard.org/review/create/820889004055855144')
                         .setDescription(`Consider leaving an honest review of the server [**HERE**](https://disboard.org/review/create/820889004055855144)
 
-You earned \`5\` tokens for the tokens store
+${tokenMessage}
 ${savesMessage}`)
                         .setImage('https://i.imgur.com/xDAlBKp.png')
 
