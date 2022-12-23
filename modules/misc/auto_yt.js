@@ -6,6 +6,7 @@ const res = new (require('rss-parser'))();
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
+    const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
 
     setInterval(async () => {
@@ -58,9 +59,19 @@ module.exports = async (client) => {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
                         // send a notification to a specific channel, depending on the user's roles
-                        boostPromoChan.send({
-                            content: `**${userTag}** just uploaded a new video - ${item.link}`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        if (member?.roles?.cache.has(process.env.BOOSTER_ROLE)) {
+                            contentShare.send({
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+                            boostPromoChan.send({
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        } else {
+                            contentShare.send({
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        }
                     }
                 });
             });
