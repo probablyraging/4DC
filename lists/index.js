@@ -9,7 +9,8 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 
 **GETTING STARTED**
 > <#1005283113775157349> Information about the server channels and roles
-> <#820889004055855147> Introduce yourself to and chat with the community
+> <#820889004055855147> Meet and chat with the community
+> <#1049263519255777301> Tell us a little about yourself
 > <#1040530300515647548> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
