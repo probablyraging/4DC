@@ -10,7 +10,6 @@ const fetchTweets = require('../../modules/misc/fetch_tweets');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
-const qotdCheck = require('../../modules/misc/qotd_check');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
 const Canvas = require("canvas");
@@ -59,6 +58,5 @@ module.exports = {
         welcomeCheck(client);
         storeCheck(client);
         leaderboardUpdate(client);
-        qotdCheck(client);
     }
 };
