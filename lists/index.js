@@ -222,7 +222,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#978691673842389053> Get some constructive feedback on your graphics or videos
 <#978694637088804884> Looking for something specific? Like new friends? Find them here
 <#1052096719778762822> List your paid or free services for others to browse
-<#1050986679919452231> Submit a question or provide answers for question of the day
 ⠀`,
 
         `**CONTENT SHARE**
