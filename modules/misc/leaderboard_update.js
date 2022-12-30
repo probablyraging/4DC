@@ -115,7 +115,7 @@ module.exports = async (client) => {
 
                     // Message
                     if (message?.content.includes('message_lb') || message?.attachments.first()?.name.includes('message_lb')) {
-                        const results = await rankSchema.find({ 'rank': { $gte: 1, $lt: 20 } }).limit(10);
+                        const results = await rankSchema.find({ 'rank': { $gte: 1, $lt: 20 } });
                         dataArr = [];
                         for (const data of results) {
                             const { id, username, msgCount, rank, level, avatar, xp } = data;
