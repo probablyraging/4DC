@@ -133,7 +133,7 @@ module.exports = async (message, client) => {
 
             // If the word has been used too soon, fail the game
             if (!failed && previousUsedWords.includes(message.content.toLowerCase())) {
-                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` was used in the last 10 messages \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
+                failMessage = `${process.env.BOT_DENY} ${message.author} **FAILED at ${currentLevel}** \n> The word \`${message.content.toUpperCase()}\` was used in the last 5 messages \n> The next letter is \`${lastLetter.toUpperCase()}\` \n> The record to beat is \`${currentRecord}\``;
                 return failGame();
             }
 
