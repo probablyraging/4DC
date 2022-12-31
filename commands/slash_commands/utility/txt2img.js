@@ -37,22 +37,10 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true
     }, {
-        name: "resolution",
-        description: "Choose a resolution for your image",
-        type: ApplicationCommandOptionType.String,
-        required: true,
-        choices: [{ name: 'Default [512x512]', value: 'default' },
-        { name: 'FHD 16:9 [1920x1080]', value: '&input_width=1920&input_height=1080' },
-        { name: 'QHD 16:9 [2560x1440]', value: '&input_width=2560&input_height=1440' },
-        { name: 'UHD 4K 16:9 [3840x2160]', value: '&input_width=3840&input_height=2160' },
-        { name: 'FHD 9:16 [1080x1920]', value: '&input_width=1080&input_height=1920' },
-        { name: 'QHD 9:16 [1440x2560]', value: '&input_width=1440&input_height=2560' },
-        { name: 'UHD 4K 9:16 [2160x3840]', value: '&input_width=2160&input_height=3840' }]
-    }, {
         name: "count",
         description: "Batch generate up to 4 images per prompt",
         type: ApplicationCommandOptionType.Number,
-        required: false,
+        required: true,
         choices: [{ name: '1', value: '1' },
         { name: '2', value: '2' },
         { name: '3', value: '3' },
@@ -92,16 +80,6 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             }
         }
 
-        if (count && resolution !== 'default') {
-            return interaction.editReply({
-                content: `${member} The count option is only available when using the default custom resolution`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
-        }
-
         if (loading) {
             interaction.editReply({
                 content: `${member} your prompt has been added to the queue`,
@@ -114,30 +92,6 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
         loading = true;
-        // If using a custom resolution
-        if (resolution !== 'default') {
-            const url = process.env.AI_GEN1 + prompt + resolution + `&input_seed=${randomNum(100000000, 3000000000)}` + process.env.AI_GEN2 + uuidv4();
-            const imgUrl = await generateCustomResImage(interaction, member, url);
-            if (!imgUrl) return;
-            const img = new AttachmentBuilder(imgUrl, { name: `${fileName}_${uuidv4()}.jpg` });
-            const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
-            const int = await interaction.editReply({
-                content: responseContent,
-                files: [img],
-                components: [buttons]
-            }).catch(() => {
-                return interaction.editReply({
-                    content: `${member} An image could not be generated, try again`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                    setTimeout(() => {
-                        int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                    }, 7000);
-                });
-            });
-            loading = false;
-            return nsfwCheck(interaction, int, prompt, member);
-        }
-
         ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
 
         // Connect to SD websocket
@@ -313,31 +267,6 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
             });
         });
     }
-}
-
-async function generateCustomResImage(interaction, member, url) {
-    const resolve = await fetch(url)
-        .catch(() => {
-            interaction.editReply({
-                content: `${member} There was an error generating your prompt, please try again`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-                setTimeout(() => {
-                    int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-                }, 7000);
-            });
-        });
-    if (!resolve) await generateCustomResImage(interaction, member, url);
-    if (resolve && resolve.status !== 200) {
-        interaction.editReply({
-            content: `${member} There was an error generating your prompt, please try again`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
-            setTimeout(() => {
-                int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
-            }, 7000);
-        });
-        return null;
-    }
-    if (resolve) return resolve.url;
 }
 
 async function nsfwCheck(interaction, int, prompt, member) {
