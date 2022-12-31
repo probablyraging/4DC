@@ -69,7 +69,7 @@ module.exports = {
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
         interaction.editReply({
-            content: `${target.user.tag} was banned from the server`
+            content: `${process.env.BOT_CONF} ${target.user.tag} was banned from the server`
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
     }
 }
