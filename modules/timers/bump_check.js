@@ -6,35 +6,21 @@ module.exports = async (client) => {
     const bumpChan = guild.channels.cache.get(process.env.BUMP_CHAN);
 
     setInterval(async () => {
-        let dbTimestamp;
-        const results = await timerSchema.find({ timer: 'bump' });
-
-        for (const info of results) {
-            const { timestamp } = info;
-            dbTimestamp = timestamp;
-        }
-
-        const myDate = new Date();
-        const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
-
-        if (dbTimestamp && nowTime > dbTimestamp) {
-            // Allow message to be sent, and send the new bump ping
+        const results = await timerSchema.findOne({ timer: 'bump' });
+        if (!results) return;
+        const { timestamp } = results;
+        if (Date.now() > timestamp) {
             bumpChan.permissionOverwrites.edit(guild.id, {
                 SendMessages: true,
             }).then(() => {
                 return bumpChan.send({
-                    content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the \`/bump\` command!`
+                    content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the </bump:947088344167366698> command!`
                 });
             }).then(async () => {
-                // Log the current timestamp
-                await timerSchema.updateOne({
-                    timer: 'bump'
-                }, {
+                await bumpTimer.updateOne({
                     timestamp: "null"
-                }, {
-                    upsert: true
-                })
+                });
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem with updating the bump channel: `, err));
         }
     }, 300000);
-};
+}

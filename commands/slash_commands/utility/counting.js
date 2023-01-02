@@ -45,7 +45,7 @@ module.exports = {
     async execute(interaction) {
         const { member, guild, client, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'save': {

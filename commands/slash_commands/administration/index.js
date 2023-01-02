@@ -26,18 +26,18 @@ module.exports = {
     async execute(interaction) {
         let { client, guild, channel, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
         if (channel.type === 11) {
             threadId = channel.id
-            channel = await guild.channels.cache.get(channel.parentId);
+            channel = guild.channels.cache.get(channel.parentId);
         }
 
         // WELCOME
         switch (options.getString('data')) {
             case 'welcome': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.welcome.length; i++) {
                         setTimeout(function () {
@@ -61,8 +61,6 @@ module.exports = {
 
             // RULES
             case 'rules': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.rules.length; i++) {
                         setTimeout(function () {
@@ -86,8 +84,6 @@ module.exports = {
 
             // SERVER GUIDE
             case 'serverguide': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.servermap.length; i++) {
                         setTimeout(function () {
@@ -111,8 +107,6 @@ module.exports = {
 
             // FAQ SERVER
             case 'faqs': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.faqs.length; i++) {
                         setTimeout(function () {
@@ -146,8 +140,6 @@ module.exports = {
 
             // SPOTLIGHT CHANNEL
             case 'spotlight': {
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
                 const liveNowEmbed = new EmbedBuilder()
                     .setColor("#9c59ff")
                     .setTitle(`:crown: Content Spotlight`)
@@ -163,9 +155,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
 
             // TOKENS STORE
             case 'tokenstore': {
-                await interaction.deferReply({ ephemeral: true });
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-
                 const btn = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()

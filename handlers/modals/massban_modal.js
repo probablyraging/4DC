@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = async (interaction) => {
     const { member, guild } = interaction
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
     let userListString = interaction.fields.getTextInputValue('user-list');
     let trimmedList = userListString.split(/\r?\n/).map(element => {
         return element.trim();

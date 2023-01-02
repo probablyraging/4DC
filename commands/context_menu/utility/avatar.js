@@ -9,9 +9,10 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const target = await interaction.guild.members.fetch(interaction.targetId);
+        const { guild } = interaction;
+        const target = await guild.members.fetch(interaction.targetId);
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // If target doesn't exist
         if (!target) {

@@ -45,7 +45,7 @@ async function banUsers(interaction, users, reason) {
  */
 async function approveMassBan(interaction) {
     let { member, guild, options } = interaction;
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
     let id = options.getString('id');
 
     let result = await massbanSchema.findOne({ id: id }).exec()
@@ -103,7 +103,7 @@ async function approveMassBan(interaction) {
  */
 async function denyMassBan(interaction) {
     let { options, member, guild } = interaction;
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
     let id = options.getString('id');
 
     let result = await massbanSchema.findOne({ id: id }).exec()

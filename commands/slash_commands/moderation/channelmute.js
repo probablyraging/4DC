@@ -72,7 +72,7 @@ module.exports = {
                 let duration = options.getString('duration') || `0`;
                 const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-                await interaction.deferReply({ ephemeral: true });
+                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 // If the target is already muted in this channel
                 if (permissionInChannel === false) {
@@ -148,7 +148,7 @@ module.exports = {
                 const targetChan = options.getChannel('channel');
                 const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-                await interaction.deferReply({ ephemeral: true });
+                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 // If the target is already muted in this channel
                 if (permissionInChannel === true) {

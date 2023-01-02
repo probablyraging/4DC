@@ -32,7 +32,7 @@ module.exports = async (interaction) => {
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
@@ -88,7 +88,7 @@ module.exports = async (interaction) => {
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;
@@ -164,7 +164,7 @@ module.exports = async (interaction) => {
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // Make sure the user confirmed the purchase
         if (!await checkConfirmation(interaction)) return;

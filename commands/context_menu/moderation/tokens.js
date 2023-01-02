@@ -13,7 +13,7 @@ module.exports = {
     async execute(interaction) {
         const { guild, channel, member, message } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
         const fetchMsg = await channel.messages.fetch(interaction.targetId);

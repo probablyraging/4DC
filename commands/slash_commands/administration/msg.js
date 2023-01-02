@@ -35,7 +35,7 @@ module.exports = {
         const message = options.getString('message') || ` `;
         const image = options.getString('image');
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         if (image) {
             target.send({

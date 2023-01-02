@@ -18,7 +18,7 @@ module.exports = {
     async execute(interaction) {
         const { member, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const target = options.getMember(`username`) || member;
 

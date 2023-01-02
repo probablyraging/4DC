@@ -64,5 +64,3 @@ module.exports = async (message, client) => {
         }
     }
 }
-
-// ${process.env.BOT_INFO} Looking to purchase an ad spot? Take a look at this post

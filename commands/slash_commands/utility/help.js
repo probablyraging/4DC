@@ -12,7 +12,7 @@ module.exports = {
     async execute(interaction) {
         const { guild, member } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const embed = new EmbedBuilder()
             .setColor('#5865f2')

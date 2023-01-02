@@ -1,25 +1,28 @@
-const { Message } = require('discord.js');
 const cooldown = new Set();
 
 module.exports = async (message) => {
-    const author = message?.author;
-    const content = message?.content.toLocaleLowerCase();
-    const conditions = ['https://', 'http://', 'www.'];
-    const check = conditions.some(el => content.includes(el));
+    if (message.author.bot) return;
 
-    if (!author) return;
-    if (check && !message?.member?.permissions.has("ManageMessages") && !message?.member?.roles.cache.has(process.env.RANK5_ROLE) && !message?.member?.roles.cache.has(process.env.VERIFIED_ROLE) && !message?.author?.bot) {
-        if (cooldown.has(message?.author?.id)) {
-            try {
-                message?.delete();
-            } catch {
+    const { content, member, author } = message;
+    const lowerCaseContent = content.toLowerCase();
+    const hasHttpLink = lowerCaseContent.includes('https://') || lowerCaseContent.includes('http://');
+    const hasWWWLink = lowerCaseContent.includes('www.');
+    const hasLink = hasHttpLink || hasWWWLink;
+    const hasManageMessagesPermission = member.permissions.has('ManageMessages');
+    const hasRank5Role = member.roles.cache.has(process.env.RANK5_ROLE);
+    const hasVerifiedRole = member.roles.cache.has(process.env.VERIFIED_ROLE);
+    const hasPermission = hasManageMessagesPermission || hasRank5Role || hasVerifiedRole;
+
+    if (hasLink && !hasPermission) {
+        if (cooldown.has(author.id)) {
+            message.delete().catch(() => {
                 // An error here is likely due to spam.js having already deleted the message
-            }
+            });
         } else {
-            cooldown.add(message?.author.id)
+            cooldown.add(author.id);
             setTimeout(() => {
-                cooldown.delete(message?.author.id)
+                cooldown.delete(author.id);
             }, 30000);
         }
     }
-}
+};

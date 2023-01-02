@@ -30,7 +30,7 @@ module.exports = {
     async execute(interaction) {
         const { options, guild } = interaction;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const link = options.getString('link');
         const attachment = options.getAttachment('thumbnail');

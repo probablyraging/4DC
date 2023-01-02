@@ -1,5 +1,6 @@
 const { AuditLogEvent } = require('discord.js');
 const protection = new Map();
+const path = require('path');
 
 module.exports = {
     name: 'emojiDelete',

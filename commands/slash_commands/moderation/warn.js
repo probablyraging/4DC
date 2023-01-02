@@ -70,7 +70,7 @@ module.exports = {
         const { client, member, guild, user, options } = interaction;
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'add': {
