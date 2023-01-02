@@ -5,6 +5,7 @@ const storePermButton = require('../../handlers/buttons/store/store_perm');
 const storeTempButton = require('../../handlers/buttons/store/store_temp');
 const storeMiscButton = require('../../handlers/buttons/store/store_misc');
 const storeInfoButton = require('../../handlers/buttons/store/store_info');
+const helpButton = require('../../handlers/buttons/misc/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
 const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
 const banModal = require('../../handlers/modals/ban_modal');
@@ -22,9 +23,9 @@ module.exports = {
         const { member, channel } = interaction
 
         // Ignore slash commands ran in DMs
-        if (channel.type === 1 && interaction.customId.split('-')[0] !== 'storeinfo') {
+        if (channel.type === 1 && interaction.customId.split('-')[0] !== 'help') {
             return interaction.reply({
-                content: 'Command not available',
+                content: 'Command not available via DMs',
                 ephemeral: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
@@ -97,6 +98,10 @@ module.exports = {
             }
             if (interaction.customId === 'delete-image') {
                 reportImageButton(interaction);
+            }
+            // Help menu
+            if (interaction.customId.split('-')[0] === 'help') {
+                helpButton(interaction);
             }
         }
 

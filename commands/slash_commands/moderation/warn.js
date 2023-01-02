@@ -36,7 +36,7 @@ module.exports = {
         },
         {
             name: `custom`,
-            description: `Supply a reason for warning the user when selecting custom`,
+            description: `Provide a reason for warning the user when selecting custom`,
             type: ApplicationCommandOptionType.String,
             required: false
         }]

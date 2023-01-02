@@ -22,7 +22,7 @@ module.exports = async (message, client) => {
                     if (found) {
                         message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                         promoChan.send({
-                            content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by chatting with other creators in <#820889004055855147>. Feel free to come introduce yourself and meet the other members on the server :warning:`
+                            content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by networking with other creators on the server. Feel free to come introduce yourself and meet the other server members in <#820889004055855147> :warning:`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
                 }
@@ -31,7 +31,7 @@ module.exports = async (message, client) => {
 
         if (!found) {
             promoChan.send({
-                content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by chatting with other creators in <#820889004055855147>. Feel free to come introduce yourself and meet the other members on the server :warning:`
+                content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by networking with other creators on the server. Feel free to come introduce yourself and meet the other server members in <#820889004055855147> :warning:`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
     }

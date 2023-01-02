@@ -1,8 +1,10 @@
+const { rules } = require('../lists/rules');
+
 module.exports = {
     welcome: [
         `https://i.imgur.com/wC1Lu54.png`,
 
-        `ForTheContent is a growing community of content creators, developers, musicians, and gamers alike. We are a peer-to-peer help and advice server that aims to connect like-minded people from all around the world, together in a friendly and welcoming environment. We are all about sharing advice, offering constructive feedback, and providing you with useful resources to help you grow your online presence
+        `Welcome to ForTheContent, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, our aim is to provide our members with the resources and support they need to grow their online presence and achieve their goals
 
 **NEW TO DISCORD?**
 Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
@@ -22,13 +24,13 @@ Don't forget to grab some profile flair from the Channels & Roles page
 
         `By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
-> **1.** Messages, usernames, avatars, banners, profiles, or linked accounts containing harmful, offensive, or explicit content has no place in this server. This may result in a ban without warning
-> **2.** Do not send other server members unsolicited DMs containing promotional content, server invites, services, or spam
-> **3.** Advertising of other discord servers, offering or requesting paid services *(not including video/graphic editing)*, and other paid products or promotional content is only permitted in <#${process.env.PREM_CHAN}>
-> **4.** We do not allow posts that break the various platform's ToS. This includes content like sub4sub, buying/selling accounts, fake inflation, etc..
-> **5.** Do not post promotional content outside of the 'CONTENT SHARE' section
-> **6.** Do not send repeated or purposeless messages in an attempt to gain XP or tokens
-> **7.** For moderating purposes, please keep your messages in English
+> **1.** ${rules[0]}
+> **2.** ${rules[1]}
+> **3.** ${rules[2]}
+> **4.** ${rules[3]}
+> **5.** ${rules[4]}
+> **6.** ${rules[5]}
+> **7.** ${rules[6]}
 
 See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
 
@@ -39,30 +41,30 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://i.imgur.com/4qnr530.png`,
 
         `**When/how can I share my content?**
-> Content share channels can be found under the 'CONTENT SHARE' section. While your rank is less than 5 your links will not have an embedded preview attached to your message when posting links. You can bypass this rank requirement by becoming a **Server Booster**. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command
+> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section. Please note that users with a rank below 5 will not have the option to display an embedded preview when sharing links. To gain this feature, we recommend becoming a Server Booster or purchasing it with tokens in <#1049791650060324954>. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command
 
 **Can I advertise my own server or paid service?**
-> Advertising, as well as looking for - discord servers, paid services and products *(excluding video and graphic editing)*, or promotional content not related to content creation is only permitted in <#907446635435540551>. There are some fees for creating an advertisement of this kind so please refer to [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for more information
+> Advertising of Discord servers, paid services, and products (excluding those related to content creation) is only permitted in <#907446635435540551>. There are fees associated with creating a premium ad which you can find in [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for further details
 
 **What is server boosting?**
-> Server boosting is a fun way to support ForTheContent. By becoming a server booster you will be able to bypass most of the rank requirements associated with certain channels, and you also get some extra perks to use such as double XP, automatic content sharing, access to our giveaway channel, and more, which you can find by using the </boost:1031245457835429998> command
+> Server boosting is a way to support and show appreciation to the ForTheContent community. By becoming a server booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks by using the </boost:1031245457835429998> command
 ⠀`,
 
         `**How does the rank/XP system work?**
-> Every newcomer starts at Rank 0, the next ranks you unlock are Rank 5, Rank 10, Rank 15.. and so on, increasing by increments of five. For every message that you send in the server you will randomly gain between 15 and 25 XP that goes toward your rank. Reaching new ranks unlocks rewards for you to use in the server, those rewards can be found in <#1005283113775157349>. To avoid spamming, earning XP is limited to once a minute per user. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command. You will not gain XP for posting messages in the CONTENT SHARE section
+> All new users begin at Rank 0 and unlock higher ranks in increments of five *(e.g. Rank 5, Rank 10, Rank 15)*. By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards, which can be found in the <#1005283113775157349> channel. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1040546996735451176> command in the <#837945839799500850> channel. Please note that you will not receive XP for posting messages in the 'CONTENT SHARE' section
 
 **What are Tokens?**
-> Tokens are the name of ForTheContent's virtual currency. They can be used to buy server perks, promote your content, unlock channels, and you can even trade them in for real cash prizes! To learn how you can start earning tokens, click the green INFORMATION button in <#1049791650060324954>
+> Tokens are the virtual currency used in the ForTheContent community. They can be utilized to purchase server perks, promote your content, and unlock channels. You can gain tokens in a few different ways including sending messages *(chatting)*, bumping the server, or as a reward for a useful or helpful post
         
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)
 
 **Will people here actually watch my videos?**
-> This server's sole purpose isn't for self-promotion, it's just one of the benefits. Think of it as another way to get eyes on your content, but keep in mind that most of us here are also content creators so we're probably not your target audience, but that doesn't mean people won't watch them. The community members here are super supportive of those who are active, helpful, and supportive of others
+> While self-promotion is a perk of being a member of this server, it is not the primary focus. It is more an opportunity to expose your content to a wider audience, but it is also important to remember that many of the members here are also content creators and may not be your intended target audience. However, the community is generally supportive of those who are active, helpful, and supportive of others
 ⠀`,
 
-        `**Why do people keep DMing me spam and promo content?**
-> Unfortunately this is just a part of Discord. We try to remove as many of these spam accounts as possible, but we also recommend you disable DMs from people you aren't friends with, by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members
+        `**Why do I keep receiving spam and promotional content through DMs?**
+> Unfortunately, this is a common occurrence on Discord. While we do our best to remove spam accounts, it is recommended to disable DMs from users who are not on your friends list. This can be done by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members. You can also report these accounts to staff by using the </report:1031245457902555213> command
         
 **How can I apply for a staff role?**
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by filling out [this form](https://docs.google.com/forms/d/1W7K6WtKes3otlWYiSO_vdZ-dg9f4H0xS-g87gvhGvqY). Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
