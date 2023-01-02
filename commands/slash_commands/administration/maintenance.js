@@ -48,7 +48,7 @@ module.exports = {
                     channel.permissionOverwrites.edit(guild.id, {
                         SendMessages: null,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-                    (await channel.messages.fetch({ limit: 2 })).forEach(message => {
+                    (await channel.messages.fetch({ limit: 10 })).forEach(message => {
                         if (message.author.bot && message.content.includes('maintenance')) {
                             message.delete().catch(err => { return console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                         }
