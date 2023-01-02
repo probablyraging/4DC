@@ -1,59 +1,61 @@
 const { Message } = require('discord.js');
-const repeatedMsg = new Map();
-const timedout = new Set();
-const sleep = require("timers/promises").setTimeout;
+const repeatedMessages = new Map();
+const timedOutUsers = new Set();
 const path = require('path');
-/**
- * @param {Message} message 
- */
-module.exports = async (message, client) => {
-    /**
-     * This blacklist focuses on preventing dusplicate message spam
-     */
-    if (!message?.member?.roles.cache.has(process.env.STAFF_ROLE) && !message?.author.bot) {
-        const author = message?.author.id;
-        const content = message?.content;
-        const found = repeatedMsg.get(content);
 
-        if (found && !timedout.has(author)) {
-            // If a user sends the same message 4 times or more in a 15 second period
-            if (found.author === author && found.count >= 4) {
-                for (const [key, val] of repeatedMsg.entries()) {
-                    const channel = client.channels.cache.get(val.channelId);
-                    // Fetch a gorup of previous messages
-                    const fetch = await channel?.messages.fetch({ limit: 20 });
-                    const filter = await fetch.filter(m => m?.author?.id === val.author && m?.content === val.content);
-                    // Push the durplicate message ids to our array for bulk deleting
-                    let filtered = [];
-                    filter.forEach(m => {
-                        filtered.push(m);
-                    });
-                    try {
-                        channel.bulkDelete(filtered);
-                    } catch {
-                        // An error here is likely due to link_cooldown.js having already deleted the message
-                    }
-                }
-                // Tiemout the user for 5 minutes and notify them
-                const member = message?.member;
-                member?.timeout(300000, 'Spam detection').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
-                member?.send({
-                    content: `${process.env.BOT_DENY} You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
-                // Add the user to a set for 15 seconds. This prevents the bot trying to take action again
-                timedout.add(author);
-                setTimeout(() => {
-                    timedout.delete(author);
-                }, 15000);
-                await sleep(300);
-            } else if (found.author == author && found.count < 4) {
-                repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId: message?.id, count: found.count + 1 });
+/**
+ * Check if a user has sent the same message multiple times in a short period of time.
+ * @param {Message} message
+ */
+function isSpam(message) {
+    const authorId = message.author.id;
+    const content = message.content;
+
+    const authorMessages = repeatedMessages.get(authorId) || {};
+    const messageCount = (authorMessages[content] || 0) + 1;
+    authorMessages[content] = messageCount;
+
+    if (messageCount >= 4) {
+        return true;
+    }
+
+    repeatedMessages.set(authorId, authorMessages);
+    setTimeout(() => {
+        repeatedMessages.delete(authorId);
+    }, 15000);
+
+    return false;
+}
+
+async function timeoutUser(member, duration, reason, message) {
+    await member.timeout(duration, reason).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
+    await member.send(message).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
+}
+
+module.exports = async (message, client) => {
+    if (!message.author.bot) {
+        const authorId = message.author.id;
+        const content = message.content;
+
+        if (isSpam(message) && !timedOutUsers.has(authorId)) {
+            const channel = client.channels.cache.get(message.channelId);
+            if (channel) {
+                const messages = await channel.messages.fetch({ limit: 20 });
+                const messagesToDelete = messages.filter(m => m.author.id === authorId && m.content === content);
+                channel.bulkDelete(messagesToDelete).catch(() => {
+                    // An error here is likely due to the bot not having permission to delete messages in the channel or because the messages are older than 14 days and cannot be deleted
+                });
             }
-        } else {
-            repeatedMsg.set(content, { author, content, channelId: message?.channelId, msgId: message?.id, count: 1 });
-            setTimeout(() => {
-                repeatedMsg.delete(content);
-            }, 15000);
+
+            const member = message.member;
+            if (member) {
+                const notificationForUser = `${process.env.BOT_DENY} You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`;
+                timeoutUser(member, 300000, 'Spam detection', notificationForUser);
+                timedOutUsers.add(authorId);
+                setTimeout(() => {
+                    timedOutUsers.delete(authorId);
+                }, 15000);
+            }
         }
     }
 }
