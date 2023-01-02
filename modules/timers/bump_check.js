@@ -17,10 +17,15 @@ module.exports = async (client) => {
                     content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the </bump:947088344167366698> command!`
                 });
             }).then(async () => {
-                await bumpTimer.updateOne({
-                    timestamp: "null"
+                // Log the current timestamp
+                await timerSchema.updateOne({
+                    timer: 'bump'
+                }, {
+                    timestamp: 'null'
+                }, {
+                    upsert: true
                 });
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem with updating the bump channel: `, err));
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating the bump channel: `, err));
         }
     }, 300000);
 }
