@@ -1,14 +1,11 @@
 const { ActivityType } = require('discord.js');
 
 module.exports = async (client) => {
-    const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    client.user.setActivity(`${numberWithCommas(guild.memberCount)} users`, { type: ActivityType.Watching });
+    const activityType = ActivityType.Watching;
+    const guildId = process.env.GUILD_ID;
+    const guild = client.guilds.cache.get(guildId);
+    client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: activityType });
     setInterval(() => {
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);
-        client.user.setActivity(`${numberWithCommas(guild.memberCount)} users`, { type: ActivityType.Watching });
+        client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: activityType });
     }, 900000);
-}
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+};

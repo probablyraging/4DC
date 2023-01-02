@@ -8,69 +8,59 @@ module.exports = async (client) => {
     const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
     const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
+    const boosterRole = process.env.BOOSTER_ROLE;
+    const staffRole = process.env.STAFF_ROLE;
 
     setInterval(async () => {
-        // a quick check to see if we get any errors
-        await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=UCIjouN_iuJswbC6MJltMl_A`, function (err, resolve) {
-            if (err) return console.log(`Unable to fetch AUTOYT feed`);
-        });
-
         const results = await ytNotificationSchema.find();
 
-        for (const data of results) {
-            const { channelId, videoIds, userId } = data;
-
-            // Fetch tokens store user's that might have an active sub
-            const results2 = await tokensSchema.find({ userId: userId });
-
-            // if the user isn't a booster, staff member or tokens sub, we can remove them from the database
+        for (const { channelId, videoIds, userId } of results) {
             const member = guild.members.cache.get(userId);
-            if (!member?.roles?.cache.has(process.env.BOOSTER_ROLE) && !member?.roles?.cache.has(process.env.STAFF_ROLE) && (results2[0]?.youtubeauto - new Date()) < 1 && results2[0]?.youtubeauto !== true) {
-                await ytNotificationSchema.findOneAndRemove({ userId })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+            const userTag = member.user?.tag;
+            const isBooster = member?.roles?.cache.has(boosterRole);
+            const isStaff = member?.roles?.cache.has(staffRole);
+            const tokenResult = await tokensSchema.findOne({ userId });
+            const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 && tokenResult?.youtubeauto !== true;
 
+            if (!isBooster && !isStaff && !isTokenSub) {
+                await ytNotificationSchema.findOneAndRemove({ userId })
+                    .catch((err) => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 staffChan.send({
-                    content: `${member} has been removed from the **YouTube Auto** list as they're no longer a staff member, server booster or tokens subscriber`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    content: `${member} has been removed from the **YouTube Auto** list as they're no longer a staff member, server booster or tokens subscriber`,
+                }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
 
-            // parse youtube's RSS XML feed as something we can read
-            await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, function (err, resolve) {
-                const items = resolve.items;
+            res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, (err, resolve) => {
+                if (err) return;
 
-                items.forEach(async item => {
-                    // remove the XML markup from video IDs
+                resolve.items.forEach(async (item) => {
                     const regex = item.id.replace('yt:video:', '');
 
                     if (!videoIds.includes(regex)) {
-                        const userTag = guild.members.cache.get(userId).user?.tag;
-
-                        // add the user's new video ID to the database
                         videoIds.push(regex);
 
                         await ytNotificationSchema.updateOne({
-                            userId: userId,
+                            userId,
                         }, {
-                            userId: userId,
-                            channelId: channelId,
-                            videoIds: videoIds
+                            userId,
+                            channelId,
+                            videoIds,
                         }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                            upsert: true,
+                        }).catch((err) => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
 
-                        // send a notification to a specific channel, depending on the user's roles
-                        if (member?.roles?.cache.has(process.env.BOOSTER_ROLE)) {
+                        if (isBooster) {
                             contentShare.send({
-                                content: `**${userTag}** just uploaded a new video - ${item.link}`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`,
+                            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                             boostPromoChan.send({
-                                content: `**${userTag}** just uploaded a new video - ${item.link}`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`,
+                            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         } else {
                             contentShare.send({
-                                content: `**${userTag}** just uploaded a new video - ${item.link}`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                                content: `**${userTag}** just uploaded a new video - ${item.link}`,
+                            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
                     }
                 });

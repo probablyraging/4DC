@@ -6,38 +6,50 @@ const path = require('path');
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const newsChan = guild.channels.cache.get(process.env.NEWS_CHAN);
-    const twitterUserIds = ['3031071234', '309366491', '3065618342'] // YouTube, Twitch, Discord
-    const youtube = new cronjob('0 */2 * * *', async function () {
-        let results = await tweetsSchema.find();
-        let tweetIdsArr = [];
-        if (results.length === 0) {
-            await tweetsSchema.create({
-                ids: tweetIdsArr
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
-            results = await tweetsSchema.find();
-        }
-        for (let i in twitterUserIds) {
-            const resolve = await fetch(`https://api.twitter.com/2/users/${twitterUserIds[i]}/tweets?exclude=retweets,replies&tweet.fields=source`, { headers: { "Authorization": `Bearer ${process.env.TAPI_BEARER_TOKEN}` } });
-            const data = await resolve.json();
+    const twitterUsernames = {
+        '3031071234': 'youtube',
+        '309366491': 'twitchdev',
+        '3065618342': 'discord'
+    };
 
-            if (!results[0]?.ids.includes(data.data[0].id)) {
-                tweetIdsArr.push(data.data[0].id);
-                let user;
-                if (i === 0) user = 'youtube';
-                if (i === 1) user = 'twitchdev';
-                if (i === 2) user = 'discord';
-                await newsChan.send({
-                    content: `https://twitter.com/${user}/status/${data.data[0].id}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
+    const fetchNewTweets = new cronjob('0 */2 * * *', async function () {
+        const results = await tweetsSchema.findOne();
+        const tweetIds = results ? results.ids : [];
+        const newTweetIds = [];
+
+        for (const userId in twitterUsernames) {
+            // Get the username for the user ID
+            const username = twitterUsernames[userId];
+            // Fetch the latest tweets for each user
+            const response = await fetch(`https://api.twitter.com/2/users/${userId}/tweets?exclude=retweets,replies&tweet.fields=source`, {
+                headers: { "Authorization": `Bearer ${process.env.TAPI_BEARER_TOKEN}` }
+            });
+            const data = await response.json();
+
+            // If there is no data, skip to the next iteration
+            if (data.data.length === 0) continue;
+
+            // Check if the tweet ID has already been sent, if not, add it to the newTweetIds array
+            const tweetId = data.data[0].id;
+            if (tweetIds.includes(tweetId)) continue;
+            newTweetIds.push(tweetId);
+
+            await newsChan.send({
+                content: `https://twitter.com/${username}/status/${tweetId}`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         }
-        for (const data of results) {
-            const { ids } = data;
-            ids.push.apply(ids, tweetIdsArr);
+
+        // If there are new tweet IDs
+        if (newTweetIds.length > 0) {
+            // Update the database entry with the new tweet IDs
             await tweetsSchema.updateOne({
-                ids: ids
+                _id: results._id
+            }, {
+                ids: [...tweetIds, ...newTweetIds]
+            }, {
+                upsert: true
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
         }
     });
-    youtube.start();
+    fetchNewTweets.start();
 }
