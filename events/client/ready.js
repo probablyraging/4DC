@@ -15,8 +15,6 @@ const { dbOne } = require('../../mongo');
 const Canvas = require("canvas");
 const path = require('path');
 
-const pm2 = require('pm2')
-
 module.exports = {
     name: 'ready',
     once: true,
@@ -30,40 +28,6 @@ module.exports = {
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
         Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
-
-        // Periodically check to see if PM2 generated new logs and send them to the console channel
-        let logs = [];
-        pm2.launchBus((err, bus) => {
-            bus.on('log:out', (packet) => {
-                const { process, data } = packet;
-                logs.push(`${data}`);
-            });
-            bus.on('log:err', (packet) => {
-                const { process, data } = packet;
-                logs.push(`${data}`);
-            });
-        });
-        setInterval(async () => {
-            if (logs.length === 0) return;
-            const consoleChan = await client.channels.cache.get('1059566035793092660');
-            const joinedLogs = logs.join('\n').replace("`", "'");
-            // If the log is longer than 2000 characters, split it into multiple messages
-            if (joinedLogs.length > 1800) {
-                const firstHalfLog = joinedLogs.substring(0, 1800);
-                const secondHalfLog = joinedLogs.substring(1800, 3600);
-                consoleChan.send({
-                    content: `\`\`\`${firstHalfLog}...\`\`\``
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
-                consoleChan.send({
-                    content: `\`\`\`...${secondHalfLog}\`\`\``
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
-            } else {
-                consoleChan.send({
-                    content: `\`\`\`${joinedLogs}\`\`\``
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
-            }
-            logs = [];
-        }, 10000);
 
         // Booster rewards
         const img = './res/images/booster_rewards.png';
