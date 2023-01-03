@@ -1,11 +1,11 @@
 const { CommandInteraction, ApplicationCommandType } = require('discord.js');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
+// Add a reaction to the user's message and send a log to the log channel
 async function addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens) {
-    // Add a reaction to the user's message
     targetMessage.react('⭐').catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
-
     tokenLogChannel.send({
         content: `${process.env.TOKENS_AWARD} ${targetUser} was awarded **10** tokens by ${member} for a helpful post they made, they now have **${tokens + 10}** tokens`
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
@@ -46,44 +46,16 @@ module.exports = {
 
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
-            try {
-                await tokensSchema.create(
-                    { userId: targetUser.id, tokens: 10 }
-                );
-                // Mark the member's daily award as used
-                await tokensSchema.updateOne(
-                    { userId: member.id },
-                    { availableAward: false },
-                    { upset: true }
-                );
-            } catch (err) {
-                return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err);
-            }
-
+            await dbCreate(tokensSchema, { userId: targetUser.id, tokens: 10 });
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { availableAward: false });
             await addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens);
         }
 
         // Add the tokens to the user
         for (const data of results) {
             let { tokens } = data;
-
-            try {
-                // Add the corrct amount of tokens to the user
-                await tokensSchema.updateOne(
-                    { userId: targetUser.id },
-                    { tokens: tokens + 10 },
-                    { upsert: true }
-                );
-                // Mark the staff member's daily award as being used
-                await tokensSchema.updateOne(
-                    { userId: member.id },
-                    { availableAward: false },
-                    { upset: true }
-                );
-            } catch (err) {
-                return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err);
-            }
-
+            await dbUpdateOne(tokensSchema, { userId: targetUser.id }, { tokens: tokens + 10 });
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { availableAward: false });
             await addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens);
         }
 

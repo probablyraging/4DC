@@ -2,6 +2,7 @@ const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {
@@ -116,16 +117,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
                 // Log to database
-                await warnSchema.create({
-                    guildId,
-                    userId,
-                    username,
-                    warnId,
-                    author,
-                    authorTag,
-                    timestamp,
-                    reason
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(warnSchema, { guildId, userId, username, warnId, author, authorTag, timestamp, reason });
 
                 const results = await warnSchema.find({ guildId, userId });
                 const warnCount = results.length;

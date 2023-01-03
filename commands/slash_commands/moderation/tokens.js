@@ -1,5 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {
@@ -53,7 +54,6 @@ module.exports = {
         const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
         const user = options.getUser('user');
         let amount = options.getNumber('amount');
-        const messageId = options.getString('message_id');
 
         // Avoid adding tokens to bots
         if (user.bot) {
@@ -77,10 +77,7 @@ module.exports = {
 
                 // Check to see if the user is in our database yet, if not, add them
                 if (results.length === 0) {
-                    await tokensSchema.create({
-                        userId: user.id,
-                        tokens: amount
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbCreate(tokensSchema, { userId: user.id, tokens: amount });
 
                     if (amount === 1) tokenAmount = `token`;
                     if (amount > 1) tokenAmount = `tokens`;
@@ -104,14 +101,7 @@ module.exports = {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
                     }
                     // Add the desired amount of tokens
-                    await tokensSchema.updateOne({
-                        userId: user.id
-                    }, {
-                        tokens: tokens + amount,
-                        dailyTokens: dailyTokens + amount
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(tokensSchema, { userId: user.id }, { tokens: tokens + amount, dailyTokens: dailyTokens + amount });
 
                     if (amount === 1) tokenAmount = `token`;
                     if (amount > 1) tokenAmount = `tokens`;
@@ -158,13 +148,7 @@ module.exports = {
                     if ((tokens - amount) < 0) amount = tokens;
 
                     // Remove the desired amount of tokens
-                    await tokensSchema.updateOne({
-                        userId: user.id
-                    }, {
-                        tokens: tokens - amount,
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(tokensSchema, { userId: user.id }, { tokens: tokens - amount });
 
                     if (amount === 1) tokenAmount = `token`;
                     if (amount > 1) tokenAmount = `tokens`;

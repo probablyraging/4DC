@@ -1,6 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {
@@ -62,15 +63,7 @@ module.exports = {
                         videoIdArr.push(regex);
                     })
 
-                    await ytNotificationSchema.updateOne({
-                        userId: target.id,
-                    }, {
-                        userId: target.id,
-                        channelId: channelId,
-                        videoIds: videoIdArr
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(ytNotificationSchema, { userId: target.id }, { userId: target.id, channelId: channelId, videoIds: videoIdArr });
 
                     interaction.reply({
                         content: `${process.env.BOT_CONF} ${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`,

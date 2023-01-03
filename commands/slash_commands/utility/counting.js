@@ -1,6 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const timerSchema = require('../../../schemas/misc/timer_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function msToHumanTime(milliseconds) {
@@ -57,16 +58,7 @@ module.exports = {
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                 if (results.length === 0) {
-                    await countingSchema.updateOne({
-                        userId: member.id,
-                    }, {
-                        userId: member.id,
-                        counts: 0,
-                        saves: 0
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
+                    await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
                     return getSaves();
                 } else {
                     await getSaves();
@@ -165,22 +157,10 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                             }
 
                             // remove 1 save from the user
-                            await countingSchema.updateOne({
-                                userId: member.id
-                            }, {
-                                saves: saves - amount
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                            await dbUpdateOne(countingSchema, { userId: member.id }, { saves: saves - amount });
 
                             // add 0.25 saves to the guild
-                            await countingSchema.updateOne({
-                                userId: guild.id
-                            }, {
-                                saves: guildSaves + (amount / 4)
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                            await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildSaves + (amount / 4) });
 
                             client.channels.cache.get(process.env.COUNT_CHAN).send({
                                 content: `${member} donated \`${amount} personal save\`. The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,

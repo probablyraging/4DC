@@ -3,6 +3,7 @@ const { confirmationModal, completePurchase, checkConfirmation } = require('../.
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function detectURLs(message) {
@@ -59,13 +60,7 @@ module.exports = async (interaction) => {
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                twitchauto: true
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { twitchauto: true });
         }
     }
 
@@ -113,13 +108,7 @@ module.exports = async (interaction) => {
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             const channelId = interaction.fields.getTextInputValue('input2');
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                youtubeauto: true
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: true });
             // Add the user to the youtube auto db
             try {
                 // We need to store a list of the user's current video IDs
@@ -131,15 +120,7 @@ module.exports = async (interaction) => {
                     const regex = item.id.replace('yt:video:', '');
                     videoIdArr.push(regex);
                 });
-                await ytNotificationSchema.updateOne({
-                    userId: member.id,
-                }, {
-                    userId: member.id,
-                    channelId: channelId,
-                    videoIds: videoIdArr,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(ytNotificationSchema, { userId: member.id }, { userId: member.id, channelId: channelId, videoIds: videoIdArr });
             } catch {
                 // If an error occurs
                 interaction.editReply({
@@ -191,13 +172,7 @@ module.exports = async (interaction) => {
             }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
 
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                linkembeds: true
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { linkembeds: true });
         }
     }
 }
