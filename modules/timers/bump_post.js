@@ -1,4 +1,5 @@
 const { Message, EmbedBuilder } = require('discord.js');
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const timerSchema = require('../../schemas/misc/timer_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
@@ -34,29 +35,13 @@ module.exports = async (message, client) => {
                         SendMessages: false,
                     })
 
-                    await timerSchema.updateOne({
-                        timer: 'bump'
-                    }, {
-                        timestamp
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(timerSchema, { timer: 'bump' }, { timestamp });
 
                     // add a counting save to the user
                     const results = await countingSchema.find({ userId: bumpUser });
                     // if user doesn't have an entry yet
                     if (results.length === 0) {
-                        await countingSchema.updateOne({
-                            userId: bumpUser,
-                            saves: 0,
-                            counts: 0
-                        }, {
-                            userId: bumpUser,
-                            saves: 0,
-                            counts: 0
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await await dbCreate(countingSchema, { userId: bumpUser, saves: 0, counts: 0 });
 
                         const results = await countingSchema.find({ userId: bumpUser });
 
@@ -64,14 +49,7 @@ module.exports = async (message, client) => {
                             const { saves } = data;
 
                             if (saves < 2) {
-                                await countingSchema.updateOne({
-                                    userId: bumpUser
-                                }, {
-                                    saves: saves + 1,
-                                }, {
-                                    upsert: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
+                                await dbUpdateOne(countingSchema, { userId: bumpUser }, { saves: saves + 1 });
                                 savesMessage = `You earned a save for the counting game and now have \`${saves + 1}/2\` saves`
                             } else {
                                 savesMessage = `You already have the \`2/2\` saves for the counting game`
@@ -82,14 +60,7 @@ module.exports = async (message, client) => {
                             const { saves } = data;
 
                             if (saves < 2) {
-                                await countingSchema.updateOne({
-                                    userId: bumpUser
-                                }, {
-                                    saves: saves + 1,
-                                }, {
-                                    upsert: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
-
+                                await dbUpdateOne(countingSchema, { userId: bumpUser }, { saves: saves + 1 });
                                 savesMessage = `You earned a save for the counting game and now have \`${saves + 1}/2\` saves`
                             } else {
                                 savesMessage = `You already have the \`2/2\` saves for the counting game`
@@ -103,10 +74,7 @@ module.exports = async (message, client) => {
 
                     // Check to see if the user is in our database yet, if not, add them
                     if (results2.length === 0) {
-                        await tokensSchema.create({
-                            userId: bumpUser,
-                            tokens: 5
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbCreate(tokensSchema, { userId: bumpUser, tokens: 5 });
                         // Log when a user's tokens increase or decrease
                         tokenLog.send({
                             content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **5** tokens`,
@@ -121,14 +89,7 @@ module.exports = async (message, client) => {
                         // Hard cap of earning 75 tokens per day
                         if (isNaN(dailyTokens)) dailyTokens = 0;
                         if ((75 - dailyTokens) < 5) {
-                            await tokensSchema.updateOne({
-                                userId: bumpUser
-                            }, {
-                                tokens: tokens + (75 - dailyTokens),
-                                dailyTokens: dailyTokens + (75 - dailyTokens)
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + (75 - dailyTokens), dailyTokens: dailyTokens + (75 - dailyTokens) });
 
                             // Log when a user's tokens increase or decrease
                             if ((75 - dailyTokens) > 0) {
@@ -144,14 +105,7 @@ module.exports = async (message, client) => {
                                 tokenMessage = `You earned \`${75 - dailyTokens}\` tokens for the tokens store`;
                             }
                         } else {
-                            await tokensSchema.updateOne({
-                                userId: bumpUser
-                            }, {
-                                tokens: tokens + 5,
-                                dailyTokens: dailyTokens + 5
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + 5, dailyTokens: dailyTokens + 5 });
 
                             // Log when a user's tokens increase or decrease
                             tokenLog.send({

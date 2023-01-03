@@ -2,7 +2,7 @@ const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType
 const { featuredRandomPicker } = require('../../../modules/timers/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const spotlightSchema = require('../../../schemas/misc/spotlight_schema');
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne, dbDeleteOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function randomNum(min, max) {
@@ -20,9 +20,7 @@ async function drawWinner(guild) {
     for (const data of results) {
         // Once a winner is picked, delete all tickets
         const { userId } = data;
-        await spotlightSchema.deleteOne({
-            userId: userId
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a database entry: `, err));
+        await dbDeleteOne(spotlightSchema, { userId: userId });
     }
     const object = {
         member: member,

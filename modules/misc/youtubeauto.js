@@ -1,7 +1,8 @@
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const ytNotificationSchema = require('../../schemas/misc/yt_notification_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
-const path = require('path');
 const res = new (require('rss-parser'))();
+const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -39,15 +40,7 @@ module.exports = async (client) => {
                     if (!videoIds.includes(regex)) {
                         videoIds.push(regex);
 
-                        await ytNotificationSchema.updateOne({
-                            userId,
-                        }, {
-                            userId,
-                            channelId,
-                            videoIds,
-                        }, {
-                            upsert: true,
-                        }).catch((err) => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(ytNotificationSchema, { userId }, { userId, channelId, videoIds });
 
                         if (isBooster) {
                             contentShare.send({

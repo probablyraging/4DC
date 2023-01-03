@@ -1,3 +1,4 @@
+const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
 
@@ -18,13 +19,7 @@ module.exports = async (client) => {
                 });
             }).then(async () => {
                 // Log the current timestamp
-                await timerSchema.updateOne({
-                    timer: 'bump'
-                }, {
-                    timestamp: 'null'
-                }, {
-                    upsert: true
-                });
+                await dbUpdateOne(timerSchema, { timer: 'bump' }, { timestamp: 'null' });
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating the bump channel: `, err));
         }
     }, 300000);

@@ -1,6 +1,7 @@
 const path = require('path');
 const streamSchema = require('../../schemas/misc/stream_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
+const { dbCreate } = require('../../modules/misc/database_update_handler');
 const cooldown = new Set();
 /**
  * @param {Message} message 
@@ -39,13 +40,7 @@ module.exports = async (client) => {
             const results = await streamSchema.find({ userId: userId })
 
             if (results?.length < 1) {
-                await streamSchema.updateOne({
-                    userId,
-                }, {
-                    userId,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(streamSchema, { userId });
 
                 guild.members.cache.get(liveStaffArr[i]?.id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
@@ -99,13 +94,7 @@ module.exports = async (client) => {
             const results2 = await streamSchema.find({ userId: userId })
 
             if (results2?.length < 1) {
-                await streamSchema.updateOne({
-                    userId,
-                }, {
-                    userId,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(streamSchema, { userId });
 
                 guild.members.cache.get(liveMemberArr[i]?.id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
@@ -154,13 +143,7 @@ module.exports = async (client) => {
             const results = await streamSchema.find({ userId: userId })
 
             if (results?.length < 1) {
-                await streamSchema.updateOne({
-                    userId,
-                }, {
-                    userId,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(streamSchema, { userId });
 
                 guild.members.cache.get(liveBoosterArr[i].id).roles.add(liveRole)
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));

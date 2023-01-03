@@ -1,6 +1,7 @@
 const tweetsSchema = require('../../schemas/misc/tweets_schema');
 const cronjob = require('cron').CronJob;
 const fetch = require('node-fetch');
+const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = async (client) => {
@@ -42,13 +43,7 @@ module.exports = async (client) => {
         // If there are new tweet IDs
         if (newTweetIds.length > 0) {
             // Update the database entry with the new tweet IDs
-            await tweetsSchema.updateOne({
-                _id: results._id
-            }, {
-                ids: [...tweetIds, ...newTweetIds]
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tweetsSchema, { _id: results._id }, { ids: [...tweetIds, ...newTweetIds] });
         }
     });
     fetchNewTweets.start();

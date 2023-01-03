@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const tokensLimit = new Set();
 const increment = new Map();
@@ -19,11 +20,7 @@ module.exports = async (message, client) => {
         const results = await tokensSchema.find({ userId: message?.author.id });
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
-            await tokensSchema.create({
-                userId: message?.author.id,
-                tokens: 1,
-                dailyTokens: 1
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbCreate(tokensSchema, { userId: message?.author.id, tokens: 1, dailyTokens: 1 });
         }
         // Update the user's tokens
         for (const data of results) {
@@ -31,14 +28,7 @@ module.exports = async (message, client) => {
             // Hard cap of earning 75 tokens per day
             if (isNaN(dailyTokens)) dailyTokens = 0;
             if ((dailyTokens + 1) > 75) return;
-            await tokensSchema.updateOne({
-                userId: message?.author.id
-            }, {
-                tokens: tokens + 1,
-                dailyTokens: dailyTokens + 1
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { tokens: tokens + 1, dailyTokens: dailyTokens + 1 });
 
             // If it's the user's first time earning 5 tokens, let them know how to spend them
             if (!results[0]?.initialNotification && (tokens + 1) === 5) {
@@ -46,13 +36,7 @@ module.exports = async (message, client) => {
                     content: `${process.env.TOKENS_UP} ${message?.author} you just earnt your first **5** tokens! Head over to the <#1049791650060324954> to spend them`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 // Add a db entry so we don't notify them again
-                await tokensSchema.updateOne({
-                    userId: message?.author.id
-                }, {
-                    initialNotification: true,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { initialNotification: true });
             }
 
             // Only log in increments of 5 - account for token cap
@@ -68,7 +52,7 @@ module.exports = async (message, client) => {
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     } else {
                         // Don't log if no tokans were gained
-                        if (75 - dailyTokens <= 0) return; 
+                        if (75 - dailyTokens <= 0) return;
                         // Log when a user's tokens increase or decrease
                         tokenLog.send({
                             content: `${process.env.TOKENS_UP} ${message?.author} gained **${75 - dailyTokens}** tokens while chatting in the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,

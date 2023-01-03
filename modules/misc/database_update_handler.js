@@ -25,9 +25,21 @@
     }
 }
 
-module.exports = {
-    dbCreate,
-    dbUpdateOne
+/**
+ * Deletes a single document in a MongoDB collection 
+ * @param {Object} model The Mongoose model
+ * @param {Object} filter The filter object to identify the document to delete
+ */
+async function dbDeleteOne(model, filter) {
+    try {
+        await model.deleteOne(filter);
+    } catch (err) {
+        return console.error(`There was a problem updating a database entry: `, err);
+    }
 }
 
-// const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+module.exports = {
+    dbCreate,
+    dbUpdateOne,
+    dbDeleteOne
+}
