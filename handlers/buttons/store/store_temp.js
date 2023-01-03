@@ -2,14 +2,9 @@ const { CommandInteraction, InteractionType } = require("discord.js");
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const res = new (require("rss-parser"))();
 const path = require('path');
-
-function detectURLs(message) {
-    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-    return message.match(urlRegex)
-}
 
 /**
  * @param {CommandInteraction} interaction 

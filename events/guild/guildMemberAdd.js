@@ -1,6 +1,6 @@
+const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsers = new Set();
-const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {

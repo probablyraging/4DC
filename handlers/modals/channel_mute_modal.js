@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
+const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
-const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = async (interaction) => {

@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType } = require('discord.js');
-const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 
 // Add a reaction to the user's message and send a log to the log channel

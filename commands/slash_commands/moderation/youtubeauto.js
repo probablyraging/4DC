@@ -1,7 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {

@@ -1,7 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const timerSchema = require('../../../schemas/misc/timer_schema');
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function msToHumanTime(milliseconds) {
