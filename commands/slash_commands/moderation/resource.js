@@ -43,9 +43,9 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
         }
 
-        const gdoc = await resChan.send({ content: link }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        const googleDoc = await resChan.send({ content: link }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        // Allow time for embeds to properly resolve
+        // Allow time for embed to properly resolve
         setTimeout(() => {
             let resEmbed = new EmbedBuilder()
                 .setColor('#222224')
@@ -54,7 +54,7 @@ module.exports = {
                 .setDescription(gdoc.embeds[0].description)
                 .setImage(attachment.url)
 
-            gdoc.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            googleDoc.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
 
             resChan.send({
                 embeds: [resEmbed]

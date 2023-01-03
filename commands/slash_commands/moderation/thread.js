@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -21,65 +22,46 @@ module.exports = {
      */
     async execute(interaction) {
         const { guild, options, channel } = interaction;
+        const option = options.getString('option');
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // Only allow solved and closed to be ran in threads channels in the help and advice forum
-        if (!channel.isThread()) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This is not a thread channel`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-        if (options.getString('option') !== 'delete' && channel.parentId !== process.env.HELP_CHAN) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This command can only be used in a <#${process.env.HELP_CHAN}> thread`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (!channel.isThread()) return sendResponse(interaction, `${process.env.BOT_DENY} This is not a thread channel`);
 
-        switch (options.getString('option')) {
+        // If not deleting a thread and the channel is not in the help and advice forum
+        if (option !== 'delete' && channel.parentId !== process.env.HELP_CHAN)
+            return sendResponse(interaction, `${process.env.BOT_DENY} This command can only be used in a <#${process.env.HELP_CHAN}> thread`);
+
+        switch (option) {
             case 'solved': {
-                // Get the array of current channel tags and push the solved tag
-                let tagsToApply = channel.appliedTags;
-                tagsToApply.push('1033879593775538196');
-                // Threads can only have a max of 5 tags, so we shift the array until only 5 tags remain
-                while (tagsToApply.length > 5) {
-                    tagsToApply.shift();
-                }
-                // Thread names can only be 100 chars long
-                let channelName = channel.name;
-                if (channelName.length >= 90) channelName = channel.name.slice(0, 90);
-                (await channel.setName(`[SOLVED] ${channelName}`)).edit({ appliedTags: tagsToApply, archived: true, locked: true });
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Thread has been closed and marked as solved`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                // Get the current channel tags, keep only the last 5 tags and add the solved tag
+                const tagsToApply = [...channel.appliedTags, '1033879593775538196'].slice(-5);
+                // Close and mark thread as solved
+                const channelName = channel.name.slice(0, 90);
+                await channel.edit({
+                    name: `[SOLVED] ${channelName}`,
+                    appliedTags: tagsToApply,
+                    archived: true,
+                    locked: true
+                });
+                sendResponse(interaction, `${process.env.BOT_CONF} Thread has been closed and marked as solved`);
                 break;
             }
 
             case 'close': {
                 await channel.edit({ archived: true, locked: true });
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Thread has been closed`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                sendResponse(interaction, `${process.env.BOT_CONF} Thread has been closed`);
                 break;
             }
 
             case 'delete': {
                 const threadOwner = await guild.members.fetch(channel.ownerId);
-                if (!threadOwner) {
-                    return interaction.editReply({
-                        content: `${process.env.BOT_DENY} The owner of this thread is no longer in the server`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                if (!threadOwner) sendResponse(interaction, `${process.env.BOT_DENY} The owner of this thread is no longer in the server`);
                 await threadOwner.send({
                     content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
                 }).catch(() => {
-                    interaction.editReply({
-                        content: `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM`);
                 });
                 await channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread: `, err));
                 break;

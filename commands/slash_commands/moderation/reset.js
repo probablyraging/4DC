@@ -9,14 +9,18 @@ function randomNum(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Draw random winner from available tickets
+/**
+ * Draw random winner from available tickets
+ * @param {Guild} guild The guild object for the server
+ * @returns {Object} An object containing a member object and draw data for the winner
+ */
 async function drawWinner(guild) {
     const results = await spotlightSchema.find();
     if (results.length === 0) return null;
     const draw = results[randomNum(0, results.length - 1)];
     const member = await guild.members.fetch(draw.userId);
     // If member no longer exists, try again
-    if (!member) return drawWinner();
+    if (!member) return drawWinner(guild);
     for (const data of results) {
         // Once a winner is picked, delete all tickets
         const { userId } = data;

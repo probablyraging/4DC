@@ -1,11 +1,11 @@
-const { ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const path = require('path');
 
 /**
  * Send a messages to a channel using a webhook. Messages can contain attachments
  * @param {TextChannel} channel The channel to send the message to
  * @param {Message} message The message to send
- * @param {MessageAttachment>} attachments An array of attachments to include in the message
+ * @param {MessageAttachment} attachments An array of attachments to include in the message
  */
 async function sendMessageWithWebhook(channel, message, attachments) {
     const authorUsername = message.member ? message.member.displayName : message.author.username;
