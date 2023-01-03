@@ -1,6 +1,7 @@
 const { Message } = require('discord.js');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 /**
  * @param {Message} message 
@@ -35,12 +36,7 @@ module.exports = async (message, client) => {
 
             // If the entry doesn't exist, create it
             if (results.length < 1) {
-                await countingCurrent.create({
-                    currentCount: 0,
-                    currentRecord: 0,
-                    previousCounter: 'null',
-                    searchFor: 'currentCount'
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+                await dbCreate(countingCurrent, { currentCount: 0, currentRecord: 0, previousCounter: 'null', searchFor: 'currentCount' });
                 results = await countingCurrent.find();
             }
 
@@ -51,22 +47,10 @@ module.exports = async (message, client) => {
                 // if the same person counted two numbers is a row            
                 if (message?.author.id === data.previousCounter) {
                     // Mark this as deleted by bot to not flag message as edited or deleted in messageDelete.js
-                    await countingCurrent.updateOne({
-                        searchFor: 'currentCount'
-                    }, {
-                        deletedByBot: true
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { deletedByBot: true });
                     setTimeout(async () => {
                         // We can revert this shortly after
-                        await countingCurrent.updateOne({
-                            searchFor: 'currentCount'
-                        }, {
-                            deletedByBot: false
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { deletedByBot: false });
                     }, 2000);
                     message.delete().catch(err => { console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
                     return message.reply({
@@ -127,13 +111,7 @@ module.exports = async (message, client) => {
                     const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     for (const data of results) {
                         const { saves } = data;
-                        await countingSchema.updateOne({
-                            userId: message?.author.id
-                        }, {
-                            saves: saves - 1
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(countingSchema, { userId: message?.author.id }, { saves: saves - 1 });
                     }
                 }
 
@@ -160,13 +138,7 @@ module.exports = async (message, client) => {
                     const results = await countingSchema.find({ userId: guild.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     for (const data of results) {
                         const { saves } = data;
-                        await countingSchema.updateOne({
-                            userId: guild.id
-                        }, {
-                            saves: saves - 1
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: saves - 1 });
                     }
                 }
 
@@ -175,66 +147,42 @@ module.exports = async (message, client) => {
                     const results = await countingSchema.find({ userId: message?.author.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                     if (results.length === 0) {
                         // if user doesn't exist in the satabase yet, create an entry for them
-                        await countingSchema.create({
+                        await dbCreate(countingSchema, {
                             userId: message?.author.id,
                             username: message?.author.username,
                             discriminator: message?.author.discriminator,
                             avatar: message?.author.avatar,
                             counts: 1,
                             saves: 0
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                        });
                     } else {
                         for (const data of results) {
                             const { counts, saves } = data;
-                            await countingSchema.updateOne({
-                                userId: message?.author.id
-                            }, {
+                            await dbUpdateOne(countingSchema, { userId: message?.author.id }, {
                                 username: message?.author.username,
                                 discriminator: message?.author.discriminator,
                                 avatar: message?.author.avatar,
                                 counts: counts + 1,
                                 saves: saves
-                            }, {
-                                upsert: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                            });
                         }
                     }
                 }
 
                 // keep track of the current count and the previous counter
                 async function updateCurrentCount() {
-                    await countingCurrent.updateOne({
-                        searchFor: 'currentCount'
-                    }, {
-                        currentCount: currentCount + 1,
-                        previousCounter: message?.author.id
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: currentCount + 1, previousCounter: message?.author.id });
                 }
 
                 // reset the current count if it fails
                 async function resetCurrentCount() {
-                    await countingCurrent.updateOne({
-                        searchFor: 'currentCount'
-                    }, {
-                        currentCount: 0,
-                        previousCounter: 'null'
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: 0, previousCounter: 'null' });
                 }
 
                 // if the current count is higher than the record count, update it
                 async function updateRecord() {
                     if (currentCount >= currentRecord) {
-                        await countingCurrent.updateOne({
-                            searchFor: 'currentCount'
-                        }, {
-                            currentRecord: currentCount + 1
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentRecord: currentCount + 1 });
                     }
                 }
 

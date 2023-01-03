@@ -1,3 +1,4 @@
+const { dbUpdateOne, dbDeleteOne } = require('../../modules/misc/database_update_handler');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
@@ -20,20 +21,13 @@ module.exports = async (client) => {
             // Remove non-existent users from the database
             currentPosition++;
             const exists = await guild.members.fetch(id).catch(() => console.log(`Found and removed a user in the rank system that no longer exists`));
-            if (!exists) {
-                await rankSchema.deleteOne({ id: id })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!exists) await dbDeleteOne(rankSchema, { id: id });
             // Set each user's current rank position
             newPositionArr.push({ pos: currentPosition, id: id });
         }
         // Assign the new rank position to each user
         for (let i = 0; i < newPositionArr.length; i++) {
-            await rankSchema.updateOne({
-                id: newPositionArr[i].id
-            }, {
-                rank: newPositionArr[i].pos
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(rankSchema, { id: newPositionArr[i].id }, { rank: newPositionArr[i].pos });
         }
     });
 
@@ -43,10 +37,7 @@ module.exports = async (client) => {
         for (const data of results) {
             const { userId } = data;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the warning system that no longer exists`));
-            if (!exists) {
-                await warnSchema.deleteOne({ userId: userId })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!exists) await dbDeleteOne(warnSchema, { userId: userId });
         }
     });
 
@@ -56,10 +47,7 @@ module.exports = async (client) => {
         for (const data of results) {
             const { userId } = data;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the last letter collection that no longer exists`));
-            if (!exists) {
-                await lastLetterSchema.deleteOne({ userId: userId })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!exists) await dbDeleteOne(lastLetterSchema, { userId: userId });
         }
     });
 
@@ -71,10 +59,7 @@ module.exports = async (client) => {
             // Ignore the entry for the guild saves
             if (userId === process.env.GUILD_ID) return;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the counting collection that no longer exists`));
-            if (!exists) {
-                await countingSchema.deleteOne({ userId: userId })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!exists) await dbDeleteOne(countingSchema, { userId: userId });
         }
     });
 
@@ -84,28 +69,13 @@ module.exports = async (client) => {
         for (const data of results) {
             const { userId, availableAward } = data;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the tokens collection that no longer exists`));
-            if (!exists) {
-                await countingSchema.deleteOne({ userId: userId })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!exists) await dbDeleteOne(countingSchema, { userId: userId });
             // Reset staff available award
             if (availableAward === false) {
-                await tokensSchema.updateOne({
-                    userId: userId
-                }, {
-                    availableAward: true
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(tokensSchema, { userId: userId }, { availableAward: true });
             }
             // Reset all user's token cap
-            await tokensSchema.updateOne({
-                userId: userId
-            }, {
-                dailyTokens: 0
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: userId }, { dailyTokens: 0 });
         }
     });
 
@@ -142,10 +112,7 @@ module.exports = async (client) => {
         const results = await inviteSchema.find();
         for (const data of results) {
             const { code } = data;
-            if (!invitesArr.includes(code)) {
-                await inviteSchema.deleteOne({ code: code })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-            }
+            if (!invitesArr.includes(code)) await dbDeleteOne(inviteSchema, { code: code });
         }
     });
 

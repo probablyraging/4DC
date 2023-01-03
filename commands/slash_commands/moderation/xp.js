@@ -1,6 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const path = require('path');
 const rankSchema = require('../../../schemas/misc/rank_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const path = require('path');
 
 module.exports = {
     name: `xp`,
@@ -39,7 +40,7 @@ module.exports = {
 
         switch (options.getSubcommand()) {
             case 'reset': {
-                // if no user matching the target's ID was found in the database
+                // If no user matching the target's ID was found in the database
                 const results = await rankSchema.find({ id: target?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
                 if (results.length === 0) {
@@ -49,19 +50,8 @@ module.exports = {
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
 
-                // reset the user's rank data to 0
-                await rankSchema.updateOne({
-                    id: target?.id
-                }, {
-                    level: 0,
-                    rank: 0,
-                    msgCount: 0,
-                    xp: 0,
-                    xxp: 0,
-                    xxxp: 0,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                // Reset the user's rank data to 0
+                await dbUpdateOne(rankSchema, { id: target?.id }, { level: 0, rank: 0, msgCount: 0, xp: 0, xxp: 0, xxxp: 0 });
 
                 interaction.editReply({
                     content: `${process.env.BOT_CONF} ${target}'s rank data has been reset`,

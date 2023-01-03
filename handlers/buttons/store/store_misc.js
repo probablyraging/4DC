@@ -3,6 +3,7 @@ const { confirmationModal, completePurchase, checkConfirmation } = require('../.
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const spotlightSchema = require("../../../schemas/misc/spotlight_schema");
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function detectURLs(message) {
@@ -36,7 +37,7 @@ module.exports = async (interaction) => {
 
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
         if (!member) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
@@ -59,13 +60,7 @@ module.exports = async (interaction) => {
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                doublexp: timestamp
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { doublexp: timestamp });
         }
     }
 
@@ -81,7 +76,7 @@ module.exports = async (interaction) => {
 
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
         if (!member) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
@@ -123,20 +118,10 @@ module.exports = async (interaction) => {
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // If user doesn't have an entry yet
             if (results.length === 0) {
-                await countingSchema.create({
-                    userId: member.id,
-                    saves: amount,
-                    counts: 0
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(countingSchema, { userId: member.id, saves: amount, counts: 0 });
             } else {
                 // Add a save to the user
-                await countingSchema.updateOne({
-                    userId: member.id
-                }, {
-                    saves: results[0]?.saves + amount,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(countingSchema, { userId: member.id }, { saves: results[0]?.saves + amount });
             }
         }
     }
@@ -153,7 +138,7 @@ module.exports = async (interaction) => {
 
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => {})
+        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
         if (!member) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
@@ -193,11 +178,7 @@ module.exports = async (interaction) => {
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             // Add a new db entry every time someone buys a ticket
             for (let i = 0; i < amount; i++) {
-                await spotlightSchema.create({
-                    userId: member.id,
-                    message: message,
-                    url: url
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbCreate(spotlightSchema, { userId: member.id, message: message, url: url });
             }
         }
     }

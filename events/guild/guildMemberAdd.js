@@ -1,5 +1,6 @@
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsers = new Set();
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 
 module.exports = {
@@ -32,13 +33,7 @@ module.exports = {
 
                         const inviter = client.users.cache.get(userId);
 
-                        await inviteSchema.updateOne({
-                            code: code
-                        }, {
-                            uses: i.uses
-                        }, {
-                            upsert: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                        await dbUpdateOne(inviteSchema, { code: code }, { uses: i.uses });
 
                         if (userId === process.env.DISBOARD_ID) {
                             return inviteChan.send({

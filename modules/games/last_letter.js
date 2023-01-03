@@ -3,6 +3,7 @@ const letterCurrents = require('../../schemas/letter_game/letter_currents_schema
 const letterLeaderboard = require('../../schemas/letter_game/letter_lb_schema');
 const letterVals = require('../../lists/letter-values');
 const fetch = require('node-fetch');
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const path = require('path');
 /**
  * 
@@ -23,7 +24,7 @@ module.exports = async (message, client) => {
 
         // If the entry doesn't exist, create it
         if (results < 1) {
-            await letterCurrents.create({
+            await dbCreate(letterCurrents, {
                 lastLetter: 'null',
                 currentLevel: 0,
                 currentRecord: 0,
@@ -31,7 +32,7 @@ module.exports = async (message, client) => {
                 previousSubmitter: 'null',
                 status: 'null',
                 searchFor: 'letterCurrents'
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            });
             results = await letterCurrents.find();
         }
 
@@ -46,11 +47,7 @@ module.exports = async (message, client) => {
             deleted = false;
 
             // Set status as processing. We do this because it can take a while for the bot to process the current word and we want to ignore words submitted during that time
-            await letterCurrents.updateOne({
-                searchFor: 'letterCurrents'
-            }, {
-                processing: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            await dbUpdateOne(letterCurrents, { searchFor: 'letterCurrents' }, { processing: true });
 
             // Get the first letter of the newly submitted word
             const firstLetter = message.content.charAt(0).toLowerCase();
@@ -237,18 +234,14 @@ module.exports = async (message, client) => {
             } else {
                 previousUsedWords.push(message.content.toLowerCase());
             }
-            await letterCurrents.updateOne({
-                searchFor: 'letterCurrents'
-            }, {
+            await dbUpdateOne(letterCurrents, { searchFor: 'letterCurrents' }, {
                 lastLetter: message.content.toLowerCase().slice(-1),
                 previousWord: message.content.toLowerCase(),
                 currentLevel: currentLevel,
                 previousUsedWords: previousUsedWords,
                 previousSubmitter: message.author.id,
                 processing: false
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            });
             // Check if we need to update the record
             if (currentLevel > currentRecord) {
                 updateRecordLevel();
@@ -259,13 +252,7 @@ module.exports = async (message, client) => {
 
         // If the current level is higher than the record level, update it
         async function updateRecordLevel() {
-            await letterCurrents.updateOne({
-                searchFor: 'letterCurrents'
-            }, {
-                currentRecord: currentLevel
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(letterCurrents, { searchFor: 'letterCurrents' }, { currentRecord: currentLevel });
         }
 
         // Update the users leaderboard entry, this involves breaking down their word and applying a letter value to each letter
@@ -317,53 +304,36 @@ module.exports = async (message, client) => {
             const results = await letterLeaderboard.find({ userId: message.author.id });
             // If the user doesn't exist in the database
             if (results < 1) {
-                await letterLeaderboard.create({
+                await dbCreate(letterLeaderboard, {
                     userId: message.author.id,
                     username: message.author.username,
                     discriminator: message.author.discriminator,
                     avatar: message.author.avatar,
                     correctCount: totalPoints,
                     searchFor: 'currentCount'
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+                });
             } else {
                 for (const data of results) {
                     correctCount = parseInt(data.correctCount);
                     // Add the total points to the current count
                     newCorrectCount = correctCount + totalPoints;
-                    await letterLeaderboard.updateOne({
-                        userId: message.author.id
-                    }, {
+                    await dbUpdateOne(letterLeaderboard, { userId: message.author.id }, {
                         username: message.author.username,
                         discriminator: message.author.discriminator,
                         avatar: message.author.avatar,
                         correctCount: newCorrectCount
-                    }, {
-                        upsert: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                    });
                 }
             }
         }
 
         // Reset the current counts if the game fails
         async function resetDatabaseEntry() {
-            await letterCurrents.updateOne({
-                searchFor: 'letterCurrents'
-            }, {
-                currentLevel: 0,
-                previousUsedWords: [],
-                previousSubmitter: message.author.id,
-                processing: false
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(letterCurrents, { searchFor: 'letterCurrents' }, { currentLevel: 0, previousUsedWords: [], previousSubmitter: message.author.id, processing: false });
         }
 
         async function resetProcessing() {
-            await letterCurrents.updateOne({ 
-                searchFor: 'letterCurrents' 
-            },{
-                processing: false
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem creating a database entry: `, err));
+            await dbUpdateOne(letterCurrents, { searchFor: 'letterCurrents' }, { processing: false });
         }
 
         // Capitilize the first letter of a word

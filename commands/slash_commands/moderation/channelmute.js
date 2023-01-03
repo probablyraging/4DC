@@ -1,6 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');  
 const path = require('path');
 
 
@@ -96,18 +97,7 @@ module.exports = {
                 if (duration > 0) {
                     const myDate = new Date();
                     const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
-
-                    await muteSchema.updateOne({
-                        timestamp,
-                        userId: target.id,
-                        channelId: channel.id
-                    }, {
-                        timestamp,
-                        userId: target.id,
-                        channelId: channel.id
-                    }, {
-                        upsert: true
-                    }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err) });
+                    await dbUpdateOne(muteSchema, {timestamp,userId: target.id,channelId: channel.id}, {timestamp,userId: target.id,channelId: channel.id});
                 }
 
                 if (!duration || duration === '0') {

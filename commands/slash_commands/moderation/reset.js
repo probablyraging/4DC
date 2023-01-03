@@ -2,6 +2,7 @@ const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType
 const { featuredRandomPicker } = require('../../../modules/timers/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const spotlightSchema = require('../../../schemas/misc/spotlight_schema');
+const { dbUpdateOne, dbDeleteOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 function randomNum(min, max) {
@@ -19,9 +20,7 @@ async function drawWinner(guild) {
     for (const data of results) {
         // Once a winner is picked, delete all tickets
         const { userId } = data;
-        await spotlightSchema.deleteOne({
-            userId: userId
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a database entry: `, err));
+        await dbDeleteOne(spotlightSchema, { userId: userId });
     }
     const object = {
         member: member,
@@ -89,13 +88,8 @@ ${winner.draw.message}`
                 // Update timestamp for 24 hours
                 const oneDay = 24 * 60 * 60 * 1000;
                 const timestamp = new Date().valueOf() + oneDay;
-                await timerSchema.updateOne({
-                    timer: 'spotlight'
-                }, {
-                    timestamp: timestamp
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+
+                await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: timestamp });
 
                 interaction.editReply({
                     content: `${[process.env.BOT_CONF]} Content spotlight has been reset`,

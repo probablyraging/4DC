@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');
@@ -21,7 +22,7 @@ module.exports = async (message, client) => {
         results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
-            await rankSchema.create({
+            await dbCreate(rankSchema, {
                 rank: 0,
                 id: message?.author?.id,
                 username: message?.author.username,
@@ -32,7 +33,7 @@ module.exports = async (message, client) => {
                 xp: 0,
                 xxp: 0,
                 xxxp: 100
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            });
         }
 
         // Fetch users with an active sub to double XP
@@ -58,33 +59,14 @@ module.exports = async (message, client) => {
             let newDiscrim = message?.author?.discriminator;
 
             // Update user's xp and xxp every message, once every 60 seconds
-            await rankSchema.updateOne({
-                id: message?.author?.id
-            }, {
-                username: newUsername,
-                discrim: newDiscrim,
-                avatar: message?.author.avatar,
-                xp: xpMath,
-                xxp: xxpMath
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(rankSchema, { id: message?.author?.id }, { username: newUsername, discrim: newDiscrim, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
 
             // When a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
             if (xxpMath > xxxpInt) {
                 let levelMath = parseInt(level) + 1;
                 let exponential = 5 * Math.pow(levelMath, 2) + (50 * levelMath) + 100 - 0;
 
-                await rankSchema.updateOne({
-                    id: message?.author?.id
-                }, {
-                    level: levelMath,
-                    xp: xpMath,
-                    xxp: 0,
-                    xxxp: exponential
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(rankSchema, { id: message?.author?.id }, { level: levelMath, xp: xpMath, xxp: 0, xxxp: exponential });
 
                 // Send the user a notification and add and remove the appropriate roles for them
                 botChan.send({
@@ -175,15 +157,7 @@ module.exports = async (message, client) => {
     if (!results) results = await rankSchema.find({ id: message?.author?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
     for (const data of results) {
         let { msgCount } = data;
-
         let msgMath = parseInt(msgCount) + 1;
-
-        await rankSchema.updateOne({
-            id: message?.author?.id
-        }, {
-            msgCount: msgMath
-        }, {
-            upsert: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+        await dbUpdateOne(rankSchema, { id: message?.author?.id }, { msgCount: msgMath });
     }
 }

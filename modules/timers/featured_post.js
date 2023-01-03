@@ -1,4 +1,5 @@
 const { ActivityType } = require('discord.js');
+const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
 
@@ -23,14 +24,7 @@ async function featuredRandomPicker(client, previouslyFeatured) {
         if (previouslyFeatured != randUser.id && randUser.url) {
             // Set a timestamp 1 hour from the current time
             const setHours = new Date().setHours(new Date().getHours() + 2);
-            await timerSchema.updateOne({
-                timer: 'featured'
-            }, {
-                timestamp: setHours,
-                previouslyFeatured: randUser.id
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updated a database entry: `, err));
+            await dbUpdateOne(timerSchema, { timer: 'featured' }, { timestamp: setHours, previouslyFeatured: randUser.id });
             // Give the user the featured role
             await guild.members.fetch(randUser.id).then(member => {
                 member?.roles.add(process.env.FEATURED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a user's role: `, err));

@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { dbCreate } = require('../../modules/misc/database_update_handler');
 const massbanSchema = require('../../schemas/misc/mass_ban_schema');
 const { v4: uuidv4 } = require("uuid");
 const path = require('path');
@@ -23,21 +24,15 @@ module.exports = async (interaction) => {
         .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`Mass Ban Request Needs Approval - use \`\/massban approve [id]\` or \`\/massban deny [id]\``)
         .addFields({ name: `Request ID`, value: id, inline: false },
-        { name: `Reason`, value: reason, inline: false },
-        { name: `User List to Ban`, value: trimmedListString, inline: true });
+            { name: `Reason`, value: reason, inline: false },
+            { name: `User List to Ban`, value: trimmedListString, inline: true });
 
     staffChannel.send({
         content: `<@&${process.env.ADMIN_ROLE}>`,
         embeds: [staffEmbed]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-    await massbanSchema.create({
-        id: id,
-        author: authorTag,
-        timestamp: new Date().valueOf(),
-        users: trimmedListString,
-        reason: reason
-    });
+    await dbCreate(massbanSchema, { id: id, author: authorTag, timestamp: new Date().valueOf(), users: trimmedListString, reason: reason });
 
     interaction.editReply(`${process.env.BOT_CONF} The mass ban request has been received. Another staff member will need to approve the ban`)
         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));

@@ -1,5 +1,6 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
+const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const path = require('path');
 
 // Modal to confirm purchase
@@ -121,13 +122,7 @@ async function completePurchase(interaction, cost, itemName, customMessage, gift
         return false;
     }
     // Deduct cost from user's tokens
-    await tokensSchema.updateOne({
-        userId: member.id
-    }, {
-        tokens: tokens - cost,
-    }, {
-        upsert: true
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+    await dbUpdateOne(tokensSchema, { userId: member.id }, { tokens: tokens - cost });
     // Log when a user's tokens increase or decrease
     if (customId.includes('gift')) {
         tokenLog.send({

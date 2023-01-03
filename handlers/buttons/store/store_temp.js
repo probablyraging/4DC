@@ -2,6 +2,7 @@ const { CommandInteraction, InteractionType } = require("discord.js");
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
+const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
 const res = new (require("rss-parser"))();
 const path = require('path');
 
@@ -62,13 +63,7 @@ module.exports = async (interaction) => {
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                twitchauto: timestamp
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { twitchauto: timestamp });
         }
     }
 
@@ -119,13 +114,7 @@ module.exports = async (interaction) => {
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                youtubeauto: timestamp
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: timestamp });
             // Add the user to the youtube auto db
             try {
                 // We need to store a list of the user's current video IDs
@@ -137,15 +126,7 @@ module.exports = async (interaction) => {
                     const regex = item.id.replace('yt:video:', '');
                     videoIdArr.push(regex);
                 });
-                await ytNotificationSchema.updateOne({
-                    userId: member.id,
-                }, {
-                    userId: member.id,
-                    channelId: channelId,
-                    videoIds: videoIdArr,
-                }, {
-                    upsert: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+                await dbUpdateOne(ytNotificationSchema, { userId: member.id }, { userId: member.id, channelId: channelId, videoIds: videoIdArr });
             } catch {
                 // If an error occurs
                 interaction.editReply({
@@ -200,13 +181,7 @@ module.exports = async (interaction) => {
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
             // Add expiry timestamp or boolean to user's db entry
-            await tokensSchema.updateOne({
-                userId: member.id
-            }, {
-                linkembeds: timestamp
-            }, {
-                upsert: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating a database entry: `, err));
+            await dbUpdateOne(tokensSchema, { userId: member.id }, { linkembeds: timestamp });
         }
     }
 }
