@@ -33,7 +33,7 @@ async function timeoutUser(member, duration, reason, message) {
 }
 
 module.exports = async (message, client) => {
-    if (!message.author.bot) {
+    if (!message?.member?.roles.cache.has(process.env.STAFF_ROLE) && !message.author.bot) {
         const authorId = message.author.id;
         const content = message.content;
 

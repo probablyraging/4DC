@@ -1,4 +1,4 @@
-const { dbUpdateOne, dbDeleteOne } = require('../../modules/misc/database_update_handler');
+const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const spotlightSchema = require("../../schemas/misc/spotlight_schema");
 const path = require("path");

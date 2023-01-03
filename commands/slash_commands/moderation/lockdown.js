@@ -61,7 +61,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `${process.env.BOT_CONF} A SERVER LOCKDOWN HAD ENDED`
+                    content: `${process.env.BOT_CONF} SERVER LOCKDOWN HAD ENDED`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.reply({

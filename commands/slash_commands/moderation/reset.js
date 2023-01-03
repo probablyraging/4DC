@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { dbUpdateOne, dbDeleteOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne, dbDeleteOne } = require('../../../utils/utils');
 const { featuredRandomPicker } = require('../../../modules/timers/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const spotlightSchema = require('../../../schemas/misc/spotlight_schema');

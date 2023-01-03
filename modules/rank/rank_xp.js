@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const path = require('path');

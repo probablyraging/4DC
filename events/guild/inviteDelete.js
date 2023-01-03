@@ -1,4 +1,4 @@
-const { dbDeleteOne } = require('../../modules/misc/database_update_handler');
+const { dbDeleteOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 
 module.exports = {

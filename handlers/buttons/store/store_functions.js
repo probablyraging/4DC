@@ -1,5 +1,5 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
-const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../../utils/utils');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 

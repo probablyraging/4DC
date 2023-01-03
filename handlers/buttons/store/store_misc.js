@@ -3,7 +3,7 @@ const { confirmationModal, completePurchase, checkConfirmation } = require('../.
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const spotlightSchema = require("../../../schemas/misc/spotlight_schema");
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../../utils/utils');
 const path = require('path');
 
 function detectURLs(message) {

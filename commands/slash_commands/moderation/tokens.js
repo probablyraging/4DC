@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
-const { dbCreate, dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {

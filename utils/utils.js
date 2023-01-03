@@ -1,9 +1,26 @@
+const { CommandInteraction } = require('discord.js');
+/**
+ * Send a response to an interaction
+ * @param {CommandInteraction} interaction The interaction object
+ * @param {string} content The content of the response
+ */
+async function sendResponse(interaction, content) {
+    try {
+        return interaction.editReply({
+            content: content,
+            ephemeral: true
+        });
+    } catch (err) {
+        console.error(`There was a problem sending an interaction: `, err);
+    }
+}
+
 /**
  * Creates a single document in a MongoDB collection 
  * @param {Object} model The Mongoose model
  * @param {Object} update The update object to specify the changes to be made to the document
  */
- async function dbCreate(model, update) {
+async function dbCreate(model, update) {
     try {
         await model.create(update);
     } catch (err) {
@@ -17,7 +34,7 @@
  * @param {Object} filter The filter object to identify the document to update
  * @param {Object} update The update object to specify the changes to be made to the document
  */
- async function dbUpdateOne(model, filter, update) {
+async function dbUpdateOne(model, filter, update) {
     try {
         await model.updateOne(filter, update, { upsert: true });
     } catch (err) {
@@ -39,6 +56,7 @@ async function dbDeleteOne(model, filter) {
 }
 
 module.exports = {
+    sendResponse,
     dbCreate,
     dbUpdateOne,
     dbDeleteOne

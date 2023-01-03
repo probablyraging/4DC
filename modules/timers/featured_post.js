@@ -1,5 +1,5 @@
 const { ActivityType } = require('discord.js');
-const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../utils/utils');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const path = require("path");
 

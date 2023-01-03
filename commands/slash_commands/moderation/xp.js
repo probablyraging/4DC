@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const rankSchema = require('../../../schemas/misc/rank_schema');
-const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {

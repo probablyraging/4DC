@@ -1,7 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
-const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');  
+const { dbUpdateOne } = require('../../../utils/utils');  
 const path = require('path');
 
 

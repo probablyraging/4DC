@@ -3,7 +3,7 @@ const letterCurrents = require('../../schemas/letter_game/letter_currents_schema
 const letterLeaderboard = require('../../schemas/letter_game/letter_lb_schema');
 const letterVals = require('../../lists/letter-values');
 const fetch = require('node-fetch');
-const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const path = require('path');
 /**
  * 

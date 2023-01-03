@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const tokensLimit = new Set();
 const increment = new Map();

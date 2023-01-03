@@ -1,7 +1,7 @@
 const path = require('path');
 const streamSchema = require('../../schemas/misc/stream_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
-const { dbCreate } = require('../../modules/misc/database_update_handler');
+const { dbCreate } = require('../../utils/utils');
 const cooldown = new Set();
 /**
  * @param {Message} message 

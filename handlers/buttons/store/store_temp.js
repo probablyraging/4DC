@@ -2,7 +2,7 @@ const { CommandInteraction, InteractionType } = require("discord.js");
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
-const { dbUpdateOne } = require('../../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../../utils/utils');
 const res = new (require("rss-parser"))();
 const path = require('path');
 

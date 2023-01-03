@@ -1,5 +1,25 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandOptionType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
+
+/**
+ * Filter and bulk delete messages based on a target user or all non-system messages
+ * @param {Object} interaction The interaction object
+ * @param {TextChannel} channel - The channel to fetch messages from and delete them
+ * @param {Collection<Snowflake, Message>} messages - The messages to filter and delete
+ * @param {Object} targetUser The user object to filter the messages by
+ * @param {number} amount The maximum number of messages to delete
+ */
+async function bulkDeleteFilteredMessages(interaction, channel, messages, targetUser, amount) {
+    let i = 0;
+    const filtered = [];
+    messages.filter(message => {
+        (targetUser ? message.author.id === targetUser.id : !message.system) && amount > i ? (filtered.push(message), i++) : null;
+    });
+    channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
+        sendResponse(interaction, `${targetUser ? `${process.env.BOT_CONF} ${deleted.size} messages from ${targetUser} deleted in ${channel}` : `${process.env.BOT_CONF} ${deleted.size} messages deleted in ${channel}`}`);
+    });
+}
 
 module.exports = {
     name: `delete`,
@@ -14,7 +34,7 @@ module.exports = {
     },
     {
         name: `username`,
-        description: `Include a username to delete their messages only`,
+        description: `Delete a specific user's messages`,
         type: ApplicationCommandOptionType.User,
         required: false
     }],
@@ -26,77 +46,25 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const amount = options.getNumber('amount');
-        const target = options.getMember('username');
-        const fetchMsg = await channel.messages.fetch();
+        const amountToDelete = options.getNumber('amount');
+        const targetUser = options.getMember('username');
+        const fetchedMessages = await channel.messages.fetch();
 
-        if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel')) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} Missing permissions for ${channel}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel'))
+            return sendResponse(interaction, `${process.env.BOT_DENY} Missing permissions for ${channel}`);
 
-        if (fetchMsg.size < 1) {
-            return interaction.editReply({
-                content: `${process.env.BOT_INFO} I could not find any messages from ${target} in ${channel}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (fetchedMessages.size < 1)
+            return sendResponse(interaction, `${process.env.BOT_INFO} I could not find any messages from ${targetUser} in ${channel}`);
 
-        if (amount < 1 && member.id === process.env.OWNER_ID || amount > 100 && member.id === process.env.OWNER_ID) {
-            return interaction.editReply({
-                content: `${process.env.BOT_INFO} Amount must be between 1 and 100`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (amountToDelete < 1 && member.id === process.env.OWNER_ID || amountToDelete > 100 && member.id === process.env.OWNER_ID)
+            return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 100`);
 
-        if (amount < 1 || amount > 5 && member.id !== process.env.OWNER_ID) {
-            return interaction.editReply({
-                content: `${process.env.BOT_INFO} Amount must be between 1 and 5`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (amountToDelete < 1 || amountToDelete > 5 && member.id !== process.env.OWNER_ID)
+            return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 5`);
 
-        if (!target && member.id !== process.env.OWNER_ID) {
-            return interaction.editReply({
-                content: `${process.env.BOT_INFO} You must include a username`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (!targetUser && member.id !== process.env.OWNER_ID)
+            return sendResponse(interaction, `${process.env.BOT_INFO} You must include a username`);
 
-        if (target) {
-            let i = 0;
-            const filtered = [];
-
-            fetchMsg.filter(msg => {
-                if (msg.author.id === target.id && amount > i) {
-                    filtered.push(msg);
-                    i++;
-                }
-            });
-            channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${deleted.size} messages from ${target} deleted in ${channel}`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            });
-        } else {
-            let i = 0;
-            const filtered = [];
-
-            fetchMsg.filter(msg => {
-                if (!msg.system && amount > i) {
-                    filtered.push(msg);
-                    i++;
-                }
-            });
-            channel.bulkDelete(amount, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${deleted.size} messages deleted in ${channel}`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            });
-        }
+        await bulkDeleteFilteredMessages(interaction, channel, fetchedMessages, targetUser, amountToDelete);
     }
-}
+} 

@@ -1,4 +1,4 @@
-const { dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbUpdateOne } = require('../../utils/utils');
 const tweetsSchema = require('../../schemas/misc/tweets_schema');
 const cronjob = require('cron').CronJob;
 const fetch = require('node-fetch');

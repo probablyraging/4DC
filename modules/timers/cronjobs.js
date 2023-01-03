@@ -1,4 +1,4 @@
-const { dbUpdateOne, dbDeleteOne } = require('../../modules/misc/database_update_handler');
+const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');

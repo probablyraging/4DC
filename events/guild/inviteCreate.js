@@ -1,5 +1,5 @@
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const { dbCreate } = require('../../modules/misc/database_update_handler');
+const { dbCreate } = require('../../utils/utils');
 
 module.exports = {
     name: 'inviteCreate',

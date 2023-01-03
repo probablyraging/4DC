@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../modules/misc/database_update_handler');
+const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');

@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { dbCreate } = require('../../../modules/misc/database_update_handler');
+const { dbCreate } = require('../../../utils/utils');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
