@@ -43,7 +43,7 @@ module.exports = {
                 .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
                     { name: `Channel`, value: `${message?.channel}`, inline: true },
                     { name: `Message`, value: `\`\`\`${content}\`\`\``, inline: false })
-                .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: 'https://i.imgur.com/WCGpf7d.png' })
+                .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: process.env.LOG_DELETE })
                 .setTimestamp()
 
             if ((new Date() - timestamp) < 10000) {

@@ -35,7 +35,7 @@ module.exports = {
                 .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
 **Expires:** <t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}> (<t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}:R>)
 **Reason:** ${toReason}`)
-                .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: 'https://i.imgur.com/m1KWB7j.png' })
+                .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: process.env.LOG_TIMEOUT })
                 .setTimestamp();
 
             logChan.send({

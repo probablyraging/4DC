@@ -108,7 +108,7 @@ module.exports = {
                     .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${username} *(${userId})*
 **Reason:** ${reason}`)
-                    .setFooter({ text: `Warning Added • ${warnId}`, iconURL: 'https://i.imgur.com/ujaDZ1J.png' })
+                    .setFooter({ text: `Warning Added • ${warnId}`, iconURL: process.env.LOG_WARN })
                     .setTimestamp();
 
                 logChan.send({
@@ -199,7 +199,7 @@ ${banMsg}`,
                             .setColor("#4fe059")
                             .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`**Member:** ${username} *(${userId})*`)
-                            .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://i.imgur.com/VOIpQ3H.png' })
+                            .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: process.env.LOG_UNWARN })
                             .setTimestamp();
 
                         logChan.send({
@@ -226,7 +226,7 @@ ${banMsg}`,
                                 .setColor("#4fe059")
                                 .setAuthor({ name: `${authorTag}`, iconURL: authorAvatar?.user.displayAvatarURL({ dynamic: true }) })
                                 .setDescription(`**Member:** ${username} *(${userId})*`)
-                                .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: 'https://i.imgur.com/VOIpQ3H.png' })
+                                .setFooter({ text: `Warning Removed • ${warnId}`, iconURL: process.env.LOG_UNWARN })
                                 .setTimestamp();
 
                             logChan.send({

@@ -55,7 +55,7 @@ module.exports = {
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${fetchBan.user.tag} *(${fetchBan.user.id})*
         **Reason:** ${reason}`)
-            .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: 'https://i.imgur.com/WjgRUio.png' })
+            .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: process.env.LOG_UNBAN })
             .setTimestamp();
 
         logChan.send({

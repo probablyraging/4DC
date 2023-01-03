@@ -84,7 +84,7 @@ module.exports = {
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.user.tag} *(${target.user.id})*
 **Reason:** ${reason}`)
-            .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: 'https://i.imgur.com/WjgRUio.png' })
+            .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
 
         logChan.send({
