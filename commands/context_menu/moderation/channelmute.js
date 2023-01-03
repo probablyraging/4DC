@@ -16,7 +16,7 @@ module.exports = {
         const target = fetchMsg.author;
         const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-        // If the target is already muted in this channel
+        // If permissionInChannel is undefined it is likely because the user is no longer in the server
         if (permissionInChannel === undefined) {
             return interaction.reply({
                 content: `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`,
