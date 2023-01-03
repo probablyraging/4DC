@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
