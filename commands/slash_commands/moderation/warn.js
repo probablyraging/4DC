@@ -32,7 +32,7 @@ module.exports = {
             { name: 'Rule 5 - self-promotion outside of content share section', value: '5' },
             { name: 'Rule 6 - sending repeated or purposeless message', value: '6' },
             { name: 'Rule 7 - messages not in English', value: '7' },
-            { name: 'Custom', value: 'Custom' }]
+            { name: 'Custom - please provide a custom reason', value: 'custom' }]
         },
         {
             name: `custom`,
@@ -75,19 +75,11 @@ module.exports = {
         switch (options.getSubcommand()) {
             case 'add': {
                 const target = options.getMember('username');
-                let reason = options.getString('reason');
                 const custom = options.getString('custom');
+                let reason = options.getString('reason');
+                reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
 
-                if (reason === '1') reason = `${rules[0]}`;
-                if (reason === '2') reason = `${rules[1]}`;
-                if (reason === '3') reason = `${rules[2]}`;
-                if (reason === '4') reason = `${rules[3]}`;
-                if (reason === '5') reason = `${rules[4]}`;
-                if (reason === '6') reason = `${rules[5]}`;
-                if (reason === '7') reason = `${rules[6]}`;
-                if (reason === 'Custom') reason = `${custom}`;
-
-                if (reason === 'null') {
+                if (reason == null) {
                     return interaction.editReply({
                         content: `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`,
                         ephemeral: true

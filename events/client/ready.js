@@ -5,7 +5,7 @@ const featuredCheck = require('../../modules/timers/featured_check');
 const mutesCheck = require('../../modules/misc/mutes_check');
 const databaseCleanup = require('../../modules/timers/cronjobs');
 const liveNow = require('../../modules/misc/live_now');
-const autoYT = require('../../modules/misc/auto_yt');
+const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const storeCheck = require('../../modules/store/store_check');
@@ -53,7 +53,7 @@ module.exports = {
         featuredCheck(client);
         databaseCleanup(client);
         liveNow(client);
-        autoYT(client);
+        youtubeAuto(client);
         fetchTweets(client);
         welcomeCheck(client);
         storeCheck(client);

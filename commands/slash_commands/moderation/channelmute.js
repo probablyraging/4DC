@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');

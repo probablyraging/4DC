@@ -24,7 +24,21 @@ module.exports = {
         name: `reason`,
         description: `The reason for banning the user`,
         type: ApplicationCommandOptionType.String,
-        required: true
+        required: true,
+        choices: [{ name: 'Rule 1 - harmful posts, username, profile, etc..', value: '1' },
+        { name: 'Rule 2 - unsolicited DMs', value: '2' },
+        { name: 'Rule 3 - advertising discord servers and paid services', value: '3' },
+        { name: 'Rule 4 - breaking another platforms ToS, sub4sub, buying/sellin,g etc..', value: '4' },
+        { name: 'Rule 5 - self-promotion outside of content share section', value: '5' },
+        { name: 'Rule 6 - sending repeated or purposeless message', value: '6' },
+        { name: 'Rule 7 - messages not in English', value: '7' },
+        { name: 'Custom - please provide a custom reason', value: 'custom' }]
+    },
+    {
+        name: `custom`,
+        description: `Provide a reason for banning the user when selecting custom`,
+        type: ApplicationCommandOptionType.String,
+        required: false
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -34,14 +48,23 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
+        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const target = options.getMember('user');
         const deleteMessages = options.getBoolean('delete_messages');
-        const reason = options.getString('reason');
-        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+        const custom = options.getString('custom');
+        let reason = options.getString('reason');
+        reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
+
+        if (reason == null) {
+            return interaction.editReply({
+                content: `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`,
+                ephemeral: true
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
 
         await target.send({
             content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
-        }).catch(() => {});
+        }).catch(() => { });
 
         if (!deleteMessages) {
             // Ban user
