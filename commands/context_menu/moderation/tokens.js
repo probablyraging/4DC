@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../../utils/utils');
+const { dbCreate, dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 
@@ -28,21 +28,14 @@ module.exports = {
         const targetMessage = await channel.messages.fetch(interaction.targetId);
         const targetUser = targetMessage.author;
 
-        if (targetUser.bot) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This user is a bot`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // Don't allow tokens to be added to bot users
+        if (targetUser.bot) return sendResponse(interaction, `${process.env.BOT_DENY} This user is a bot`);
 
         // Fetch the user's db entry
         const results = await tokensSchema.find({ userId: targetUser.id });
 
         // If staff already awarded someone today
-        if (results[0].availableAward === false) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You have already given out your daily award. You can only give one award per day`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (results[0].availableAward === false) return sendResponse(interaction, `${process.env.BOT_DENY} You have already given out your daily award. You can only give one award per day`);
 
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
@@ -59,8 +52,6 @@ module.exports = {
             await addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens);
         }
 
-        interaction.editReply({
-            content: `${process.env.BOT_CONF} 10 tokens successfully awarded to ${targetUser}`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} 10 tokens successfully awarded to ${targetUser}`);
     }
 }

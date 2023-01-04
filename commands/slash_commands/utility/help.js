@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -47,9 +48,7 @@ module.exports = {
         }).catch(() => { error = true });
         // If an error occurs, the user needs to enable DMs
         if (error) {
-            return interaction.editReply({
-                content: `To view the help menu, please enable your DMs. To do this, go to **User Settings > Privacy & Safety > Allow direct messages from server members**. Once you have enabled DMs, click the continue button below`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+            return sendResponse(interaction, `To view the help menu, please enable your DMs. To do this, go to **User Settings > Privacy & Safety > Allow direct messages from server members**. Once you have enabled DMs, click the continue button below`);
         } else {
             interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
         }

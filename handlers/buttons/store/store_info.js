@@ -1,4 +1,5 @@
 const { CommandInteraction, EmbedBuilder, codeBlock } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 /**
@@ -17,9 +18,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`Never`), inline: false })
         embed.setImage('https://i.imgur.com/83N3K8p.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-perm-two') {
@@ -28,9 +27,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`Never`), inline: false })
         embed.setImage('https://i.imgur.com/b3ZnRoN.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-perm-three') {
@@ -39,9 +36,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`Never`), inline: false })
         embed.setImage('https://i.imgur.com/XAl7IYn.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     // Temp
@@ -51,9 +46,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`1 week`), inline: false })
         embed.setImage('https://i.imgur.com/83N3K8p.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-temp-two') {
@@ -62,9 +55,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`1 week`), inline: false })
         embed.setImage('https://i.imgur.com/b3ZnRoN.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-temp-three') {
@@ -73,9 +64,7 @@ module.exports = async (interaction) => {
             { name: `Expires`, value: codeBlock(`1 week`), inline: false })
         embed.setImage('https://i.imgur.com/XAl7IYn.png')
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     // Misc
@@ -84,9 +73,7 @@ module.exports = async (interaction) => {
         embed.addFields({ name: `Description`, value: codeBlock(`Earn double XP towards your rank while you chat`), inline: false },
             { name: `Expires`, value: codeBlock(`1 week`), inline: false })
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-misc-two') {
@@ -94,9 +81,7 @@ module.exports = async (interaction) => {
         embed.addFields({ name: `Description`, value: codeBlock(`Buy up to 2 personal saves for the counting game`), inline: false },
             { name: `Expires`, value: codeBlock(`When used as a save`), inline: false })
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 
     if (interaction.customId === 'info-misc-three') {
@@ -104,8 +89,6 @@ module.exports = async (interaction) => {
         embed.addFields({ name: `Description`, value: codeBlock(`Buy entry tickets to get your content featured in the #content-spotlight channel for 24 hours`), inline: false },
             { name: `Expires`, value: codeBlock(`24 hours`), inline: false })
 
-        interaction.editReply({
-            embeds: [embed]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, ``, [embed]);
     }
 }

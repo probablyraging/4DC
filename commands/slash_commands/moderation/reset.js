@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { dbUpdateOne, dbDeleteOne } = require('../../../utils/utils');
+const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const { featuredRandomPicker } = require('../../../modules/timers/featured_post');
 const timerSchema = require('../../../schemas/misc/timer_schema');
 const spotlightSchema = require('../../../schemas/misc/spotlight_schema');
@@ -71,12 +71,7 @@ module.exports = {
                     member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 });
                 // If no winner was able to be picked
-                if (!winner) {
-                    return interaction.editReply({
-                        content: `${[process.env.BOT_CONF]} Content spotlight has been reset but there was no new winner`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                if (!winner) return sendResponse(interaction, `${[process.env.BOT_CONF]} Content spotlight has been reset but there was no new winner`);
                 // Send the winners message as a webhook
                 await spotlightChannel.createWebhook({ name: winner.member.displayName, avatar: winner.member.user.displayAvatarURL() }).then(async webhook => {
                     await webhook.send({
@@ -95,11 +90,7 @@ ${winner.draw.message}`
 
                 await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: timestamp });
 
-                interaction.editReply({
-                    content: `${[process.env.BOT_CONF]} Content spotlight has been reset`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Content spotlight has been reset`);
                 break;
             }
 
@@ -113,11 +104,7 @@ ${winner.draw.message}`
                     })
                     featuredRandomPicker(client, previouslyFeatured);
                 }
-                interaction.editReply({
-                    content: `${[process.env.BOT_CONF]} Featured streamer has been reset`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Featured streamer has been reset`);
                 break;
             }
         }

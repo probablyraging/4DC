@@ -1,4 +1,5 @@
 const { CommandInteraction, InteractionType } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const spotlightSchema = require("../../../schemas/misc/spotlight_schema");
@@ -38,21 +39,13 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
-        if ((results[0]?.doublexp - new Date()) > 1 || results[0]?.doublexp === true) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if ((results[0]?.doublexp - new Date()) > 1 || results[0]?.doublexp === true)
+            return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`);
 
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
@@ -77,39 +70,20 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         const amount = parseInt(interaction.fields.getTextInputValue('input8'));
-        if (isNaN(amount) || amount < 1 || amount > 2) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} Amount must be a number from 1-2`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (isNaN(amount) || amount < 1 || amount > 2) return sendResponse(interaction, `${process.env.BOT_DENY} Amount must be a number from 1-2`);
 
         // Add a counting save to the user
         const results = await countingSchema.find({ userId: member.id });
 
         // If amount is more saves than the user can have
-        if (results.length > 0 && (results[0]?.saves + (amount)) > 2) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You can only have a max of **2** personal saves at a time. ${member} already has **${results[0]?.saves}/2** saves`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
-
+        if (results.length > 0 && (results[0]?.saves + (amount)) > 2)
+            return sendResponse(interaction, `${process.env.BOT_DENY} You can only have a max of **2** personal saves at a time. ${member} already has **${results[0]?.saves}/2** saves`);
         // If user already has max saves
-        if (results.length > 0 && results[0]?.saves >= 2) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${member} already has **2/2** saves`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (results.length > 0 && results[0]?.saves >= 2) return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has **2/2** saves`);
 
         // Determine cost based off amount purcahsed
         cost = cost * amount;
@@ -139,37 +113,19 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         const amount = parseInt(interaction.fields.getTextInputValue('input3'));
-        if (isNaN(amount) || amount < 1 || amount > 99) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} Amount must be a number from 1-99`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (isNaN(amount) || amount < 1 || amount > 99) return sendResponse(interaction, `${process.env.BOT_DENY} Amount must be a number from 1-99`);
 
         const message = interaction.fields.getTextInputValue('input4');
         const url = interaction.fields.getTextInputValue('input7');
 
         // We only allow one URLs and only in the URL field
-        if (detectURLs(message)?.length > 0) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You cannot include a URL in the message field, please use the Content URL field instead`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
-        if (detectURLs(url)?.length > 1) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You can only submit one URL`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (detectURLs(message)?.length > 0) return sendResponse(interaction, `${process.env.BOT_DENY} You cannot include a URL in the message field, please use the Content URL field instead`);
+        // If the user provides more than 1 URL
+        if (detectURLs(url)?.length > 1) return sendResponse(interaction, `${process.env.BOT_DENY} You can only submit one URL`);
 
         // Determine cost based off amount purcahsed
         cost = cost * amount;

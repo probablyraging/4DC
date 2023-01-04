@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -21,21 +22,11 @@ module.exports = {
         const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
         // If permissionInChannel is undefined it is likely because the user is no longer in the server
-        if (permissionInChannel === undefined) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (permissionInChannel === undefined) return sendResponse(interaction, `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`);
         // If the target is already muted in this channel
-        if (permissionInChannel === true) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} ${target} is already muted in ${channel}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (permissionInChannel === true) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${channel}`);
 
+        // Update the channel permissions for the target user
         channel.permissionOverwrites.edit(target.id, {
             SendMessages: null,
         }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
@@ -53,9 +44,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        interaction.editReply({
-            content: `${process.env.BOT_CONF} ${target} was unmuted in ${channel}`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} ${target} was unmuted in ${channel}`);
     }
 }

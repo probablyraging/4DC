@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const rankSchema = require('../../../schemas/misc/rank_schema');
-const { dbUpdateOne } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -31,32 +31,19 @@ module.exports = {
         const target = options.getMember('username');
 
         // Don't allow the user running the command to add/remove/reset themselves
-        if (target?.id === member?.id) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You can't edit your own XP`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (target?.id === member?.id) return sendResponse(interaction, `${process.env.BOT_DENY} You can't edit your own XP`);
 
         switch (options.getSubcommand()) {
             case 'reset': {
                 const results = await rankSchema.find({ id: target?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                
-                // If no user matching the target's ID was found in the database
-                if (results.length === 0) {
-                    return interaction.reply({
-                        content: `${process.env.BOT_DENY} I could not find that user in the rank database`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
 
+                // If no user matching the target's ID was found in the database
+                if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} I could not find that user in the rank database`);
+                
                 // Reset the user's rank data to 0
                 await dbUpdateOne(rankSchema, { id: target?.id }, { level: 0, rank: 0, msgCount: 0, xp: 0, xxp: 0, xxxp: 0 });
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${target}'s rank data has been reset`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+                sendResponse(interaction, `${process.env.BOT_CONF} ${target}'s rank data has been reset`)
             }
         }
     }

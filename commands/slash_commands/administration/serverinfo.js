@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const fetch = require('node-fetch');
 const path = require('path');
 
@@ -90,32 +91,29 @@ module.exports = {
                 .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
                 .setImage()
                 .addFields({ name: `Name`, value: `${guild.name}`, inline: true },
-                { name: `Owner`, value: `<@${guild.ownerId}>`, inline: true },
-                { name: `Region`, value: `Australia`, inline: true },
-                { name: `Description`, value: `${description}`, inline: false },
-                { name: `Server Boosts`, value: `${guild.premiumSubscriptionCount}`, inline: true },
-                { name: `Boost Tier`, value: `${premiumTier}`, inline: true },
-                { name: `Created On`, value: `${createdAt}`, inline: true },
-                { name: `Vanity URL`, value: `${vanityURL}`, inline: false })
+                    { name: `Owner`, value: `<@${guild.ownerId}>`, inline: true },
+                    { name: `Region`, value: `Australia`, inline: true },
+                    { name: `Description`, value: `${description}`, inline: false },
+                    { name: `Server Boosts`, value: `${guild.premiumSubscriptionCount}`, inline: true },
+                    { name: `Boost Tier`, value: `${premiumTier}`, inline: true },
+                    { name: `Created On`, value: `${createdAt}`, inline: true },
+                    { name: `Vanity URL`, value: `${vanityURL}`, inline: false })
 
             const response2 = new EmbedBuilder()
                 .setColor('#32BEA6') // GREEN
                 .setTitle(`${guild.name}'s Server Stats`)
                 .addFields({ name: `Online`, value: `${online}`, inline: true },
-                { name: `Idle`, value: `${idle}`, inline: true },
-                { name: `DND`, value: `${dnd}`, inline: true },
-                { name: `Playing`, value: `${playing}`, inline: true },
-                { name: `Streaming`, value: `${streaming}`, inline: true },
-                { name: `Watching`, value: `${watching}`, inline: true },
-                { name: `Listening`, value: `${listening}`, inline: true },
-                { name: `Custom`, value: `${custom}`, inline: true },
-                { name: `Competing`, value: `${competing}`, inline: true },
-                { name: `Total Members`, value: `${guild.memberCount}`, inline: false })
+                    { name: `Idle`, value: `${idle}`, inline: true },
+                    { name: `DND`, value: `${dnd}`, inline: true },
+                    { name: `Playing`, value: `${playing}`, inline: true },
+                    { name: `Streaming`, value: `${streaming}`, inline: true },
+                    { name: `Watching`, value: `${watching}`, inline: true },
+                    { name: `Listening`, value: `${listening}`, inline: true },
+                    { name: `Custom`, value: `${custom}`, inline: true },
+                    { name: `Competing`, value: `${competing}`, inline: true },
+                    { name: `Total Members`, value: `${guild.memberCount}`, inline: false })
 
-            interaction.editReply({
-                embeds: [response, response2],
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            sendResponse(interaction, ``, [response, response2]);
         });
     }
 }

@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const massbanSchema = require('../../../schemas/misc/mass_ban_schema');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
@@ -14,16 +15,20 @@ async function banUsers(interaction, users, reason) {
     let { guild } = interaction;
 
     const oneDay = 24 * 60 * 60 * 1000;
-
+    // Split the users string into an array of user tags
     const userList = users.split(/\r?\n/);
     let fetchedMemberArrays = await guild.members.fetch();
     let bannedUsers = [];
     let skippedUsers = [];
     for (let fetchedMemberArray of fetchedMemberArrays) {
+        // Get the user's tag from the fetched member array
         let fetchedMember = fetchedMemberArray[1];
         let memberTag = fetchedMember?.user?.tag;
+        // If the member is in the list of users to ban
         if (userList.includes(memberTag)) {
+            // Get the timestamp for when the member joined the server
             let joinedAt = fetchedMember.joinedTimestamp;
+            // Add users who joined less then 24 hours ago to an array and ban them
             if ((new Date() - joinedAt) > oneDay) {
                 console.log(`${path.basename(__filename)} Member ${memberTag} was not banned as they joined more than 1 day ago.`);
                 skippedUsers.push(memberTag);
@@ -35,11 +40,12 @@ async function banUsers(interaction, users, reason) {
             }
         }
     }
+    // Return the arrays
     return { skippedUsers: skippedUsers, bannedUsers: bannedUsers }
 }
 
 /**
- * Deny a mass ban request.
+ * Approve a mass ban request.
  *
  * @param {CommandInteraction} interaction
  */
@@ -48,24 +54,26 @@ async function approveMassBan(interaction) {
     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
     let id = options.getString('id');
 
+    // Find the mass ban request and check if it is pending
     let result = await massbanSchema.findOne({ id: id }).exec()
         .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+    // If the request is found and is pending 
     if (result && result.state === "PENDING") {
         let author = result.author;
         let currentUser = member.user.tag;
-
+        // Check if the current user is the one who requested the mass ban
         if (author === currentUser) {
-            interaction.editReply(`${process.env.BOT_DENY} The mass ban request with ID '${id}' cannot be approved by the same person who requested it`)
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            sendResponse(interaction, `${process.env.BOT_DENY} The mass ban request with ID '${id}' cannot be approved by the same person who requested it`);
         } else {
             result.state = "BANNING";
             result.save();
 
             const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
             let reason = result.reason;
-
+            // Ban the users
             let banResults = await banUsers(interaction, result.users, reason);
 
+            // Set the state to approved and send a message to the staff channel
             result.state = "APPROVED";
             result.save();
 
@@ -84,20 +92,19 @@ async function approveMassBan(interaction) {
                 embeds: [staffEmbed]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-            interaction.editReply(`${process.env.BOT_CONF} The mass ban request with ID '${id}' has been approved`)
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+            sendResponse(interaction, `${process.env.BOT_CONF} The mass ban request with ID '${id}' has been approved`);
         }
     } else if (result && result.state === "BANNING") {
-        interaction.editReply(`${process.env.BOT_INFO} The mass ban request with ID '${id}' has already been approved by another staff member`)
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // If the ban request is already in the process of banning
+        sendResponse(interaction, `${process.env.BOT_INFO} The mass ban request with ID '${id}' has already been approved by another staff member`);
     } else {
-        interaction.editReply(`${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`)
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // If there is not pending ban request
+        sendResponse(interaction, `${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`);
     }
 }
 
 /**
- * Approve a mass ban request.
+ * Deny a mass ban request.
  *
  * @param {CommandInteraction} interaction
  */
@@ -106,9 +113,12 @@ async function denyMassBan(interaction) {
     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
     let id = options.getString('id');
 
+    // Find the mass ban request
     let result = await massbanSchema.findOne({ id: id }).exec()
         .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching away users from the database: `, err));
+    // If the request is found and is pending 
     if (result && result.state === "PENDING") {
+        // Set the state to denied and send a message to the staff channel
         result.state = "DENIED";
         result.save();
 
@@ -124,11 +134,9 @@ async function denyMassBan(interaction) {
             embeds: [staffEmbed]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        interaction.editReply(`${process.env.BOT_CONF} The mass ban request with ID '${id}' has been denied`)
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} The mass ban request with ID '${id}' has been denied`);
     } else {
-        interaction.editReply(`${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`)
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_DENY} Could not find a pending mass ban request with ID '${id}'`);
     }
 }
 

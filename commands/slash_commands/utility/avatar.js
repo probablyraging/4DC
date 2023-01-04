@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const target = options.getMember(`username`) || member;
-        
+
         // Create an embed with the target user's avatar
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
@@ -29,9 +30,6 @@ module.exports = {
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 
-        interaction.editReply({
-            embeds: [response],
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, ``, [response]);
     }
 }

@@ -1,7 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
-const { dbUpdateOne } = require('../../../utils/utils');  
 const path = require('path');
 
 
@@ -76,39 +76,21 @@ module.exports = {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 // If the target is already muted in this channel
-                if (permissionInChannel === false) {
-                    return interaction.editReply({
-                        content: `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
-
-                if (reason && reason.length > 1024) {
-                    return interaction.editReply({
-                        content: `${process.env.BOT_DENY} Reasons are limited to 1024 characters`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
-
+                if (permissionInChannel === false) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`);
+                // If the reason exceeds the character limit
+                if (reason && reason.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Reasons are limited to 1024 characters`);
+                // Update the channel permissions for the target user
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: false,
                 }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-
+                // If a duration was provided, get a timestamp for when the mute should expire and update the database
                 if (duration > 0) {
                     const myDate = new Date();
                     const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
-                    await dbUpdateOne(muteSchema, {timestamp,userId: target.id,channelId: channel.id}, {timestamp,userId: target.id,channelId: channel.id});
+                    await dbUpdateOne(muteSchema, { timestamp, userId: target.id, channelId: channel.id }, { timestamp, userId: target.id, channelId: channel.id });
                 }
 
-                if (!duration || duration === '0') {
-                    duration = 'Permanent';
-                } else {
-                    if (duration > 1) {
-                        duration = `${duration} hours`;
-                    } else {
-                        duration = `${duration} hour`;
-                    }
-                }
+                duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 
                 // Log to channel
                 let log = new EmbedBuilder()
@@ -125,11 +107,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`);
                 break;
             }
 
@@ -141,13 +119,8 @@ module.exports = {
                 await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
                 // If the target is already muted in this channel
-                if (permissionInChannel === true) {
-                    return interaction.editReply({
-                        content: `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
-
+                if (permissionInChannel === true) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`);
+                // Update the channel permissions for the target user
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: null,
                 }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
@@ -165,11 +138,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`);
                 break;
             }
         }

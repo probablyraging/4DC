@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { dbCreate } = require('../../utils/utils');
+const { dbCreate, sendResponse } = require('../../utils/utils');
 const massbanSchema = require('../../schemas/misc/mass_ban_schema');
 const { v4: uuidv4 } = require("uuid");
 const path = require('path');
@@ -34,6 +34,5 @@ module.exports = async (interaction) => {
 
     await dbCreate(massbanSchema, { id: id, author: authorTag, timestamp: new Date().valueOf(), users: trimmedListString, reason: reason });
 
-    interaction.editReply(`${process.env.BOT_CONF} The mass ban request has been received. Another staff member will need to approve the ban`)
-        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+    sendResponse(interaction, `${process.env.BOT_CONF} The mass ban request has been received. Another staff member will need to approve the ban`);
 }

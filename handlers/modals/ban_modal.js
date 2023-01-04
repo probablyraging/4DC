@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
 const path = require('path');
 
@@ -12,11 +13,8 @@ module.exports = async (interaction) => {
     const reason = interaction.fields.getTextInputValue('input2');
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-    if (!target) {
-        return interaction.editReply({
-            content: `${process.env.BOT_DENY} This user no longer exists`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-    }
+    // If no target
+    if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
 
     await target.send({
         content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
@@ -40,8 +38,5 @@ module.exports = async (interaction) => {
         embeds: [log]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-    interaction.editReply({
-        content: `${target.user.tag} was banned from the server`,
-        ephemeral: true
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+    sendResponse(interaction, `${target.user.tag} was banned from the server`);
 }

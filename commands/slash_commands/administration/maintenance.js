@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -36,7 +37,7 @@ module.exports = {
                         content: `:warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
-                interaction.editReply({ content: 'Maintenance started' }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                sendResponse(interaction, `Maintenance started`);
                 break;
             }
         }
@@ -54,7 +55,7 @@ module.exports = {
                         }
                     });
                 }
-                interaction.editReply({ content: 'Maintenance ended' }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                sendResponse(interaction, `Maintenance ended`);
                 break;
             }
         }

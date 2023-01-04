@@ -58,11 +58,7 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                 // Create attachment from canvas and send it
                 const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
 
-                const int = await interaction.editReply({
-                    content: responseContent,
-                    files: [attachment],
-                    components: [buttons]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+                const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
                 // Peform a NSFW check on the attachment
                 nsfwCheck(interaction, int, prompt, member);
                 // Delete all the image files
@@ -93,14 +89,10 @@ async function nsfwCheck(interaction, int, prompt, member) {
         // Edit the interaction if the image is deemed NSFW
         if (result.safe < 0.30) {
             if (result.partial_tag === 'chest') return;
-            interaction.editReply({
-                content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
+            sendResponse(interaction, `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
 **Author**: ${member}
 
-Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`,
-                files: [],
-                components: []
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`, [], [], []);
         }
     });
 }

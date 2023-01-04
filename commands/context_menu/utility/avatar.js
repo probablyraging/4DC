@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -14,13 +15,8 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        // If target doesn't exist
-        if (!target) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This user no longer exists`,
-                ephemeral: true,
-            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // If the target doesn't exist
+        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
 
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
@@ -28,9 +24,6 @@ module.exports = {
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`);
 
-        interaction.editReply({
-            embeds: [response],
-            ephemeral: true,
-        }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-    },
-};
+        sendResponse(interaction, ``, [response]);
+    }
+}

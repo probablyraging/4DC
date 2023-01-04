@@ -1,5 +1,5 @@
 const { ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
-const { dbUpdateOne } = require('../../../utils/utils');
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const path = require('path');
 
@@ -91,9 +91,7 @@ async function confirmationModal(interaction, storeName, itemName, itemIndex, co
 // Make sure the user correctly types "confirm" into the confirmation input
 async function checkConfirmation(interaction) {
     if (interaction.fields.getTextInputValue('confirmation').toLowerCase() !== 'confirm') {
-        interaction.editReply({
-            content: `${process.env.BOT_DENY} Purchase failed. Please make sure you type **CONFIRM** into the confirmation box`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_DENY} Purchase failed. Please make sure you type **CONFIRM** into the confirmation box`);
         return false;
     } else {
         return true;
@@ -110,15 +108,11 @@ async function completePurchase(interaction, cost, itemName, customMessage, gift
     const tokens = results[0]?.tokens;
     // If the user doesn't have enough tokens to complete the purchase, or if they don't have a db entry yet
     if (results.length === 0) {
-        interaction.editReply({
-            content: `${process.env.BOT_DENY} You need **${cost}** more tokens to buy **${itemName}**`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_DENY} You need **${cost}** more tokens to buy **${itemName}**`);
         return false;
     }
     if (tokens < cost) {
-        interaction.editReply({
-            content: `${process.env.BOT_DENY} You need **${cost - tokens}** more tokens to buy **${itemName}**`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_DENY} You need **${cost - tokens}** more tokens to buy **${itemName}**`);
         return false;
     }
     // Deduct cost from user's tokens
@@ -137,10 +131,7 @@ async function completePurchase(interaction, cost, itemName, customMessage, gift
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
     }
     // Confirmation
-    interaction.editReply({
-        content: `${process.env.BOT_CONF} Purchase approved! ${customMessage}`
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-
+    sendResponse(interaction, `${process.env.BOT_CONF} Purchase approved! ${customMessage}`);
     return true;
 }
 

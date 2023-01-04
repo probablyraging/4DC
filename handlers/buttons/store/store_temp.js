@@ -1,8 +1,8 @@
 const { CommandInteraction, InteractionType } = require("discord.js");
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
-const { dbUpdateOne } = require('../../../utils/utils');
 const res = new (require("rss-parser"))();
 const path = require('path');
 
@@ -36,21 +36,13 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
-        if ((results[0]?.twitchauto - new Date()) > 1 || results[0]?.twitchauto === true) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if ((results[0]?.twitchauto - new Date()) > 1 || results[0]?.twitchauto === true)
+            return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`);
 
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
@@ -86,21 +78,13 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
-        if ((results[0]?.youtubeauto - new Date()) > 1 || results[0]?.youtubeauto === true) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if ((results[0]?.youtubeauto - new Date()) > 1 || results[0]?.youtubeauto === true)
+            return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`);
 
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
@@ -124,10 +108,7 @@ module.exports = async (interaction) => {
                 await dbUpdateOne(ytNotificationSchema, { userId: member.id }, { userId: member.id, channelId: channelId, videoIds: videoIdArr });
             } catch {
                 // If an error occurs
-                interaction.editReply({
-                    content: `${process.env.BOT_DENY} An error occurred. Please contact a staff member for help`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. Please contact a staff member for help`);
             }
         }
     }
@@ -148,21 +129,13 @@ module.exports = async (interaction) => {
         // If item is being purcahsed as a gift
         if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
         if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        if (!member) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        // If a member can't be found
+        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
 
         // Two instances of this item can't be active at the same time, check if the user has an active subscription
         const results = await tokensSchema.find({ userId: member.id });
-        if ((results[0]?.linkembeds - new Date()) > 1 || results[0]?.linkembeds === true) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if ((results[0]?.linkembeds - new Date()) > 1 || results[0]?.linkembeds === true)
+            return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`);
 
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {

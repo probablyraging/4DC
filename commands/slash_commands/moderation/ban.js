@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -56,28 +57,17 @@ module.exports = {
         let reason = options.getString('reason');
         reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
 
-        if (reason == null) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        // If no reason was provided when using the custom reason option
+        if (reason == null) return sendResponse(interaction, `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`);
+        // Send a notification to the target user
         await target.send({
             content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
         }).catch(() => { });
-
-        if (!deleteMessages) {
-            // Ban user
-            await target.ban({
-                reason: reason
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
-        } else {
-            await target.ban({
-                deleteMessageSeconds: 604800,
-                reason: reason
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
-        }
+        // Ban the target user, taking into account if their messages should be deleted
+        await target.ban({
+            deleteMessages: deleteMessages ? 604800 : 0,
+            reason: reason
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
         // Log to channel
         let log = new EmbedBuilder()
@@ -92,8 +82,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        interaction.editReply({
-            content: `${process.env.BOT_CONF} ${target.user.tag} was banned from the server`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} ${target.user.tag} was banned from the server`);
     }
 }

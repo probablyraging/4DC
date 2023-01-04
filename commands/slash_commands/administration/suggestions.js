@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -42,20 +43,9 @@ module.exports = {
         const embed = message?.embeds[0];
 
         // If the message doesn't contain an embed
-        if (!embed) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This message does not contain a suggestion`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (!embed) return sendResponse(interaction, `${process.env.BOT_DENY} This message does not contain a suggestion`);
         // If the suggestion has already been replied to
-        if (embed.footer) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} This suggestion has already been responded to`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (embed.footer) return sendResponse(interaction, `${process.env.BOT_DENY} This suggestion has already been responded to`);
 
         // APPROVE
         switch (options.getString('choice')) {
@@ -69,10 +59,7 @@ module.exports = {
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_CONF}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Response added to ${id}`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Response added to ${id}`);
                 break;
             }
 
@@ -87,10 +74,7 @@ module.exports = {
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_DENY}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Response added to ${id}`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Response added to ${id}`);
                 break;
             }
 
@@ -105,10 +89,7 @@ module.exports = {
                 await message.edit({ embeds: [responseEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
                 await message.react(`${process.env.BOT_INFO}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
-                interaction.editReply({
-                    content: `${process.env.BOT_CONF} Response added to ${id}`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            
+                sendResponse(interaction, `${process.env.BOT_CONF} Response added to ${id}`);            
                 break;
             }
         }

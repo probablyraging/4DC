@@ -1,4 +1,5 @@
 const { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const rankSchema = require("../../../schemas/misc/rank_schema");
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
@@ -35,13 +36,8 @@ module.exports = {
 
         const results = await rankSchema.find({ id: targetId });
         const results2 = await tokensSchema.find({ userId: targetId });
-
-        if (results.length === 0) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // If there are no results
+        if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`);
 
         for (const info of results) {
             let { username, discrim, rank, level, msgCount, xxp, xxxp } = info;
@@ -154,9 +150,7 @@ module.exports = {
 
             const attachment = new AttachmentBuilder(canvas.toBuffer(), "profile-image.png");
 
-            interaction.editReply({
-                files: [attachment]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+            sendResponse(interaction, ``, [], [attachment]);
         }
     }
 };
