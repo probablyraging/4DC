@@ -1,13 +1,20 @@
 const { CommandInteraction } = require('discord.js');
+
 /**
  * Send a response to an interaction
- * @param {CommandInteraction} interaction The interaction object
+ * @param {CommandInteraction} interaction - The interaction object
  * @param {string} content The content of the response
+ * @param {Array} embeds An array of embeds
+ * @param {Array} files An array of files
+ * @param {Array} components An array of components
  */
-async function sendResponse(interaction, content) {
+async function sendResponse(interaction, content = '', embeds = [], files = [], components = []) {
     try {
         return interaction.editReply({
             content: content,
+            embeds: embeds,
+            files: files,
+            components: components,
             ephemeral: true
         });
     } catch (err) {
