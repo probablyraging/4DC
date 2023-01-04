@@ -8,14 +8,14 @@ const { CommandInteraction } = require('discord.js');
  * @param {Array} files An array of files
  * @param {Array} components An array of components
  */
-async function sendResponse(interaction, content = '', embeds = [], files = [], components = []) {
+async function sendResponse(interaction, content = '', embeds = [], files = [], components = [], ephemeral = true) {
     try {
         return interaction.editReply({
             content: content,
             embeds: embeds,
             files: files,
             components: components,
-            ephemeral: true
+            ephemeral: ephemeral
         });
     } catch (err) {
         console.error(`There was a problem sending an interaction: `, err);

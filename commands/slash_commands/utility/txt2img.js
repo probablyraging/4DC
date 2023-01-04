@@ -220,7 +220,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
                     if (!imgBaseArr[0]?.data) return notifyError(interaction, member, 'an image could not be generated');
                     const buf = Buffer.from(imgBaseArr[0].data, 'base64');
                     const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
-                    const int = await sendResponse(interaction, responseContent, [imgOne], [buttons]);
+                    const int = await sendResponse(interaction, responseContent, [], [imgOne], [buttons]);
                     nsfwCheck(interaction, int, prompt, member);
                 }
             }
