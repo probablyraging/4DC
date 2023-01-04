@@ -12,6 +12,7 @@ const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
+const fs = require('fs');
 const Canvas = require("canvas");
 const path = require('path');
 
@@ -44,6 +45,18 @@ module.exports = {
                 });
         });
         boostTimer.start();
+
+        // Delete txt2img files from the temp folder
+        fs.readdir('./res/temp', (err, files) => {
+            if (err) return;
+            for (const file of files) {
+                if (file.endsWith('.png')) {
+                    fs.unlink(`./res/temp/${file}`, (err) => {
+                        if (err) throw err;
+                    });
+                }
+            }
+        });
 
         // Misc intervals
         mutesCheck(message, client, Discord);
