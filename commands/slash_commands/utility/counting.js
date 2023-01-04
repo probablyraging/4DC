@@ -1,20 +1,25 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
-const timerSchema = require('../../../schemas/misc/timer_schema');
-const { dbUpdateOne } = require('../../../utils/utils');
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
-function msToHumanTime(milliseconds) {
-    let hours = milliseconds / (1000 * 60 * 60);
-    let hoursFloor = Math.floor(hours);
+/**
+ * Get the number of saves for the user and guild
+ * @param {CommandInteraction} interaction The interaction object
+ * @param {Guild} guild The guild object
+ * @param {Array} userResults An array of documents
+ */
+async function getSaves(interaction, guild, userResults) {
+    const guildResults = await countingSchema.find({ userId: guild.id })
+        .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err))
 
-    let minutes = (hours - hoursFloor) * 60;
-    let minutesFloor = Math.floor(minutes);
+    sendResponse(interaction, `You currently have \`${userCurrentSaves || 0}/2\` saves
+The guild currently has \`${guildResults[0]?.saves || 0}/3 saves\`
 
-    let seconds = (minutes - minutesFloor) * 60;
-    let secondFloor = Math.floor(seconds);
+You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
 
-    return hoursFloor + " hours, " + minutesFloor + " minutes and " + secondFloor + " seconds";
+The server can be bumped once every 2 hours, by anyone
+To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from Channels & Roles`);
 }
 
 module.exports = {
@@ -50,121 +55,54 @@ module.exports = {
 
         switch (options.getSubcommand()) {
             case 'save': {
-                const results = await countingSchema.find({ userId: member.id })
+                // Fetch the user and guild saves from the database
+                const userResults = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                const guildResults = await countingSchema.find({ userId: guild.id })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-                if (results.length === 0) {
-                    await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
-                    return getSaves();
-                } else {
-                    await getSaves();
-                }
-
-                async function getSaves() {
-                    const results = await countingSchema.find({ userId: member.id })
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
-                    for (const data of results) {
-                        let { saves } = data;
-                        if (saves === undefined) {
-                            saves = 0;
-                        }
-
-                        for (const guildData of guildResults) {
-                            const guildSaves = guildData.saves;
-
-                            interaction.editReply({
-                                content: `You currently have \`${saves}/2\` saves
-The guild currently has \`${guildSaves}/3 saves\`
-
-You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
-
-The server can be bumped once every 2 hours, by anyone
-To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from Channels & Roles`,
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        }
-                    }
-                }
+                // If the user doesn't have a database entry yet, creat one
+                if (userResults.length === 0) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
+                // Fetch the user and guild save count
+                getSaves(interaction, guild, userResults);
                 break;
             }
 
             case 'donatesave': {
-                let amount = options.getNumber('amount');
-
-                const results = await countingSchema.find({ userId: member.id })
+                let savesToAdd = options.getNumber('amount');
+                // Fetch the user and guild saves from the database
+                const userResults = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 const guildResults = await countingSchema.find({ userId: guild.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                // if the user isn't in the database
-                if (results.length === 0) {
-                    return interaction.editReply({
-                        content: `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                }
+                const userCurrentSaves = userResults[0]?.saves;
+                const guildCurrentSaves = guildResults[0].saves;
 
-                for (const data of results) {
-                    const { saves } = data;
+                // If the user doesn't have a database entry yet
+                if (userResults.length === 0) return sendResponse(interaction, `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`);
+                // If the user doesn't have any saves
+                if (userCurrentSaves === 0) return sendResponse(interaction, `You have \`0 saves\`. Learn how to earn saves by using the \`/counting save\` command`);
+                // If the amount of saves to donate is more than the max allowed guild saves
+                if ((guildCurrentSaves + savesToAdd / 4) > 3) return sendResponse(interaction, `This would exceed the max amount of saves the guild can have`);
+                // If the user doesn't have enough saves
+                if (userCurrentSaves < savesToAdd) return sendResponse(interaction, `You don't have enough saves. You currently have \`${userCurrentSaves || 0}/2\``);
+                // If the guild already has the max amount of saves
+                if (guildCurrentSaves === 3) return sendResponse(interaction, `The guild already has \`3/3\` saves`);
 
-                    // if the user doesn't have any saves
-                    if (saves === 0) {
-                        return interaction.editReply({
-                            content: `You have \`0 saves\`. Learn how to earn saves by using the \`/counting save\` command`,
-                            ephemeral: true
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                    } else {
-                        for (const guildData of guildResults) {
-                            const guildSaves = guildData.saves;
+                // Remove 1 save from the user
+                await dbUpdateOne(countingSchema, { userId: member.id }, { saves: userCurrentSaves - savesToAdd });
+                // Add 0.25 saves to the guild
+                await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildCurrentSaves + (savesToAdd / 4) });
 
-                            // If the amount of saves to donate is more than the max allowed guild saves
-                            if ((guildSaves + amount / 4) > 3) {
-                                return interaction.editReply({
-                                    content: `This would exceed the max amount of saves the guild can have. The guild currently has \`${guildSaves}/3\` saves`,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
+                // Send a confirmation message to the game channel
+                client.channels.cache.get(process.env.COUNT_CHAN).send({
+                    content: `${member} donated \`${savesToAdd} personal save\`. The guild now has \`${guildCurrentSaves + (savesToAdd / 4)}/3 saves\``,
+                    allowedMentions: { repliedUser: true },
+                    failIfNotExists: false
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                            // If the user doesn't have enough saves
-                            if (saves < amount) {
-                                return interaction.editReply({
-                                    content: `You don't have enough saves. You currently have \`${saves}/2\``,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
-
-                            // if the guild already has the max amount of saves
-                            if (guildSaves === 3) {
-                                return interaction.editReply({
-                                    content: `The guild currently has \`3/3\` saves`,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
-
-                            // remove 1 save from the user
-                            await dbUpdateOne(countingSchema, { userId: member.id }, { saves: saves - amount });
-
-                            // add 0.25 saves to the guild
-                            await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildSaves + (amount / 4) });
-
-                            client.channels.cache.get(process.env.COUNT_CHAN).send({
-                                content: `${member} donated \`${amount} personal save\`. The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,
-                                allowedMentions: { repliedUser: true },
-                                failIfNotExists: false
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                            return interaction.editReply({
-                                content: `You have donated \`${amount} personal saves\` to the guild
-> You now have \`${saves - amount}/2 personal saves\` left
-> The guild now has \`${guildSaves + (amount / 4)}/3 saves\``,
-                                ephemeral: true
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                        }
-                    }
-                }
+                // Send a follow up response
+                sendResponse(interaction, `You have donated \`${savesToAdd} personal saves\` to the guild
+> You now have \`${userCurrentSaves - savesToAdd}/2 personal saves\` left
+> The guild now has \`${guildCurrentSaves + (savesToAdd / 4)}/3 saves\``);
                 break;
             }
         }

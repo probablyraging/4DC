@@ -30,7 +30,7 @@ module.exports = {
 
         const target = options.getMember('username');
 
-        // dont allow the user running the command to add/remove/reset themselves
+        // Don't allow the user running the command to add/remove/reset themselves
         if (target?.id === member?.id) {
             return interaction.editReply({
                 content: `${process.env.BOT_DENY} You can't edit your own XP`,
@@ -40,9 +40,9 @@ module.exports = {
 
         switch (options.getSubcommand()) {
             case 'reset': {
-                // If no user matching the target's ID was found in the database
                 const results = await rankSchema.find({ id: target?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
+                
+                // If no user matching the target's ID was found in the database
                 if (results.length === 0) {
                     return interaction.reply({
                         content: `${process.env.BOT_DENY} I could not find that user in the rank database`,

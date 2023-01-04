@@ -50,14 +50,14 @@ module.exports = {
                 const channelId = options.getString('channelid');
 
                 try {
-                    // we need to store a list of the user's current video IDs
+                    // Store a list of the user's current video IDs
                     const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
                     const items = resolve.items;
 
                     let videoIdArr = [];
 
                     items.forEach(item => {
-                        // remove the XML markup from video IDs
+                        // Remove the XML markup from video IDs
                         const regex = item.id.replace('yt:video:', '');
 
                         videoIdArr.push(regex);
@@ -70,19 +70,18 @@ module.exports = {
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 } catch {
-                    // if the supplied channel ID is incorrect
+                    // If the supplied channel ID is incorrect
                     interaction.reply({
                         content: `${process.env.BOT_DENY} An error occurred. This is most likely because the channel ID doesn't exist`,
                         ephemeral: true
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                 }
-
                 break;
             }
 
             case 'remove': {
                 const target = options.getMember('username');
-
+                // Fine and remove the user from the database
                 await ytNotificationSchema.findOneAndRemove({ userId: target.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 
@@ -90,7 +89,6 @@ module.exports = {
                     content: `${process.env.BOT_CONF} ${target} has been removed from the YouTube Auto list`,
                     ephemeral: true
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
                 break;
             }
         }

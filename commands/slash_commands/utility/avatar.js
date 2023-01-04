@@ -21,7 +21,8 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const target = options.getMember(`username`) || member;
-
+        
+        // Create an embed with the target user's avatar
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
