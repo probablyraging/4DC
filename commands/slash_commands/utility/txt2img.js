@@ -173,7 +173,6 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             }
         }
         // Delay creating new websocket if there is a prompt still loading
-        console.log(loading);
         if (loading) await sendResponse(interaction, `${member} your prompt has been added to the queue`);
         await wait(2000);
         await sendResponse(interaction, `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`);
