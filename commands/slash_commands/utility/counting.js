@@ -52,8 +52,6 @@ module.exports = {
             case 'save': {
                 const results = await countingSchema.find({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                const bumpResults = await timerSchema.find({ timer: 'bump' })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 const guildResults = await countingSchema.find({ userId: guild.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
@@ -68,35 +66,25 @@ module.exports = {
                     const results = await countingSchema.find({ userId: member.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                    for (const bumpData of bumpResults) {
-                        const { timestamp } = bumpData;
+                    for (const data of results) {
+                        let { saves } = data;
+                        if (saves === undefined) {
+                            saves = 0;
+                        }
 
-                        const timeMath = (timestamp - new Date()).valueOf();
-                        const timeTo = msToHumanTime(timeMath)
+                        for (const guildData of guildResults) {
+                            const guildSaves = guildData.saves;
 
-                        for (const data of results) {
-                            let { saves } = data;
-                            if (saves === undefined) {
-                                saves = 0;
-                            }
-
-                            for (const guildData of guildResults) {
-                                const guildSaves = guildData.saves;
-
-                                interaction.editReply({
-                                    content: `You currently have \`${saves}/2\` saves
+                            interaction.editReply({
+                                content: `You currently have \`${saves}/2\` saves
 The guild currently has \`${guildSaves}/3 saves\`
 
-To earn more saves you must bump the server
+You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
+
 The server can be bumped once every 2 hours, by anyone
-You can bump the server by going to <#${process.env.BUMP_CHAN}> and typing \`/bump\` when it is ready to be bumped
-
-The server can be bumped again in \`${timeTo}\`
-
 To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from <#${process.env.SELFROLE_CHAN}>`,
-                                    ephemeral: true
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-                            }
+                                ephemeral: true
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
                     }
                 }
