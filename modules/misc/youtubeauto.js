@@ -21,7 +21,7 @@ module.exports = async (client) => {
             const isBooster = member?.roles?.cache.has(boosterRole);
             const isStaff = member?.roles?.cache.has(staffRole);
             const tokenResult = await tokensSchema.findOne({ userId });
-            const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 && tokenResult?.youtubeauto !== true;
+            const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 || tokenResult?.youtubeauto !== true;
 
             if (!isBooster && !isStaff && !isTokenSub) {
                 await ytNotificationSchema.findOneAndRemove({ userId })

@@ -32,7 +32,7 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
     }
     // Write each image to a file and store the file path in the filePaths array
     for (let i = 0; i < count; i++) {
-        fs.writeFile(filePaths[i], imgBaseArr[i].data, 'base64', async function () {
+        fs.writeFile(filePaths[i], imgBaseArr[i]?.data, 'base64', async function () {
             if (i === count - 1) {
                 // Determine canvas dimensions based on the number of images
                 let canvasWidth, canvasHeight;
