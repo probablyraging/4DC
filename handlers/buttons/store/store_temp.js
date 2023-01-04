@@ -57,12 +57,7 @@ module.exports = async (interaction) => {
     // Two
     if (itemIndex === 'two') {
         // If item is being purcahsed as a gift
-        if (customId.includes('gift') && interaction.member.id !== process.env.OWNER_ID) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} This item cannot be gifted`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (customId.includes('gift') && interaction.member.id !== process.env.OWNER_ID) return sendResponse(interaction, `${process.env.BOT_DENY} This item cannot be gifted`);
 
         // This item is free for server boosters
         if (member.roles.cache.has(process.env.BOOSTER_ROLE) && !customId.includes('gift')) cost = 0;

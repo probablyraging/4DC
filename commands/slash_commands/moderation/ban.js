@@ -57,6 +57,8 @@ module.exports = {
         let reason = options.getString('reason');
         reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
 
+        // If no target
+        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
         // If no reason was provided when using the custom reason option
         if (reason == null) return sendResponse(interaction, `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`);
         // Send a notification to the target user

@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -15,8 +16,10 @@ module.exports = {
     /**
      * @param {CommandInteraction} interaction 
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { member, options } = interaction;
+
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const target = options.getMember(`username`) || member
         // Filter the target's permissions in an array
@@ -45,12 +48,9 @@ module.exports = {
             .setFooter({ text: target?.id })
             .setTimestamp()
 
-        // If the target is a bot, add an additional field to the embed
+        // If the target user is a bot, add an additional field to the embed
         if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false });
 
-        interaction.reply({
-            embeds: [response],
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, ``, [response]);
     }
 }

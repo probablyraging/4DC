@@ -1,8 +1,8 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
 const { getAttachment } = require("../../modules/misc/report_attachment");
+const { sendReply } = require('../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
-const path = require('path');
 
 module.exports = async (interaction) => {
     const { client, user, guild } = interaction;
@@ -22,41 +22,33 @@ module.exports = async (interaction) => {
         }
     });
     // Don't allow users to spam the report function
-    if (!hasCooldown(user.id)) {
-        let reportEmbed = new EmbedBuilder()
-            .setColor("#E04F5F")
-            .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
-            .addFields({ name: `Reported User`, value: `${target}`, inline: false },
-                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
-            .setFooter({ text: `ID ${user?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
-            .setTimestamp();
-        // Get the attachment if one exists and add it to the embed
-        const attachment = getAttachment(1);
-        if (attachment) reportEmbed.setImage(attachment);
-        // Create a button for closing the report
-        const button = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('report-close')
-                    .setLabel('Close Report')
-                    .setStyle(ButtonStyle.Danger)
-            );
+    if (hasCooldown(user.id)) return sendReply(interaction, `${process.env.BOT_DENY} You must wait 60 seconds between reports`);
 
-        await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed], components: [button] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
-        // Add the user to the cooldown set and remove them after a given time
-        addCooldown(user.id);
-        setTimeout(() => {
-            removeCooldown(user.id);
-        }, 60000);
+    let reportEmbed = new EmbedBuilder()
+        .setColor("#E04F5F")
+        .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+        .addFields({ name: `Reported User`, value: `${target}`, inline: false },
+            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
+        .setFooter({ text: `ID ${user?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
+        .setTimestamp();
+    // Get the attachment if one exists and add it to the embed
+    const attachment = getAttachment(1);
+    if (attachment) reportEmbed.setImage(attachment);
+    // Create a button for closing the report
+    const button = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('report-close')
+                .setLabel('Close Report')
+                .setStyle(ButtonStyle.Danger)
+        );
 
-        await interaction.reply({
-            content: `${process.env.BOT_CONF} Your report has been submitted`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-    } else {
-        await interaction.reply({
-            content: `${process.env.BOT_DENY} You must wait 60 seconds between reports`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-    }
+    await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed], components: [button] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+    // Add the user to the cooldown set and remove them after a given time
+    addCooldown(user.id);
+    setTimeout(() => {
+        removeCooldown(user.id);
+    }, 60000);
+
+    sendReply(interaction, `${process.env.BOT_CONF} Your report has been submitted`);
 }

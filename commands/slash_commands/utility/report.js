@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
+const { sendReply } = require('../../../utils/utils');
 const { addAttachment } = require("../../../modules/misc/report_attachment");
 
 module.exports = {
@@ -19,13 +20,8 @@ module.exports = {
         const { options } = interaction;
 
         const attachment = options.getAttachment('proof');
-
-        if (!attachment.contentType.includes('image')) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        // If attachment content type isn't an image
+        if (!attachment.contentType.includes('image')) return sendReply(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`);
 
         addAttachment(1, attachment.url);
 

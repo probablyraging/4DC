@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -10,13 +11,7 @@ module.exports = {
     options: [{
         name: `start`,
         description: `Start a lockdown`,
-        type: ApplicationCommandOptionType.Subcommand,
-        options: [{
-            name: `reason`,
-            description: `Provide a reason for the lockdown`,
-            type: ApplicationCommandOptionType.String,
-            required: true
-        }],
+        type: ApplicationCommandOptionType.Subcommand
     },
     {
         name: `end`,
@@ -26,10 +21,10 @@ module.exports = {
     /**
      * @param {CommandInteraction} interaction 
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { guild, options } = interaction;
 
-        const reason = options.getString('reason');
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const noticeChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
         const everyone = guild.roles.cache.get(process.env.GUILD_ID);
@@ -41,17 +36,10 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `${process.env.BOT_DENY} SERVER LOCKDOWN STARTED
-                        
-**Reason**
-\`\`\`${reason}\`\`\``
+                    content: `${process.env.BOT_DENY} SERVER LOCKDOWN STARTED`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                interaction.reply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Lockdown started`);
                 break;
             }
 
@@ -64,11 +52,7 @@ module.exports = {
                     content: `${process.env.BOT_CONF} SERVER LOCKDOWN HAD ENDED`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-                interaction.reply({
-                    content: `${process.env.BOT_CONF} Done`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-
+                sendResponse(interaction, `${process.env.BOT_CONF} Lockdown ended`);
                 break;
             }
         }

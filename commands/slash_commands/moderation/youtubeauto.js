@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { dbUpdateOne } = require('../../../utils/utils');
+const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
@@ -44,6 +44,8 @@ module.exports = {
     async execute(interaction) {
         const { options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         switch (options.getSubcommand()) {
             case 'add': {
                 const target = options.getMember('username');
@@ -62,19 +64,13 @@ module.exports = {
 
                         videoIdArr.push(regex);
                     })
-
+                    // Add the new user to the database
                     await dbUpdateOne(ytNotificationSchema, { userId: target.id }, { userId: target.id, channelId: channelId, videoIds: videoIdArr });
 
-                    interaction.reply({
-                        content: `${process.env.BOT_CONF} ${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    sendResponse(interaction, `${process.env.BOT_CONF} ${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`);
                 } catch {
                     // If the supplied channel ID is incorrect
-                    interaction.reply({
-                        content: `${process.env.BOT_DENY} An error occurred. This is most likely because the channel ID doesn't exist`,
-                        ephemeral: true
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. This is most likely because the channel ID doesn't exist`);
                 }
                 break;
             }
@@ -85,10 +81,7 @@ module.exports = {
                 await ytNotificationSchema.findOneAndRemove({ userId: target.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 
-                interaction.reply({
-                    content: `${process.env.BOT_CONF} ${target} has been removed from the YouTube Auto list`,
-                    ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                sendResponse(interaction, `${process.env.BOT_CONF} ${target} has been removed from the YouTube Auto list`);
                 break;
             }
         }

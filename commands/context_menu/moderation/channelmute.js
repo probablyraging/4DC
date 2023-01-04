@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, PermissionFlagsBits, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
-const path = require('path');
+const { sendReply } = require('../../../utils/utils');
 
 module.exports = {
     name: `Channel Mute`,
@@ -17,20 +17,9 @@ module.exports = {
         const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
         // If permissionInChannel is undefined it is likely because the user is no longer in the server
-        if (permissionInChannel === undefined) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (permissionInChannel === undefined) return sendReply(interaction, `${process.env.BOT_DENY} An error occured. This user may no longer be a server memeber`);
         // If the target is already muted in this channel
-        if (permissionInChannel === false) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} ${target} is already muted in ${channel}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (permissionInChannel === false) return sendReply(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${channel}`);
 
         const modal = new ModalBuilder()
             .setTitle('Channel Mute')

@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
-const path = require('path');
+const { sendReply } = require('../../../utils/utils');
 
 module.exports = {
     name: `Ban`,
@@ -11,12 +11,7 @@ module.exports = {
      */
     async execute(interaction) {
         const target = await interaction.guild.members.fetch(interaction.targetId).catch(() => { });
-        if (!target) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} This user no longer exists`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
+        if (!target) return sendReply(interaction, `${process.env.BOT_DENY} This user no longer exists`);
 
         const modal = new ModalBuilder()
             .setTitle(`Ban ${target.user.tag}`)

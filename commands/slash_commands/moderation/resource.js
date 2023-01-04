@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -36,13 +37,9 @@ module.exports = {
         const attachment = options.getAttachment('thumbnail');
         const resChan = guild.channels.cache.get(process.env.RES_CHAN);
 
-        if (!attachment.contentType.includes('image')) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        // If the attachment content type isn't an image
+        if (!attachment.contentType.includes('image')) return sendResponse(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`);
+        // Send the link to the Google doc
         const googleDoc = await resChan.send({ content: link }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         // Allow time for embed to properly resolve

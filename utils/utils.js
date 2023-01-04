@@ -23,6 +23,28 @@ async function sendResponse(interaction, content = '', embeds = [], files = [], 
 }
 
 /**
+ * Send a response to an interaction
+ * @param {CommandInteraction} interaction - The interaction object
+ * @param {string} content The content of the response
+ * @param {Array} embeds An array of embeds
+ * @param {Array} files An array of files
+ * @param {Array} components An array of components
+ */
+async function sendReply(interaction, content = '', embeds = [], files = [], components = [], ephemeral = true) {
+    try {
+        return interaction.reply({
+            content: content,
+            embeds: embeds,
+            files: files,
+            components: components,
+            ephemeral: ephemeral
+        });
+    } catch (err) {
+        console.error(`There was a problem sending an interaction: `, err);
+    }
+}
+
+/**
  * Creates a single document in a MongoDB collection 
  * @param {Object} model The Mongoose model
  * @param {Object} update The update object to specify the changes to be made to the document
@@ -64,6 +86,7 @@ async function dbDeleteOne(model, filter) {
 
 module.exports = {
     sendResponse,
+    sendReply,
     dbCreate,
     dbUpdateOne,
     dbDeleteOne

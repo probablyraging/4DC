@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -28,40 +29,22 @@ module.exports = {
     /**
      * @param {CommandInteraction} interaction 
      */
-    execute(interaction) {
+    async execute(interaction) {
         const { channel, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         const toChannel = options.getChannel('channel');
-        const message = options.getString('message') || ` `;
+        const message = options.getString('message');
         const image = options.getString('image');
 
-        if (!toChannel) {
-            if (image) {
-                channel.send({
-                    content: `${message}`,
-                    files: [image]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            } else {
-                channel.send({
-                    content: `${message}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
-        } else {
-            if (image) {
-                toChannel.send({
-                    content: `${message}`,
-                    files: [image]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            } else {
-                toChannel.send({
-                    content: `${message}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
-        }
+        const sendToChannel = toChannel ? toChannel : channel;
 
-        interaction.reply({
-            content: `${process.env.BOT_CONF} Message sent`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendToChannel.send({
+            content: message ? message : '',
+            files: image ? [image] : []
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+        sendResponse(interaction, `${process.env.BOT_CONF} Message sent`);
     }
 }
