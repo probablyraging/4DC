@@ -1,30 +1,126 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { sendResponse } = require('../../../utils/utils');
 const SightengineClient = require('../../../node_modules/nudity-filter/sightengine');
 const { Buffer } = require('node:buffer');
 const Canvas = require("canvas");
 const { v4: uuidv4 } = require('uuid');
-const fetch = require('node-fetch');
 const fs = require('fs');
 const WebSocket = require('ws');
 const wait = require("timers/promises").setTimeout;
 const path = require('path');
 
-function randomNum(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+let loading = false;
+
+/**
+ * Create a canvas and draw images onto it
+ * @param {CommandInteraction} interaction The interaction object
+ * @param {number} count The number of images to draw on the canvas
+ * @param {Array} imgBaseArr An array of image objects with the properties data (the image data as a base64 string) and url (the image URL)
+ * @param {string} fileName The name of the file to be created
+ * @param {string} responseContent The content of the response message
+ * @param {Array} buttons An array of buttons
+ * @param {string} prompt The prompt sent by the user
+ * @param {GuildMember} member The member that initiated the command
+ */
+async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
+    // Return if there was an error generating an image
+    if (count === null) return notifyError(interaction, member, 'an image could not be generated');
+    // Create an array to store file paths for each image
+    let filePaths = [];
+    for (let i = 0; i < count; i++) {
+        filePaths.push(`./res/temp/${uuidv4()}.png`);
+    }
+    // Write each image to a file and store the file path in the filePaths array
+    for (let i = 0; i < count; i++) {
+        fs.writeFile(filePaths[i], imgBaseArr[i].data, 'base64', async function () {
+            if (i === count - 1) {
+                // Determine canvas dimensions based on the number of images
+                let canvasWidth, canvasHeight;
+                if (count === 2) {
+                    canvasWidth = 1054;
+                    canvasHeight = 532;
+                } else {
+                    canvasWidth = 1054;
+                    canvasHeight = 1054;
+                }
+                // Create canvas
+                const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
+                const ctx = canvas.getContext("2d");
+                // Draw each image on to the canvas
+                for (let j = 0; j < count; j++) {
+                    const img = await Canvas.loadImage(filePaths[j]);
+                    if (count === 2) {
+                        ctx.drawImage(img, 10 + (522 * j), 10, 512, 512);
+                    } else {
+                        ctx.drawImage(img, 10 + (522 * (j % 2)), 10 + (522 * Math.floor(j / 2)), 512, 512);
+                    }
+                }
+                // Create attachment from canvas and send it
+                const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
+
+                const int = await interaction.editReply({
+                    content: responseContent,
+                    files: [attachment],
+                    components: [buttons]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
+                // Peform a NSFW check on the attachment
+                nsfwCheck(interaction, int, prompt, member);
+                // Delete all the image files
+                for (let j = 0; j < count; j++) {
+                    fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
+                }
+            }
+        });
+    }
 }
 
-function notifyError(interaction, member, err) {
+/**
+ * Delete the interaction if the image is NSFW
+ * @param {CommandInteraction} interaction - The interaction object to be edited
+ * @param {Message} int - The message to be checked
+ * @param {string} prompt - The prompt sent by the user
+ * @param {GuildMember} member The member that initiated the command
+ */
+async function nsfwCheck(interaction, int, prompt, member) {
+    // Return if the interaction does not contain any attachments
+    if (!int?.attachments) return;
+    // Get the URL of the image
+    const imgUrl = int.attachments.first().url;
+    // Initialize SightengineClient
+    var Sightengine = new SightengineClient(process.env.SE_USER, process.env.SE_TOKEN);
+    // Check if the image is NSFW
+    Sightengine.checkNudityForURL(imgUrl, function (error, result) {
+        // Edit the interaction if the image is deemed NSFW
+        if (result.safe < 0.30) {
+            if (result.partial_tag === 'chest') return;
+            interaction.editReply({
+                content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
+**Author**: ${member}
+
+Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`,
+                files: [],
+                components: []
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }
+    });
+}
+
+/**
+ * Notifies the user of an error and logs it to the console.
+ * @param {CommandInteraction} interaction - The interaction in which the error occurred.
+ * @param {Member} member - The member that the error occurred for.
+ * @param {string} err - The error message to be displayed to the user.
+ */
+async function notifyError(interaction, member, err) {
+    // Log the error
     console.error(`${path.basename(__filename)} - ${err}`);
-    return interaction.editReply({
-        content: `${member} ${err}, please try again`,
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err)).then(int => {
+    // Notify the user of the error
+    return sendResponse(interaction, `${member} ${err}, please try again`).then(int => {
         setTimeout(() => {
             int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
         }, 7000);
     });
 }
-
-loading = false;
 
 module.exports = {
     name: `txt2img`,
@@ -53,7 +149,6 @@ module.exports = {
         const { options, member } = interaction;
         const prompt = options.getString(`prompt`);
         const count = options.getNumber(`count`);
-        const resolution = options.getString('resolution');
         const cleanPrompt = prompt.slice(0, 36).replace(/[^\w\s]/gi, '');
         const fileName = cleanPrompt.replace(/\s/g, '_');
         const timerStart = new Date();
@@ -66,54 +161,51 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger)
             );
 
-        await interaction.deferReply();
+        await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const filter = ['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'fucking', 'cunt', 'pussy', 'piss', 'shit', 'dick', 'sex', 'anus', 'seduce', 'seductive'];
-
-        for (let i in filter) {
-            const regex = new RegExp(`\\b${filter[i]}\\b`, 'gi');
-            if (regex.test(prompt)) {
-                return interaction.editReply({
-                    content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
-Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // Perform a check on the users prompt for any NSFW words
+        const filter = new Set(['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'fucking', 'cunt', 'pussy', 'piss', 'shit', 'dick', 'sex', 'anus', 'seduce', 'seductive']);
+        for (const word of filter) {
+            if (prompt.includes(word)) {
+                return sendResponse(interaction, `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
+Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning`);
             }
         }
-
-        if (loading) {
-            interaction.editReply({
-                content: `${member} your prompt has been added to the queue`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err))
-            await wait(2000);
-        }
-
-        interaction.editReply({
-            content: `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`,
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        // Delay creating new websocket if there is a prompt still loading
+        if (loading) await sendResponse(interaction, `${member} your prompt has been added to the queue`);
+        await wait(2000);
+        await sendResponse(interaction, `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`);
 
         loading = true;
-        ws = new WebSocket('wss://runwayml-stable-diffusion-v1-5.hf.space/queue/join');
 
-        // Connect to SD websocket
+        // Open a websocket connection with a server
+        ws = new WebSocket(process.env.AI_WSS);
+
         ws.on('open', async function () {
+            // Check if the websocket is ready, notify the user if there is an error
             if (ws.readyState === 1) loading = false;
             if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
+            // Send a websocket request
             const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
             ws.send(JSON.stringify(body));
         });
 
         ws.on('message', async function message(data) {
+            // If the response contains "send_data" send the user's prompt back
             if (data.includes('send_data')) {
+                // Check if the websocket is ready, notify the user if there is an error
                 if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
                 const body = { "fn_index": 1, "data": [`${prompt}`] };
                 ws.send(JSON.stringify(body));
             }
-
+            // If the response contains "process_completed" get the output data that contains the image data
             if (data.includes('process_completed')) {
                 const jsonData = JSON.parse(data.toString());
+                // If there is no data in the parsed data, return an error
                 if (jsonData.output.error) return notifyError(interaction, member, 'could not parse json data');
                 if (!jsonData.output.data) return notifyError(interaction, member, 'an image could not be generated');
 
+                // Get the image data abd add it to the imgBaseArr
                 let imgBaseArr = [];
                 jsonData.output.data[0].forEach(img => {
                     const replace = img.replace(/(\r\n|\n|\r)/gm, '');
@@ -121,169 +213,17 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
                 });
 
                 const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
-
+                // If count is greater than 1, create a canvas for the images
                 if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
+                // Create an attachment from the single image, send it and perform a NSFW check
                 if (!count || count === 1) {
                     if (!imgBaseArr[0]?.data) return notifyError(interaction, member, 'an image could not be generated');
                     const buf = Buffer.from(imgBaseArr[0].data, 'base64');
                     const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
-                    const int = await interaction.editReply({
-                        content: responseContent,
-                        files: [imgOne],
-                        components: [buttons]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                    const int = await sendResponse(interaction, responseContent, [imgOne], [buttons]);
                     nsfwCheck(interaction, int, prompt, member);
                 }
             }
         });
     }
-}
-
-async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
-    if (count === null) return notifyError(interaction, member, 'an image could not be generated');
-    if (count === 2) {
-        if (imgBaseArr.length < 2) {
-            const count = null;
-            interaction.editReply({
-                content: `${member} Not enough results - trying again with count: ${count}`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
-        }
-        const filePath = `./res/temp/${uuidv4()}.png`;
-        const filePath2 = `./res/temp/${uuidv4()}.png`;
-        fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
-            fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
-                // Create canvas based on image count
-                const canvas = Canvas.createCanvas(1054, 532);
-                ctx = canvas.getContext("2d");
-
-                const img = await Canvas.loadImage(filePath);
-                ctx.drawImage(img, 10, 10, 512, 512);
-                const img2 = await Canvas.loadImage(filePath2);
-                ctx.drawImage(img2, 532, 10, 512, 512);
-
-                const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
-
-                const int = await interaction.editReply({
-                    content: responseContent,
-                    files: [attachment],
-                    components: [buttons]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
-
-                nsfwCheck(interaction, int, prompt, member);
-
-                fs.unlink(filePath, (err) => { if (err) console.log(err); });
-                fs.unlink(filePath2, (err) => { if (err) console.log(err); });
-            });
-        });
-    }
-    if (count === 3) {
-        if (imgBaseArr.length < 3) {
-            const count = 2;
-            interaction.editReply({
-                content: `${member} Not enough results - trying again with count: ${count}`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
-        }
-        const filePath = `./res/temp/${uuidv4()}.png`;
-        const filePath2 = `./res/temp/${uuidv4()}.png`;
-        const filePath3 = `./res/temp/${uuidv4()}.png`;
-        fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
-            fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
-                fs.writeFile(filePath3, imgBaseArr[2].data, 'base64', async function () {
-                    // Create canvas based on image count
-                    const canvas = Canvas.createCanvas(1054, 1054);
-                    ctx = canvas.getContext("2d");
-
-                    const img = await Canvas.loadImage(filePath);
-                    ctx.drawImage(img, 10, 10, 512, 512);
-                    const img2 = await Canvas.loadImage(filePath2);
-                    ctx.drawImage(img2, 532, 10, 512, 512);
-                    const img3 = await Canvas.loadImage(filePath3);
-                    ctx.drawImage(img3, 10, 532, 512, 512);
-
-                    const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
-
-                    const int = await interaction.editReply({
-                        content: responseContent,
-                        files: [attachment],
-                        components: [buttons]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
-
-                    nsfwCheck(interaction, int, prompt, member);
-
-                    fs.unlink(filePath, (err) => { if (err) console.log(err); });
-                    fs.unlink(filePath2, (err) => { if (err) console.log(err); });
-                    fs.unlink(filePath3, (err) => { if (err) console.log(err); });
-                });
-            });
-        });
-    }
-    if (count === 4) {
-        if (imgBaseArr.length !== 4) {
-            const count = 3;
-            interaction.editReply({
-                content: `${member} Not enough results - trying again with count: ${count}`,
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-            return createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
-        }
-        const filePath = `./res/temp/${uuidv4()}.png`;
-        const filePath2 = `./res/temp/${uuidv4()}.png`;
-        const filePath3 = `./res/temp/${uuidv4()}.png`;
-        const filePath4 = `./res/temp/${uuidv4()}.png`;
-        fs.writeFile(filePath, imgBaseArr[0].data, 'base64', async function () {
-            fs.writeFile(filePath2, imgBaseArr[1].data, 'base64', async function () {
-                fs.writeFile(filePath3, imgBaseArr[2].data, 'base64', async function () {
-                    fs.writeFile(filePath4, imgBaseArr[3].data, 'base64', async function () {
-                        // Create canvas based on image count
-                        const canvas = Canvas.createCanvas(1054, 1054);
-                        ctx = canvas.getContext("2d");
-
-                        const img = await Canvas.loadImage(filePath);
-                        ctx.drawImage(img, 10, 10, 512, 512);
-                        const img2 = await Canvas.loadImage(filePath2);
-                        ctx.drawImage(img2, 532, 10, 512, 512);
-                        const img3 = await Canvas.loadImage(filePath3);
-                        ctx.drawImage(img3, 10, 532, 512, 512);
-                        const img4 = await Canvas.loadImage(filePath4);
-                        ctx.drawImage(img4, 532, 532, 512, 512);
-
-                        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
-
-                        const int = await interaction.editReply({
-                            content: responseContent,
-                            files: [attachment],
-                            components: [buttons]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a sending an interaction: `, err));
-
-                        nsfwCheck(interaction, int, prompt, member);
-
-                        fs.unlink(filePath, (err) => { if (err) console.log(err); });
-                        fs.unlink(filePath2, (err) => { if (err) console.log(err); });
-                        fs.unlink(filePath3, (err) => { if (err) console.log(err); });
-                        fs.unlink(filePath4, (err) => { if (err) console.log(err); });
-                    });
-                });
-            });
-        });
-    }
-}
-
-async function nsfwCheck(interaction, int, prompt, member) {
-    if (!int?.attachments) return;
-    const imgUrl = int.attachments.first().url;
-    var Sightengine = new SightengineClient(process.env.SE_USER, process.env.SE_TOKEN);
-    Sightengine.checkNudityForURL(imgUrl, function (error, result) {
-        if (result.safe < 0.30) {
-            if (result.partial_tag === 'chest') return;
-            interaction.editReply({
-                content: `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
-**Author**: ${member}
-
-Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`,
-                files: [],
-                components: []
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-    });
 }
