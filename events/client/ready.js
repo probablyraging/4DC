@@ -43,9 +43,9 @@ module.exports = {
                     }, 900000);
                 });
         });
+        boostTimer.start();
 
         // Misc intervals
-        boostTimer.start();
         mutesCheck(message, client, Discord);
         statusCounter(client);
         spotlightCheck(client);

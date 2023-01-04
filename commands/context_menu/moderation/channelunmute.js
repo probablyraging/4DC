@@ -35,8 +35,7 @@ module.exports = {
         let log = new EmbedBuilder()
             .setColor("#4fe059")
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
-            .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
-**Channel:** ${channel}`)
+            .setDescription(`**Member:** ${target?.tag} *(${target?.id})* \n**Channel:** ${channel}`)
             .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: process.env.LOG_UNMUTE })
             .setTimestamp();
 

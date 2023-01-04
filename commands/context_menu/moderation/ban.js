@@ -11,6 +11,8 @@ module.exports = {
      */
     async execute(interaction) {
         const target = await interaction.guild.members.fetch(interaction.targetId).catch(() => { });
+        
+        // If no target
         if (!target) return sendReply(interaction, `${process.env.BOT_DENY} This user no longer exists`);
 
         const modal = new ModalBuilder()
