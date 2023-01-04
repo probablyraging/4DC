@@ -25,48 +25,57 @@ let loading = false;
 async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
     // Return if there was an error generating an image
     if (count === null) return notifyError(interaction, member, 'an image could not be generated');
-    // Create an array to store file paths for each image
-    let filePaths = [];
-    for (let i = 0; i < count; i++) {
-        filePaths.push(`./res/temp/${uuidv4()}.png`);
-    }
-    // Write each image to a file and store the file path in the filePaths array
-    for (let i = 0; i < count; i++) {
-        fs.writeFile(filePaths[i], imgBaseArr[i]?.data, 'base64', async function () {
-            if (i === count - 1) {
-                // Determine canvas dimensions based on the number of images
-                let canvasWidth, canvasHeight;
-                if (count === 2) {
-                    canvasWidth = 1054;
-                    canvasHeight = 532;
-                } else {
-                    canvasWidth = 1054;
-                    canvasHeight = 1054;
-                }
-                // Create canvas
-                const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
-                const ctx = canvas.getContext("2d");
-                // Draw each image on to the canvas
-                for (let j = 0; j < count; j++) {
-                    const img = await Canvas.loadImage(filePaths[j]);
-                    if (count === 2) {
-                        ctx.drawImage(img, 10 + (522 * j), 10, 512, 512);
+    try {
+        // Create an array to store file paths for each image
+        let filePaths = [];
+        for (let i = 0; i < count; i++) {
+            filePaths.push(`./res/temp/${uuidv4()}.png`);
+        }
+        // Write each image to a file and store the file path in the filePaths array
+        let numNonUndefinedImages = 0;
+        for (let i = 0; i < count; i++) {
+            if (imgBaseArr[i]?.data == undefined) continue;
+            fs.writeFile(filePaths[i], imgBaseArr[i]?.data, 'base64', async function () {
+                numNonUndefinedImages++;
+                if (i === count - 1) {
+                    // Determine canvas dimensions based on the number of non-undefined images
+                    let canvasWidth, canvasHeight;
+                    if (numNonUndefinedImages === 2) {
+                        canvasWidth = 1054;
+                        canvasHeight = 532;
                     } else {
-                        ctx.drawImage(img, 10 + (522 * (j % 2)), 10 + (522 * Math.floor(j / 2)), 512, 512);
+                        canvasWidth = 1054;
+                        canvasHeight = 1054;
                     }
+                    // Create canvas
+                    const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
+                    const ctx = canvas.getContext("2d");
+                    // Draw each non-undefined image on to the canvas
+                    let k = 0;
+                    for (let j = 0; j < count; j++) {
+                        if (imgBaseArr[j]?.data == undefined) continue;
+                        const img = await Canvas.loadImage(filePaths[j]);
+                        if (numNonUndefinedImages === 2) {
+                            ctx.drawImage(img, 10 + (522 * k), 10, 512, 512);
+                        } else {
+                            ctx.drawImage(img, 10 + (522 * (k % 2)), 10 + (522 * Math.floor(k / 2)), 512, 512);
+                        }
+                        k++;
+                    }
+                    // Create attachment from canvas and send it
+                    const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
+                    const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
+                    // Delete all the image files
+                    for (let j = 0; j < count; j++) {
+                        fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
+                    }
+                    // Peform a NSFW check on the attachment
+                    nsfwCheck(interaction, int, prompt, member);
                 }
-                // Create attachment from canvas and send it
-                const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
-
-                const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
-                // Peform a NSFW check on the attachment
-                nsfwCheck(interaction, int, prompt, member);
-                // Delete all the image files
-                for (let j = 0; j < count; j++) {
-                    fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
-                }
-            }
-        });
+            });
+        }
+    } catch (err) {
+        return sendResponse(interaction, `${member} an error occured while generating your images`)
     }
 }
 
@@ -164,6 +173,7 @@ Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will 
             }
         }
         // Delay creating new websocket if there is a prompt still loading
+        console.log(loading);
         if (loading) await sendResponse(interaction, `${member} your prompt has been added to the queue`);
         await wait(2000);
         await sendResponse(interaction, `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`);

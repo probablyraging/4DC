@@ -6,11 +6,6 @@ const ytNotificationSchema = require('../../../schemas/misc/yt_notification_sche
 const res = new (require("rss-parser"))();
 const path = require('path');
 
-function detectURLs(message) {
-    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
-    return message.match(urlRegex)
-}
-
 /**
  * @param {CommandInteraction} interaction 
  */
