@@ -82,7 +82,7 @@ The guild currently has \`${guildSaves}/3 saves\`
 You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
 
 The server can be bumped once every 2 hours, by anyone
-To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from <#${process.env.SELFROLE_CHAN}>`,
+To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from Channels & Roles`,
                                 ephemeral: true
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
                         }
