@@ -8,7 +8,7 @@ module.exports = {
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
-
+        // Trim the content if they exceed the character limit
         let original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
         let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
 

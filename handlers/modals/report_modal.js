@@ -7,23 +7,21 @@ const path = require('path');
 module.exports = async (interaction) => {
     const { client, user, guild } = interaction;
 
+    const staffChannel = client.channels.cache.get(process.env.STAFF_CHAN);
     let target = interaction.fields.getTextInputValue('input1');
     const reason = interaction.fields.getTextInputValue('input2');
+    const reportId = uuidv4();
 
     // Try to match the modal's username input to an actual member
     guild.members.cache.forEach(member => {
         const split = target.toLowerCase().split('#');
-
         if (member.user.username.toLowerCase() === split[0] && member.user.discriminator === split[1]) {
             target = `<@${member.id}>`;
         } else if (member.user.username.toLowerCase() === split[0]) {
             target = `<@${member.id}> - partial match`
         }
     });
-
-    const reportId = uuidv4();
-    const staffChannel = client.channels.cache.get(process.env.STAFF_CHAN);
-
+    // Don't allow users to spam the report function
     if (!hasCooldown(user.id)) {
         let reportEmbed = new EmbedBuilder()
             .setColor("#E04F5F")
@@ -32,13 +30,10 @@ module.exports = async (interaction) => {
                 { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
             .setFooter({ text: `ID ${user?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp();
-
+        // Get the attachment if one exists and add it to the embed
         const attachment = getAttachment(1);
-
-        if (attachment) {
-            reportEmbed.setImage(attachment)
-        }
-
+        if (attachment) reportEmbed.setImage(attachment);
+        // Create a button for closing the report
         const button = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
@@ -48,9 +43,8 @@ module.exports = async (interaction) => {
             );
 
         await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed], components: [button] }).catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
-
+        // Add the user to the cooldown set and remove them after a given time
         addCooldown(user.id);
-
         setTimeout(() => {
             removeCooldown(user.id);
         }, 60000);

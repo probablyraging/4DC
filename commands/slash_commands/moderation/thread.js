@@ -50,20 +50,26 @@ module.exports = {
             }
 
             case 'close': {
+                // Close the thread
                 await channel.edit({ archived: true, locked: true });
                 sendResponse(interaction, `${process.env.BOT_CONF} Thread has been closed`);
                 break;
             }
 
             case 'delete': {
-                const threadOwner = await guild.members.fetch(channel.ownerId);
-                if (!threadOwner) sendResponse(interaction, `${process.env.BOT_DENY} The owner of this thread is no longer in the server`);
-                await threadOwner.send({
-                    content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
-                }).catch(() => {
-                    sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM`);
-                });
+                // Delete the channel
                 await channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread: `, err));
+                // If a thread owner is found, send them a notification
+                const threadOwner = await guild.members.fetch(channel.ownerId);
+                if (threadOwner) {
+                    await threadOwner.send({
+                        content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
+                    }).catch(() => {
+                        // If there was an issue sending the thread owner a notification
+                        sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM. They may no longer be in the server`);
+                    });
+                }
+                sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted`);
                 break;
             }
         }

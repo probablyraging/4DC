@@ -18,7 +18,7 @@ module.exports = {
     /**
     * @param {CommandInteraction} interaction
     */
-    async execute(interaction, client) {
+    async execute(interaction) {
         const { guild, options } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));

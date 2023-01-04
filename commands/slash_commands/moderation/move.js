@@ -1,4 +1,5 @@
 const { ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 /**
@@ -69,8 +70,9 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const { client, user, guild, channel, options } = interaction;
+        const { guild, channel, options } = interaction;
 
+        const destinationChannel = options.getChannel('channel');
         // Get the message IDs of all options
         const messageIds = [
             options.getString('message'),
@@ -80,50 +82,25 @@ module.exports = {
             options.getString('message5')
         ].filter(Boolean);
 
-        const destinationChannel = options.getChannel('channel');
-
         // Make sure the bot has the correct permissions in both channels
         const channels = [channel, destinationChannel];
-        if (!channels.every(c => guild.members.me.permissionsIn(c).has('ManageMessages') && guild.members.me.permissionsIn(c).has('SendMessages') && guild.members.me.permissionsIn(c).has('ViewChannel'))) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} I do not have the necessary permissions in one or more of the specified channels`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (!channels.every(c => guild.members.me.permissionsIn(c).has('ManageMessages') && guild.members.me.permissionsIn(c).has('SendMessages') && guild.members.me.permissionsIn(c).has('ViewChannel')))
+            return sendResponse(interaction, `${process.env.BOT_DENY} I do not have the necessary permissions in one or more of the specified channel`);
         // Fetch all messages from the target channel
         const fetchedMessages = await channel.messages.fetch();
-
         // Make sure the destination channel is a text channel
-        if (destinationChannel.type !== 0) {
-            return interaction.reply({
-                content: `${process.env.BOT_DENY} You can't move a message to a ${destinationChannel.type === 2 ? 'voice channel' : 'category'}`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (destinationChannel.type !== 0) return sendResponse(interaction, `${process.env.BOT_DENY} You can't move a message to a ${destinationChannel.type === 2 ? 'voice channel' : 'category'}`);
         // Filter the messages to only include the ones that the user specified and filter if they return null
         const messagesToMove = messageIds.map(id => fetchedMessages.get(id)).filter(Boolean);
-
         // If there are no messages to move
-        if (messagesToMove.length === 0) {
-            return interaction.reply({
-                content: `${process.env.BOT_ERROR} There are no messages to move`,
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
-
+        if (messagesToMove.length === 0) return sendResponse(interaction, `${process.env.BOT_ERROR} There are no messages to move`);
         // Create a webhook and send each message to the destination channel
         for (const [i, message] of messagesToMove.entries()) {
             const attachments = message.attachments.map(attachment => attachment.url);
             await sendMessageWithWebhook(destinationChannel, message, attachments);
             message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
-
         // Send a confirmation message in the original channel
-        interaction.reply({
-            content: `${process.env.BOT_CONF} ${messagesToMove.length} messages moved to ${destinationChannel}`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} ${messagesToMove.length} messages moved to ${destinationChannel}`);
     }
 };

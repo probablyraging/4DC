@@ -81,7 +81,7 @@ module.exports = {
 
             case 'remove': {
                 const target = options.getMember('username');
-                // Fine and remove the user from the database
+                // Find and remove the user from the database
                 await ytNotificationSchema.findOneAndRemove({ userId: target.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
 

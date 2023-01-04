@@ -1,4 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { sendResponse } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -32,28 +33,19 @@ module.exports = {
         const reason = options.getString('reason');
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         let error;
-
-        if (isNaN(target)) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} A user ID must contain only numbers`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        };
-
-        const fetchBan = await guild.bans.fetch(target).catch(() => { error = true });
-
+        // Make sure a user ID is provided
+        if (isNaN(target)) return sendResponse(interaction, `${process.env.BOT_DENY} A user ID must contain only numbers`);
+        // Fetch the target ban
+        const fetchTargetBan = await guild.bans.fetch(target).catch(() => { error = true });
+        // Remove the target ban
         await guild.bans.remove(target, { reason: reason }).catch(() => { error = true });
-
-        if (error) {
-            return interaction.editReply({
-                content: `${process.env.BOT_DENY} ${target} was not found in the ban list`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        }
-
+        // If an error occurs, notify the user
+        if (error) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} was not found in the ban list`);
         // Log to channel
         let log = new EmbedBuilder()
             .setColor("#4fe059")
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-            .setDescription(`**Member:** ${fetchBan.user.tag} *(${fetchBan.user.id})*
+            .setDescription(`**Member:** ${fetchTargetBan.user.tag} *(${fetchTargetBan.user.id})*
         **Reason:** ${reason}`)
             .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: process.env.LOG_UNBAN })
             .setTimestamp();
@@ -62,8 +54,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        interaction.editReply({
-            content: `${process.env.BOT_CONF} ${fetchBan.user.tag} was unbanned from the server`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
+        sendResponse(interaction, `${process.env.BOT_CONF} ${fetchTargetBan.user.tag} was unbanned from the server`);
     }
 }

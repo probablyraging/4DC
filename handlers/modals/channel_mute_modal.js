@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { dbUpdateOne } = require('../../utils/utils');
+const { dbUpdateOne, sendResponse } = require('../../utils/utils');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -16,39 +16,24 @@ module.exports = async (interaction) => {
     let fetchedMember;
     guild.members.cache.forEach(member => {
         const split = target.toLowerCase().split('#');
-
         if (member.user.username.toLowerCase() === split[0] && member.user.discriminator === split[1]) {
             fetchedMember = member;
         }
     });
-
-    if (!fetchedMember) {
-        return interaction.reply({
-            content: `The user your are trying to mute doesn't exist`,
-            ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-    }
-
+    // If no member could be found
+    if (!fetchedMember) return sendResponse(interaction, `${process.env.BOT_DENY} The user your are trying to mute doesn't exist`);
+    // Update the user's channel permissions
     channel.permissionOverwrites.edit(fetchedMember?.user.id, {
         SendMessages: false,
     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-
+    // If a duration was provided, get a timestamp for when the mute should expire and update the database
     if (duration > 0) {
         const myDate = new Date();
         const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
-
         await dbUpdateOne(muteSchema, { userId: fetchedMember?.user.id }, { userId: fetchedMember?.user.id, timestamp, channelId: channel.id });
     }
 
-    if (!duration || duration === '0') {
-        duration = 'Permanent';
-    } else {
-        if (duration > 1) {
-            duration = `${duration} hours`;
-        } else {
-            duration = `${duration} hour`;
-        }
-    }
+    duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 
     // Log to channel
     let log = new EmbedBuilder()
@@ -65,8 +50,5 @@ module.exports = async (interaction) => {
         embeds: [log]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-    interaction.reply({
-        content: `${process.env.BOT_CONF} ${fetchedMember} was muted in ${channel}`,
-        ephemeral: true
-    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+    sendResponse(interaction, `${process.env.BOT_CONF} ${fetchedMember} was muted in ${channel}`);
 }

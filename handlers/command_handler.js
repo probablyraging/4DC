@@ -2,20 +2,18 @@ const { promisify } = require('util');
 const { glob } = require('glob');
 const PG = promisify(glob);
 
-module.exports = async (client, Discord) => {
+module.exports = async (client) => {
     commandsArr = [];
     // globalCom = [];
     (await PG(`${process.cwd()}/commands/*/*/*.js`)).map(async (file) => {
         let command = require(file);
         client.commands.set(command.name, command);
         if (command.name !== 'rank') commandsArr.push(command);
-        // if (command.name === 'rank') {
-        //     globalCom.push(command)
-        // }
+        // if (command.name === 'rank') globalCom.push(command)
     });
     client.on('ready', async () => {
         const guild = await client.guilds.cache.get(process.env.GUILD_ID);
         guild.commands.set(commandsArr);
-        // client.application.commands.set(globalCom)
+        // client.application.commands.set(globalCom);
     });
 }

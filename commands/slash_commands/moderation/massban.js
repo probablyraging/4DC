@@ -7,8 +7,8 @@ const { EmbedBuilder } = require('discord.js');
  * Deny a mass ban request.
  *
  * @param {CommandInteraction} interaction
- * @param {String} users The users to ban
- * @param {String} reason The reason for banning the users
+ * @param {string} users The users to ban
+ * @param {string} reason The reason for banning the users
  */
 async function banUsers(interaction, users, reason) {
     let { guild } = interaction;

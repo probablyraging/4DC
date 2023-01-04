@@ -50,19 +50,19 @@ module.exports = {
             const canvas = Canvas.createCanvas(930, 280);
             const ctx = canvas.getContext("2d");
 
-            // stretch background to the size of the canvas
+            // Stretch background to the size of the canvas
             ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-            // draw an opaque rectangle ontop of image
+            // Draw an opaque rectangle ontop of image
             ctx.fillStyle = "rgba(0,0,0,0.5)";
             ctx.fillRect(20, 30, canvas.width - 40, canvas.height - 60);
 
-            // not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
+            // Not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
             ctx.font = "36px grotesk";
             ctx.fillStyle = "#44eaff";
             ctx.fillText(`Rank ${level}`, 243, 90);
 
-            // try to compensate for long usernames
+            // Try to compensate for long usernames
             let userDiscrim = username + "#" + discrim;
             if (userDiscrim.length > 25) {
                 ctx.font = "30px grotesk";
@@ -75,7 +75,7 @@ module.exports = {
             ctx.fillStyle = "#ffffff";
             ctx.fillText(userDiscrim, 243, 140);
 
-            // k formatter for numbers greater than 999
+            // Format numbers greater than 999
             let xp2 = kFormatter(xxxp);
             let xp3 = kFormatter(xxp);
             let count = kFormatter(msgCount);
@@ -91,18 +91,18 @@ module.exports = {
             ctx.fillStyle = "#ffffff";
             ctx.fillText(`Tokens: ${tokenBal}`, 243, 220);
 
-            // message count
+            // Message count
             ctx.font = "22px grotesk";
             ctx.fillStyle = "#ffffff";
             ctx.fillText(`Message Count: ${count}`, 243, 190);
 
-            // current xp and xp needed
+            // Current xp and xp needed
             ctx.font = "16px grotesk";
             ctx.fillStyle = "#ffffff";
             ctx.textAlign = 'center';
             ctx.fillText(`${xp3} / ${xp2}`, 798, 149);
 
-            // position in the leaderboard
+            // Position in the leaderboard
             if (rankPos.length >= 5) {
                 ctx.font = "45px grotesk";
             } else if (rankPos.length >= 3) {
@@ -111,17 +111,17 @@ module.exports = {
                 ctx.font = "60px grotesk";
             }
 
-            // flip the canvas so the XP bar fills counter-clockwise
+            // Flip the canvas so the XP bar fills counter-clockwise
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
             const percentage = Math.floor((xxp / xxxp) * 100);
-            // outter XP bar
+            // Outter XP bar
             ctx.beginPath();
             ctx.lineWidth = 30;
             ctx.strokeStyle = "#484B4E";
             ctx.arc(130, 142, 75, 0, 2 * Math.PI, true);
             ctx.stroke();
-            // inner XP bar
+            // Inner XP bar
             ctx.beginPath();
             ctx.lineWidth = 20;
             ctx.strokeStyle = "#44eaff";
@@ -131,7 +131,7 @@ module.exports = {
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
 
-            // draw a rounded rectangle to crop our avatar into
+            // Draw a rounded rectangle to crop our avatar into
             function roundedImage(x, y, width, height, radius) {
                 ctx.beginPath();
                 ctx.moveTo(x + radius, y);
@@ -147,7 +147,7 @@ module.exports = {
             }
             roundedImage(55, 55, 170, 170, 50);
             ctx.clip();
-            // get a small res version of the user's avatar and draw it onto the canvas
+            // Get a small res version of the user's avatar and draw it onto the canvas
             const avatarURL = target?.user.displayAvatarURL() + "?size=128";
             const avatar = await Canvas.loadImage(avatarURL.replace('webp', 'png'));
             ctx.drawImage(avatar, 55, 55, 170, 170);

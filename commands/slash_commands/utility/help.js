@@ -39,12 +39,13 @@ module.exports = {
                     .setStyle(ButtonStyle.Danger)
             );
 
+        // Send the user a DM containing the help embed
         let error;
         await member.send({
             embeds: [embed],
             components: [btn]
         }).catch(() => { error = true });
-
+        // If an error occurs, the user needs to enable DMs
         if (error) {
             return interaction.editReply({
                 content: `To view the help menu, please enable your DMs. To do this, go to **User Settings > Privacy & Safety > Allow direct messages from server members**. Once you have enabled DMs, click the continue button below`

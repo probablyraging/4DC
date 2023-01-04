@@ -1,7 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
-
 module.exports = async (interaction) => {
-    const { client, guild, channel, user, member } = interaction;
+    const { channel, user } = interaction;
     await interaction.deferUpdate();
     // Delete image button
     if (interaction.customId === 'delete-image') {
