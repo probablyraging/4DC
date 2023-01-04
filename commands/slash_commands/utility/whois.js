@@ -16,53 +16,14 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     execute(interaction) {
-        const { guild, member, options } = interaction;
+        const { member, options } = interaction;
 
         const target = options.getMember(`username`) || member
 
-        let acknowledgements = 'None'
-        let permissions = [];
+        const acknowledgements = target.permissions.has("Administrator") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
+        const permissions = ["BanMembers", "ModerateMembers", "KickMembers", "ManageMessages", "ManageChannels", "MentionEveryone", "ManageNicknames", "ManageRoles", "DeafenMembers"].filter(perm => target.permissions.has(perm));
 
-        if (target?.permissions.has("Administrator")) {
-            permissions.push("Administrator");
-            acknowledgements = 'Administrator';
-        }
-        if (target?.permissions.has("BanMembers")) {
-            permissions.push("Ban Members");
-        }
-        if (target?.permissions.has("ModerateMembers")) {
-            permissions.push("Moderate Members");
-        }
-        if (target?.permissions.has("KickMembers")) {
-            permissions.push("Kick Members");
-        }
-        if (target?.permissions.has("ManageMessages")) {
-            permissions.push("Manage Messages");
-            acknowledgements = 'Moderator';
-        }
-        if (target?.permissions.has("ManageChannels")) {
-            permissions.push("Manage Channels");
-        }
-        if (target?.permissions.has("MentionEveryone")) {
-            permissions.push("Mention Everyone");
-        }
-        if (target?.permissions.has("ManageNicknames")) {
-            permissions.push("Manage Nicknames");
-        }
-        if (target?.permissions.has("ManageRoles")) {
-            permissions.push("Manage Roles");
-            acknowledgements = 'Administrator';
-        }
-        if (target?.permissions.has("DeafenMembers")) {
-            permissions.push("Deafen Members");
-            acknowledgements = 'Administrator';
-        }
-        if (permissions?.length == 0) {
-            permissions.push("No Key Permissions Found");
-        }
-        if (target?.id == interaction.guild.ownerId) {
-            acknowledgements = 'Server Owner';
-        }
+        if (permissions.length == 0) permissions.push("No Key Permissions Found");
 
         if (target?.presence?.status === 'online') targetStatus = 'Online';
         if (target?.presence?.status === 'idle') targetStatus = 'Idle';
@@ -87,16 +48,15 @@ module.exports = {
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setColor('Random')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
-            .addFields({ name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}>
-*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
-                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}>
-*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
+            .addFields(
+                { name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
+                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}> \n*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
                 { name: `Acknowledgements`, value: `${acknowledgements}`, inline: false },
                 { name: `Permissions`, value: `${permissions.join(`, `)}`, inline: false })
             .setFooter({ text: target?.id })
             .setTimestamp()
 
-        if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false});
+        if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false });
 
         interaction.reply({
             embeds: [response],
