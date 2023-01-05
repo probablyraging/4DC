@@ -14,53 +14,31 @@ module.exports = async (message, client) => {
 
     // Content share
     if (message?.channel.id === process.env.CONTENT_SHARE) {
-        let found = false;
-        await promoChan.messages.fetch({ limit: 5 }).then(messages => {
-            messages.forEach(async message => {
-                if (message.author.id === client.user.id && message.content.includes('friendly reminder')) {
-                    found = true;
-                    if (found) {
-                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        promoChan.send({
-                            content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by networking with other creators on the server. Feel free to come introduce yourself and meet the other server members in <#820889004055855147> :warning:`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                    }
-                }
-            });
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching message: `, err));
-
-        if (!found) {
-            promoChan.send({
+        try {
+            const messages = await promoChan.messages.fetch({ limit: 5 });
+            const messageFound = messages.find(m => m.author.id === client.user.id && m.content.includes('friendly reminder'));
+            if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+            await promoChan.send({
                 content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by networking with other creators on the server. Feel free to come introduce yourself and meet the other server members in <#820889004055855147> :warning:`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }).catch(err => console.error(`There was a problem sending a message: `, err));
+        } catch (err) {
+            console.error(`There was a problem fetching messages in the content share channel: `, err);
         }
     }
 
     // Premium Ads
     if (message?.channel.id === process.env.PREM_CHAN) {
-        let found = false;
-        await premChan.messages.fetch({ limit: 5 }).then(messages => {
-            messages.forEach(async message => {
-                if (message.author.id === client.user.id && message.content.includes('purchase an ad spot')) {
-                    found = true;
-                    if (found) {
-                        message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                            webhook.send({
-                                content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Take a look at [this post](https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473)`,
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-                    }
-                }
-            });
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching message: `, err));
-
-        if (!found) {
-            premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+        try {
+            const messages = await premChan.messages.fetch({ limit: 5 });
+            const messageFound = messages.find(m => m.content.includes('purchase an ad spot'));
+            if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+            await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
                     content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Take a look at [this post](https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473)`,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+        } catch (err) {
+            console.error(`There was a problem fetching messages in the premium ad channel: `, err);
         }
     }
 }
