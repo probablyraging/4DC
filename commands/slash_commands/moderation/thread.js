@@ -57,8 +57,6 @@ module.exports = {
             }
 
             case 'delete': {
-                // Delete the channel
-                await channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread: `, err));
                 // If a thread owner is found, send them a notification
                 const threadOwner = await guild.members.fetch(channel.ownerId);
                 if (threadOwner) {
@@ -66,10 +64,12 @@ module.exports = {
                         content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
                     }).catch(() => {
                         // If there was an issue sending the thread owner a notification
-                        sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM. They may no longer be in the server`);
+                        await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM. They may no longer be in the server`);
                     });
                 }
-                sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted`);
+                await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted`);
+                // Delete the channel
+                channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread: `, err));
                 break;
             }
         }
