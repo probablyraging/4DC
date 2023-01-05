@@ -41,7 +41,7 @@ module.exports = async (message, client) => {
                     const results = await countingSchema.find({ userId: bumpUser });
                     // if user doesn't have an entry yet
                     if (results.length === 0) {
-                        await await dbCreate(countingSchema, { userId: bumpUser, saves: 0, counts: 0 });
+                        await dbCreate(countingSchema, { userId: bumpUser, saves: 0, counts: 0 });
 
                         const results = await countingSchema.find({ userId: bumpUser });
 
@@ -73,7 +73,7 @@ module.exports = async (message, client) => {
                     const results2 = await tokensSchema.find({ userId: bumpUser });
 
                     // Check to see if the user is in our database yet, if not, add them
-                    if (results2.length === 0) {
+                    if (!results2.length === 0) {
                         await dbCreate(tokensSchema, { userId: bumpUser, tokens: 5 });
                         // Log when a user's tokens increase or decrease
                         tokenLog.send({
@@ -89,24 +89,21 @@ module.exports = async (message, client) => {
                         // Hard cap of earning 75 tokens per day
                         if (isNaN(dailyTokens)) dailyTokens = 0;
                         if ((75 - dailyTokens) < 5) {
-                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + (75 - dailyTokens), dailyTokens: dailyTokens + (75 - dailyTokens) });
-
+                            // Calculate the tokens to be added
+                            const tokensToAdd = (75 - dailyTokens) < 0 ? 0 : 75 - dailyTokens;
+                            // Update the database entry
+                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + tokensToAdd, dailyTokens: dailyTokens + tokensToAdd });
                             // Log when a user's tokens increase or decrease
-                            if ((75 - dailyTokens) > 0) {
-                                tokenLog.send({
-                                    content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${75 - dailyTokens}** tokens for bumping the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                                tokenMessage = `You've already earned the max tokens for today`;
-                            } else {
-                                tokenMessage = `You earned \`${75 - dailyTokens}\` tokens for the tokens store`;
-                            }
+                            tokenLog.send({
+                                content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${tokensToAdd}** tokens for bumping the server, they now have **${tokens + tokensToAdd}** tokens`,
+                                allowedMentions: {
+                                    parse: []
+                                }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            tokenMessage = (75 - dailyTokens) !== 0 ? `You earned \`${75 - dailyTokens}\` tokens for the tokens store` : `You've already earned the max tokens for today`;
                         } else {
+                            // Update the database entry
                             await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + 5, dailyTokens: dailyTokens + 5 });
-
                             // Log when a user's tokens increase or decrease
                             tokenLog.send({
                                 content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **${tokens + 5}** tokens`,
@@ -114,7 +111,6 @@ module.exports = async (message, client) => {
                                     parse: []
                                 }
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
                             tokenMessage = `You earned \`5\` tokens for the tokens store`;
                         }
                     }
