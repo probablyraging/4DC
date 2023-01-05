@@ -79,7 +79,8 @@ module.exports = {
                 'gifttemp': storeTempButton,
                 'misc': storeMiscButton,
                 'giftmisc': storeMiscButton,
-                'info': storeInfoButton
+                'info': storeInfoButton,
+                'help': helpButton
             };
             // Handle tokens store buttons
             if (customIdPrefix in tokensStoreButtons) tokensStoreButtons[customIdPrefix](interaction);
@@ -87,8 +88,7 @@ module.exports = {
             // A map of customIds for misc buttons
             const miscButtons = {
                 'report-close': reportButton,
-                'delete-image': reportImageButton,
-                'help': helpButton
+                'delete-image': reportImageButton
             };
             // Handle misc buttons
             if (customId in miscButtons) miscButtons[customId](interaction);
