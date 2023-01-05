@@ -56,28 +56,28 @@ module.exports = {
         switch (options.getSubcommand()) {
             case 'save': {
                 // Fetch the user and guild saves from the database
-                const userResults = await countingSchema.find({ userId: member.id })
+                const userResults = await countingSchema.findOne({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 // If the user doesn't have a database entry yet, creat one
-                if (userResults.length === 0) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
+                if (!userResults) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
                 // Fetch the user and guild save count
                 getSaves(interaction, guild, userResults);
                 break;
             }
 
             case 'donatesave': {
-                let savesToAdd = options.getNumber('amount');
+                const savesToAdd = options.getNumber('amount');
                 // Fetch the user and guild saves from the database
-                const userResults = await countingSchema.find({ userId: member.id })
+                const userResults = await countingSchema.findOne({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-                const guildResults = await countingSchema.find({ userId: guild.id })
+                const guildResults = await countingSchema.findOne({ userId: guild.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
 
-                const userCurrentSaves = userResults[0]?.saves;
-                const guildCurrentSaves = guildResults[0].saves;
+                const userCurrentSaves = userResults?.saves;
+                const guildCurrentSaves = guildResults?.saves;
 
                 // If the user doesn't have a database entry yet
-                if (userResults.length === 0) return sendResponse(interaction, `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`);
+                if (!userResults) return sendResponse(interaction, `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`);
                 // If the user doesn't have any saves
                 if (userCurrentSaves === 0) return sendResponse(interaction, `You have \`0 saves\`. Learn how to earn saves by using the \`/counting save\` command`);
                 // If the amount of saves to donate is more than the max allowed guild saves
@@ -93,7 +93,8 @@ module.exports = {
                 await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildCurrentSaves + (savesToAdd / 4) });
 
                 // Send a confirmation message to the game channel
-                client.channels.cache.get(process.env.COUNT_CHAN).send({
+                const countingChan = client.channels.cache.get(process.env.COUNT_CHAN);
+                countingChan.send({
                     content: `${member} donated \`${savesToAdd} personal save\`. The guild now has \`${guildCurrentSaves + (savesToAdd / 4)}/3 saves\``,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false

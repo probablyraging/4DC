@@ -31,22 +31,21 @@ module.exports = {
         // Don't allow tokens to be added to bot users
         if (targetUser.bot) return sendResponse(interaction, `${process.env.BOT_DENY} This user is a bot`);
 
-        // Fetch the user's db entry
-        const results = await tokensSchema.find({ userId: targetUser.id });
+        // Fetch the staff and user database entry
+        const staffTokens = await tokensSchema.findOne({ userId: member.id });
+        const userTokens = await tokensSchema.findOne({ userId: targetUser.id });
 
         // If staff already awarded someone today
-        if (results[0].availableAward === false) return sendResponse(interaction, `${process.env.BOT_DENY} You have already given out your daily award. You can only give one award per day`);
+        if (staffTokens.availableAward === false) return sendResponse(interaction, `${process.env.BOT_DENY} You have already given out your daily award. You can only give one award per day`);
 
         // Check to see if the user is in our database yet, if not, add them
-        if (results.length === 0) {
+        if (!userTokens) {
             await dbCreate(tokensSchema, { userId: targetUser.id, tokens: 10 });
             await dbUpdateOne(tokensSchema, { userId: member.id }, { availableAward: false });
             await addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens);
-        }
-
-        // Add the tokens to the user
-        for (const data of results) {
-            let { tokens } = data;
+        } else {
+            // Add the tokens to the user
+            const { tokens } = userTokens;
             await dbUpdateOne(tokensSchema, { userId: targetUser.id }, { tokens: tokens + 10 });
             await dbUpdateOne(tokensSchema, { userId: member.id }, { availableAward: false });
             await addReactionAndSendLog(targetMessage, tokenLogChannel, targetUser, member, tokens);

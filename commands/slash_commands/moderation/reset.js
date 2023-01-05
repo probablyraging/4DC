@@ -67,7 +67,7 @@ module.exports = {
                     if (message.author.id !== client.user.id) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 });
                 // Remove the spotlight role from all users
-                await spotlightRole.members.each(member => {
+                spotlightRole.members.forEach(member => {
                     member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 });
                 // If no winner was able to be picked

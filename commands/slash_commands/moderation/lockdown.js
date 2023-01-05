@@ -9,14 +9,12 @@ module.exports = {
     cooldown: 3,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `start`,
-        description: `Start a lockdown`,
-        type: ApplicationCommandOptionType.Subcommand
-    },
-    {
-        name: `end`,
-        description: `End a lockdown`,
-        type: ApplicationCommandOptionType.Subcommand,
+        name: `option`,
+        description: `Start or stop lockdown`,
+        type: ApplicationCommandOptionType.String,
+        required: true,
+        choices: [{ name: 'Start', value: 'start' },
+        { name: 'End', value: 'end' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -29,14 +27,14 @@ module.exports = {
         const noticeChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
         const everyone = guild.roles.cache.get(process.env.GUILD_ID);
 
-        switch (options.getSubcommand()) {
+        switch (options.getString('option')) {
             case 'start': {
                 everyone.edit({
-                    permissions: ['ViewChannel', 'CreateInstantInvite', 'AddReactions', 'ReadMessageHistory']
+                    permissions: ['ViewChannel', 'AddReactions', 'ReadMessageHistory']
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `${process.env.BOT_DENY} SERVER LOCKDOWN STARTED`
+                    content: `:warning: SERVER LOCKDOWN STARTED - all server actions are being temporarily restricted`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 sendResponse(interaction, `${process.env.BOT_CONF} Lockdown started`);
@@ -45,12 +43,12 @@ module.exports = {
 
             case 'end': {
                 everyone.edit({
-                    permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Spead', 'Stream', 'UseVAD']
+                    permissions: ['ViewChannel', 'CreateInstantInvite', 'SendMessages', 'SendMessagesInThreads', 'EmbedLinks', 'AttachFiles', 'AddReactions', 'UseExternalEmojis', 'UseExternalStickers', 'ReadMessageHistory', 'UseApplicationCommands', 'Connect', 'Speak', 'Stream', 'UseVAD']
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                noticeChan.send({
-                    content: `${process.env.BOT_CONF} SERVER LOCKDOWN HAD ENDED`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                const messages = await noticeChan.messages.fetch({ limit: 10 });
+                const messageFound = messages.find(m => m.author.id === client.user.id && m.content.includes('lockdown'));
+                if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
 
                 sendResponse(interaction, `${process.env.BOT_CONF} Lockdown ended`);
                 break;

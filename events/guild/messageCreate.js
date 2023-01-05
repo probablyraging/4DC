@@ -42,16 +42,9 @@ module.exports = {
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
         if (message?.channel.id === process.env.GENERAL_CHAN && !message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
 
-        // Delete posts containing tweets in the insider channel
-        if (message?.channel.id === process.env.NEWS_CHAN) {
-            if (message?.content.toLowerCase().includes("tweet")) {
-                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-            }
-        }
-
-        // Delete links in media channel if user is new to the server
+        // Users must be in the server for more than 1 week before they can post links links in the media channels
         const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
-        const oneDay = 24 * 60 * 60 * 1000;
+        const oneDay = 24 * 7 * 60 * 60 * 1000;
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
             for (let i in promoLinks) {
                 if (message?.content.includes(promoLinks[i])) {

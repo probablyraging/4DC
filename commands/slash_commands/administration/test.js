@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold } = require("discord.js");
-const { exec } = require('child_process');
+const { sendReply } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 const path = require("path");
@@ -15,6 +15,10 @@ module.exports = {
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
+        interaction.deferReply({ ephemeral: true });
 
+        
+
+        interaction.deleteReply();
     }
 }

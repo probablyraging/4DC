@@ -30,6 +30,7 @@ module.exports = {
 
         const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
+        // If the command is ran in a thread channel
         if (channel.type === 11) {
             threadId = channel.id
             channel = guild.channels.cache.get(channel.parentId);

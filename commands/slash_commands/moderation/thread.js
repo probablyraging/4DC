@@ -28,7 +28,6 @@ module.exports = {
 
         // Only allow solved and closed to be ran in threads channels in the help and advice forum
         if (!channel.isThread()) return sendResponse(interaction, `${process.env.BOT_DENY} This is not a thread channel`);
-
         // If not deleting a thread and the channel is not in the help and advice forum
         if (option !== 'delete' && channel.parentId !== process.env.HELP_CHAN)
             return sendResponse(interaction, `${process.env.BOT_DENY} This command can only be used in a <#${process.env.HELP_CHAN}> thread`);
@@ -64,7 +63,7 @@ module.exports = {
                         content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
                     }).catch(async () => {
                         // If there was an issue sending the thread owner a notification
-                        await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM. They may no longer be in the server`);
+                        await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM`);
                     });
                 }
                 await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted`);

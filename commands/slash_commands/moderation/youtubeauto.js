@@ -55,15 +55,12 @@ module.exports = {
                     // Store a list of the user's current video IDs
                     const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
                     const items = resolve.items;
-
+                    // Remove the XML markup from video IDs
                     let videoIdArr = [];
-
                     items.forEach(item => {
-                        // Remove the XML markup from video IDs
                         const regex = item.id.replace('yt:video:', '');
-
                         videoIdArr.push(regex);
-                    })
+                    });
                     // Add the new user to the database
                     await dbUpdateOne(ytNotificationSchema, { userId: target.id }, { userId: target.id, channelId: channelId, videoIds: videoIdArr });
 

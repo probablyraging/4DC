@@ -36,10 +36,8 @@ module.exports = {
         switch (options.getSubcommand()) {
             case 'reset': {
                 const results = await rankSchema.find({ id: target?.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
-
                 // If no user matching the target's ID was found in the database
-                if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} I could not find that user in the rank database`);
-                
+                if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} I could not find that user in the rank database`);                
                 // Reset the user's rank data to 0
                 await dbUpdateOne(rankSchema, { id: target?.id }, { level: 0, rank: 0, msgCount: 0, xp: 0, xxp: 0, xxxp: 0 });
 
