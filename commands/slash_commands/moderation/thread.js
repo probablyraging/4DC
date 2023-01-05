@@ -62,7 +62,7 @@ module.exports = {
                 if (threadOwner) {
                     await threadOwner.send({
                         content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`
-                    }).catch(() => {
+                    }).catch(async () => {
                         // If there was an issue sending the thread owner a notification
                         await sendResponse(interaction, `${process.env.BOT_CONF} Thread deleted \nI was unable to send ${threadOwner.user.tag} a DM. They may no longer be in the server`);
                     });
