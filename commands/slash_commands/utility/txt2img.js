@@ -24,7 +24,6 @@ let loading = false;
  */
 async function createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member) {
     // Return if there was an error generating an image
-    if (count === null) return notifyError(interaction, member, 'an image could not be generated');
     try {
         // Create an array to store file paths for each image
         let filePaths = [];
@@ -62,15 +61,24 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                         }
                         k++;
                     }
+                    // If there are no viable images
+                    if (numNonUndefinedImages === 0) {
+                        notifyError(interaction, member, `there was an error generating your images`);
+                        // Delete all the image files
+                        for (let j = 0; j < count; j++) {
+                            fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
+                        }
+                        return;
+                    }
                     // Create attachment from canvas and send it
                     const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
                     const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
+                    // Peform a NSFW check on the attachment
+                    nsfwCheck(interaction, int, prompt, member);
                     // Delete all the image files
                     for (let j = 0; j < count; j++) {
                         fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
                     }
-                    // Peform a NSFW check on the attachment
-                    nsfwCheck(interaction, int, prompt, member);
                 }
             });
         }
@@ -81,9 +89,9 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
 
 /**
  * Delete the interaction if the image is NSFW
- * @param {CommandInteraction} interaction - The interaction object to be edited
- * @param {Message} int - The message to be checked
- * @param {string} prompt - The prompt sent by the user
+ * @param {CommandInteraction} interaction The interaction object to be edited
+ * @param {Message} int The message to be checked
+ * @param {string} prompt The prompt sent by the user
  * @param {GuildMember} member The member that initiated the command
  */
 async function nsfwCheck(interaction, int, prompt, member) {
@@ -108,9 +116,9 @@ Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw
 
 /**
  * Notifies the user of an error and logs it to the console.
- * @param {CommandInteraction} interaction - The interaction in which the error occurred.
- * @param {Member} member - The member that the error occurred for.
- * @param {string} err - The error message to be displayed to the user.
+ * @param {CommandInteraction} interaction The interaction in which the error occurred
+ * @param {GuildMember} member The member that initiated the command
+ * @param {string} err The error message to be displayed to the user
  */
 async function notifyError(interaction, member, err) {
     // Log the error
@@ -118,7 +126,7 @@ async function notifyError(interaction, member, err) {
     // Notify the user of the error
     return sendResponse(interaction, `${member} ${err}, please try again`).then(int => {
         setTimeout(() => {
-            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err))
+            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
         }, 7000);
     });
 }
@@ -164,14 +172,6 @@ module.exports = {
 
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        // Perform a check on the users prompt for any NSFW words
-        const filter = new Set(['naked', 'boobs', 'vagina', 'penis', 'breasts', 'nude', 'porn', 'tits', 'cock', 'dick', 'fucking', 'cunt', 'pussy', 'piss', 'shit', 'dick', 'sex', 'anus', 'seduce', 'seductive']);
-        for (const word of filter) {
-            if (prompt.includes(word)) {
-                return sendResponse(interaction, `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
-Please keep your prompts SFW *(safe for work)*. Using inappropriate promps will result in timeouts or bans without warning`);
-            }
-        }
         // Delay creating new websocket if there is a prompt still loading
         if (loading) await sendResponse(interaction, `${member} your prompt has been added to the queue`);
         await wait(2000);
