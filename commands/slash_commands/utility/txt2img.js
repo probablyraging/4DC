@@ -27,7 +27,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         if (!interaction) return;
         interaction?.fetchReply('@original').then(reply => {
             if (!reply.content.toLowerCase().includes('completed')) {
-                sendResponse(interaction, `${member} yikes, this is taking longer than expected, hold tight`);
+                sendResponse(interaction, `${member} Yikes, this is taking longer than expected, hold tight`);
                 initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
             }
         }).catch(err => console.error('There was a problem fetching an interaction in txt2img: ', err));
