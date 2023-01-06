@@ -48,11 +48,12 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
 /**
  * Creates a single document in a MongoDB collection 
  * @param {Object} model The Mongoose model
+ * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
  */
- async function dbFind(model) {
+ async function dbFind(model, filter) {
     try {
-        const result = await model.find();
+        const result = await model.find(filter);
         return result;
     } catch (err) {
         return console.error(`There was a problem updating a database entry: `, err);
@@ -62,7 +63,7 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
 /**
  * Creates a single document in a MongoDB collection 
  * @param {Object} model The Mongoose model
- * @param {Object} update The update object to specify the changes to be made to the document
+ * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
  */
  async function dbFindOne(model, filter) {
