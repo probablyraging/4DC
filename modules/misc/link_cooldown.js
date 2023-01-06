@@ -14,15 +14,17 @@ module.exports = async (message) => {
     const hasPermission = hasManageMessagesPermission || hasRank5Role || hasVerifiedRole;
 
     if (hasLink && !hasPermission) {
-        if (cooldown.has(author.id)) {
-            message.delete().catch(() => {
-                // An error here is likely due to spam.js having already deleted the message
-            });
-        } else {
-            cooldown.add(author.id);
-            setTimeout(() => {
-                cooldown.delete(author.id);
-            }, 30000);
+        try {
+            if (cooldown.has(author.id)) {
+                message.delete();
+            } else {
+                cooldown.add(author.id);
+                setTimeout(() => {
+                    cooldown.delete(author.id);
+                }, 30000);
+            }
+        } catch (err) {
+            console.error('There was a problem with the link_cooldown module: ', err);
         }
     }
-};
+}

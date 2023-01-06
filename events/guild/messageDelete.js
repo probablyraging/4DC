@@ -23,6 +23,7 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
 
         setTimeout(async () => {
+            // Fetch auditlogs for MessageDelete events
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
                 type: AuditLogEvent.MessageDelete,

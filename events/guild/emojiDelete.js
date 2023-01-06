@@ -8,6 +8,7 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
 
+        // Fetch auditlogs for EmojiDelete events
         const auditLog = await guild.fetchAuditLogs({
             limit: 1,
             type: AuditLogEvent.EmojiDelete
@@ -16,7 +17,7 @@ module.exports = {
         const entry = auditLog.entries.first();
         if (entry.executor.bot || entry.executor.id === process.env.OWNER_ID) return;
 
-        // If a staff member deletes too many roles too suddenly
+        // If a staff member deletes too many emojis too suddenly
         const found = protection.get(entry.executor.id);
 
         if (found) {

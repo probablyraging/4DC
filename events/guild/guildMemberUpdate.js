@@ -11,6 +11,7 @@ module.exports = {
         let error = false;
 
         if (oldMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
+            // Fetch auditlogs for MemberUpdate events
             const fetchedLogs = await guild.fetchAuditLogs({
                 limit: 1,
                 action: AuditLogEvent.MemberUpdate,

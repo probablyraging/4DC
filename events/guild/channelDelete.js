@@ -8,6 +8,7 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
 
+        // Fetch auditlogs for ChannelsDelete events
         const auditLog = await guild.fetchAuditLogs({
             limit: 1,
             type: AuditLogEvent.ChannelDelete

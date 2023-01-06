@@ -1,4 +1,4 @@
-const { Message, AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder } = require('discord.js');
 const Canvas = require("canvas");
 const rankSchema = require('../../schemas/misc/rank_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
@@ -6,10 +6,6 @@ const letterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const tokensSchema =  require('../../schemas/misc/tokens_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
-/**
- * 
- * @param {Message} message 
- */
 
 function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

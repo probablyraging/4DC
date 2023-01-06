@@ -43,7 +43,7 @@ module.exports = async (interaction) => {
 **Channel:** ${channel}
 **Duration:** ${duration}
 **Reason:** ${reason}`)
-        .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: process.env.LOG_NUTE })
+        .setFooter({ text: `Channel Mute • ${uuidv4()}`, iconURL: process.env.LOG_MUTE })
         .setTimestamp();
 
     logChan.send({

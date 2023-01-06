@@ -1,11 +1,62 @@
-const path = require('path');
 const streamSchema = require('../../schemas/misc/stream_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
 const { dbCreate } = require('../../utils/utils');
 const cooldown = new Set();
+const path = require('path');
+
 /**
- * @param {Message} message 
+ * Fetches members that are currently streaming on YouTube or Twitch
+ * @param {Guild} guild The guild to search for live members in
+ * @param {Object} staffRole The staff role to search for live members in
+ * @param {Object} boostRole The booster role to search for live members in
+ * @returns {Array} An array of members who are currently live on YouTube or Twitch
  */
+async function getLiveMembers(guild, staffRole, boostRole) {
+    let liveNowMembers = [];
+    const roles = [staffRole, boostRole];
+    const platforms = ['Twitch', 'YouTube'];
+
+    // Iterate through each role and fetch its members
+    for (const role of roles) {
+        role.members.map(async member => {
+            // Iterate through each member's presence activities
+            for (let i = 0; i < 7; i++) {
+                const activity = member.presence?.activities[i];
+                if (activity && platforms.includes(activity.name)) {
+                    liveNowMembers.push({
+                        username: member.user.username,
+                        id: member.user.id,
+                        platform: activity.name,
+                        url: activity.url,
+                        booster: member.premiumSinceTimestamp != null ? true : false
+                    });
+                }
+            }
+        });
+    }
+    // Find all members in the tokens database with an active twitch auto sub and add them to the array
+    const results = await tokensSchema.find();
+    for (const data of results) {
+        if ((data?.twitchauto - new Date()) > 1 || data?.twitchauto === true) {
+            const member = await guild.members.fetch(data.userId);
+            for (let i = 0; i < 7; i++) {
+                const activity = member.presence?.activities[i];
+                if (activity && platforms.includes(activity.name)) {
+                    liveNowMembers.push({
+                        username: member.user.username,
+                        id: member.user.id,
+                        platform: activity.name,
+                        url: activity.url,
+                        booster: member.premiumSinceTimestamp != null ? true : false
+                    });
+                }
+            }
+        }
+    }
+    // Filter out any duplicates and 'undefined' items
+    return liveNowMembers.filter((obj, index, array) => array.findIndex((t) => t.id === obj.id) === index);
+}
+
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
@@ -14,183 +65,64 @@ module.exports = async (client) => {
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
 
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
-    const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
+    const contentShareChan = guild.channels.cache.get(process.env.CONTENT_SHARE);
 
-    function filterArr(value, index, self) {
-        return self.indexOf(value) === index;
-    }
-
+    // Fetch live streaming mmbers
     setInterval(async () => {
-        // Staff member check
-        liveStaff = [];
+        let liveNowMembers = await getLiveMembers(guild, staffRole, boostRole);
 
-        await staffRole?.members?.forEach(async member => {
-            for (let i = 0; i < 7; i++) {
-                if (member?.presence?.activities[i]?.url && (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube')) {
-                    liveStaff.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
-                }
-            }
-        });
+        try {
+            await Promise.all(liveNowMembers.map(async (liveMember) => {
+                const { id } = liveMember;
+                const results = await streamSchema.findOne({ userId: id });
 
-        let liveStaffArr = liveStaff.filter(filterArr);
-
-        for (let i = 0; i < liveStaffArr?.length; i++) {
-            const userId = liveStaffArr[i]?.id;
-
-            const results = await streamSchema.find({ userId: userId })
-
-            if (results?.length < 1) {
-                await dbCreate(streamSchema, { userId });
-
-                guild.members.cache.get(liveStaffArr[i]?.id).roles.add(liveRole)
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-
-                // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
-                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveStaffArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
-                });
-                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveStaffArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
-                });
-
-                if (!cooldown.has(liveStaffArr[i]?.id)) {
-                    if (liveStaffArr[i]?.url === null) return;
-                    contentShare.send({ content: `**${liveStaffArr[i]?.username}** just went live - ${liveStaffArr[i]?.url}` })
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                    // we only allow the bot to send one notification every 6 hours
-                    cooldown.add(liveStaffArr[i]?.id)
-
-                    setTimeout(() => {
-                        cooldown.delete(liveStaffArr[i]?.id)
-                    }, 1000 * 21600);
-                }
-            }
-        }
-
-        // Tokens item check
-        const results = await tokensSchema.find();
-
-        let liveMember = [];
-
-        await results.forEach(async result => {
-            if ((result?.twitchauto - new Date()) > 1 || result?.twitchauto === true) {
-                const member = await guild.members.fetch(result.userId);
-                for (let i = 0; i < 7; i++) {
-                    if (member?.presence?.activities[i]?.url && (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube')) {
-                        liveMember.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
+                // If this user isn't already in the livenow database
+                if (!results) {
+                    await dbCreate(streamSchema, { userId: id });
+                    guild.members.cache.get(id).roles.add(liveRole);
+                    // If the user isn't already on cooldown
+                    if (!cooldown.has(id)) {
+                        // Check if user has already manually posted their own URL, if so we don't post it
+                        let boostAlreadyPosted = false;
+                        (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
+                            if (message.content.includes(liveMember.url.split('https://www.')[1])) {
+                                boostAlreadyPosted = true;
+                            }
+                        });
+                        let shareAlreadyPosted = false;
+                        (await contentShareChan.messages.fetch({ limit: 5 })).forEach(message => {
+                            if (message.content.includes(liveMember.url.split('https://www.')[1])) {
+                                shareAlreadyPosted = true;
+                            }
+                        });
+                        // If no URL was found, return
+                        if (liveMember.url == null) return;
+                        // Send the URL to the appropriate channels
+                        if (!boostAlreadyPosted && liveMember.booster) boostPromoChan.send({
+                            content: `**${liveMember.username}** just went live - ${liveMember.url}`
+                        });
+                        if (!shareAlreadyPosted) contentShareChan.send({
+                            content: `**${liveMember.username}** just went live - ${liveMember.url}`
+                        });
+                        // Add the user to a cooldown for 6 hours so we only send one live notice
+                        cooldown.add(id);
+                        setTimeout(() => {
+                            cooldown.delete(id);
+                        }, 1000 * 21600);
                     }
                 }
-            }
-        });
-
-        let liveMemberArr = liveMember.filter(filterArr);
-
-        for (let i = 0; i < liveMemberArr?.length; i++) {
-            const userId = liveMemberArr[i]?.id;
-
-            const results2 = await streamSchema.find({ userId: userId })
-
-            if (results2?.length < 1) {
-                await dbCreate(streamSchema, { userId });
-
-                guild.members.cache.get(liveMemberArr[i]?.id).roles.add(liveRole)
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-
-                // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
-                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveMemberArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
-                });
-                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveMemberArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
-                });
-
-                if (!cooldown.has(liveMemberArr[i]?.id)) {
-                    if (liveMemberArr[i]?.url === null) return;
-                    contentShare.send({ content: `**${liveMemberArr[i]?.username}** just went live - ${liveMemberArr[i]?.url}` })
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                    // we only allow the bot to send one notification every 6 hours
-                    cooldown.add(liveMemberArr[i]?.id)
-
-                    setTimeout(() => {
-                        cooldown.delete(liveMemberArr[i]?.id)
-                    }, 1000 * 21600);
-                }
-            }
-        }
-
-        // Booster member check
-        liveBooster = [];
-
-        await boostRole?.members?.forEach(async member => {
-            for (let i = 0; i < 7; i++) {
-                if (member?.presence?.activities[i]?.url && (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube')) {
-                    liveBooster.push({ username: member?.user?.username, id: member?.user?.id, platform: member?.presence?.activities[i]?.name, url: member?.presence?.activities[i]?.url })
-                }
-            }
-        });
-
-        let liveBoosterArr = liveBooster.filter(filterArr);
-
-        for (let i = 0; i < liveBoosterArr?.length; i++) {
-            const userId = liveBoosterArr[i]?.id;
-
-            const results = await streamSchema.find({ userId: userId })
-
-            if (results?.length < 1) {
-                await dbCreate(streamSchema, { userId });
-
-                guild.members.cache.get(liveBoosterArr[i].id).roles.add(liveRole)
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
-
-                // Check if user has already manually posted their own link, if so we don't post it
-                let boostAlreadyPosted = false;
-                let shareAlreadyPosted = false;
-                (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) boostAlreadyPosted = true;
-                });
-                (await contentShare.messages.fetch({ limit: 5 })).forEach(message => {
-                    if (message.content.includes(liveBoosterArr[i]?.url.split('https://www.')[0])) shareAlreadyPosted = true;
-                });
-
-                if (!cooldown.has(liveBoosterArr[i]?.id)) {
-                    if (liveBoosterArr[i]?.url === null) return;
-                    if (!boostAlreadyPosted) boostPromoChan.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                    if (!shareAlreadyPosted) contentShare.send({ content: `**${liveBoosterArr[i]?.username}** just went live - ${liveBoosterArr[i]?.url}` })
-                        .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-
-                    // we only allow the bot to send one notification every 6 hours
-                    cooldown.add(liveBoosterArr[i]?.id)
-
-                    setTimeout(() => {
-                        cooldown.delete(liveBoosterArr[i]?.id)
-                    }, 1000 * 21600);
-                }
-            }
+            }));
+        } catch (error) {
+            console.error(`${path.basename(__filename)} There was a problem with the live_now module: `, error);
         }
     }, 300000);
 
-    // check live now role to see if someone stopped streaming
+    // Check live now role members to see if someone stopped streaming
     setInterval(async () => {
-        const liveNow = new Map();
-
         liveRole?.members?.forEach(async member => {
-            for (let i = 0; i < member?.presence?.activities?.length; i++) {
-                if (member?.presence?.activities[i]?.url && (member?.presence?.activities[i]?.name === 'Twitch' || member?.presence?.activities[i]?.name === 'YouTube')) {
-                    liveNow.set(member?.id);
-                }
-            }
-
-            if (!liveNow.has(member.id)) {
+            const activity = member.presence.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
+            if (!activity) {
                 await streamSchema.findOneAndRemove({ userId: member.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
-
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
             }
         });

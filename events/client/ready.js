@@ -52,7 +52,7 @@ module.exports = {
             for (const file of files) {
                 if (file.endsWith('.png')) {
                     fs.unlink(`./res/temp/${file}`, (err) => {
-                        if (err) throw err;
+                        if (err) console.error('There was a problem deleting a txt2img file: ', err);
                     });
                 }
             }
