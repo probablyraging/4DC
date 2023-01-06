@@ -1,6 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require("discord.js");
-const { sendReply } = require('../../../utils/utils');
-const { addAttachment } = require("../../../modules/misc/report_attachment");
+const { sendReply, addAttachment } = require('../../../utils/utils');
 
 module.exports = {
     name: "report",

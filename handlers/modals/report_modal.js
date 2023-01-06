@@ -1,7 +1,6 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
-const { getAttachment } = require("../../modules/misc/report_attachment");
-const { sendReply } = require('../../utils/utils');
+const { sendReply, getAttachment } = require('../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = async (interaction) => {
