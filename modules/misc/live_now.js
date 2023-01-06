@@ -1,6 +1,6 @@
 const streamSchema = require('../../schemas/misc/stream_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
-const { dbCreate } = require('../../utils/utils');
+const { dbCreate, dbDeleteOne } = require('../../utils/utils');
 const cooldown = new Set();
 const path = require('path');
 
@@ -122,8 +122,8 @@ module.exports = async (client) => {
         liveRole?.members?.forEach(async member => {
             const activity = member.presence.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
             if (!activity) {
-                await streamSchema.findOneAndRemove({ userId: member.id }).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                await dbDeleteOne(streamSchema, { userId: member.id });
             }
         });
     }, 300000);

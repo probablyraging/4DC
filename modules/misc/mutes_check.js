@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { dbDeleteOne } = require('../../utils/utils');
 const muteSchema = require('../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -8,7 +9,8 @@ module.exports = async (message, client, Discord) => {
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
     setInterval(async () => {
-        const results = await muteSchema.find({ timestamp: { $gt: 0 } }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err) });
+        // Fetch all currently muted users from the database
+        const results = await muteSchema.find().catch(err => { return console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err) });
 
         for (const data of results) {
             const { timestamp, userId, channelId } = data;
@@ -17,11 +19,12 @@ module.exports = async (message, client, Discord) => {
             const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
 
             if (nowTime > timestamp) {
-                await muteSchema.findOneAndRemove({ userId }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err) });
+                // if the timestamp has expired, delete the database entry and remove the mute
+                await dbDeleteOne(muteSchema, { userId });
 
                 const target = client.users.cache.get(userId);
                 const targetChan = guild.channels.cache.get(channelId);
-
+                // Update the user's permissions to allow them to send messages again
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: null,
                 }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });

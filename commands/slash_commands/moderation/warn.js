@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { dbCreate, sendResponse } = require('../../../utils/utils');
+const { dbCreate, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
@@ -132,7 +132,7 @@ module.exports = {
                 // If no results were found
                 if (!results) return sendResponse(interaction, `${process.env.BOT_DENY} Warning *'${warning}'* does not exist or has already been deleted`);
                 // Find and remove the user's warning
-                await warnSchema.findOneAndRemove({ warnId: warning });
+                await dbDeleteOne(warnSchema, { warnId: warning });
                 // Log to channel
                 let log = new EmbedBuilder()
                     .setColor("#4fe059")

@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
+const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
@@ -75,8 +75,7 @@ module.exports = {
             case 'remove': {
                 const target = options.getMember('username');
                 // Find and remove the user from the database
-                await ytNotificationSchema.findOneAndRemove({ userId: target.id })
-                    .catch(err => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
+                await dbDeleteOne(ytNotificationSchema, { userId: target.id });
 
                 sendResponse(interaction, `${process.env.BOT_CONF} ${target} has been removed from the YouTube Auto list`);
                 break;
