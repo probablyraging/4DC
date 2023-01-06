@@ -50,8 +50,8 @@ module.exports = async (message, client) => {
         // Fetch users with an active sub to double XP
         const userTokenData = await dbFind(tokensSchema, { userId: message?.author.id });
 
-        for (const data of results) {
-            const { xp, xxp, xxxp, level, msgCount } = data;
+        for (const data of userRankData) {
+            const { xp, xxp, xxxp, level } = data;
 
             const random = randomNum(message, userTokenData);
             const xpMath = parseInt(xp) + random;
@@ -111,7 +111,7 @@ module.exports = async (message, client) => {
     }
     // Count all new messages towards msgCount
     if (!userRankData) userRankData = await dbFind(rankSchema, { id: message?.author?.id });
-    for (const data of results) {
+    for (const data of userRankData) {
         let { msgCount } = data;
         let msgMath = parseInt(msgCount) + 1;
         await dbUpdateOne(rankSchema, { id: message?.author?.id }, { msgCount: msgMath });
