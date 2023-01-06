@@ -5,8 +5,6 @@ const path = require('path');
  * @param {Message} message 
  */
 module.exports = async (message, client) => {
-    if (message?.author.bot) return;
-
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const promoChan = guild.channels.cache.get(process.env.CONTENT_SHARE);
     const premChan = guild.channels.cache.get(process.env.PREM_CHAN);
@@ -14,9 +12,13 @@ module.exports = async (message, client) => {
 
     // Content share
     if (message?.channel.id === process.env.CONTENT_SHARE) {
+        // Account for the bot posting live now URLs
+        if (message.author.bot && !message.content.includes('https://')) return;
         try {
+            // Fetch a group of messages and find the previous reminder
             const messages = await promoChan.messages.fetch({ limit: 5 });
             const messageFound = messages.find(m => m.author.id === client.user.id && m.content.includes('friendly reminder'));
+            // Delete the previous reminder and resend it
             if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
             await promoChan.send({
                 content: `:warning: Hey there, just a friendly reminder that a more effective way of growing your audience is by networking with other creators on the server. Feel free to come introduce yourself and meet the other server members in <#820889004055855147> :warning:`
@@ -27,10 +29,12 @@ module.exports = async (message, client) => {
     }
 
     // Premium Ads
-    if (message?.channel.id === process.env.PREM_CHAN) {
+    if (message?.channel.id === process.env.PREM_CHAN && !message?.author.bot) {
         try {
+            // Fetch a group of messages and find the previous reminder
             const messages = await premChan.messages.fetch({ limit: 5 });
             const messageFound = messages.find(m => m.content.includes('purchase an ad spot'));
+            // Delete the previous reminder and resend it as a webhook
             if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
             await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
