@@ -14,6 +14,77 @@ let loading = false;
 /**
  * Create a canvas and draw images onto it
  * @param {CommandInteraction} interaction The interaction object
+ * @param {GuildMember} member The member that initiated the command
+ * @param {string} prompt The prompt sent by the user
+ * @param {number} count The number of images to draw on the canvas
+ * @param {string} fileName The name of the file to be created
+ * @param {Date} timerStart The time at which the command was ran
+ * @param {Array} buttons An array of buttons
+ */
+async function initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons) {
+    setTimeout(() => {
+        // Wait 30 seconds and check if the interaction has been replied to, if not, initiate generation again
+        if (!interaction) return;
+        interaction?.fetchReply('@original').then(reply => {
+            if (!reply.content.toLowerCase().includes('completed')) {
+                sendResponse(interaction, `${member} yikes, this is taking longer than expected, hold tight`);
+                initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+            }
+        }).catch(err => console.error('There was a problem fetching an interaction in txt2img: ', err));
+    }, 20000);
+
+    // Open a websocket connection with a server
+    ws = new WebSocket(process.env.AI_WSS);
+
+    ws.on('open', async function () {
+        // Check if the websocket is ready, notify the user if there is an error
+        if (ws.readyState !== 1) return;
+        // Send a websocket request
+        const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
+        ws.send(JSON.stringify(body));
+    });
+
+    ws.on('message', async function message(data) {
+        // If the response contains "send_data" send the user's prompt back
+        if (data.includes('send_data')) {
+            // Check if the websocket is ready, notify the user if there is an error
+            if (ws.readyState !== 1) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+            const body = { "fn_index": 1, "data": [`${prompt}`] };
+            ws.send(JSON.stringify(body));
+        }
+        // If the response contains "process_completed" get the output data that contains the image data
+        if (data.includes('process_completed')) {
+            const jsonData = JSON.parse(data.toString());
+            // If there is no data in the parsed data, return an error
+            if (jsonData.output.error) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+            if (!jsonData.output.data) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+
+            // Get the image data abd add it to the imgBaseArr
+            let imgBaseArr = [];
+            jsonData.output.data[0].forEach(img => {
+                const replace = img.replace(/(\r\n|\n|\r)/gm, '');
+                imgBaseArr.push({ data: replace.split(",")[1], name: `${fileName}_${uuidv4()}.png` });
+            });
+
+            const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
+            // If count is greater than 1, create a canvas for the images
+            if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
+            // Create an attachment from the single image, send it and perform a NSFW check
+            if (!count || count === 1) {
+                if (!imgBaseArr[0]?.data) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+                const buf = Buffer.from(imgBaseArr[0].data, 'base64');
+                const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
+                const int = await sendResponse(interaction, responseContent, [], [imgOne], [buttons]);
+                nsfwCheck(interaction, int, prompt, member);
+            }
+            loading = false;
+        }
+    });
+}
+
+/**
+ * Create a canvas and draw images onto it
+ * @param {CommandInteraction} interaction The interaction object
  * @param {number} count The number of images to draw on the canvas
  * @param {Array} imgBaseArr An array of image objects with the properties data (the image data as a base64 string) and url (the image URL)
  * @param {string} fileName The name of the file to be created
@@ -63,7 +134,7 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                     }
                     // If there are no viable images
                     if (numNonUndefinedImages === 0) {
-                        notifyError(interaction, member, `there was an error generating your images`);
+                        initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
                         // Delete all the image files
                         for (let j = 0; j < count; j++) {
                             fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
@@ -114,23 +185,6 @@ Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw
     });
 }
 
-/**
- * Notifies the user of an error and logs it to the console.
- * @param {CommandInteraction} interaction The interaction in which the error occurred
- * @param {GuildMember} member The member that initiated the command
- * @param {string} err The error message to be displayed to the user
- */
-async function notifyError(interaction, member, err) {
-    // Log the error
-    console.error(`${path.basename(__filename)} - ${err}`);
-    // Notify the user of the error
-    return sendResponse(interaction, `${member} ${err}, please try again`).then(int => {
-        setTimeout(() => {
-            int.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-        }, 7000);
-    });
-}
-
 module.exports = {
     name: `txt2img`,
     description: `Get an AI generated image from a text prompt`,
@@ -173,58 +227,14 @@ module.exports = {
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // Delay creating new websocket if there is a prompt still loading
-        if (loading) await sendResponse(interaction, `${member} your prompt has been added to the queue`);
-        await wait(2000);
-        await sendResponse(interaction, `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`);
-
+        if (loading) {
+            sendResponse(interaction, `${member} your prompt has been added to the queue`);
+            await wait(5000);
+        }
         loading = true;
 
-        // Open a websocket connection with a server
-        ws = new WebSocket(process.env.AI_WSS);
-
-        ws.on('open', async function () {
-            // Check if the websocket is ready, notify the user if there is an error
-            if (ws.readyState === 1) loading = false;
-            if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
-            // Send a websocket request
-            const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
-            ws.send(JSON.stringify(body));
-        });
-
-        ws.on('message', async function message(data) {
-            // If the response contains "send_data" send the user's prompt back
-            if (data.includes('send_data')) {
-                // Check if the websocket is ready, notify the user if there is an error
-                if (ws.readyState !== 1) return notifyError(interaction, member, 'readyState error');
-                const body = { "fn_index": 1, "data": [`${prompt}`] };
-                ws.send(JSON.stringify(body));
-            }
-            // If the response contains "process_completed" get the output data that contains the image data
-            if (data.includes('process_completed')) {
-                const jsonData = JSON.parse(data.toString());
-                // If there is no data in the parsed data, return an error
-                if (jsonData.output.error) return notifyError(interaction, member, 'could not parse json data');
-                if (!jsonData.output.data) return notifyError(interaction, member, 'an image could not be generated');
-
-                // Get the image data abd add it to the imgBaseArr
-                let imgBaseArr = [];
-                jsonData.output.data[0].forEach(img => {
-                    const replace = img.replace(/(\r\n|\n|\r)/gm, '');
-                    imgBaseArr.push({ data: replace.split(",")[1], name: `${fileName}_${uuidv4()}.png` });
-                });
-
-                const responseContent = `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\` \n**Author**: ${member} \n**Completed In**: ${Math.max((new Date - timerStart) / 1000).toFixed(1)}s \n\nCreate your own AI generated image with the </txt2img:${interaction.commandId}> command`;
-                // If count is greater than 1, create a canvas for the images
-                if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
-                // Create an attachment from the single image, send it and perform a NSFW check
-                if (!count || count === 1) {
-                    if (!imgBaseArr[0]?.data) return notifyError(interaction, member, 'an image could not be generated');
-                    const buf = Buffer.from(imgBaseArr[0].data, 'base64');
-                    const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
-                    const int = await sendResponse(interaction, responseContent, [], [imgOne], [buttons]);
-                    nsfwCheck(interaction, int, prompt, member);
-                }
-            }
-        });
+        await sendResponse(interaction, `${member} Tiny little worker robots are creating your image, it may take up to 30 seconds`);
+        // Initiate the image generation
+        initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
     }
 }
