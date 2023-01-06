@@ -2,7 +2,6 @@ const { Message } = require('discord.js');
 const { dbFindOne, dbCreate, dbUpdateOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const tokensSchema = require('../../schemas/misc/tokens_schema');
-const path = require('path');
 const xpLimit = new Set();
 
 /**
