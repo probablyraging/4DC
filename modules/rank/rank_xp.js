@@ -106,6 +106,6 @@ module.exports = async (message, client) => {
     }
     // Count all new messages towards msgCount
     if (!userRankData) userRankData = await dbFindOne(rankSchema, { id: message?.author?.id });
-    const msgMath = parseInt(userRankData.msgCount) + 1;
+    const msgMath = parseInt(userRankData?.msgCount) + 1 || 1;
     await dbUpdateOne(rankSchema, { id: message?.author?.id }, { msgCount: msgMath });
 }
