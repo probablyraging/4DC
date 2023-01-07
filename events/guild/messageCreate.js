@@ -43,7 +43,7 @@ module.exports = {
         if (message?.channel.id === process.env.GENERAL_CHAN && !message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
 
         // Resend followed server messages, delete the original message and resend it
-        if (message.channel.id === process.env.TEST_CHAN && message.author.id === '900247274792304710') {
+        if (message.channel.id === process.env.NEWS_CHAN && message.author.id === '900247274792304710') {
             setTimeout(async () => {
                 const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));;
                 fetchedMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
