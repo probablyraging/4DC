@@ -3,6 +3,36 @@ const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const countingCurrent = require('../../schemas/counting_game/counting_current_schema');
 const path = require('path');
+
+/**
+ * Sends the current word and if a user's message is edited or deleted in the letter game
+ * @param {Message} message The message to be checked
+ */
+async function checkDeletedCountingMessage(message) {
+    if (message?.channel.id === process.env.COUNT_CHAN && !message.author.bot) {
+        // Check if message contained a number, and do some other checks to prevent false positives
+        const containsNumbers = /^\d+$/.test(message?.content);
+        if (!containsNumbers) return;
+        const results = await countingSchema.find({ userId: message?.author?.id });
+        let currentSaves = 0;
+        for (const data of results) {
+            currentSaves = data.saves;
+        }
+        // Fetch the current count from the database
+        const results2 = await countingCurrent.find({ searchFor: 'currentCount' });
+        for (const data of results2) {
+            // Ignore if message was deleted by the bot
+            if (data.deletedByBot) return;
+            // Only do notify if the message was the current count
+            if (message?.author.id !== data.previousCounter) return;
+            message?.channel.send({
+                content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
+The current count is \`${data.currentCount}\``
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
+    }
+}
+
 /**
  * @param {Message} message 
  */
@@ -199,3 +229,5 @@ module.exports = async (message, client) => {
         }
     }
 }
+
+module.exports.checkDeletedCountingMessage = checkDeletedCountingMessage;

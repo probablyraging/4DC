@@ -12,13 +12,11 @@ module.exports = {
 
         if (oldMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
             // Fetch auditlogs for MemberUpdate events
-            const fetchedLogs = await guild.fetchAuditLogs({
-                limit: 1,
-                action: AuditLogEvent.MemberUpdate,
-            }).catch(err => {
-                console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
-                error = true;
-            });
+            const fetchedLogs = await guild.fetchAuditLogs({ limit: 1, action: AuditLogEvent.MemberUpdate, })
+                .catch(err => {
+                    console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
+                    error = true;
+                });
 
             if (error) return;
 

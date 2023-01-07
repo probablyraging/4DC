@@ -5,6 +5,25 @@ const letterVals = require('../../lists/letter_values');
 const fetch = require('node-fetch');
 const { dbCreate, dbUpdateOne } = require('../../utils/utils');
 const path = require('path');
+
+/**
+ * Sends the current number if a user's message is edited or deleted in the counting game
+ * @param {Message} message The message to be checked
+ */
+async function checkDeletedLetterMessage(message) {
+    if (message?.channel.id === process.env.LL_CHAN && !message.author.bot) {
+        const results = await letterCurrents.find();
+        for (const data of results) {
+            if (message?.content.toLowerCase() === data.previousWord) {
+                message?.channel.send({
+                    content: `${process.env.BOT_INFO} ${message.author}'s message was edited or deleted
+Their word was \`${data.previousWord.toUpperCase()}\``
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }
+        }
+    }
+}
+
 /**
  * 
  * @param {Message} message 
@@ -342,3 +361,5 @@ module.exports = async (message, client) => {
         }
     }
 }
+
+module.exports.checkDeletedLetterMessage = checkDeletedLetterMessage;

@@ -9,10 +9,7 @@ module.exports = {
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
 
         // Fetch auditlogs for ThreadDelete events
-        const auditLog = await guild.fetchAuditLogs({
-            limit: 1,
-            type: AuditLogEvent.ThreadDelete
-        });
+        const auditLog = await guild.fetchAuditLogs({ limit: 1, type: AuditLogEvent.ThreadDelete });
 
         const entry = auditLog.entries.first();
         if (entry.executor.bot || entry.executor.id === process.env.OWNER_ID) return;
