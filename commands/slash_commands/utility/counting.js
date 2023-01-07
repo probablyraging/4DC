@@ -3,25 +3,6 @@ const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
 const countingSchema = require('../../../schemas/counting_game/counting_schema');
 const path = require('path');
 
-/**
- * Get the number of saves for the user and guild
- * @param {CommandInteraction} interaction The interaction object
- * @param {Guild} guild The guild object
- * @param {Array} userResults An array of documents
- */
-async function getSaves(interaction, guild, userResults) {
-    const guildResults = await countingSchema.find({ userId: guild.id })
-        .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err))
-
-    sendResponse(interaction, `You currently have \`${userCurrentSaves || 0}/2\` saves
-The guild currently has \`${guildResults[0]?.saves || 0}/3 saves\`
-
-You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
-
-The server can be bumped once every 2 hours, by anyone
-To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from Channels & Roles`);
-}
-
 module.exports = {
     name: `counting`,
     description: `Commands for the counting game`,
@@ -58,10 +39,18 @@ module.exports = {
                 // Fetch the user and guild saves from the database
                 const userResults = await countingSchema.findOne({ userId: member.id })
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                const guildResults = await countingSchema.find({ userId: guild.id })
+                    .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
                 // If the user doesn't have a database entry yet, creat one
                 if (!userResults) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
-                // Fetch the user and guild save count
-                getSaves(interaction, guild, userResults);
+
+                sendResponse(interaction, `You currently have \`${userResults.saves || 0}/2\` saves
+The guild currently has \`${guildResults.saves || 0}/3 saves\`
+
+You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>
+
+The server can be bumped once every 2 hours, by anyone
+To be notified when the server is ready to be bumped again, you can get the <@&${process.env.BUMP_ROLE}> role from Channels & Roles`);
                 break;
             }
 
