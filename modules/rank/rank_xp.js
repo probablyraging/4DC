@@ -11,7 +11,7 @@ const xpLimit = new Set();
  * @return {number} A random number
  */
 function randomNum(message, userTokenData) {
-    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (userTokenData?.doublexp - new Date()) > 1)
+    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570'))  || (userTokenData?.doublexp - new Date()) > 1)
         ? Math.floor(Math.random() * (50 - 30 + 1) + 30)
         : Math.floor(Math.random() * (25 - 15 + 1) + 15);
 }
