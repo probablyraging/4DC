@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
     // One
     if (itemIndex === 'one') {
         // This item is free for server boosters
-        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has('1061532398359167071'))) && !customId.includes('gift')) cost = 0;
+        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has(process.env.SUBSCRIBER_ROLE))) && !customId.includes('gift')) cost = 0;
 
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
@@ -60,7 +60,7 @@ module.exports = async (interaction) => {
         if (customId.includes('gift') && interaction.member.id !== process.env.OWNER_ID) return sendResponse(interaction, `${process.env.BOT_DENY} This item cannot be gifted`);
 
         // This item is free for server boosters
-        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has('1061532398359167071'))) && !customId.includes('gift')) cost = 0;
+        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has(process.env.SUBSCRIBER_ROLE))) && !customId.includes('gift')) cost = 0;
 
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
@@ -111,7 +111,7 @@ module.exports = async (interaction) => {
     // Three
     if (itemIndex === 'three') {
         // This item is free for server boosters
-        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has('1061532398359167071'))) && !customId.includes('gift')) cost = 0;
+        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has(process.env.SUBSCRIBER_ROLE))) && !customId.includes('gift')) cost = 0;
 
         // Present the user with a confirmation modal
         if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
