@@ -18,7 +18,8 @@ module.exports = {
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
         { name: 'spotlight', value: 'spotlight' },
-        { name: 'tokenstore', value: 'tokenstore' }]
+        { name: 'tokenstore', value: 'tokenstore' },
+        { name: 'verification', value: 'verification' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -329,6 +330,38 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                     files: ['./res/images/token_store_misc.png'],
                     components: [btn3, gift3, info3]
                 }).catch(err => console.error(`Could not send a message: `, err));
+
+                break;
+            }
+
+            // VERIFICATION
+            case 'verification': {
+                const btn = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('verification')
+                            .setLabel('Verify')
+                            .setStyle(ButtonStyle.Primary)
+                    );
+
+                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    webhook.send({
+                        content: `Click the **Complete** button at the bottom of your screen, agree to the rules, and then click **Submit**
+            
+Still having trouble seeing the server channels? Click the **Verify** button below
+                        
+***Important:** you must have a verified phone number linked to Discord. If you are unable to verify your phone number please contact <@&${process.env.STAFF_ROLE}>*`,
+                        components: [btn],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    setTimeout(() => {
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
                 break;
             }

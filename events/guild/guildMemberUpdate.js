@@ -5,6 +5,9 @@ const path = require('path');
 module.exports = {
     name: 'guildMemberUpdate',
     async execute(newMember, oldMember, client, Discord) {
+        // If a user verifies themself, remove the unverified role
+        if (oldMember?.pending === false) oldMember?.roles.remove(process.env.UNVERIFIED_ROLE);
+
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 

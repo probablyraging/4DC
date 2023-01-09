@@ -116,6 +116,15 @@ module.exports = async (client) => {
         }
     });
 
+    // Check users verification status and add or remove the unverified role as necessary
+    const verificationCheck = new cronjob('*/5 * * * *', async function () {
+        const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
+        unverifiedRole.members.forEach(member => {
+            if (member.pending === true) member.roles.add(unverifiedRole);
+            if (member.pending === false) member.roles.remove(unverifiedRole);
+        })
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
@@ -123,4 +132,5 @@ module.exports = async (client) => {
     tokenReset.start();
     premiumAdsCheck.start();
     invitesCheck.start();
+    verificationCheck.start();
 }
