@@ -67,7 +67,7 @@ module.exports = {
         }).catch(() => { });
         // Ban the target user, taking into account if their messages should be deleted
         await target.ban({
-            deleteMessages: deleteMessages ? 604800 : 0,
+            deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
