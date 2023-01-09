@@ -2,8 +2,8 @@ const { CommandInteraction, ApplicationCommandType } = require('discord.js');
 const path = require('path');
 
 module.exports = {
-    name: `boost`,
-    description: `Provides information about the current server booster perks`,
+    name: `perks`,
+    description: `Provides information about the current server subscriber and booster perks`,
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**
