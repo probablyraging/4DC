@@ -33,16 +33,16 @@ module.exports = {
         // Booster rewards
         const img = './res/images/supporter_rewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
-            client.channels.cache.get(process.env.GENERAL_CHAN)
-                .send({
-                    content: `Consider becoming a server booster to get access to these cool server perks`,
-                    files: [img]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err))
-                .then(msg => {
+            client.channels.cache.get(process.env.TEST_CHAN)
+                .createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
+                    webhook.send({
+                        content: `Join FTC+ and unlock these server benefits and more by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)`,
+                        files: [img]
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                     setTimeout(() => {
-                        msg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                    }, 900000);
-                });
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
         });
         boostTimer.start();
 
