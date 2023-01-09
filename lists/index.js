@@ -259,8 +259,8 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <@&931054970327932928> ForTheContent moderators
 
 **MEMBERS**
-<@&1061532395314098229> View server subscriber perks with the /perks commannd
-<@&821876910253670442> View server booster perks with the /perks commannd
+<@&1061532395314098229> View server subscriber perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
+<@&821876910253670442> View server booster perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 <@&839527054465826867> Displays currently live streaming server boosters
 <@&878229140992589906> Awarded to the user who claimed the #content-spotlight
 <@&998861546530820207> Displays a randomly selected user who is currently live streaming
