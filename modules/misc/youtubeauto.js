@@ -9,8 +9,6 @@ module.exports = async (client) => {
     const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
     const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
-    const boosterRole = process.env.BOOSTER_ROLE;
-    const staffRole = process.env.STAFF_ROLE;
 
     setInterval(async () => {
         const results = await ytNotificationSchema.find();
@@ -18,16 +16,17 @@ module.exports = async (client) => {
         for (const { channelId, videoIds, userId } of results) {
             const member = guild.members.cache.get(userId);
             const userTag = member.user?.tag;
-            const isBooster = member?.roles?.cache.has(boosterRole);
-            const isStaff = member?.roles?.cache.has(staffRole);
+            const isStaff = member?.roles?.cache.has(process.env.STAFF_ROLE);
+            const isSubscriber = member?.roles?.cache.has(process.env.SUBSCRIBER_ROLE);
+            const isBooster = member?.roles?.cache.has(process.env.BOOSTER_ROLE);
             const tokenResult = await tokensSchema.findOne({ userId });
             const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 || tokenResult?.youtubeauto !== true;
 
-            if (!isBooster && !isStaff && !isTokenSub) {
+            if (!isBooster && !isStaff && !isTokenSub && !isSubscriber) {
                 await ytNotificationSchema.findOneAndRemove({ userId })
                     .catch((err) => console.error(`${path.basename(__filename)} There was a problem removing a database entry: `, err));
                 staffChan.send({
-                    content: `${member} has been removed from the **YouTube Auto** list as they're no longer a staff member, server booster or tokens subscriber`,
+                    content: `${member} has been removed from the **YouTube Auto** list`,
                 }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
             }
 
@@ -42,7 +41,7 @@ module.exports = async (client) => {
 
                         await dbUpdateOne(ytNotificationSchema, { userId }, { userId, channelId, videoIds });
 
-                        if (isBooster) {
+                        if (isBooster || isSubscriber) {
                             contentShare.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
                             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
