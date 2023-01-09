@@ -31,7 +31,7 @@ module.exports = {
         Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
 
         // Booster rewards
-        const img = './res/images/booster_rewards.png';
+        const img = './res/images/supporter_rewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
             client.channels.cache.get(process.env.GENERAL_CHAN)
                 .send({

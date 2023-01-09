@@ -10,6 +10,7 @@ const tokensSystem = require('../../modules/store/tokens_system');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyReminder = require('../../modules/misc/sticky_reminder');
 const { newUsers } = require('../guild/guildMemberAdd');
+const notifiedUsers = new Set();
 const path = require('path');
 
 module.exports = {
@@ -39,6 +40,17 @@ module.exports = {
         suggestionPost(message);
         stickyReminder(message, client);
 
+        // Check automod embeds for Discord links and send the user a notification
+        if (message?.channel.id === process.env.AUTOMOD_CHAN) {
+            if (notifiedUsers.has(message?.author.id)) return;
+            if (message.embeds[0].description.toLowerCase().includes('discord.com/invite') || message.embeds[0].description.toLowerCase().includes('discord.gg/')) {
+                message?.author.send({
+                    content: `Discord invite link sharing is only available to FTC++ subscribers \n\nLearn more <https://discord.com/channels/820889004055855144/role-subscriptions>`
+                }).catch(() => { });
+                notifiedUsers.add(message?.author.id);
+            }
+        }
+
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
         if (message?.channel.id === process.env.GENERAL_CHAN && !message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
 
@@ -49,7 +61,7 @@ module.exports = {
                 fetchedMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 message.channel.send({
                     content: fetchedMessage.embeds[0].url
-                })
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }, 3000);
         }
 

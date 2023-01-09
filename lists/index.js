@@ -41,20 +41,23 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://i.imgur.com/4qnr530.png`,
 
         `**When/how can I share my content?**
-> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section. Please note that users with a rank below 5 will not have the option to display an embedded preview when sharing links. To gain this feature, we recommend becoming a Server Booster or purchasing it with tokens in <#1049791650060324954>. You can check your current rank by going to <#837945839799500850> and using the </rank:1040546996735451176> command
+> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section. Please note that users with a rank below 5 will not have the option to display an embedded preview when sharing links. To gain this feature, we recommend becoming a <@&1061532395314098229> or <@&821876910253670442> or purchasing it with tokens in <#1049791650060324954>
 
-**Can I advertise my own server or paid service?**
-> Advertising of Discord servers, paid services, and products (excluding those related to content creation) is only permitted in <#907446635435540551>. There are fees associated with creating a premium ad which you can find in [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM <@438434841617367080> for further details
+**Can I advertise a paid service?**
+> Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services, and products are only permitted in <#907446635435540551>. There are fees associated with creating a premium ad which you can find in [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>)
 
-**What is server boosting?**
-> Server boosting is a way to support and show appreciation to the ForTheContent community. By becoming a server booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks by using the </boost:1031245457835429998> command
+**Can I advertise my own Discord server?**
+> Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active <@&1061554108005355570> subscriber. You can become a subscriber by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
+
+**What is server subscribing and boosting?**
+> Subscribing to or boosting the server is a way to support ForTheContent. By becoming a server subscriber or booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 ⠀`,
 
         `**How does the rank/XP system work?**
 > All new users begin at Rank 0 and unlock higher ranks in increments of five *(e.g. Rank 5, Rank 10, Rank 15)*. By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards, which can be found in the <#1005283113775157349> channel. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1040546996735451176> command in the <#837945839799500850> channel. Please note that you will not receive XP for posting messages in the 'CONTENT SHARE' section
 
 **What are Tokens?**
-> Tokens are the virtual currency used in the ForTheContent community. They can be utilized to purchase server perks, promote your content, and unlock channels. You can gain tokens in a few different ways including sending messages *(chatting)*, bumping the server, or as a reward for a useful or helpful post
+> Tokens are the virtual currency used in the ForTheContent community. They can be used to purchase server perks, promote your content, and unlock channels. You can gain tokens in a few different ways including sending messages *(chatting)*, bumping the server, or as a reward for a useful or helpful post
         
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)

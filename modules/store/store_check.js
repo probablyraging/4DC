@@ -13,9 +13,10 @@ module.exports = async (client) => {
         for (const data of results) {
             const { userId, doublexp, youtubeauto, twitchauto, linkembeds } = data;
             const member = await guild.members.fetch(userId).catch(async () => {
-                // If user doesn't excist, delete their db entry
+                // If user doesn't exist, delete their db entry
                 await dbDeleteOne(tokensSchema, { userId: userId });
             });
+
             if (doublexp !== true && doublexp !== null && (doublexp - new Date()) <= 0) {
                 await dbUpdateOne(tokensSchema, { userId: userId }, { doublexp: null });
                 // Log when a user's item expires
