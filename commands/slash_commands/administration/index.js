@@ -346,7 +346,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
 
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     webhook.send({
-                        content: `Click the **Complete** button at the bottom of your screen, agree to the rules, and then click **Submit**
+                        content: `Click **Complete** at the bottom of your screen, agree to the rules, and then click **Submit**
             
 Still having trouble seeing the server channels? Click the **Verify** button below
                         
