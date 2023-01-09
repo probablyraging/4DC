@@ -1,5 +1,4 @@
-const { newUsers } = require('../../events/guild/guildMemberAdd');
-const path = require('path');
+const { newUsers } = require('../../events/guild/guildMemberUpdate');
 
 module.exports = async (client) => {
     const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);

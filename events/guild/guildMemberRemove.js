@@ -1,4 +1,4 @@
-const { newUsers } = require('../guild/guildMemberAdd');
+const { newUsers } = require('../guild/guildMemberUpdate');
 const path = require('path');
 
 module.exports = {
