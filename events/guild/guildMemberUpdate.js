@@ -8,13 +8,9 @@ module.exports = {
     async execute(newMember, oldMember, client, Discord) {
         // If a user verifies themself, remove the unverified role
         if (oldMember?.pending === false) {
-            try {
-                oldMember?.roles.remove(process.env.UNVERIFIED_ROLE);
-                // Once a user is verified, add them to the newUser set (Extends welcome_check.js)
-                if (oldMember?.roles.cache.has(process.env.UNVERIFIED_ROLE)) newUsers.add(oldMember?.id);
-            } catch (err) {
-                console.error('There was a problem removing the unverified role from a user: ', err);
-            }
+            oldMember?.roles.remove(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role from a user: `, err));
+            // Once a user is verified, add them to the newUser set (Extends welcome_check.js)
+            if (oldMember?.roles.cache.has(process.env.UNVERIFIED_ROLE)) newUsers.add(oldMember?.id);
         }
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

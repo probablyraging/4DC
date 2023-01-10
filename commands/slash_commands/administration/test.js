@@ -1,8 +1,9 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold } = require("discord.js");
-const { sendReply } = require('../../../utils/utils');
+const { sendReply, dbFind } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 const path = require("path");
+const rankSchema = require('../../../schemas/misc/rank_schema');
 
 module.exports = {
     name: `test`,

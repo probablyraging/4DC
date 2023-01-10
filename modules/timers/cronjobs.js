@@ -120,8 +120,8 @@ module.exports = async (client) => {
     const verificationCheck = new cronjob('*/5 * * * *', async function () {
         const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
         unverifiedRole.members.forEach(member => {
-            if (member.pending === true) member.roles.add(unverifiedRole);
-            if (member.pending === false) member.roles.remove(unverifiedRole);
+            if (member.pending === true) member.roles.add(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
+            if (member.pending === false) member.roles.remove(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role from a user: `, err));
         })
     });
 

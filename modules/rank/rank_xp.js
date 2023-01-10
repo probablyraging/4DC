@@ -11,7 +11,7 @@ const xpLimit = new Set();
  * @return {number} A random number
  */
 function randomNum(message, userTokenData) {
-    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570'))  || (userTokenData?.doublexp - new Date()) > 1)
+    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570')) || (userTokenData?.doublexp - new Date()) > 1)
         ? Math.floor(Math.random() * (50 - 30 + 1) + 30)
         : Math.floor(Math.random() * (25 - 15 + 1) + 15);
 }
@@ -84,16 +84,46 @@ module.exports = async (message, client) => {
                     const lv40 = guild.roles.cache.get(process.env.RANK40_ROLE);
                     const lv45 = guild.roles.cache.get(process.env.RANK45_ROLE);
                     const lv50 = guild.roles.cache.get(process.env.RANK50_ROLE);
-                    if (levelMath === 5) message?.member?.roles.add(lv5);
-                    if (levelMath === 10) message?.member?.roles.add(lv10).add(ver).remove(lv5);
-                    if (levelMath === 15) message?.member?.roles.add(lv15).remove(lv10);
-                    if (levelMath === 20) message?.member?.roles.add(lv20).remove(lv15);
-                    if (levelMath === 25) message?.member?.roles.add(lv25).remove(lv20);
-                    if (levelMath === 30) message?.member?.roles.add(lv30).remove(lv25);
-                    if (levelMath === 35) message?.member?.roles.add(lv35).remove(lv30);
-                    if (levelMath === 40) message?.member?.roles.add(lv40).remove(lv35);
-                    if (levelMath === 45) message?.member?.roles.add(lv45).remove(lv40);
-                    if (levelMath === 50) message?.member?.roles.add(lv50).remove(lv45);
+                    if (levelMath === 5) {
+                        message?.member?.roles.add(lv5);
+                    }
+                    if (levelMath === 10) {
+                        message?.member?.roles.add(lv10);
+                        message?.member?.roles.add(ver);
+                        message?.member?.roles.remove(lv5);
+                    }
+                    if (levelMath === 15) {
+                        message?.member?.roles.add(lv15);
+                        message?.member?.roles.remove(lv10);
+                    }
+                    if (levelMath === 20) {
+                        message?.member?.roles.add(lv20);
+                        message?.member?.roles.remove(lv15);
+                    }
+                    if (levelMath === 25) {
+                        message?.member?.roles.add(lv25);
+                        message?.member?.roles.remove(lv20);
+                    }
+                    if (levelMath === 30) {
+                        message?.member?.roles.add(lv30);
+                        message?.member?.roles.remove(lv25);
+                    }
+                    if (levelMath === 35) {
+                        message?.member?.roles.add(lv35);
+                        message?.member?.roles.remove(lv30);
+                    }
+                    if (levelMath === 40) {
+                        message?.member?.roles.add(lv40);
+                        message?.member?.roles.remove(lv35);
+                    }
+                    if (levelMath === 45) {
+                        message?.member?.roles.add(lv45);
+                        message?.member?.roles.remove(lv40);
+                    }
+                    if (levelMath === 50) {
+                        message?.member?.roles.add(lv50);
+                        message?.member?.roles.remove(lv45);
+                    }
                     // Send the user a notification
                     botChan.send({
                         content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
