@@ -15,11 +15,13 @@ module.exports = async (interaction) => {
 
     // If no target
     if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
-
+    // If no reason
+    if (reason == null) return sendResponse(interaction, `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`);
+    // Send a notification to the target user
     await target.send({
         content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
     }).catch(() => { });
-
+    // Ban the target user
     await target.ban({
         deleteMessageSeconds: 604800,
         reason: reason
