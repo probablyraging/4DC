@@ -31,18 +31,21 @@ module.exports = {
         Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
 
         // Booster rewards
+        const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
         const img = './res/images/supporter_rewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
-            client.channels.cache.get(process.env.GENERAL_CHAN)
-                .createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
-                    webhook.send({
-                        content: `Join FTC+ and unlock these server benefits and more by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)`,
-                        files: [img]
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+            generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
+                message = await webhook.send({
+                    content: `Join FTC+ and unlock these server benefits and more by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)`,
+                    files: [img]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                setTimeout(() => {
+                    webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                }, 10000);
+                setTimeout(async () => {
+                    message.delete();
+                }, 300000);
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
         });
         boostTimer.start();
 
