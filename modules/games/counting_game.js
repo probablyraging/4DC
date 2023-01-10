@@ -13,14 +13,9 @@ async function checkDeletedCountingMessage(message) {
         // Check if message contained a number, and do some other checks to prevent false positives
         const containsNumbers = /^\d+$/.test(message?.content);
         if (!containsNumbers) return;
-        const results = await countingSchema.find({ userId: message?.author?.id });
-        let currentSaves = 0;
-        for (const data of results) {
-            currentSaves = data.saves;
-        }
         // Fetch the current count from the database
-        const results2 = await countingCurrent.find({ searchFor: 'currentCount' });
-        for (const data of results2) {
+        const results = await countingCurrent.find({ searchFor: 'currentCount' });
+        for (const data of results) {
             // Ignore if message was deleted by the bot
             if (data.deletedByBot) return;
             // Only do notify if the message was the current count
@@ -95,8 +90,8 @@ module.exports = async (message, client) => {
             }
 
             // if the new number didn't increase by 1 from the previous number
-            if (parseInt(message.content) !== currentCount + 1) {
-                failReason = `${message?.author} **FAILED** \n> The next number was \`${currentCount + 1}\` but you entered \`${message.content}\``;
+            if (parseInt(message.content) !== currentCount - 1) {
+                failReason = `${message?.author} **FAILED** \n> The next number was \`${currentCount - 1}\` but you entered \`${message.content}\``;
                 await checkForPersonalSaves();
                 return;
             } else {
@@ -125,7 +120,7 @@ module.exports = async (message, client) => {
                 if (saves >= 1) {
                     await usePersonalSave();
                     // if we use a personal save then we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 2}\` \n> The record to beat is \`${currentRecord}\``;
+                    failMessage = `${failReason} \n> You used \`1 personal save\`, you now have \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount - 2}\` \n> The record to beat is \`${currentRecord}\``;
                     await passedCountWithSave();
                 } else {
                     // if the user doesn't have any saves to use, check to see if there is a guild save to use
@@ -147,7 +142,7 @@ module.exports = async (message, client) => {
                 if (saves >= 1) {
                     await useGuildSave();
                     // if we used a guild save, we need to continue the count, so the next number is what we failed on + 1
-                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount + 2}\` \n> The record to beat is \`${currentRecord}\``;
+                    failMessage = `${failReason} \n> You used \`1 guild save\`, the guild now has \`${saves - 1} save(s)\` left \n> The next number is \`${currentCount - 2}\` \n> The record to beat is \`${currentRecord}\``;
                     await passedCountWithSave();
                 } else {
                     // if there are no guild saves to use, then we fail
@@ -190,18 +185,18 @@ module.exports = async (message, client) => {
 
             // keep track of the current count and the previous counter
             async function updateCurrentCount() {
-                await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: currentCount + 1, previousCounter: message?.author.id });
+                await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: currentCount - 1, previousCounter: message?.author.id });
             }
 
             // reset the current count if it fails
             async function resetCurrentCount() {
-                await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: 0, previousCounter: 'null' });
+                await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentCount: 10000, previousCounter: 'null' });
             }
 
             // if the current count is higher than the record count, update it
             async function updateRecord() {
                 if (currentCount >= currentRecord) {
-                    await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentRecord: currentCount + 1 });
+                    await dbUpdateOne(countingCurrent, { searchFor: 'currentCount' }, { currentRecord: currentCount - 1 });
                 }
             }
 
