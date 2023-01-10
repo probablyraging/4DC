@@ -33,7 +33,7 @@ module.exports = {
         // Booster rewards
         const img = './res/images/supporter_rewards.png';
         const boostTimer = new cronjob('0 */10 * * *', function () {
-            client.channels.cache.get(process.env.TEST_CHAN)
+            client.channels.cache.get(process.env.GENERAL_CHAN)
                 .createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(webhook => {
                     webhook.send({
                         content: `Join FTC+ and unlock these server benefits and more by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)`,
