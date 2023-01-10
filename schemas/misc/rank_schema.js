@@ -5,7 +5,7 @@ const rankSchema = mongoose.Schema({
         type: Number,
         required: false
     },
-    id: {
+    userId: {
         type: String,
         required: true
     },

@@ -3,7 +3,6 @@ const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
-const tokensSchema = require('../../schemas/misc/tokens_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
@@ -17,17 +16,17 @@ module.exports = async (client) => {
         let currentPosition = 0;
         let newPositionArr = [];
         for (const data of results) {
-            const { id } = data;
+            const { userId } = data;
             // Remove non-existent users from the database
             currentPosition++;
-            const exists = await guild.members.fetch(id).catch(() => console.log(`Found and removed a user in the rank system that no longer exists`));
-            if (!exists) await dbDeleteOne(rankSchema, { id: id });
+            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the rank system that no longer exists`));
+            if (!exists) await dbDeleteOne(rankSchema, { userId: userId });
             // Set each user's current rank position
-            newPositionArr.push({ pos: currentPosition, id: id });
+            newPositionArr.push({ pos: currentPosition, userId: userId });
         }
         // Assign the new rank position to each user
         for (let i = 0; i < newPositionArr.length; i++) {
-            await dbUpdateOne(rankSchema, { id: newPositionArr[i].id }, { rank: newPositionArr[i].pos });
+            await dbUpdateOne(rankSchema, { userId: newPositionArr[i].userId }, { rank: newPositionArr[i].pos });
         }
     });
 
@@ -60,22 +59,6 @@ module.exports = async (client) => {
             if (userId === process.env.GUILD_ID) return;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the counting collection that no longer exists`));
             if (!exists) await dbDeleteOne(countingSchema, { userId: userId });
-        }
-    });
-
-    // Reset all daily token caps - runs once per day (00:00)
-    const tokenReset = new cronjob('0 0 * * *', async function () {
-        const results = await tokensSchema.find();
-        for (const data of results) {
-            const { userId, availableAward } = data;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the tokens collection that no longer exists`));
-            if (!exists) await dbDeleteOne(countingSchema, { userId: userId });
-            // Reset staff available award
-            if (availableAward === false) {
-                await dbUpdateOne(tokensSchema, { userId: userId }, { availableAward: true });
-            }
-            // Reset all user's token cap
-            await dbUpdateOne(tokensSchema, { userId: userId }, { dailyTokens: 0 });
         }
     });
 
@@ -129,7 +112,6 @@ module.exports = async (client) => {
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
-    tokenReset.start();
     premiumAdsCheck.start();
     invitesCheck.start();
     verificationCheck.start();

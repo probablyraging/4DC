@@ -85,34 +85,17 @@ module.exports = async (message, client) => {
                     }
                     // Update the user's tokens
                     for (const data of results2) {
-                        let { tokens, dailyTokens } = data;
-                        // Hard cap of earning 75 tokens per day
-                        if (isNaN(dailyTokens)) dailyTokens = 0;
-                        if ((75 - dailyTokens) < 5) {
-                            // Calculate the tokens to be added
-                            const tokensToAdd = (75 - dailyTokens) < 0 ? 0 : 75 - dailyTokens;
-                            // Update the database entry
-                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + tokensToAdd, dailyTokens: dailyTokens + tokensToAdd });
-                            // Log when a user's tokens increase or decrease
-                            tokenLog.send({
-                                content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **${tokensToAdd}** tokens for bumping the server, they now have **${tokens + tokensToAdd}** tokens`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            tokenMessage = (75 - dailyTokens) !== 0 ? `You earned \`${75 - dailyTokens}\` tokens for the tokens store` : `You've already earned the max tokens for today`;
-                        } else {
-                            // Update the database entry
-                            await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + 5, dailyTokens: dailyTokens + 5 });
-                            // Log when a user's tokens increase or decrease
-                            tokenLog.send({
-                                content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **${tokens + 5}** tokens`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                            tokenMessage = `You earned \`5\` tokens for the tokens store`;
-                        }
+                        let { tokens } = data;
+                        // Update the database entry
+                        await dbUpdateOne(tokensSchema, { userId: bumpUser }, { tokens: tokens + 5 });
+                        // Log when a user's tokens increase or decrease
+                        tokenLog.send({
+                            content: `${process.env.TOKENS_UP} <@${bumpUser}> gained **5** tokens for bumping the server, they now have **${tokens + 5}** tokens`,
+                            allowedMentions: {
+                                parse: []
+                            }
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        tokenMessage = `You earned \`5\` tokens for the tokens store`;
                     }
 
                     const bumpConfirm = new EmbedBuilder()

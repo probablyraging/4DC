@@ -30,12 +30,12 @@ module.exports = async (message, client) => {
         // If the message is in an XP disabled channel, don't add XP
         if (disableXP.includes(message?.channel?.id)) return;
         // Fetch the user's database entry
-        userRankData = await dbFind(rankSchema, { id: message?.author?.id });
+        userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
         // Check to see if the user is in our database yet, if not, add them
         if (userRankData.length === 0) {
             await dbCreate(rankSchema, {
                 rank: 0,
-                id: message?.author?.id,
+                userId: message?.author?.id,
                 username: message?.author.username,
                 discrim: message?.author.discriminator,
                 avatar: message?.author.avatar,
@@ -62,7 +62,7 @@ module.exports = async (message, client) => {
             const newDiscrim = message?.author?.discriminator;
 
             // Update user's xp and xxp every message, once every 60 seconds
-            await dbUpdateOne(rankSchema, { id: message?.author?.id }, { username: newUsername, discrim: newDiscrim, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
+            await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { username: newUsername, discrim: newDiscrim, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
 
             // When a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
             if (xxpMath > xxxpInt) {
@@ -70,7 +70,7 @@ module.exports = async (message, client) => {
                 // The amount to increase the user's xp by
                 const exponential = 5 * Math.pow(levelMath, 2) + (50 * levelMath) + 100 - 0;
                 // Update the user's database entry
-                await dbUpdateOne(rankSchema, { id: message?.author?.id }, { level: levelMath, xp: xpMath, xxp: 0, xxxp: exponential });
+                await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { level: levelMath, xp: xpMath, xxp: 0, xxxp: exponential });
                 // Add and/or remove the appropriate rank roles for the user
                 try {
                     const ver = guild.roles.cache.get(process.env.VERIFIED_ROLE);
@@ -140,10 +140,10 @@ module.exports = async (message, client) => {
         }, 60000);
     }
     // Count all new messages towards msgCount
-    if (!userRankData) userRankData = await dbFind(rankSchema, { id: message?.author?.id });
+    if (!userRankData) userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
     for (const data of userRankData) {
         let { msgCount } = data;
         let msgMath = parseInt(msgCount) + 1;
-        await dbUpdateOne(rankSchema, { id: message?.author?.id }, { msgCount: msgMath });
+        await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { msgCount: msgMath });
     }
 }

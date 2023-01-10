@@ -20,15 +20,12 @@ module.exports = async (message, client) => {
         const results = await tokensSchema.find({ userId: message?.author.id });
         // Check to see if the user is in our database yet, if not, add them
         if (results.length === 0) {
-            await dbCreate(tokensSchema, { userId: message?.author.id, tokens: 1, dailyTokens: 1 });
+            await dbCreate(tokensSchema, { userId: message?.author.id, tokens: 1 });
         }
         // Update the user's tokens
         for (const data of results) {
-            let { tokens, dailyTokens } = data;
-            // Hard cap of earning 75 tokens per day
-            if (isNaN(dailyTokens)) dailyTokens = 0;
-            if ((dailyTokens + 1) > 75) return;
-            await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { tokens: tokens + 1, dailyTokens: dailyTokens + 1 });
+            let { tokens } = data;
+            await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { tokens: tokens + 1 });
 
             // If it's the user's first time earning 5 tokens, let them know how to spend them
             if (!results[0]?.initialNotification && (tokens + 1) === 5) {
@@ -42,25 +39,13 @@ module.exports = async (message, client) => {
             // Only log in increments of 5 - account for token cap
             if (increment.has(message?.member.id)) {
                 if (increment.get(message?.member.id) === 4) {
-                    if ((75 - dailyTokens) >= 5) {
-                        // Log when a user's tokens increase or decrease
-                        tokenLog.send({
-                            content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${tokens + 5}** tokens`,
-                            allowedMentions: {
-                                parse: []
-                            }
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                    } else {
-                        // Don't log if no tokans were gained
-                        if (75 - dailyTokens <= 0) return;
-                        // Log when a user's tokens increase or decrease
-                        tokenLog.send({
-                            content: `${process.env.TOKENS_UP} ${message?.author} gained **${75 - dailyTokens}** tokens while chatting in the server, they now have **${tokens + (75 - dailyTokens)}** tokens`,
-                            allowedMentions: {
-                                parse: []
-                            }
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-                    }
+                    // Log when a user's tokens increase or decrease
+                    tokenLog.send({
+                        content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${tokens + 5}** tokens`,
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     increment.delete(message?.member.id);
                 } else {
                     increment.set(message?.member.id, increment.get(message?.member.id) + 1);

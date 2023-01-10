@@ -78,13 +78,9 @@ module.exports = {
                 }
 
                 for (const data of results) {
-                    let { tokens, dailyTokens } = data;
-                    // Hard cap of earning 75 tokens per day
-                    if (isNaN(dailyTokens)) dailyTokens = 0;
-                    if ((dailyTokens + amount) > 75)
-                        return sendResponse(interaction, `${process.env.BOT_DENY} This would exceed ${user}'s daily token cap. They can only earn **${75 - dailyTokens}** more tokens today`);
+                    let { tokens } = data;
                     // Add the desired amount of tokens
-                    await dbUpdateOne(tokensSchema, { userId: user.id }, { tokens: tokens + amount, dailyTokens: dailyTokens + amount });
+                    await dbUpdateOne(tokensSchema, { userId: user.id }, { tokens: tokens + amount });
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
                         content: `${process.env.TOKENS_MANUAL} ${member} added **${amount}** ${amount > 1 ? 'tokens' : 'token'} to ${user}, they now have **${tokens + amount}** tokens`,
