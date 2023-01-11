@@ -1,5 +1,3 @@
-const { sendResponse } = require('../../../utils/utils');
-
 module.exports = async (interaction) => {
     const { member } = interaction;
 
