@@ -46,9 +46,9 @@ module.exports = {
         setTimeout(() => {
             let resEmbed = new EmbedBuilder()
                 .setColor('#222224')
-                .setTitle(gdoc.embeds[0].title)
+                .setTitle(googleDoc.embeds[0].title)
                 .setURL(link)
-                .setDescription(gdoc.embeds[0].description)
+                .setDescription(googleDoc.embeds[0].description)
                 .setImage(attachment.url)
 
             googleDoc.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
