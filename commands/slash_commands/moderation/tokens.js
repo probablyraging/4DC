@@ -89,7 +89,7 @@ module.exports = {
                         }
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
-                sendResponse(interaction, `${process.env.BOT_CONF} ${amount} ${amount} successfully added to ${user}`);
+                sendResponse(interaction, `${process.env.BOT_CONF} ${amount} successfully added to ${user}`);
                 break;
             }
 
