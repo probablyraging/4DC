@@ -1,5 +1,6 @@
 const { dbUpdateOne, dbFindOne } = require('../../utils/utils');
 const redditSchema = require('../../schemas/misc/reddit_schema');
+const cronjob = require('cron').CronJob;
 const fetch = require('node-fetch');
 const path = require('path');
 
@@ -8,14 +9,14 @@ module.exports = async (client) => {
     const memeChan = guild.channels.cache.get(process.env.MEME_CHAN);
 
     // Fetch reddit posts from r/memes and post them to the meme channel
-    setInterval(async () => {
+    const redditFetch = new cronjob('0 */2 * * *', async function () {
         // Fetch already published reddit post IDs from the database
         const results = await dbFindOne(redditSchema);
         const postIds = results ? results.postIds : [];
         // Fetch the previous 10 "top" posts from r/memes
         let newPosts = [];
         let newPostIds = [];
-        await fetch('https://www.reddit.com/r/memes/top.json?t=hour&limit=10')
+        await fetch('https://www.reddit.com/r/memes/top.json?t=day&limit=10')
             .then(response => response.json())
             .then(async data => {
                 const redditPosts = data.data.children;
@@ -44,5 +45,6 @@ module.exports = async (client) => {
         }
         // If there are new post IDs update the database
         if (newPostIds.length > 0) await dbUpdateOne(redditSchema, { _id: results._id }, { postIds: [...postIds, ...newPostIds] });
-    }, 300000);
+    });
+    redditFetch.start();
 }
