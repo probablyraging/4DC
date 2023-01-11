@@ -47,7 +47,7 @@ async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
                         id: member.user.id,
                         platform: activity.name,
                         url: activity.url,
-                        booster: member.premiumSinceTimestamp || member?.roles.cache.has(process.env.STAFF_ROLE) != null ? true : false
+                        booster: member.premiumSinceTimestamp != null || member?.roles.cache.has(process.env.STAFF_ROLE) ? true : false
                     });
                 }
             }
