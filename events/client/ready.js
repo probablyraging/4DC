@@ -7,6 +7,7 @@ const databaseCleanup = require('../../modules/timers/cronjobs');
 const liveNow = require('../../modules/misc/live_now');
 const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
+const fetchReddit = require('../../modules/misc/fetch_reddit');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
@@ -71,6 +72,7 @@ module.exports = {
         liveNow(client);
         youtubeAuto(client);
         fetchTweets(client);
+        fetchReddit(client);
         welcomeCheck(client);
         storeCheck(client);
         leaderboardUpdate(client);

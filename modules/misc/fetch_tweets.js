@@ -54,9 +54,7 @@ module.exports = async (client) => {
         }
 
         // If there are new tweet IDs update the database
-        if (newTweetIds.length > 0) {
-            await dbUpdateOne(tweetsSchema, { _id: results._id }, { ids: [...tweetIds, ...newTweetIds] });
-        }
+        if (newTweetIds.length > 0) await dbUpdateOne(tweetsSchema, { _id: results._id }, { ids: [...tweetIds, ...newTweetIds] });
     });
     fetchNewTweets.start();
 }

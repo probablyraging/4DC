@@ -51,7 +51,7 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
  * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
  */
- async function dbFind(model, filter) {
+async function dbFind(model, filter = {}) {
     try {
         const result = await model.find(filter);
         return result;
@@ -66,7 +66,7 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
  * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
  */
- async function dbFindOne(model, filter) {
+async function dbFindOne(model, filter) {
     try {
         const result = await model.findOne(filter);
         return result;
