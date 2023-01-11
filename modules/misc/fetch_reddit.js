@@ -12,7 +12,6 @@ module.exports = async (client) => {
         // Fetch already published reddit post IDs from the database
         const results = await dbFindOne(redditSchema);
         const postIds = results ? results.postIds : [];
-
         // Fetch the previous 10 "top" posts from r/memes
         let newPosts = [];
         let newPostIds = [];
@@ -24,18 +23,23 @@ module.exports = async (client) => {
                     // If the post ID is already in the database 
                     if (results.postIds.includes(post.data.id)) continue;
                     // Push new IDs to and media URLs to appropriate arrays
-                    if (!post.data.media) newPosts.push({ title: post.data.title, imageUrl: post.data.url });
-                    if (post.data.media) newPosts.push({ title: post.data.title, imageUrl: post.data.media.reddit_video.fallback_url });
+                    if (!post.data.media) newPosts.push({ author: post.data.author, title: post.data.title, imageUrl: post.data.url, url: post.data.permalink });
+                    if (post.data.media) newPosts.push({ author: post.data.author, title: post.data.title, imageUrl: post.data.media.reddit_video.fallback_url, url: post.data.permalink });
                     newPostIds.push(post.data.id);
                 }
-            });
+            }).catch(error => console.error(error));
         // If we have new posts, send them to the media channel
         if (newPosts.length > 0) {
-            newPosts.forEach(post => {
-                memeChan.send({
-                    content: post.title,
-                    files: [post.imageUrl]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            newPosts.forEach(async post => {
+                await fetch(`https://www.reddit.com/user/${post.author}/about.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        memeChan.createWebhook({ name: `r/${post.author}`, avatar: data.data.icon_img.replaceAll('&amp;', '&') }).then(webhook => {
+                            webhook.send({ content: `${post.title} - *[link](<https://reddit.com${post.url}>)*`, files: [post.imageUrl] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
+                                webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                            });
+                        });
+                    }).catch(error => console.error(error));
             });
         }
         // If there are new post IDs update the database

@@ -1,6 +1,6 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
-const reportButton = require('../../handlers/buttons/misc/report_button');
+const reportActionButton = require('../../handlers/buttons/misc/report_action_button');
 const storePermButton = require('../../handlers/buttons/store/store_perm');
 const storeTempButton = require('../../handlers/buttons/store/store_temp');
 const storeMiscButton = require('../../handlers/buttons/store/store_misc');
@@ -89,7 +89,7 @@ module.exports = {
 
             // A map of customIds for misc buttons
             const miscButtons = {
-                'report-close': reportButton,
+                'report-close': reportActionButton,
                 'delete-image': reportImageButton
             };
             // Handle misc buttons
