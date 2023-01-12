@@ -13,8 +13,7 @@ module.exports = {
         description: `Data to send`,
         type: ApplicationCommandOptionType.String,
         required: true,
-        choices: [{ name: 'welcome', value: 'welcome' },
-        { name: 'rules', value: 'rules' },
+        choices: [{ name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
         { name: 'spotlight', value: 'spotlight' },
@@ -37,37 +36,14 @@ module.exports = {
             channel = guild.channels.cache.get(channel.parentId);
         }
 
-        // WELCOME
+        // RULES
         switch (options.getString('data')) {
-            case 'welcome': {
+            case 'rules': {
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.welcome.length; i++) {
                         setTimeout(function () {
                             webhook.send({
                                 content: `${index.welcome[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }, i * 1000);
-                    }
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-
-                break;
-            }
-
-            // RULES
-            case 'rules': {
-                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.rules.length; i++) {
-                        setTimeout(function () {
-                            webhook.send({
-                                content: `${index.rules[i]}`,
                                 allowedMentions: {
                                     parse: []
                                 }
