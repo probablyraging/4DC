@@ -17,7 +17,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
 
-Don't forget to grab some profile flair from the Channels & Roles page
+Don't forget to grab some profile flair from [Channels & Roles](<https://discord.com/channels/820889004055855144/customize-community>)
 ⠀`,
 
         `https://i.imgur.com/zD5ueDZ.png`,
