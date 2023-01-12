@@ -7,7 +7,7 @@ module.exports = {
     name: 'guildMemberAdd',
     async execute(member, client, Discord) {
         // Add the unverified role to every new member
-        member?.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
+        if (member) member?.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
