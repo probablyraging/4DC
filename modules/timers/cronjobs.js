@@ -109,6 +109,8 @@ module.exports = async (client) => {
         unverifiedRole.members.forEach(async member => {
             // Kick users that have been in the server for longer than 3 days without verifying themselves
             if ((new Date() - member.joinedTimestamp) > oneWeek && member.pending === true) {
+                // Notify the user
+                await member.send({ content: `You have been kicked from ForTheContent as you did not verify your account within 24-hours \n\nYou're welcome to join back at any time discord.gg/forthecontent` });
                 // Kick the user
                 await member.kick().catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user: `, err));
                 // Log to channel
