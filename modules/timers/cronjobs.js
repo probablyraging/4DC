@@ -105,10 +105,10 @@ module.exports = async (client) => {
     const verificationCheck = new cronjob('*/5 * * * *', async function () {
         const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
-        const oneWeek = 24 * 7 * 60 * 60 * 1000;
+        const oneDay = 24 * 60 * 60 * 1000;
         unverifiedRole.members.forEach(async member => {
             // Kick users that have been in the server for longer than 3 days without verifying themselves
-            if ((new Date() - member.joinedTimestamp) > oneWeek && member.pending === true) {
+            if ((new Date() - member.joinedTimestamp) > oneDay && member.pending === true) {
                 // Notify the user
                 await member.send({ content: `You have been kicked from ForTheContent as you did not verify your account within 24-hours \n\nYou're welcome to join back at any time discord.gg/forthecontent` });
                 // Kick the user
@@ -118,7 +118,7 @@ module.exports = async (client) => {
                     .setColor("#E04F5F")
                     .setAuthor({ name: `${client.user.tag}`, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${member.user.tag} *(${member.user.id})*
-**Reason:** Unverified for longer than a week`)
+**Reason:** Did not verify account`)
                     .setFooter({ text: `Kick • ${uuidv4()}`, iconURL: process.env.LOG_KICK })
                     .setTimestamp();
 
