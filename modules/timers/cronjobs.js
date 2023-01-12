@@ -1,3 +1,4 @@
+const { EmbedBuilder } = require('discord.js');
 const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
@@ -5,6 +6,7 @@ const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const cronjob = require('cron').CronJob;
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = async (client) => {
@@ -99,13 +101,34 @@ module.exports = async (client) => {
         }
     });
 
-    // Check users verification status and add or remove the unverified role as necessary
+    // Checks for the verification system
     const verificationCheck = new cronjob('*/5 * * * *', async function () {
         const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
-        unverifiedRole.members.forEach(member => {
+        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+        const oneWeek = 24 * 7 * 60 * 60 * 1000;
+        unverifiedRole.members.forEach(async member => {
+            // Kick users that have been in the server for longer than 3 days without verifying themselves
+            if ((new Date() - member.joinedTimestamp) > oneWeek && member.pending === true) {
+                // Kick the user
+                await member.kick().catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user: `, err));
+                // Log to channel
+                let log = new EmbedBuilder()
+                    .setColor("#E04F5F")
+                    .setAuthor({ name: `${client.user.tag}`, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`**Member:** ${member.user.tag} *(${member.user.id})*
+**Reason:** Unverified for longer than a week`)
+                    .setFooter({ text: `Kick • ${uuidv4()}`, iconURL: process.env.LOG_KICK })
+                    .setTimestamp();
+
+                await logChan.send({
+                    embeds: [log]
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                return;
+            }
+            // Check users verification status and add or remove the unverified role as necessary
             if (member.pending === true) member.roles.add(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
             if (member.pending === false) member.roles.remove(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role from a user: `, err));
-        })
+        });
     });
 
     rankSort.start();
