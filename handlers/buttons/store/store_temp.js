@@ -16,7 +16,6 @@ module.exports = async (interaction) => {
     const itemIndex = customId.split('-')[1];
     if (itemIndex === 'one') itemName = 'Twitch Auto (1 week)', btnIndex = 0;
     if (itemIndex === 'two') itemName = 'YouTube Auto (1 week)', btnIndex = 1;
-    if (itemIndex === 'three') itemName = 'Link Embeds (1 week)', btnIndex = 2;
     let cost = interaction.message.components[0].components[btnIndex].label.replaceAll('⠀', '').replaceAll(' ', '');
     let customMessage = ``;
 
@@ -105,46 +104,6 @@ module.exports = async (interaction) => {
                 // If an error occurs
                 sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. Please contact a staff member for help`);
             }
-        }
-    }
-
-    // Three
-    if (itemIndex === 'three') {
-        // This item is free for server boosters
-        if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has(process.env.SUBSCRIBER_ROLE))) && !customId.includes('gift')) cost = 0;
-
-        // Present the user with a confirmation modal
-        if (interaction.type !== InteractionType.ModalSubmit) return confirmationModal(interaction, storeName, itemName, itemIndex, cost);
-
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-        // Make sure the user confirmed the purchase
-        if (!await checkConfirmation(interaction)) return;
-
-        // If item is being purcahsed as a gift
-        if (customId.includes('gift')) giftee = interaction.fields.getTextInputValue('input0');
-        if (customId.includes('gift')) member = await guild.members.fetch(giftee).catch(() => { })
-        // If a member can't be found
-        if (!member) return sendResponse(interaction, `${process.env.BOT_DENY} The giftee ID you entered does not belong to a member of this server`);
-
-        // Two instances of this item can't be active at the same time, check if the user has an active subscription
-        const results = await tokensSchema.find({ userId: member.id });
-        if ((results[0]?.linkembeds - new Date()) > 1 || results[0]?.linkembeds === true)
-            return sendResponse(interaction, `${process.env.BOT_DENY} ${member} already has an active subscription for this item. If you need help, please contact a staff member`);
-
-        // Attempt to complete the purchase and continue if successful
-        if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
-            const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
-            // Edit the channel permissions for the user to allow link embeds  
-            contentShare.permissionOverwrites.edit(member.id, {
-                EmbedLinks: true,
-            }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-
-            // Future timestamp for auto expiry
-            const oneWeek = 24 * 60 * 60 * 7 * 1000;
-            const timestamp = new Date().valueOf() + oneWeek;
-            // Add expiry timestamp or boolean to user's db entry
-            await dbUpdateOne(tokensSchema, { userId: member.id }, { linkembeds: timestamp });
         }
     }
 }

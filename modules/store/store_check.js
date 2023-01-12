@@ -11,7 +11,7 @@ module.exports = async (client) => {
         // Find expired timestamps and null them
         const results = await tokensSchema.find();
         for (const data of results) {
-            const { userId, doublexp, youtubeauto, twitchauto, linkembeds } = data;
+            const { userId, doublexp, youtubeauto, twitchauto } = data;
             const member = await guild.members.fetch(userId).catch(async () => {
                 // If user doesn't exist, delete their db entry
                 await dbDeleteOne(tokensSchema, { userId: userId });
@@ -38,16 +38,6 @@ module.exports = async (client) => {
                 // Log when a user's item expires
                 tokenLog.send({
                     content: `${process.env.TOKENS_EXPIRE} ${member} your Twitch Auto item expired. Buy it again now in the <#1049791650060324954> if you want to keep using it`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-            }
-
-            if (linkembeds !== true && linkembeds !== null && (linkembeds - new Date()) <= 0) {
-                await dbUpdateOne(tokensSchema, { userId: userId }, { linkembeds: null });
-                // Remove user's link embeds permission
-                contentShare.permissionOverwrites.delete(member.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
-                // Log when a user's item expires
-                tokenLog.send({
-                    content: `${process.env.TOKENS_EXPIRE} ${member} your Link Embeds item expired. Buy it again now in the <#1049791650060324954> if you want to keep using it`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         }

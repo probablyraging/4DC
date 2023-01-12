@@ -41,10 +41,6 @@ const tokensSchema = mongoose.Schema({
         type: mongoose.SchemaTypes.Mixed,
         required: false
     },
-    linkembeds: {
-        type: mongoose.SchemaTypes.Mixed,
-        required: false
-    },
     giveaways: {
         type: mongoose.SchemaTypes.Mixed,
         required: false

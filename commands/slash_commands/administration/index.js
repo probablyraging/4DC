@@ -144,11 +144,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setCustomId('perm-two')
                             .setLabel('⠀⠀800⠀⠀⠀')
                             .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('perm-three')
-                            .setLabel('⠀⠀300⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
                 const gift = new ActionRowBuilder()
@@ -162,11 +157,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setCustomId('giftperm-two')
                             .setLabel('⠀⠀Gift⠀⠀⠀')
                             .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('giftperm-three')
-                            .setLabel('⠀⠀ Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
                             .setStyle(ButtonStyle.Success)
                     );
                 const info = new ActionRowBuilder()
@@ -178,10 +168,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                         new ButtonBuilder()
                             .setCustomId('info-perm-two')
                             .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-perm-three')
-                            .setLabel('⠀Information⠀⠀')
                             .setStyle(ButtonStyle.Secondary)
                     );
 
@@ -202,11 +188,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setCustomId('temp-two')
                             .setLabel('⠀ ⠀100⠀⠀⠀')
                             .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('temp-three')
-                            .setLabel('⠀ ⠀30⠀ ⠀⠀')
-                            .setEmoji('1050596938921295973')
                             .setStyle(ButtonStyle.Primary)
                     );
                 const gift2 = new ActionRowBuilder()
@@ -220,11 +201,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                             .setCustomId('gifttemp-two')
                             .setLabel('⠀⠀Gift⠀⠀⠀')
                             .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('gifttemp-three')
-                            .setLabel('⠀⠀ Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
                             .setStyle(ButtonStyle.Success)
                     );
                 const info2 = new ActionRowBuilder()
@@ -236,10 +212,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                         new ButtonBuilder()
                             .setCustomId('info-temp-two')
                             .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-temp-three')
-                            .setLabel('⠀Information⠀⠀')
                             .setStyle(ButtonStyle.Secondary)
                     );
 

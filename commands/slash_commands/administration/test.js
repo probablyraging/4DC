@@ -3,7 +3,7 @@ const { sendReply, dbFindOne, dbUpdateOne } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 const path = require("path");
-const schema = require('../../../schemas/misc/reddit_schema');
+const schema = require('../../../schemas/misc/tokens_schema');
 
 
 
