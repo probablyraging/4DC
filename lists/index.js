@@ -13,11 +13,10 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <#1005283113775157349> Information about the server channels and roles
 > <#820889004055855147> Meet and chat with the community
 > <#1049263519255777301> Tell us a little about yourself
+> <id:customize> Grab yourself some profile flair
 > <#1040530300515647548> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
 > <#856719763187302441> Share your channels, videos, projects & hobbies
-
-Don't forget to grab some profile flair from [Channels & Roles](<https://discord.com/channels/820889004055855144/customize-community>)
 ⠀`,
 
         `https://i.imgur.com/zD5ueDZ.png`,
@@ -198,7 +197,8 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     servermap: [
         `https://i.imgur.com/DzeC8I8.png`,
 
-        `⠀
+        `You can easily hide channels from the channel list via <id:browse>
+
 **WELCOME**
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server

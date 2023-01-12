@@ -51,7 +51,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
-        const target = options.getMember('user');
+        const target = options.getUser('user');
         const deleteMessages = options.getBoolean('delete_messages');
         const custom = options.getString('custom');
         let reason = options.getString('reason');
@@ -66,7 +66,7 @@ module.exports = {
             content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
         }).catch(() => { });
         // Ban the target user, taking into account if their messages should be deleted
-        await target.ban({
+        await guild.bans.create(target ,{
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
@@ -75,7 +75,7 @@ module.exports = {
         let log = new EmbedBuilder()
             .setColor("#E04F5F")
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-            .setDescription(`**Member:** ${target.user.tag} *(${target.user.id})*
+            .setDescription(`**Member:** ${target.tag} *(${target.id})*
 **Reason:** ${reason}`)
             .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
@@ -84,6 +84,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} ${target.user.tag} was banned from the server`);
+        sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
     }
 }

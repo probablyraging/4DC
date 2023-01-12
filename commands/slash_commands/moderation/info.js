@@ -14,7 +14,6 @@ module.exports = {
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'connections', value: 'connections' },
-        { name: 'roles', value: 'roles' },
         { name: 'report', value: 'report' },
         { name: 'xp', value: 'xp' },
         { name: 'premium', value: 'premium' },
@@ -39,9 +38,6 @@ module.exports = {
         const responses = new Map([
             ['connections', `*Information for ${target}:*
 > ${process.env.BOT_DOC} Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**`],
-
-            ['roles', `*Information for ${target}:*
-> ${process.env.BOT_DOC} You can assign yourself some custom roles *(also known as profile flair)* in the [Channels & Roles](<https://discord.com/channels/820889004055855144/customize-community>) channel`],
 
             ['report', `*Information for ${target}:*
 > ${process.env.BOT_DOC} If you believe you have found a member that is breaking the server rules or Discord's ToS, you can report them to server staff by using the </report:1031245457902555213> command. You will need to provide a proof image in your report`],

@@ -39,7 +39,10 @@ module.exports = async (message, client) => {
             await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
                     content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Take a look at [this post](https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473)`,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err))
+                    .then(() => {
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    });
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
         } catch (err) {
             console.error(`There was a problem fetching messages in the premium ad channel: `, err);
