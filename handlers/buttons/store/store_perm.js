@@ -1,5 +1,5 @@
 const { CommandInteraction, InteractionType } = require("discord.js");
-const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
+const { dbUpdateOne, sendResponse, sendReply } = require('../../../utils/utils');
 const { confirmationModal, completePurchase, checkConfirmation } = require('../../buttons/store/store_functions');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
@@ -53,7 +53,7 @@ module.exports = async (interaction) => {
     // Two
     if (itemIndex === 'two') {
         // If item is being purcahsed as a gift
-        if (customId.includes('gift') && interaction.member.id !== process.env.OWNER_ID) return sendResponse(interaction, `${process.env.BOT_DENY} This item cannot be gifted`);
+        if (customId.includes('gift') && !interaction.member.roles.cache.has(process.env.STAFF_ROLE)) return sendReply(interaction, `${process.env.BOT_DENY} This item cannot be gifted`);
 
         // This item is free for server boosters
         if ((member.roles.cache.has(process.env.BOOSTER_ROLE) || (member.roles.cache.has(process.env.SUBSCRIBER_ROLE))) && !customId.includes('gift')) cost = 0;
