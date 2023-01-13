@@ -61,7 +61,7 @@ module.exports = {
                 const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));;
                 fetchedMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 message.channel.send({
-                    content: fetchedMessage.embeds[0].url
+                    content: fetchedMessage.embeds[0]?.url
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }, 3000);
         }
