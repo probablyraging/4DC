@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, MessageType } = require('discord.js');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const bumpPost = require('../../modules/timers/bump_post');
 const blSpam = require('../../modules/blacklist/spam');
@@ -41,11 +41,12 @@ module.exports = {
         stickyReminder(message, client);
 
         // Check automod embeds for Discord links and send the user a notification
-        if (message?.channel.id === process.env.AUTOMOD_CHAN) {
+        if (message?.channel.id === process.env.AUTOMOD_CHAN && MessageType.AutoModerationAction) {
             if (notifiedUsers.has(message?.author.id)) return;
-            if (message.embeds[0].description.toLowerCase().includes('discord.com/invite') || message.embeds[0].description.toLowerCase().includes('discord.gg/')) {
+            if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
                 message?.author.send({
-                    content: `Discord invite link sharing is only available to FTC++ subscribers \n\nLearn more <https://discord.com/channels/820889004055855144/role-subscriptions>`
+                    content: `Discord invite link sharing is only available to FTC++ subscribers \n\nLearn more <https://discord.com/channels/820889004055855144/role-subscriptions>`,
+                    files: ['./res/images/supporter_rewards.png']
                 }).catch(() => { });
                 notifiedUsers.add(message?.author.id);
             }
