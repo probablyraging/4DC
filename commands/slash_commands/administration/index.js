@@ -298,7 +298,7 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
             
 Still having trouble seeing the server channels? Click the **Verify** button below
                         
-***Important:** you must have a verified phone number linked to Discord. If you are unable to verify yourself, please send <@${process.env.OWNER_ID}> a friend request*`,
+***Important:** you must have a verified phone number linked to Discord. You have 24 hours to verify. If you are unable to verify yourself, please send <@${process.env.OWNER_ID}> a friend request*`,
                         components: [btn],
                         allowedMentions: {
                             parse: []
