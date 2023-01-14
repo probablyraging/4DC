@@ -11,7 +11,6 @@ const fetchReddit = require('../../modules/misc/fetch_reddit');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const storeCheck = require('../../modules/store/store_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
-const lexicaFetch = require('../../modules/misc/fetch_lexica');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
 const fs = require('fs');
@@ -77,6 +76,5 @@ module.exports = {
         welcomeCheck(client);
         storeCheck(client);
         leaderboardUpdate(client);
-        lexicaFetch(client);
     }
 };
