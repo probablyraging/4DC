@@ -4,8 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 const path = require("path");
 const schema = require('../../../schemas/misc/tokens_schema');
-
-
+const wait = require("timers/promises").setTimeout;
 
 module.exports = {
     name: `test`,
@@ -20,6 +19,10 @@ module.exports = {
         const { options, member, guild, channel, user } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+        const puppeteer = require('puppeteer');
+
+        
 
         interaction.deleteReply();
     }
