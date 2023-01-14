@@ -28,7 +28,6 @@
     "nudity-filter": "^0.1.2",
     "os": "^0.1.2",
     "pm2": "^5.1.2",
-    "puppeteer": "^19.5.2",
     "rss-parser": "^3.12.0",
     "sharp": "^0.31.3",
     "stop-discord-phishing": "^0.2.0",
