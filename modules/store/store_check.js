@@ -6,7 +6,6 @@ module.exports = async (client) => {
     setInterval(async () => {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const tokenLog = guild.channels.cache.get(process.env.CREDITLOG_CHAN);
-        const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
 
         // Find expired timestamps and null them
         const results = await tokensSchema.find();
