@@ -41,7 +41,7 @@ module.exports = {
         stickyReminder(message, client);
 
         // Check automod embeds for Discord links and send the user a notification
-        if (message?.channel.id === process.env.AUTOMOD_CHAN && MessageType.AutoModerationAction) {
+        if (message?.channel.id === process.env.AUTOMOD_CHAN && message.type === 24) {
             if (notifiedUsers.has(message?.author.id)) return;
             if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
                 message?.author.send({
