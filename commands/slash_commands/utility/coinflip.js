@@ -149,7 +149,7 @@ module.exports = {
                 // Create a database entry for the new coinflip game
                 await dbCreate(coinflipSchema, { code: gameCode, amount: amountToWager, playerOne: member.id });
                 // Send the new game creation message to the coinflip channel
-                await channel.send({ content: `<:perk_nine:1061808707014504458> ${member} is wagering **${amountToWager}** of their finest tokens. Use **/coinflip join ${gameCode}** to challenge them` })
+                await channel.send({ content: `<:perk_nine:1061808707014504458> ${member} is wagering **${amountToWager}** of their finest tokens. Use **/coinflip accept ${gameCode}** to challenge them` })
                     .catch(err => console.error(err));
                 interaction.deleteReply().catch(err => console.error(err));
             }
