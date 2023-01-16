@@ -279,6 +279,8 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                     components: [btn3, gift3, info3]
                 }).catch(err => console.error(`Could not send a message: `, err));
 
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                
                 break;
             }
 
