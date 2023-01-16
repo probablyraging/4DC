@@ -54,7 +54,7 @@ module.exports = {
         fs.readdir('./res/temp', (err, files) => {
             if (err) return;
             for (const file of files) {
-                if (file.endsWith('.png')) {
+                if (file.endsWith('.png') || file.endsWith('.gif')) {
                     fs.unlink(`./res/temp/${file}`, (err) => {
                         if (err) console.error('There was a problem deleting a txt2img file: ', err);
                     });

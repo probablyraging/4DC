@@ -7,6 +7,7 @@ const storeMiscButton = require('../../handlers/buttons/store/store_misc');
 const storeInfoButton = require('../../handlers/buttons/store/store_info');
 const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
 const verificationButton = require('../../handlers/buttons/misc/verification_button');
+const coinflipButton = require('../../handlers/buttons/misc/coinflip');
 const helpButton = require('../../handlers/buttons/misc/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
 const banModal = require('../../handlers/modals/ban_modal');
@@ -82,7 +83,8 @@ module.exports = {
                 'giftmisc': storeMiscButton,
                 'info': storeInfoButton,
                 'help': helpButton,
-                'verification': verificationButton
+                'verification': verificationButton,
+                'coinflip': coinflipButton
             };
             // Handle tokens store buttons
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
