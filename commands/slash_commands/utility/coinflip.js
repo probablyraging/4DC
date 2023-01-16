@@ -75,7 +75,7 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     await channel.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) })
         .then(webhook => {
             webhook.send({
-                content: `**Game:** <@${playerOne}> vs. <@${playerTwo}> \n**Wager:** ${wagerAmount} tokens \n**Code:** ${gameCode}`,
+                content: `**Game:** <@${playerOne}> vs. <@${playerTwo}> \n**Winnings:** ${wagerAmount * 2} tokens \n**Code:** ${gameCode}`,
                 files: [attachment]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err))
                 .then(() => {
