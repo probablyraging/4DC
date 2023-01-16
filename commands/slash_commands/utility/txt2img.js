@@ -50,7 +50,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         // If the response contains "send_data" send the user's prompt back
         if (data.includes('send_data')) {
             // Check if the websocket is ready, notify the user if there is an error
-            if (ws.readyState !== 1) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+            if (ws.readyState !== 1) return sendResponse(interaction, `${member} No image was able to be generated`);
             const body = { "fn_index": 1, "data": [`${prompt}`] };
             ws.send(JSON.stringify(body));
         }
@@ -58,8 +58,8 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         if (data.includes('process_completed')) {
             const jsonData = JSON.parse(data.toString());
             // If there is no data in the parsed data, return an error
-            if (jsonData.output.error) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
-            if (!jsonData.output.data) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+            if (jsonData.output.error) return sendResponse(interaction, `${member} No image was able to be generated`);
+            if (!jsonData.output.data) return sendResponse(interaction, `${member} No image was able to be generated`);
 
             // Get the image data abd add it to the imgBaseArr
             let imgBaseArr = [];
@@ -73,7 +73,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
             if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
             // Create an attachment from the single image, send it and perform a NSFW check
             if (!count || count === 1) {
-                if (!imgBaseArr[0]?.data) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+                if (!imgBaseArr[0]?.data) return sendResponse(interaction, `${member} No image was able to be generated`);
                 const buf = Buffer.from(imgBaseArr[0].data, 'base64');
                 const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
                 const int = await sendResponse(interaction, responseContent, [], [imgOne], [buttons]);
@@ -136,7 +136,7 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
                     }
                     // If there are no viable images
                     if (numNonUndefinedImages === 0) {
-                        initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
+                        sendResponse(interaction, `${member} No image was able to be generated`);
                         // Delete all the image files
                         for (let j = 0; j < count; j++) {
                             fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
