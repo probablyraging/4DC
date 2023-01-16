@@ -12,7 +12,8 @@ async function initCoinflip(client, guild, channel, gameCode) {
     const results = await dbFindOne(coinflipSchema, { code: gameCode });
     const playerOne = results.playerOne;
     const playerTwo = results.playerTwo;
-    const wagerAmount = results.amount
+    const wagerAmount = results.amount * 2;
+    console.log(wagerAmount);
 
     await channel.send({ content: `<:botconfirm:845719660812435496> <@${playerTwo}> has accepted <@${playerOne}>'s wager of **${wagerAmount}** tokens. Good luck!` }).catch(err => console.error(err));
     // Get a random number, 1 = playerOne, 2 = playerTwo
