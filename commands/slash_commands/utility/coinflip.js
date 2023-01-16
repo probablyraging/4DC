@@ -6,7 +6,6 @@ const Canvas = require("canvas");
 const gifEncoder = require('gifencoder');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const wait = require("timers/promises").setTimeout;
 const path = require('path');
 
 async function initCoinflip(client, guild, channel, gameCode) {
@@ -108,8 +107,8 @@ module.exports = {
         }]
     },
     {
-        name: `join`,
-        description: `Join an existing coinflip`,
+        name: `accept`,
+        description: `Accept an existing coinflip`,
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
             name: `code`,
@@ -120,7 +119,7 @@ module.exports = {
     },
     {
         name: `cancel`,
-        description: `Join an existing coinflip`,
+        description: `Cancel your current coinflip`,
         type: ApplicationCommandOptionType.Subcommand
     }],
     /**
@@ -156,9 +155,9 @@ module.exports = {
             }
         }
 
-        // Join an existing coinflip game
+        // Accept an existing coinflip game
         switch (options.getSubcommand()) {
-            case 'join': {
+            case 'accept': {
                 const gameCode = options.getString('code');
                 // Don't let a user join their own game
                 if (member.id === gameCode) return sendResponse(interaction, `${process.env.BOT_DENY} You can't join your own wager`);
