@@ -23,21 +23,22 @@ async function initCoinflip(client, guild, channel, gameCode) {
         await dbUpdateOne(tokensSchema, { userId: playerOne }, { tokens: checkWinnersTokens.tokens + wagerAmount });
         // Notify players of the result
         // await channel.send({ content: `<:dollar_coin:1034396609276022854> <@${playerOne}> won the wager of **${wagerAmount}** tokens against <@${playerTwo}>!` }).catch(err => console.error(err));
-        await createCanvas(client, guild, channel, playerOne, playerTwo, playerOne, wagerAmount, gameCode);
+        await createCanvas(client, guild, channel, playerOne, playerTwo, playerOne, wagerAmount, gameCode, checkWinnersTokens);
     } else {
         // Get the winners current tokens count and add the wagered tokens
         const checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
         await dbUpdateOne(tokensSchema, { userId: playerTwo }, { tokens: checkWinnersTokens.tokens + wagerAmount });
         // Notify players of the result
         // await channel.send({ content: `<:dollar_coin:1034396609276022854> <@${playerTwo}> won the wager of **${wagerAmount}** tokens against <@${playerOne}>!` }).catch(err => console.error(err));
-        await createCanvas(client, guild, channel, playerOne, playerTwo, playerTwo, wagerAmount, gameCode);
+        await createCanvas(client, guild, channel, playerOne, playerTwo, playerTwo, wagerAmount, gameCode, checkWinnersTokens);
     }
     // Remove the game entry from the database
     await dbDeleteOne(coinflipSchema, { code: gameCode });
 }
 
-async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode) {
+async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode, checkWinnersTokens) {
     // Fetch the winner of the coinflip
+    const tokenLog = client.channels.cache.get(process.env.CREDITLOG_CHAN);
     const fetchWinner = await guild.members.fetch(winnerId).catch(err => console.error(err));
     const fileName = uuidv4();
     // Image
@@ -84,6 +85,13 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
                     if (fs.existsSync(`./res/temp/${fileName}.gif`)) fs.unlink(`./res/temp/${fileName}.gif`, (err) => { if (err) console.error(err); });
                 });
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+    // Log winner's increase in tokens
+    tokenLog.send({
+        content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount / 2}** tokens from a coinflip, they now have **${checkWinnersTokens.tokens + wagerAmount}** tokens`,
+        allowedMentions: {
+            parse: []
+        }
+    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 }
 
 function randomNum(min, max) {
