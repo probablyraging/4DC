@@ -146,7 +146,7 @@ module.exports = async (message, client) => {
                     await passedCountWithSave();
                 } else {
                     // if there are no guild saves to use, then we fail
-                    failMessage = `${failReason} \n> There were no guild saves to use, so the count starts again. To donate a save to the guild, use the \`/counting donatesave\` command \n> The current number is \`0\` \n> The record to beat is \`${currentRecord}\``;
+                    failMessage = `${failReason} \n> There were no guild saves to use, so the count starts again. To donate a save to the guild, use the \`/counting donatesave\` command \n> The current number is \`10000\` \n> The record to beat is \`${currentRecord}\``;
                     await failedCount();
                 }
             }
