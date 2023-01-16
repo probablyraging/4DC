@@ -62,7 +62,6 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
         ctx.fillText(fetchWinner.user.tag, 170, y);
-        console.log(y);
         if (y === 180) {
             for (let i = 0; i < 100; i++) {
                 encoder.addFrame(ctx);
