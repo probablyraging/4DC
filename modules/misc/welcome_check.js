@@ -1,4 +1,4 @@
-const { newUsers } = require('../../handlers/buttons/misc/verify_button');
+const { newUsers } = require('../../events/guild/guildMemberAdd');
 
 module.exports = async (client) => {
     const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);

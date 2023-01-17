@@ -101,41 +101,10 @@ module.exports = async (client) => {
         }
     });
 
-    // Checks for the verification system
-    const verificationCheck = new cronjob('*/5 * * * *', async function () {
-        const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
-        const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
-        const oneDay = 24 * 60 * 60 * 1000;
-        unverifiedRole.members.forEach(async member => {
-            // Kick users that have been in the server for longer than 3 days without verifying themselves
-            if ((new Date() - member.joinedTimestamp) > oneDay && member.pending === true) {
-                // Notify the user
-                await member.send({ content: `You have been kicked from ForTheContent as you did not verify your account within 24-hours \n\nYou're welcome to join back once you have verified your account discord.gg/forthecontent` })
-                    .catch(() => { });
-                // Kick the user
-                await member.kick().catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user: `, err));
-                // Log to channel
-                let log = new EmbedBuilder()
-                    .setColor("#E04F5F")
-                    .setAuthor({ name: `${client.user.tag}`, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`**Member:** ${member.user.tag} *(${member.user.id})*
-**Reason:** Did not verify account`)
-                    .setFooter({ text: `Kick • ${uuidv4()}`, iconURL: process.env.LOG_KICK })
-                    .setTimestamp();
-
-                await logChan.send({
-                    embeds: [log]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-                return;
-            }
-        });
-    });
-
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
-    verificationCheck.start();
 }

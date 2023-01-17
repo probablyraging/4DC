@@ -1,17 +1,18 @@
 const { dbUpdateOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const previouslyBannedUsers = require('../../lists/previous_bans');
+const newUsers = new Set();
 const path = require('path');
 
 module.exports = {
     name: 'guildMemberAdd',
     async execute(member, client, Discord) {
-        // Add the unverified role to every new member
-        if (member) member?.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
-
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
+
+        // Add all new user to a set
+        newUsers.add(member.id);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
@@ -74,5 +75,7 @@ module.exports = {
                 console.error('There was a problem with matching previously banned users: ', err);
             }
         });
-    }
+    },
+    // Export the newUser set
+    newUsers
 }

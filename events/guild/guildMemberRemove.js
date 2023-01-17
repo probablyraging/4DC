@@ -1,4 +1,4 @@
-const { newUsers } = require('../../handlers/buttons/misc/verify_button');
+const { newUsers } = require('../../events/guild/guildMemberAdd');
 const path = require('path');
 
 module.exports = {

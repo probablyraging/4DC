@@ -17,8 +17,7 @@ module.exports = {
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
         { name: 'spotlight', value: 'spotlight' },
-        { name: 'tokenstore', value: 'tokenstore' },
-        { name: 'verification', value: 'verification' }]
+        { name: 'tokenstore', value: 'tokenstore' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -281,36 +280,6 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
                 
-                break;
-            }
-
-            // VERIFICATION
-            case 'verification': {
-                const btn = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('verify')
-                            .setLabel('Verify')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-
-                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    webhook.send({
-                        content: `Click the **Verify** button below and select the correct prompt from the drop down menu  
-                        
-***Important:** you must have a verified phone number linked to Discord. You have 24 hours to verify. If you are unable to verify yourself, please send <@${process.env.OWNER_ID}> a friend request*`,
-                        components: [btn],
-                        allowedMentions: {
-                            parse: []
-                        }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                    setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-
                 break;
             }
         }
