@@ -39,10 +39,9 @@ module.exports = async (message, client) => {
             // Only log in increments of 5 - account for token cap
             if (increment.has(message?.member.id)) {
                 if (increment.get(message?.member.id) === 4) {
-                    const checkUserTokens = await dbFindOne(tokensSchema, { userId: message?.author.id });
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
-                        content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${checkUserTokens.tokens + 5}** tokens`,
+                        content: `${process.env.TOKENS_UP} ${message?.author} gained **5** tokens while chatting in the server, they now have **${checkUserTokens.tokens}** tokens`,
                         allowedMentions: {
                             parse: []
                         }
