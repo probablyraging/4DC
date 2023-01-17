@@ -6,7 +6,6 @@ const lastLetterSchema = require('../../schemas/letter_game/letter_lb_schema');
 const countingSchema = require('../../schemas/counting_game/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const cronjob = require('cron').CronJob;
-const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 module.exports = async (client) => {
