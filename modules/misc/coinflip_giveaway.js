@@ -1,0 +1,34 @@
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { dbCreate, dbFindOne, sendResponse } = require('../../utils/utils');
+const coinflipSchema = require('../../schemas/misc/coinflip_schema');
+const { v4: uuidv4 } = require('uuid');
+
+function randomNum(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+module.exports = async (client) => {
+    const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    const coinflipChan = guild.channels.cache.get(process.env.COINFLIP_CHAN);
+    setInterval(async () => {
+        const amountToWager = randomNum(10, 100);
+        const gameCode = uuidv4().split('-')[0];
+        // Check is there is still an active bot coinflip available
+        const checkActiveGames = await dbFindOne(coinflipSchema, { playerOne: client.user.id });
+        if (checkActiveGames) return;
+        // Create a database entry for the new coinflip game
+        await dbCreate(coinflipSchema, { code: gameCode, amount: amountToWager, playerOne: client.user.id });
+        // Send the new game creation message to the coinflip channel
+        const btn = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId(`coinflip-${gameCode}`)
+                    .setLabel('Accept')
+                    .setStyle(ButtonStyle.Primary)
+            );
+        coinflipChan.send({
+            content: `<:perk_three:1061798848890142800> **FREE TO PLAY** <@${client.user.id}> is wagering **${amountToWager}** tokens. Click **Accept** to play for free`,
+            components: [btn]
+        }).catch(err => console.error(err));
+    }, randomNum(1800000, 4200000));
+};

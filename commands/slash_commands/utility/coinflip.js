@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { dbCreate, dbFindOne, sendResponse, dbUpdateOne, dbDeleteOne } = require('../../../utils/utils');
 const coinflipSchema = require('../../../schemas/misc/coinflip_schema');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
@@ -30,7 +30,7 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, options, channel, guild, client } = interaction;
+        const { member, options, channel } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -63,8 +63,7 @@ module.exports = {
                 await channel.send({
                     content: `<:perk_eight:1061805558283391016> ${member} is wagering **${amountToWager}** of their finest tokens. Click **Accept** to go head-to-head`,
                     components: [btn]
-                })
-                    .catch(err => console.error(err));
+                }).catch(err => console.error(err));
                 interaction.deleteReply().catch(err => console.error(err));
             }
         }
