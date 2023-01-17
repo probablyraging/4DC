@@ -38,7 +38,7 @@ module.exports = async (message, client) => {
 
             // Log when a user's tokens increase or decrease
             tokenLog.send({
-                content: `${process.env.TOKENS_UP} ${message?.author} gained **1** token while chatting in the server, they now have **${checkUserTokens.tokens}** tokens`,
+                content: `${process.env.TOKENS_UP} ${message?.author} gained **1** token while chatting in the server, they now have **${tokens + 1}** tokens`,
                 allowedMentions: {
                     parse: []
                 }
