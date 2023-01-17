@@ -84,6 +84,7 @@ Use the buttons below to access information on how to play these games`);
 
 You can earn tokens in a few ways, including;
 • Sending messages in non-promotional or game channels (chatting)
+• Accepting free games of coinflip in <#1064425998214508598>
 • Bumping the server using the </bump:947088344167366698> command in the <#855427926136193054> channel
 • Being awarding tokens for a useful or helpful post that you made on the server
 
