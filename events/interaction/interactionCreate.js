@@ -6,7 +6,7 @@ const storeTempButton = require('../../handlers/buttons/store/store_temp');
 const storeMiscButton = require('../../handlers/buttons/store/store_misc');
 const storeInfoButton = require('../../handlers/buttons/store/store_info');
 const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
-const verificationButton = require('../../handlers/buttons/misc/verification_button');
+const verifyButton = require('../../handlers/buttons/misc/verify_button');
 const coinflipButton = require('../../handlers/buttons/misc/coinflip');
 const helpButton = require('../../handlers/buttons/misc/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
@@ -83,7 +83,7 @@ module.exports = {
                 'giftmisc': storeMiscButton,
                 'info': storeInfoButton,
                 'help': helpButton,
-                'verification': verificationButton,
+                'verify': verifyButton,
                 'coinflip': coinflipButton
             };
             // Handle tokens store buttons
@@ -126,6 +126,19 @@ module.exports = {
             };
             // Handle misc modals
             if (customId in miscModals) miscModals[customId](interaction);
+        }
+
+        // Select menu submit handler
+        if (interaction.type === InteractionType.MessageComponent) {
+            // The customId of the select menu
+            const customIdPrefix = interaction.customId;
+
+            // A map of customIds for the select menus
+            const prefixedSelects = {
+                'captcha': verifyButton
+            };
+            // Handle tokens store modals
+            if (customIdPrefix in prefixedSelects) prefixedSelects[customIdPrefix](interaction);
         }
 
         // Command and context menu handler

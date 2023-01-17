@@ -289,16 +289,14 @@ Buy entry tickets from <#1049791650060324954> to have your content featured here
                 const btn = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                            .setCustomId('verification')
+                            .setCustomId('verify')
                             .setLabel('Verify')
                             .setStyle(ButtonStyle.Primary)
                     );
 
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     webhook.send({
-                        content: `Click **Complete** at the bottom of your screen, agree to the rules, and then click **Submit**
-            
-Still having trouble seeing the server channels? Click the **Verify** button below
+                        content: `Click the **Verify** button below and select the correct prompt from the drop down menu  
                         
 ***Important:** you must have a verified phone number linked to Discord. You have 24 hours to verify. If you are unable to verify yourself, please send <@${process.env.OWNER_ID}> a friend request*`,
                         components: [btn],

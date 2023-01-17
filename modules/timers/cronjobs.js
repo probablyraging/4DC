@@ -128,9 +128,6 @@ module.exports = async (client) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
                 return;
             }
-            // Check users verification status and add or remove the unverified role as necessary
-            if (member.pending === true) member.roles.add(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
-            if (member.pending === false) member.roles.remove(unverifiedRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role from a user: `, err));
         });
     });
 

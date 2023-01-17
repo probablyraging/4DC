@@ -8,7 +8,7 @@ const rankXP = require('../../modules/rank/rank_xp');
 const tokensSystem = require('../../modules/store/tokens_system');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyReminder = require('../../modules/misc/sticky_reminder');
-const { newUsers } = require('../guild/guildMemberUpdate');
+const { newUsers } = require('../../handlers/buttons/misc/verify_button');
 const notifiedUsers = new Set();
 const path = require('path');
 
