@@ -11,7 +11,7 @@ function randomNum(min, max) {
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const coinflipChan = guild.channels.cache.get(process.env.COINFLIP_CHAN);
-    const coinflip = new cronjob('*/35 * * * *', async function () {
+    // const coinflip = new cronjob('*/35 * * * *', async function () {
         const amountToWager = randomNum(10, 100);
         const gameCode = uuidv4().split('-')[0];
         // Check is there is still an active bot coinflip available
@@ -31,6 +31,6 @@ module.exports = async (client) => {
             content: `<:perk_three:1061798848890142800> **FREE TO PLAY** <@${client.user.id}> is wagering **${amountToWager}** tokens. Click **Accept** to play for free`,
             components: [btn]
         }).catch(err => console.error(err));
-    });
-    coinflip.start();
+    // });
+    // coinflip.start();
 };

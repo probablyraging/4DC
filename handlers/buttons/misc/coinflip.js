@@ -12,9 +12,9 @@ async function initCoinflip(client, guild, channel, gameCode) {
     const results = await dbFindOne(coinflipSchema, { code: gameCode });
     const playerOne = results.playerOne;
     const playerTwo = results.playerTwo;
-    const wagerAmount = results.amount * 2;
+    const wagerAmount = (playerOne === client.user.id) ? results.amount : results.amount * 2;
 
-    await channel.send({ content: `<:botconfirm:845719660812435496> <@${playerTwo}> has accepted <@${playerOne}>'s wager of **${wagerAmount / 2}** tokens. Good luck!` }).catch(err => console.error(err));
+    await channel.send({ content: `<:botconfirm:845719660812435496> <@${playerTwo}> has accepted <@${playerOne}>'s wager of **${wagerAmount}** tokens. Good luck!` }).catch(err => console.error(err));
     // Get a random number, 1 = playerOne, 2 = playerTwo
     const pickWinner = randomNum(1, 2);
     let checkWinnersTokens;
@@ -26,6 +26,7 @@ async function initCoinflip(client, guild, channel, gameCode) {
         }
         await createCanvas(client, guild, channel, playerOne, playerTwo, playerOne, wagerAmount, gameCode, checkWinnersTokens);
     } else {
+        // If the winner isn't a bot
         if (playerTwo !== client.user.id) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
@@ -89,7 +90,7 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     // Log winner's increase in tokens
     if (winnerId !== client.user.id) {
         tokenLog.send({
-            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount / 2}** tokens from a coinflip, they now have **${checkWinnersTokens.tokens + wagerAmount}** tokens`,
+            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount}** tokens from a coinflip, they now have **${checkWinnersTokens.tokens + wagerAmount}** tokens`,
             allowedMentions: {
                 parse: []
             }
