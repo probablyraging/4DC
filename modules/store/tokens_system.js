@@ -59,6 +59,6 @@ module.exports = async (message, client) => {
         tokensLimit.add(message?.author.id);
         setTimeout(() => {
             tokensLimit.delete(message?.author.id);
-        }, 60000);
+        }, 15000);
     }
 }
