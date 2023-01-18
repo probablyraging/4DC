@@ -1,5 +1,5 @@
 const { ButtonInteraction, AttachmentBuilder } = require('discord.js');
-const { dbFindOne, dbUpdateOne, dbDeleteOne } = require('../../../utils/utils');
+const { dbFindOne, dbUpdateOne, dbDeleteOne, dbCreate } = require('../../../utils/utils');
 const coinflipSchema = require('../../../schemas/misc/coinflip_schema');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
@@ -22,7 +22,12 @@ async function initCoinflip(client, guild, channel, gameCode) {
         if (playerOne !== client.user.id) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerOne });
-            await dbUpdateOne(tokensSchema, { userId: playerOne }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+            // Create a new entry if the user doesn't have one yet
+            if (!checkWinnersTokens) {
+                await dbCreate(tokensSchema, { userId: playerOne, tokens: wagerAmount });
+            } else {
+                await dbUpdateOne(tokensSchema, { userId: playerOne }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+            }
         }
         await createCanvas(client, guild, channel, playerOne, playerTwo, playerOne, wagerAmount, gameCode, checkWinnersTokens);
     } else {
@@ -30,7 +35,12 @@ async function initCoinflip(client, guild, channel, gameCode) {
         if (playerTwo !== client.user.id) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
-            await dbUpdateOne(tokensSchema, { userId: playerTwo }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+            // Create a new entry if the user doesn't have one yet
+            if (!checkWinnersTokens) {
+                await dbCreate(tokensSchema, { userId: playerTwo, tokens: wagerAmount });
+            } else {
+                await dbUpdateOne(tokensSchema, { userId: playerTwo }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+            }
         }
         await createCanvas(client, guild, channel, playerOne, playerTwo, playerTwo, wagerAmount, gameCode, checkWinnersTokens);
     }
