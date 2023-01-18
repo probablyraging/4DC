@@ -24,7 +24,7 @@ let loading = false;
 async function initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons) {
     setTimeout(() => {
         // Wait 30 seconds and check if the interaction has been replied to, if not, initiate generation again
-        interaction?.fetchReply('@original').then(reply => {
+        if (interaction) interaction?.fetchReply('@original').then(reply => {
             if (!reply.content.toLowerCase().includes('completed')) return sendResponse(interaction, `${member} An image was unable to be generated, please try again`);
         }).catch(err => console.error('There was a problem fetching an interaction in txt2img: ', err));
     }, 30000);
