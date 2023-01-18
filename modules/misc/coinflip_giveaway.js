@@ -12,7 +12,8 @@ function randomNum(min, max) {
  * Creates a new free to enter coinflip game with the bot as the initiator
  * @param {Channel} coinflipChan The channel for the coinflip game to be sent to
  */
-async function initCoinflip(coinflipChan) {
+async function initCoinflip(client, coinflipChan) {
+    console.log('boooop');
     const amountToWager = randomNum(10, 100);
     const gameCode = uuidv4().split('-')[0];
     // Check is there is still an active bot coinflip available
@@ -38,20 +39,10 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const coinflipChan = guild.channels.cache.get(process.env.COINFLIP_CHAN);
 
-    let coinflip = new cronjob({
-        cronTime: `${randomNum(0, 59)} * * * *`,
-        onTick: async function () {
-            await initCoinflip(coinflipChan);
-            // Stop and restart the cronjob
-            coinflip.stop();
-            coinflip = new cronjob({
-                cronTime: `${randomNum(0, 59)} * * * *`,
-                onTick: async function () {
-                    await initCoinflip(coinflipChan);
-                },
-                start: true
-            });
-        },
-        start: true
+    coinflip = new cronjob(`${randomNum(1, 59)} * * * *`, async function () {
+        await initCoinflip(client, coinflipChan);
+        coinflip.stop();
+        coinflip.start();
     });
+    coinflip.start();
 };
