@@ -10,7 +10,6 @@ const wait = require("timers/promises").setTimeout;
 const path = require('path');
 
 let loading = false;
-let retryCount = 0;
 
 /**
  * Create a canvas and draw images onto it
@@ -27,13 +26,10 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         // Wait 30 seconds and check if the interaction has been replied to, if not, initiate generation again
         interaction?.fetchReply('@original').then(reply => {
             if (!reply.content.toLowerCase().includes('completed')) {
-                if (retryCount == 1) return sendResponse(interaction, `${member} An image was unable to be generated, please try again`);
-                sendResponse(interaction, `${member} Yikes, this is taking longer than expected, hold tight`);
-                initiateGeneration(reply, member, prompt, count, fileName, timerStart, buttons);
-                retryCount++;
+                return sendResponse(interaction, `${member} An image was unable to be generated, please try again`);
             }
         }).catch(err => console.error('There was a problem fetching an interaction in txt2img: ', err));
-    }, 20000);
+    }, 30000);
 
     // Open a websocket connection with a server
     ws = new WebSocket(process.env.AI_WSS);
