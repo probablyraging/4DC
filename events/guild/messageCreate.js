@@ -38,6 +38,14 @@ module.exports = {
         suggestionPost(message);
         stickyReminder(message, client);
 
+        // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
+        if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id))
+            newUsers.delete(message?.member.id);
+
+        // Block all "youtu.be" links from being posted in the introduction channel
+        if (message?.channel.id === process.env.INTRO_CHAN && message?.content.includes('youtu.be/'))
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));;
+
         // Check automod embeds for Discord links and send the user a notification
         if (message?.channel.id === process.env.AUTOMOD_CHAN && message.type === 24) {
             if (notifiedUsers.has(message?.author.id)) return;
@@ -50,13 +58,10 @@ module.exports = {
             }
         }
 
-        // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
-        if (message?.channel.id === process.env.GENERAL_CHAN && !message.author.bot && newUsers.has(message?.member.id)) newUsers.delete(message?.member.id);
-
         // Resend followed server messages, delete the original message and resend it
         if (message.channel.id === process.env.NEWS_CHAN && message.author.id === '900247274792304710') {
             setTimeout(async () => {
-                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));;
+                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));
                 fetchedMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 message.channel.send({
                     content: fetchedMessage.embeds[0]?.url
