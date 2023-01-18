@@ -23,11 +23,12 @@ let loading = false;
  */
 async function initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons) {
     setTimeout(() => {
-        // Wait 30 seconds and check if the interaction has been replied to, if not, initiate generation again
-        if (interaction) interaction?.fetchReply('@original').then(reply => {
-            if (!reply.content.toLowerCase().includes('completed')) return sendResponse(interaction, `${member} An image was unable to be generated, please try again`);
+        // Wait 20 seconds and check if the interaction has been replied to, if not, initiate generation again
+        if (!interaction) return;
+        interaction?.fetchReply('@original').then(reply => {
+            if (!reply.content.toLowerCase().includes('completed')) sendResponse(interaction, `${member} No images were able to be generated, please try again`);
         }).catch(err => console.error('There was a problem fetching an interaction in txt2img: ', err));
-    }, 30000);
+    }, 20000);
 
     // Open a websocket connection with a server
     ws = new WebSocket(process.env.AI_WSS);
@@ -44,7 +45,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         // If the response contains "send_data" send the user's prompt back
         if (data.includes('send_data')) {
             // Check if the websocket is ready, notify the user if there is an error
-            if (ws.readyState !== 1) return sendResponse(interaction, `${member} No image was able to be generated`);
+            if (ws.readyState !== 1) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
             const body = { "fn_index": 1, "data": [`${prompt}`] };
             ws.send(JSON.stringify(body));
         }
@@ -52,8 +53,8 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         if (data.includes('process_completed')) {
             const jsonData = JSON.parse(data.toString());
             // If there is no data in the parsed data, return an error
-            if (jsonData.output.error) return sendResponse(interaction, `${member} No image was able to be generated`);
-            if (!jsonData.output.data) return sendResponse(interaction, `${member} No image was able to be generated`);
+            if (jsonData.output.error) return sendResponse(interaction, `${member} No images were able to be generated, please try again`);
+            if (!jsonData.output.data) return sendResponse(interaction, `${member} No images were able to be generated, please try again`);
 
             // Get the image data abd add it to the imgBaseArr
             let imgBaseArr = [];
@@ -67,7 +68,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
             if (count > 1) createCanvas(interaction, count, imgBaseArr, fileName, responseContent, buttons, prompt, member);
             // Create an attachment from the single image, send it and perform a NSFW check
             if (!count || count === 1) {
-                if (!imgBaseArr[0]?.data) return sendResponse(interaction, `${member} No image was able to be generated`);
+                if (!imgBaseArr[0]?.data) return sendResponse(interaction, `${member} No images were able to be generated, please try again`);
                 const buf = Buffer.from(imgBaseArr[0].data, 'base64');
                 const imgOne = new AttachmentBuilder(buf, { name: `${fileName}_${uuidv4()}.png` });
                 const int = await sendResponse(interaction, responseContent, [], [imgOne], [buttons]);
@@ -101,53 +102,53 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
         let numNonUndefinedImages = 0;
         for (let i = 0; i < count; i++) {
             if (imgBaseArr[i]?.data == undefined) continue;
-            fs.writeFile(filePaths[i], imgBaseArr[i]?.data, 'base64', async function () {
-                numNonUndefinedImages++;
-                if (i === count - 1) {
-                    // Determine canvas dimensions based on the number of non-undefined images
-                    let canvasWidth, canvasHeight;
-                    if (numNonUndefinedImages === 2) {
-                        canvasWidth = 1054;
-                        canvasHeight = 532;
-                    } else {
-                        canvasWidth = 1054;
-                        canvasHeight = 1054;
-                    }
-                    // Create canvas
-                    const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
-                    const ctx = canvas.getContext("2d");
-                    // Draw each non-undefined image on to the canvas
-                    let k = 0;
-                    for (let j = 0; j < count; j++) {
-                        if (imgBaseArr[j]?.data == undefined) continue;
-                        const img = await Canvas.loadImage(filePaths[j]);
-                        if (numNonUndefinedImages === 2) {
-                            ctx.drawImage(img, 10 + (522 * k), 10, 512, 512);
-                        } else {
-                            ctx.drawImage(img, 10 + (522 * (k % 2)), 10 + (522 * Math.floor(k / 2)), 512, 512);
-                        }
-                        k++;
-                    }
-                    // If there are no viable images
-                    if (numNonUndefinedImages === 0) {
-                        sendResponse(interaction, `${member} No image was able to be generated`);
-                        // Delete all the image files
-                        for (let j = 0; j < count; j++) {
-                            fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
-                        }
-                        return;
-                    }
-                    // Create attachment from canvas and send it
-                    const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
-                    const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
-                    // Peform a NSFW check on the attachment
-                    nsfwCheck(interaction, int, prompt, member);
-                    // Delete all the image files
-                    for (let j = 0; j < count; j++) {
-                        fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
-                    }
-                }
-            });
+            numNonUndefinedImages++;
+            await fs.promises.writeFile(filePaths[i], imgBaseArr[i]?.data, 'base64').catch(() => numNonUndefinedImages--);
+        }
+        // Determine canvas dimensions based on the number of non-undefined images
+        let canvasWidth, canvasHeight;
+        if (numNonUndefinedImages === 2) {
+            canvasWidth = 1054;
+            canvasHeight = 532;
+        } else if (numNonUndefinedImages === 3) {
+            canvasWidth = 1054;
+            canvasHeight = 1054;
+        } else {
+            canvasWidth = 1054;
+            canvasHeight = 1054;
+        }
+        // Create canvas
+        const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
+        const ctx = canvas.getContext("2d");
+        // Draw each non-undefined image on to the canvas
+        let k = 0;
+        for (let j = 0; j < count; j++) {
+            if (imgBaseArr[j]?.data == undefined) continue;
+            const img = await Canvas.loadImage(filePaths[j]);
+            if (numNonUndefinedImages === 2) {
+                ctx.drawImage(img, 10 + (522 * k), 10, 512, 512);
+            } else {
+                ctx.drawImage(img, 10 + (522 * (k % 2)), 10 + (522 * Math.floor(k / 2)), 512, 512);
+            }
+            k++;
+        }
+        // If there are no viable images
+        if (numNonUndefinedImages === 0) {
+            sendResponse(interaction, `${member} No images could be generated, try again`);
+            // Delete all the image files
+            for (let j = 0; j < count; j++) {
+                fs.unlink(filePaths[j], (err) => { if (err) console.log(err); });
+            }
+            return;
+        }
+        // Create attachment from canvas and send it
+        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: `${fileName}_${uuidv4()}.png` });
+        const int = await sendResponse(interaction, responseContent, [], [attachment], [buttons]);
+        // Peform a NSFW check on the attachment
+        nsfwCheck(interaction, int, prompt, member);
+        // Delete all the image files
+        for (let j = 0; j < count; j++) {
+            fs.unlink(filePaths[j], () => { });
         }
     } catch (err) {
         return sendResponse(interaction, `${member} an error occured while generating your images`)
@@ -175,7 +176,6 @@ async function nsfwCheck(interaction, int, prompt, member) {
             if (result.partial_tag === 'chest') return;
             sendResponse(interaction, `**Prompt**: \`${prompt.replaceAll('`', '').slice(0, 1800)}\`
 **Author**: ${member}
-
 Image deleted as it was flagged for potential NSFW content - { raw: ${result.raw}, safe: ${result.safe}, partial: ${result.partial}, tag: ${result.partial_tag} }`, [], [], []);
         }
     });
