@@ -148,7 +148,9 @@ async function createCanvas(interaction, count, imgBaseArr, fileName, responseCo
         nsfwCheck(interaction, int, prompt, member);
         // Delete all the image files
         for (let j = 0; j < count; j++) {
-            fs.unlink(filePaths[j], () => { });
+            if (fs.existsSync(filePaths[j])) {
+                fs.unlink(filePaths[j], () => { });
+            }
         }
     } catch (err) {
         return sendResponse(interaction, `${member} an error occured while generating your images`)
