@@ -37,7 +37,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         // Check if the websocket is ready, notify the user if there is an error
         if (ws.readyState !== 1) return;
         // Send a websocket request
-        const body = { session_hash: "xhx1zj7bng", fn_index: 1 };
+        const body = { session_hash: "xhx1zj7bng", fn_index: 2 };
         ws.send(JSON.stringify(body));
     });
 
@@ -46,7 +46,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         if (data.includes('send_data')) {
             // Check if the websocket is ready, notify the user if there is an error
             if (ws.readyState !== 1) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
-            const body = { "fn_index": 1, "data": [`${prompt}`] };
+            const body = { "fn_index": 2, "data": [`${prompt}`] };
             ws.send(JSON.stringify(body));
         }
         // If the response contains "process_completed" get the output data that contains the image data
