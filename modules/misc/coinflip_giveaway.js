@@ -13,7 +13,6 @@ function randomNum(min, max) {
  * @param {Channel} coinflipChan The channel for the coinflip game to be sent to
  */
 async function initCoinflip(client, coinflipChan) {
-    console.log('boooop');
     const amountToWager = randomNum(10, 100);
     const gameCode = uuidv4().split('-')[0];
     // Check is there is still an active bot coinflip available
