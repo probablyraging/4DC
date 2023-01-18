@@ -45,6 +45,8 @@ module.exports = async (message, client) => {
                 xxp: 0,
                 xxxp: 100
             });
+            // Fetch the new created database entry for the user
+            userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
         }
 
         // Fetch users with an active sub to double XP
