@@ -38,7 +38,7 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const coinflipChan = guild.channels.cache.get(process.env.COINFLIP_CHAN);
 
-    coinflip = new cronjob(`${randomNum(1, 59)} * * * *`, async function () {
+    coinflip = new cronjob(`${randomNum(1, 59)} 0/2 * * *`, async function () {
         await initCoinflip(client, coinflipChan);
         coinflip.stop();
         coinflip.start();
