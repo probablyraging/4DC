@@ -20,7 +20,8 @@ module.exports = {
 
         const attachment = options.getAttachment('proof');
         // If attachment content type isn't an image
-        if (!attachment.contentType.includes('image')) return sendReply(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (png, jpg, etc..)`);
+        if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
+            return sendReply(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
 
         addAttachment(1, attachment.url);
 

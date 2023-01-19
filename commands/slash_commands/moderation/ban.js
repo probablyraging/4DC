@@ -37,6 +37,12 @@ module.exports = {
         { name: 'Custom - please provide a custom reason', value: 'custom' }]
     },
     {
+        name: `screenshot`,
+        description: `A screenshot of the reason why the user was banned`,
+        type: ApplicationCommandOptionType.Attachment,
+        required: true
+    },
+    {
         name: `custom`,
         description: `Provide a reason for banning the user when selecting custom`,
         type: ApplicationCommandOptionType.String,
@@ -51,12 +57,18 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+        const screenshotChan = guild.channels.cache.get(process.env.SCREENSHOT_CHAN);
         const target = options.getUser('user');
         const deleteMessages = options.getBoolean('delete_messages');
         const custom = options.getString('custom');
+        const attachment = options.getAttachment('screenshot');
+        const logId = uuidv4();
         let reason = options.getString('reason');
         reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
 
+        // If attachment content type isn't an image
+        if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
+            return sendReply(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
         // If no target
         if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
         // If no reason was provided when using the custom reason option
@@ -65,22 +77,25 @@ module.exports = {
         const alreadyBanned = await guild.bans.fetch(target.id).catch(() => { });
         if (alreadyBanned) return sendResponse(interaction, `${process.env.BOT_DENY} This user is already banned`);
         // Send a notification to the target user
-        await target.send({
-            content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
-        }).catch(() => { });
+        // await target.send({
+        //     content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
+        // }).catch(() => { });
         // Ban the target user, taking into account if their messages should be deleted
-        await guild.bans.create(target, {
-            deleteMessageSeconds: deleteMessages ? 604800 : 0,
-            reason: reason
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+        // await guild.bans.create(target, {
+        //     deleteMessageSeconds: deleteMessages ? 604800 : 0,
+        //     reason: reason
+        // }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+
+        // Send screenshot to channel
+        const screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         // Log to channel
         let log = new EmbedBuilder()
             .setColor("#E04F5F")
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.tag} *(${target.id})*
-**Reason:** ${reason}`)
-            .setFooter({ text: `Ban • ${uuidv4()}`, iconURL: process.env.LOG_BAN })
+**Reason:** ${reason} ${attachment ? `\n**Attachment:** [${screenshotMessage.id}](${screenshotMessage.url})` : ""}`)
+            .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
 
         logChan.send({
