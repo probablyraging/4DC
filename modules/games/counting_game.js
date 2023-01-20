@@ -96,6 +96,7 @@ module.exports = async (message, client) => {
                 return;
             } else {
                 passedCount();
+                isIncrementOf100(parseInt(message.content));
             }
 
             // regular pass
@@ -219,6 +220,17 @@ module.exports = async (message, client) => {
                     message.react(process.env.BOT_DENY);
                     message?.channel.send({ content: `${failMessage}` })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }
+            }
+
+            // If number is an increment of 100, add a free guild save
+            function isIncrementOf100(num) {
+                if (num % 100 === 0) {
+                    const guildResults = await countingSchema.findOne({ userId: guild.id })
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+                    await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildResults.saves + 1 });
+                    message.react('1061798848890142800')
+                        .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
                 }
             }
         }
