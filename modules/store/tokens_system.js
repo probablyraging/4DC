@@ -42,7 +42,7 @@ module.exports = async (message, client) => {
                     const checkUserTokens = await dbFindOne(tokensSchema, { userId: message?.author.id });
                     // Log when a user's tokens increase or decrease
                     tokenLog.send({
-                        content: `${process.env.TOKENS_UP} ${message?.author} gained **2** tokens while chatting in the server, they now have **${checkUserTokens.tokens}** tokens`,
+                        content: `${process.env.TOKENS_UP} ${message?.author} gained **3** tokens while chatting in the server, they now have **${checkUserTokens.tokens}** tokens`,
                         allowedMentions: {
                             parse: []
                         }
