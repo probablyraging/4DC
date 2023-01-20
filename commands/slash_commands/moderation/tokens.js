@@ -115,7 +115,7 @@ module.exports = {
                         }
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
-                sendResponse(interaction, `${process.env.BOT_CONF} ${amount} ${tokenAmount} successfully removed from ${user}`);
+                sendResponse(interaction, `${process.env.BOT_CONF} ${amount} tokens successfully removed from ${user}`);
                 break;
             }
         }
