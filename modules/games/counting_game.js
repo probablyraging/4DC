@@ -224,7 +224,7 @@ module.exports = async (message, client) => {
             }
 
             // If number is an increment of 100, add a free guild save
-            function isIncrementOf100(num) {
+            async function isIncrementOf100(num) {
                 if (num % 100 === 0) {
                     const guildResults = await countingSchema.findOne({ userId: guild.id })
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
