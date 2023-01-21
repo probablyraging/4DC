@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { dbCreate, dbFindOne } = require('../../utils/utils');
-const coinflipSchema = require('../../schemas/misc/coinflip_schema');
+const coinflipSchema = require('../../schemas/games/coinflip_schema');
 const cronjob = require('cron').CronJob;
 const { v4: uuidv4 } = require('uuid');
 

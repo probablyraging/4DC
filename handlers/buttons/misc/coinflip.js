@@ -1,6 +1,6 @@
 const { ButtonInteraction, AttachmentBuilder } = require('discord.js');
 const { dbFindOne, dbUpdateOne, dbDeleteOne, dbCreate } = require('../../../utils/utils');
-const coinflipSchema = require('../../../schemas/misc/coinflip_schema');
+const coinflipSchema = require('../../../schemas/games/coinflip_schema');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
 const gifEncoder = require('gifencoder');
@@ -18,15 +18,22 @@ async function initCoinflip(client, guild, channel, gameCode) {
     // Get a random number, 1 = playerOne, 2 = playerTwo
     const pickWinner = randomNum(1, 2);
     let checkWinnersTokens;
+    let checkLosersTokens;
     if (pickWinner === 1) {
         if (playerOne !== client.user.id) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerOne });
+            checkLosersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
+            if (checkWinnersTokens.gameWins == undefined) checkWinnersTokens.gameWins = 0;
+            if (checkWinnersTokens.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
+            if (checkLosersTokens.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
+            if (checkLosersTokens.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
             // Create a new entry if the user doesn't have one yet
             if (!checkWinnersTokens) {
                 await dbCreate(tokensSchema, { userId: playerOne, tokens: wagerAmount });
             } else {
-                await dbUpdateOne(tokensSchema, { userId: playerOne }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+                await dbUpdateOne(tokensSchema, { userId: playerOne }, { tokens: checkWinnersTokens.tokens + wagerAmount, gameWins: checkWinnersTokens.gameWins + 1, tokenWins: checkWinnersTokens.tokenWins + (wagerAmount / 2) });
+                await dbUpdateOne(tokensSchema, { userId: playerTwo }, { gameLosses: checkLosersTokens.gameLosses + 1, tokenWins: checkLosersTokens.tokenWins - (wagerAmount / 2) });
             }
         }
         await createCanvas(client, guild, channel, playerOne, playerTwo, playerOne, wagerAmount, gameCode, checkWinnersTokens);
@@ -35,21 +42,31 @@ async function initCoinflip(client, guild, channel, gameCode) {
         if (playerTwo !== client.user.id) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
+            checkLosersTokens = await dbFindOne(tokensSchema, { userId: playerOne });
+            if (checkWinnersTokens.gameWins == undefined) checkWinnersTokens.gameWins = 0;
+            if (checkWinnersTokens.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
+            if (checkLosersTokens.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
+            if (checkLosersTokens.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
             // Create a new entry if the user doesn't have one yet
             if (!checkWinnersTokens) {
                 await dbCreate(tokensSchema, { userId: playerTwo, tokens: wagerAmount });
             } else {
-                await dbUpdateOne(tokensSchema, { userId: playerTwo }, { tokens: checkWinnersTokens.tokens + wagerAmount });
+                await dbUpdateOne(tokensSchema, { userId: playerTwo }, { tokens: checkWinnersTokens.tokens + wagerAmount, gameWins: checkWinnersTokens.gameWins + 1, tokenWins: checkWinnersTokens.tokenWins + (wagerAmount / 2) });
+                await dbUpdateOne(tokensSchema, { userId: playerOne }, { gameLosses: checkLosersTokens.gameLosses + 1, tokenWins: checkLosersTokens.tokenWins - (wagerAmount / 2) });
             }
         }
-        await createCanvas(client, guild, channel, playerOne, playerTwo, playerTwo, wagerAmount, gameCode, checkWinnersTokens);
+        await createCanvas(client, guild, channel, playerOne, playerTwo, playerTwo, wagerAmount, gameCode,);
     }
     // Remove the game entry from the database
     await dbDeleteOne(coinflipSchema, { code: gameCode });
 }
 
-async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode, checkWinnersTokens) {
+async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode) {
     // Fetch the winner of the coinflip
+    const playerOneStats = await dbFindOne(tokensSchema, { userId: playerOne });
+    const playerOneWinLoss = `win:${playerOneStats.gameWins || 0} loss:${playerOneStats.gameLosses || 0} net:${playerOneStats.tokenWins}`;
+    const playerTwoStats = await dbFindOne(tokensSchema, { userId: playerTwo });
+    const playerTwoWinLoss = `win:${playerTwoStats.gameWins || 0} loss:${playerTwoStats.gameLosses || 0} net:${playerTwoStats.tokenWins}`;
     const tokenLog = client.channels.cache.get(process.env.CREDITLOG_CHAN);
     const fetchWinner = await guild.members.fetch(winnerId).catch(err => console.error(err));
     const fileName = uuidv4();
@@ -88,7 +105,7 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     await channel.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) })
         .then(webhook => {
             webhook.send({
-                content: `**Game:** <@${playerOne}> vs. <@${playerTwo}> \n**Winnings:** ${wagerAmount} tokens \n**Code:** ${gameCode} \n\n*Create your own wager with </coinflip create:1064426324690751528>*`,
+                content: `**Game:** <@${playerOne}> *(${playerOneWinLoss})* vs. <@${playerTwo}> *(${playerTwoWinLoss})* \n**Winnings:** ${wagerAmount} tokens \n**Code:** ${gameCode} \n\n*Create your own wager with </coinflip create:1064426324690751528>*`,
                 files: [attachment]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err))
                 .then(() => {
@@ -100,12 +117,13 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     // Log winner's increase in tokens
     if (winnerId !== client.user.id) {
         tokenLog.send({
-            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount}** tokens from a coinflip, they now have **${checkWinnersTokens.tokens + wagerAmount}** tokens`,
+            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount}** tokens from a coinflip, they now have **${playerOneStats.tokens}** tokens`,
             allowedMentions: {
                 parse: []
             }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
     }
+
 }
 
 function randomNum(min, max) {

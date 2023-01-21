@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
-const countingSchema = require('../../../schemas/counting_game/counting_schema');
+const countingSchema = require('../../../schemas/games/counting_schema');
 const path = require('path');
 
 module.exports = {

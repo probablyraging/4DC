@@ -44,6 +44,18 @@ const tokensSchema = mongoose.Schema({
     giveaways: {
         type: mongoose.SchemaTypes.Mixed,
         required: false
+    },
+    gameWins: {
+        type: Number,
+        required: false
+    },
+    gameLosses: {
+        type: Number,
+        required: false
+    },
+    tokenWins: {
+        type: Number,
+        required: false
     }
 });
 

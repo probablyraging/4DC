@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
-const letterCurrents = require('../../schemas/letter_game/letter_currents_schema');
-const letterLeaderboard = require('../../schemas/letter_game/letter_lb_schema');
+const letterCurrents = require('../../schemas/games/letter_currents_schema');
+const letterLeaderboard = require('../../schemas/games/letter_lb_schema');
 const letterVals = require('../../lists/letter_values');
 const fetch = require('node-fetch');
 const { dbCreate, dbUpdateOne } = require('../../utils/utils');

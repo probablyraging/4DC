@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { dbCreate, dbFindOne, sendResponse, dbUpdateOne, dbDeleteOne } = require('../../../utils/utils');
-const coinflipSchema = require('../../../schemas/misc/coinflip_schema');
+const coinflipSchema = require('../../../schemas/games/coinflip_schema');
 const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
