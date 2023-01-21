@@ -3,19 +3,12 @@ const { sendResponse } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
-    name: `suggestions`,
-    description: `Approve or deny a suggestions`,
+    name: `suggestion`,
+    description: `Approve a suggestions`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 10,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `choice`,
-        description: `Choose to approve or deny the suggestion`,
-        type: ApplicationCommandOptionType.String,
-        required: true,
-        choices: [{ name: 'approve', value: 'approve' }]
-    },
-    {
         name: `id`,
         description: `The message ID of the suggestions`,
         type: ApplicationCommandOptionType.String,
@@ -36,14 +29,8 @@ module.exports = {
         // If the message doesn't contain an embed
         if (!embed) return sendResponse(interaction, `${process.env.BOT_DENY} This message does not contain a suggestion`);
 
-        // APPROVE
-        switch (options.getString('choice')) {
-            case 'approve': {
-                await message.react(`${process.env.BOT_CONF}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
+        await message.react(`${process.env.BOT_CONF}`).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a message: `, err));
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-                break;
-            }
-        }
+        interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
     }
 }
