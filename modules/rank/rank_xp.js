@@ -56,8 +56,8 @@ module.exports = async (message, client) => {
             const { xp, xxp, xxxp, level } = data;
 
             const random = randomNum(message, userTokenData);
-            const xpMath = parseInt(xp) + random;
-            const xxpMath = parseInt(xxp) + random;
+            const xpMath = parseInt(xp + random);
+            const xxpMath = parseInt(xxp + random);
 
             const xxxpInt = parseInt(xxxp);
             const newUsername = message?.author?.username;
