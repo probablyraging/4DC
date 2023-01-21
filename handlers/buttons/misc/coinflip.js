@@ -64,9 +64,9 @@ async function initCoinflip(client, guild, channel, gameCode) {
 async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode) {
     // Fetch the winner of the coinflip
     const playerOneStats = await dbFindOne(tokensSchema, { userId: playerOne });
-    const playerOneWinLoss = `win:${playerOneStats.gameWins || 0} loss:${playerOneStats.gameLosses || 0} net:${playerOneStats.tokenWins}`;
+    const playerOneWinLoss = `win:${playerOneStats?.gameWins || 0} loss:${playerOneStats?.gameLosses || 0} net:${playerOneStats?.tokenWins}`;
     const playerTwoStats = await dbFindOne(tokensSchema, { userId: playerTwo });
-    const playerTwoWinLoss = `win:${playerTwoStats.gameWins || 0} loss:${playerTwoStats.gameLosses || 0} net:${playerTwoStats.tokenWins}`;
+    const playerTwoWinLoss = `win:${playerTwoStats?.gameWins || 0} loss:${playerTwoStats?.gameLosses || 0} net:${playerTwoStats?.tokenWins}`;
     const tokenLog = client.channels.cache.get(process.env.CREDITLOG_CHAN);
     const fetchWinner = await guild.members.fetch(winnerId).catch(err => console.error(err));
     const fileName = uuidv4();
