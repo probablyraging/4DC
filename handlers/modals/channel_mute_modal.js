@@ -6,6 +6,8 @@ const path = require('path');
 
 module.exports = async (interaction) => {
     const { member, guild, channel } = interaction
+    
+    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
     const target = interaction.fields.getTextInputValue('input1');
