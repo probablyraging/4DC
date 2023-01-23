@@ -49,7 +49,7 @@ module.exports = {
 > ${process.env.BOT_DOC} The < #${process.env.PREM_CHAN}> channel is a paid service where you can promote content that generally isn't allowed to be posted in the rest of the server. Things like Discord server invites, paid services and products and even regular social media, channels and videos. For more information [click here](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>) or DM ProbablyRagin`],
 
             [`contentshare`, `*Information for ${target}:*
-> ${process.env.BOT_DOC} You can share your content in the <#856719763187302441> channel, or in the <#859117794779987978> channel by becoming a __Server Booster__. We also have the <#878229815541497857> channel which is accessible by everyone`]
+> ${process.env.BOT_DOC} You can share your content in the <#1066873011761856522> channel, or in the <#859117794779987978> channel by becoming a __Server Booster__. We also have the <#878229815541497857> channel which is accessible by everyone`]
         ]);
 
         sendResponse(interaction, responses.get(choice));

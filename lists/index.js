@@ -16,7 +16,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <id:customize> Grab yourself some profile flair
 > <#1040530300515647548> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
-> <#856719763187302441> Share your channels, videos, projects & hobbies
+> <#1066873011761856522> Share your channels, videos, projects & hobbies
 ⠀`,
 
         `https://i.imgur.com/zD5ueDZ.png`,
@@ -233,7 +233,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#878229815541497857> Content sharing, but with a twist
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
-<#856719763187302441> Share your content with other server members
+<#1066873011761856522> Share your content with other server members
 
 **VOICE CHAT**
 <#1038671738764017765> Create a new voice channel to hang out in
