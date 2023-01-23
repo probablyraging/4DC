@@ -86,8 +86,6 @@ module.exports = async (interaction) => {
             // Future timestamp for auto expiry
             const oneWeek = 24 * 60 * 60 * 7 * 1000;
             const timestamp = new Date().valueOf() + oneWeek;
-            // Add expiry timestamp or boolean to user's db entry
-            await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: timestamp });
             // Add the user to the youtube auto db
             try {
                 // We need to store a list of the user's current video IDs
@@ -99,10 +97,12 @@ module.exports = async (interaction) => {
                     const regex = item.id.replace('yt:video:', '');
                     videoIdArr.push(regex);
                 });
+                // Add expiry timestamp or boolean to user's db entry
+                await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: timestamp });
                 await dbUpdateOne(ytNotificationSchema, { userId: member.id }, { userId: member.id, channelId: channelId, videoIds: videoIdArr });
             } catch {
                 // If an error occurs
-                sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. Please contact a staff member for help`);
+                sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. This is likely because you entered an invalid YouTube channel ID. You can get your YouTube channel ID from <http://www.youtube.com/account_advanced>`);
             }
         }
     }

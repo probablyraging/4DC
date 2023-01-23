@@ -44,7 +44,7 @@ module.exports = {
                 // If the user doesn't have a database entry yet, creat one
                 if (!userResults) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
 
-                sendResponse(interaction, `You currently have \`${userResults.saves || 0}/2\` saves
+                sendResponse(interaction, `You currently have \`${userResults?.saves || 0}/2\` saves
 The guild currently has \`${guildResults.saves || 0}/3 saves\`
 
 You can earn game saves either by bumping the server or by purchasing them with tokens in the <#1049791650060324954>

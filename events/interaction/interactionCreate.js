@@ -9,7 +9,6 @@ const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
 const coinflipButton = require('../../handlers/buttons/misc/coinflip');
 const helpButton = require('../../handlers/buttons/misc/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
-const banModal = require('../../handlers/modals/ban_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
 const path = require('path');
@@ -118,7 +117,6 @@ module.exports = {
             // A map of customIds for misc modals
             const miscModals = {
                 'report-modal': reportModal,
-                'ban-modal': banModal,
                 'massban-modal': massbanModal,
                 'channel-mute-modal': channelMuteModal,
             };

@@ -86,6 +86,8 @@ module.exports = {
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
+        sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
+
         // Send screenshot to channel
         const screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
@@ -101,7 +103,5 @@ module.exports = {
         logChan.send({
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-        sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
     }
 }

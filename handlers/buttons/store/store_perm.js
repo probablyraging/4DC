@@ -80,8 +80,6 @@ module.exports = async (interaction) => {
         // Attempt to complete the purchase and continue if successful
         if (await completePurchase(interaction, cost, itemName, customMessage, member)) {
             const channelId = interaction.fields.getTextInputValue('input2');
-            // Add expiry timestamp or boolean to user's db entry
-            await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: true });
             // Add the user to the youtube auto db
             try {
                 // We need to store a list of the user's current video IDs
@@ -93,10 +91,12 @@ module.exports = async (interaction) => {
                     const regex = item.id.replace('yt:video:', '');
                     videoIdArr.push(regex);
                 });
+                // Add expiry timestamp or boolean to user's db entry
+                await dbUpdateOne(tokensSchema, { userId: member.id }, { youtubeauto: true });
                 await dbUpdateOne(ytNotificationSchema, { userId: member.id }, { userId: member.id, channelId: channelId, videoIds: videoIdArr });
             } catch {
                 // If an error occurs
-                sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. Please contact a staff member for help`);
+                sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. This is likely because you entered an invalid YouTube channel ID. You can get your YouTube channel ID from <http://www.youtube.com/account_advanced>`);
             }
         }
     }
