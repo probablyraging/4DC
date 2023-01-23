@@ -4,13 +4,29 @@ const path = require('path');
 
 module.exports = {
     name: 'guildMemberUpdate',
-    async execute(newMember, oldMember, client, Discord) {
+    async execute(oldMember, newMember, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        let error = false;
+        // Premium member subscription
+        if (newMember._roles !== oldMember._roles && newMember._roles.includes('1066951903776350279')) {
+            newMember.send({
+                content: `Thank you for supporting ForTheContent!
+                
+Here are a list of perks you now have access, and how you can go about claiming them;
+<:minidot:923683258871472248> **Share Your Server** - FTC++ only. Share your Discord server invites in the content share section
+<:minidot:923683258871472248> **Premium Ad** - FTC++ only. Claim a free 1-week premium ad spot by contacting a staff member
+<:minidot:923683258871472248> **Automatic Link Sharing** - also known as YouTube Auto and Twitch Auto, can be purhased for free from <#1049791650060324954>
+<:minidot:923683258871472248> **Live Now Role** - will be automatically applied when you go live on YouTube or Twitch. You will need to use a compatible streaming program such as OBS, Streamlabs OBS, or XSplit. You will also need to link your YouTube and Twitch channel to your Discord account
+<:minidot:923683258871472248> **Link Embeds** - link embeds will be automatically added to your messages when sharing links in the content share channels
+<:minidot:923683258871472248> **Double XP** - will be automatically gained when chatting in the server
+<:minidot:923683258871472248> **Custom Flair** - can be created for you upon request. Contact a staff member to get your custom flair`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
 
-        if (oldMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
+        // Timeouts
+        let error = false;
+        if (newMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
             // Fetch auditlogs for MemberUpdate events
             const fetchedLogs = await guild.fetchAuditLogs({ limit: 1, action: AuditLogEvent.MemberUpdate, })
                 .catch(err => {
@@ -25,14 +41,14 @@ module.exports = {
             const toReason = reason;
 
             // Prevent repeated logs when timed out by AutoMod
-            if (oldMember?.id === executor?.id) return;
+            if (newMember?.id === executor?.id) return;
 
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
                 .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`**Member:** ${oldMember?.user.tag} *(${oldMember?.user.id})*
-**Expires:** <t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}> (<t:${Math.round(oldMember.communicationDisabledUntilTimestamp / 1000)}:R>)
+                .setDescription(`**Member:** ${newMember?.user.tag} *(${newMember?.user.id})*
+**Expires:** <t:${Math.round(newMember.communicationDisabledUntilTimestamp / 1000)}> (<t:${Math.round(newMember.communicationDisabledUntilTimestamp / 1000)}:R>)
 **Reason:** ${toReason}`)
                 .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: process.env.LOG_TIMEOUT })
                 .setTimestamp();
