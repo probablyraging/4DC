@@ -16,7 +16,7 @@ async function initCoinflip(client, guild, channel, gameCode) {
 
     await channel.send({ content: `<:botconfirm:845719660812435496> <@${playerTwo}> has accepted <@${playerOne}>'s wager, there are **${wagerAmount}** tokens in the pot. Good luck!` }).catch(err => console.error(err));
     // Get a random number, 1 = playerOne, 2 = playerTwo
-    const pickWinner = randomNum(1, 2);
+    const pickWinner = /* randomNum(1, 2) */2;
     let checkWinnersTokens;
     let checkLosersTokens;
     if (pickWinner === 1) {
@@ -24,10 +24,10 @@ async function initCoinflip(client, guild, channel, gameCode) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerOne });
             checkLosersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
-            if (checkWinnersTokens.gameWins == undefined) checkWinnersTokens.gameWins = 0;
-            if (checkWinnersTokens.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
-            if (checkLosersTokens.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
-            if (checkLosersTokens.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
+            if (checkWinnersTokens?.gameWins == undefined) checkWinnersTokens.gameWins = 0;
+            if (checkWinnersTokens?.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
+            if (checkLosersTokens?.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
+            if (checkLosersTokens?.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
             // Create a new entry if the user doesn't have one yet
             if (!checkWinnersTokens) {
                 await dbCreate(tokensSchema, { userId: playerOne, tokens: wagerAmount });
@@ -43,10 +43,10 @@ async function initCoinflip(client, guild, channel, gameCode) {
             // Get the winners current tokens count and add the wagered tokens
             checkWinnersTokens = await dbFindOne(tokensSchema, { userId: playerTwo });
             checkLosersTokens = await dbFindOne(tokensSchema, { userId: playerOne });
-            if (checkWinnersTokens.gameWins == undefined) checkWinnersTokens.gameWins = 0;
-            if (checkWinnersTokens.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
-            if (checkLosersTokens.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
-            if (checkLosersTokens.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
+            if (checkWinnersTokens?.gameWins == undefined) checkWinnersTokens.gameWins = 0;
+            if (checkWinnersTokens?.tokenWins == undefined) checkWinnersTokens.tokenWins = 0;
+            if (checkLosersTokens?.gameLosses == undefined) checkLosersTokens.gameLosses = 0;
+            if (checkLosersTokens?.tokenWins == undefined) checkLosersTokens.tokenWins = 0;
             // Create a new entry if the user doesn't have one yet
             if (!checkWinnersTokens) {
                 await dbCreate(tokensSchema, { userId: playerTwo, tokens: wagerAmount });
@@ -63,6 +63,7 @@ async function initCoinflip(client, guild, channel, gameCode) {
 
 async function createCanvas(client, guild, channel, playerOne, playerTwo, winnerId, wagerAmount, gameCode) {
     // Fetch the winner of the coinflip
+    const winnerStats = await dbFindOne(tokensSchema, { userId: winnerId });
     const playerOneStats = await dbFindOne(tokensSchema, { userId: playerOne });
     const playerOneWinLoss = `win:${playerOneStats?.gameWins || 0} loss:${playerOneStats?.gameLosses || 0} net:${playerOneStats?.tokenWins}`;
     const playerTwoStats = await dbFindOne(tokensSchema, { userId: playerTwo });
@@ -117,7 +118,7 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     // Log winner's increase in tokens
     if (winnerId !== client.user.id) {
         tokenLog.send({
-            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount}** tokens from a coinflip, they now have **${playerOneStats.tokens}** tokens`,
+            content: `${process.env.TOKENS_UP} <@${winnerId}> gained **${wagerAmount}** tokens from a coinflip, they now have **${winnerStats.tokens}** tokens`,
             allowedMentions: {
                 parse: []
             }
