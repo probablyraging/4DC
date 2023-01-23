@@ -76,6 +76,8 @@ module.exports = {
         // Check if a the user is already banned
         const alreadyBanned = await guild.bans.fetch(target.id).catch(() => { });
         if (alreadyBanned) return sendResponse(interaction, `${process.env.BOT_DENY} This user is already banned`);
+        // Send response
+        sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
         // Send a notification to the target user
         await target.send({
             content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
@@ -85,9 +87,6 @@ module.exports = {
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
-
-        sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
-
         // Send screenshot to channel
         const screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
