@@ -25,12 +25,7 @@ module.exports = async (client) => {
         const tokenResult = await tokensSchema.findOne({ userId });
         const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 || tokenResult?.youtubeauto !== true;
 
-        if (!isBooster && !isStaff && !isTokenSub && !isSubscriber) {
-            await dbDeleteOne(ytNotificationSchema, { userId: userId });
-            staffChan.send({
-                content: `${member} has been removed from the **YouTube Auto** list`,
-            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        if (!isBooster && !isStaff && !isTokenSub && !isSubscriber) return dbDeleteOne(ytNotificationSchema, { userId: userId });
 
         res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, (err, resolve) => {
             if (err) return;
