@@ -39,11 +39,11 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(results[0]?.userId).user.username}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(results[1].userId).user.username}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(results[2].userId).user.username}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(results[3].userId).user.username}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(results[4].userId).user.username}`, 78, 454);
+                        ctx.fillText(`${guild.members.cache.get(results[0]?.userId)?.user?.username || 'null'}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(results[1].userId)?.user?.username || 'null'}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(results[2].userId)?.user?.username || 'null'}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(results[3].userId)?.user?.username || 'null'}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(results[4].userId)?.user?.username || 'null'}`, 78, 454);
                         // Values
                         ctx.fillStyle = "#5cb6fc";
                         ctx.textAlign = "right";
@@ -78,11 +78,11 @@ module.exports = async (client) => {
                         // Username
                         ctx2.font = "900 38px redhatdisplay";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(results[5].userId).user.username}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(results[6].userId).user.username}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(results[7].userId).user.username}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(results[8].userId).user.username}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(results[9].userId).user.username}`, 78, 366);
+                        ctx2.fillText(`${guild.members.cache.get(results[5].userId)?.user?.username || 'null'}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(results[6].userId)?.user?.username || 'null'}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(results[7].userId)?.user?.username || 'null'}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(results[8].userId)?.user?.username || 'null'}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(results[9].userId)?.user?.username || 'null'}`, 78, 366);
                         // Values
                         ctx2.fillStyle = "#5cb6fc";
                         ctx2.textAlign = "right";
@@ -137,11 +137,11 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId).user.username}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId).user.username}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId).user.username}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId).user.username}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId).user.username}`, 78, 454);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
                         // Values
                         ctx.fillStyle = "#85f9b3";
                         ctx.textAlign = "right";
@@ -176,11 +176,11 @@ module.exports = async (client) => {
                         // Username
                         ctx2.font = "900 38px redhatdisplay";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId).user.username}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId).user.username}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId).user.username}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId).user.username}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId).user.username}`, 78, 366);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
                         // Values
                         ctx2.fillStyle = "#85f9b3";
                         ctx2.textAlign = "right";
@@ -235,11 +235,11 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId).user.username}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId).user.username}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId).user.username}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId).user.username}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId).user.username}`, 78, 454);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
                         // Values
                         ctx.fillStyle = "#fff7a1";
                         ctx.textAlign = "right";
@@ -274,11 +274,11 @@ module.exports = async (client) => {
                         // Username
                         ctx2.font = "900 38px redhatdisplay";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId).user.username}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId).user.username}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId).user.username}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId).user.username}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId).user.username}`, 78, 366);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
                         // Values
                         ctx2.fillStyle = "#fff7a1";
                         ctx2.textAlign = "right";
@@ -333,11 +333,11 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId).user.username}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId).user.username}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId).user.username}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId).user.username}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId).user.username}`, 78, 454);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
                         // Values
                         ctx.fillStyle = "#ffb967";
                         ctx.textAlign = "right";
@@ -372,11 +372,11 @@ module.exports = async (client) => {
                         // Username
                         ctx2.font = "900 38px redhatdisplay";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId).user.username}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId).user.username}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId).user.username}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId).user.username}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId).user.username}`, 78, 366);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
                         // Values
                         ctx2.fillStyle = "#ffb967";
                         ctx2.textAlign = "right";
@@ -423,11 +423,11 @@ module.exports = async (client) => {
                         // Username
                         ctx.font = "900 38px redhatdisplay";
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(results[0].userId).user.username}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(results[1].userId).user.username}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(results[2].userId).user.username}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(results[3].userId).user.username}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(results[4].userId).user.username}`, 78, 454);
+                        ctx.fillText(`${guild.members.cache.get(results[0].userId)?.user?.username || 'null'}`, 78, 134);
+                        ctx.fillText(`${guild.members.cache.get(results[1].userId)?.user?.username || 'null'}`, 78, 214);
+                        ctx.fillText(`${guild.members.cache.get(results[2].userId)?.user?.username || 'null'}`, 78, 294);
+                        ctx.fillText(`${guild.members.cache.get(results[3].userId)?.user?.username || 'null'}`, 78, 374);
+                        ctx.fillText(`${guild.members.cache.get(results[4].userId)?.user?.username || 'null'}`, 78, 454);
                         // Values
                         ctx.fillStyle = "#e08eff";
                         ctx.textAlign = "right";
@@ -462,11 +462,11 @@ module.exports = async (client) => {
                         // Username
                         ctx2.font = "900 38px redhatdisplay";
                         ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(results[5].userId).user.username}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(results[6].userId).user.username}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(results[7].userId).user.username}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(results[8].userId).user.username}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(results[9].userId).user.username}`, 78, 366);
+                        ctx2.fillText(`${guild.members.cache.get(results[5].userId)?.user?.username || 'null'}`, 78, 46);
+                        ctx2.fillText(`${guild.members.cache.get(results[6].userId)?.user?.username || 'null'}`, 78, 126);
+                        ctx2.fillText(`${guild.members.cache.get(results[7].userId)?.user?.username || 'null'}`, 78, 206);
+                        ctx2.fillText(`${guild.members.cache.get(results[8].userId)?.user?.username || 'null'}`, 78, 286);
+                        ctx2.fillText(`${guild.members.cache.get(results[9].userId)?.user?.username || 'null'}`, 78, 366);
                         // Values
                         ctx2.fillStyle = "#e08eff";
                         ctx2.textAlign = "right";
