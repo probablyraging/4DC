@@ -37,7 +37,7 @@ module.exports = async (client) => {
 
                         await dbUpdateOne(ytNotificationSchema, { userId }, { userId, channelId, videoIds });
 
-                        if (isBooster || isSubscriber) {
+                        if (isBooster || isSubscriber || isStaff) {
                             boostPromoChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
                             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
