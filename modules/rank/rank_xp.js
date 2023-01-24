@@ -59,6 +59,9 @@ module.exports = async (message, client) => {
             const newUsername = message?.author?.username;
             const newDiscrim = message?.author?.discriminator;
 
+            // TODO: testing to see if this solves an error
+            if (isNaN(xpMath)) xpMath = parseInt(xp);
+
             // Update user's xp and xxp every message, once every 60 seconds
             await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { username: newUsername, discrim: newDiscrim, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
 
