@@ -52,7 +52,7 @@ module.exports = async (message, client) => {
             const { xp, xxp, xxxp, level } = data;
 
             const random = randomNum(message);
-            const xpMath = parseInt(xp + random);
+            let xpMath = parseInt(xp + random);
             const xxpMath = parseInt(xxp + random);
 
             const xxxpInt = parseInt(xxxp);
