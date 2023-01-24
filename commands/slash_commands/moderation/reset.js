@@ -60,37 +60,25 @@ module.exports = {
                 const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
                 const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
 
-                // Draw random winner from available tickets
-                const winner = await drawWinner(guild);
-                // Delete all messages that aren't an embed
                 (await spotlightChannel.messages.fetch()).forEach(message => {
-                    if (message.author.id !== client.user.id) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 });
-                // Remove the spotlight role from all users
-                spotlightRole.members.forEach(member => {
+
+                spotlightRole.members.each(member => {
                     member.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 });
-                // If no winner was able to be picked
-                if (!winner) return sendResponse(interaction, `${[process.env.BOT_CONF]} Content spotlight has been reset but there was no new winner`);
-                // Send the winners message as a webhook
-                await spotlightChannel.createWebhook({ name: winner.member.displayName, avatar: winner.member.user.displayAvatarURL() }).then(async webhook => {
-                    await webhook.send({
-                        content: `Today's spotlight winner is ${winner.member}
 
-${winner.draw.message}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                    webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-                // Add the spotlight role to the winner
-                await winner.member.roles.add(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role: `, err));
+                spotlightChannel.permissionOverwrites.edit(guild.id, {
+                    SendMessages: true,
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
-                // Update timestamp for 24 hours
-                const oneDay = 24 * 60 * 60 * 1000;
-                const timestamp = new Date().valueOf() + oneDay;
+                await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: 'null' });
 
-                await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: timestamp });
+                interaction.editReply({
+                    content: `${[process.env.BOT_CONF]} ${spotlightChannel} has been reset`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
-                sendResponse(interaction, `${process.env.BOT_CONF} Content spotlight has been reset`);
                 break;
             }
 

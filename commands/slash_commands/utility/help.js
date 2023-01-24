@@ -31,10 +31,6 @@ module.exports = {
                     .setLabel('Games')
                     .setStyle(ButtonStyle.Primary),
                 new ButtonBuilder()
-                    .setCustomId('help-tokens')
-                    .setLabel('Tokens')
-                    .setStyle(ButtonStyle.Primary),
-                new ButtonBuilder()
                     .setCustomId('help-delete')
                     .setLabel('Delete')
                     .setStyle(ButtonStyle.Danger)

@@ -90,21 +90,12 @@ module.exports = async (client) => {
                                 boostAlreadyPosted = true;
                             }
                         });
-                        let shareAlreadyPosted = false;
-                        (await contentShareChan.messages.fetch({ limit: 5 })).forEach(message => {
-                            if (message.content.includes(liveMember.url.split('https://www.')[1])) {
-                                shareAlreadyPosted = true;
-                            }
-                        });
                         // If no URL was found, return
                         if (liveMember.url == null) return;
                         // Send the URL to the appropriate channels
                         if (!boostAlreadyPosted && liveMember.booster) boostPromoChan.send({
                             content: `**${liveMember.username}** just went live - ${liveMember.url}`
                         });
-                        // if (!shareAlreadyPosted) contentShareChan.send({
-                        //     content: `**${liveMember.username}** just went live - ${liveMember.url}`
-                        // });
                         // Add the user to a cooldown for 6 hours so we only send one live notice
                         cooldown.add(id);
                         setTimeout(() => {

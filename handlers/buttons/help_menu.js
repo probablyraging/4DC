@@ -16,13 +16,9 @@ module.exports = async (interaction) => {
                 .setCustomId('help-home')
                 .setLabel('Home')
                 .setStyle(ButtonStyle.Success),
-                new ButtonBuilder()
+            new ButtonBuilder()
                 .setCustomId('help-games')
                 .setLabel('Games')
-                .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-                .setCustomId('help-tokens')
-                .setLabel('Tokens')
                 .setStyle(ButtonStyle.Primary),
             new ButtonBuilder()
                 .setCustomId('help-delete')
@@ -72,29 +68,6 @@ Use the buttons below to access information on how to play these games`);
             reply.edit({ embeds: [embed], components: [gamesbtn] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         });
     }
-    // Tokens
-    if (customId.split('-')[1] === 'tokens') {
-        interaction.fetchReply('@original').then(reply => {
-            if (reply.embeds[0].title.toLowerCase().includes('tokens')) return;
-            embed.setTitle('Tokens');
-            embed.setDescription(`Tokens are the virtual currency of ForTheContent. They can be used in the <#1049791650060324954> to purchase things like;
-• Link embeds
-• Automatic link sharing
-• Double rank XP
-
-You can earn tokens in a few ways, including;
-• Sending messages in non-promotional or game channels (chatting)
-• Accepting free games of coinflip in <#1064425998214508598>
-• Bumping the server using the </bump:947088344167366698> command in the <#855427926136193054> channel
-• Being awarding tokens for a useful or helpful post that you made on the server
-
-You can check your tokens balance by using the </rank:1040546996735451176> command in <#837945839799500850>
-
-Click the "information" button below any item in the <#1049791650060324954> for more information about that item
-`);
-            reply.edit({ embeds: [embed], components: [btn] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
-        });
-    }
     // Delete
     if (customId.split('-')[1] === 'delete') {
         interaction.fetchReply('@original').then(reply => reply.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err)));
@@ -110,7 +83,7 @@ Click the "information" button below any item in the <#1049791650060324954> for 
 
 If a player submits an incorrect number, the game will "fail" and reset back to the starting number. Players can only submit one number at a time. Each player is allowed up to 2 personal saves, which they can use to prevent the game from failing when they make a mistake. In addition, the server as a whole can have up to 3 guild saves, which are donated by individual players by using the </counting donatesave:1031245457902555208> command and these saves can be used by any player to prevent the game from failing when any player makes a mistake.
 
-Players can earn game saves by bumping the server by using the </bump:947088344167366698> command in the <#855427926136193054> channel when it is ready to be bumped, or by spending tokens to buy them in the <#1049791650060324954>.
+Players can earn game saves by bumping the server by using the </bump:947088344167366698> command in the <#855427926136193054> channel when it is ready to be bumped.
 
 To participate in the game, simply type the correct next number in the counting sequence`);
             reply.edit({ embeds: [embed], components: [gamesbtn] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));

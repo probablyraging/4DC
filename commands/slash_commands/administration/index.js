@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, bold } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -16,8 +16,7 @@ module.exports = {
         choices: [{ name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
-        { name: 'spotlight', value: 'spotlight' },
-        { name: 'tokenstore', value: 'tokenstore' }]
+        { name: 'spotlight', value: 'spotlight' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -121,165 +120,12 @@ module.exports = {
                     .setColor("#9c59ff")
                     .setTitle(`:crown: Content Spotlight`)
                     .setDescription(`**How Does It Work?**
-Buy entry tickets from <#1049791650060324954> to have your content featured here. The more tickets you buy, the better your chance of winning`);
+Every 2 hours the channel will unlock, allowing anyone to post a single link to their content`);
 
                 channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
-                break;
-            }
-
-            // TOKENS STORE
-            case 'tokenstore': {
-                const btn = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('perm-one')
-                            .setLabel('⠀⠀800⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('perm-two')
-                            .setLabel('⠀⠀800⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-                const gift = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('giftperm-one')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('giftperm-two')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success)
-                    );
-                const info = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('info-perm-one')
-                            .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-perm-two')
-                            .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary)
-                    );
-
-                await channel.send({
-                    content: bold('PERMANENT ACCESS'),
-                    files: ['./res/images/token_store_perm.png'],
-                    components: [btn, gift, info]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn2 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('temp-one')
-                            .setLabel('⠀ ⠀100⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('temp-two')
-                            .setLabel('⠀ ⠀100⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-                const gift2 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('gifttemp-one')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('gifttemp-two')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success)
-                    );
-                const info2 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('info-temp-one')
-                            .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-temp-two')
-                            .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary)
-                    );
-
-                await channel.send({
-                    content: bold('\n1 WEEK ACCESS'),
-                    files: ['./res/images/token_store_perm.png'],
-                    components: [btn2, gift2, info2]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                const btn3 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('misc-one')
-                            .setLabel('⠀ ⠀100⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('misc-two')
-                            .setLabel('⠀⠀ ⠀5⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary),
-                        new ButtonBuilder()
-                            .setCustomId('misc-three')
-                            .setLabel('⠀ ⠀ ⠀1⠀⠀⠀⠀')
-                            .setEmoji('1050596938921295973')
-                            .setStyle(ButtonStyle.Primary)
-                    );
-                const gift3 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('giftmisc-one')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('giftmisc-two')
-                            .setLabel('⠀⠀Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success),
-                        new ButtonBuilder()
-                            .setCustomId('giftmisc-three')
-                            .setLabel('⠀⠀ Gift⠀⠀⠀')
-                            .setEmoji('1053389293424480326')
-                            .setStyle(ButtonStyle.Success)
-                    );
-                const info3 = new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('info-misc-one')
-                            .setLabel('⠀ Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-misc-two')
-                            .setLabel('⠀Information⠀')
-                            .setStyle(ButtonStyle.Secondary),
-                        new ButtonBuilder()
-                            .setCustomId('info-misc-three')
-                            .setLabel('⠀Information⠀⠀')
-                            .setStyle(ButtonStyle.Secondary)
-                    );
-
-                await channel.send({
-                    content: bold('\nMISCELLANEOUS'),
-                    files: ['./res/images/token_store_misc.png'],
-                    components: [btn3, gift3, info3]
-                }).catch(err => console.error(`Could not send a message: `, err));
-
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-                
                 break;
             }
         }

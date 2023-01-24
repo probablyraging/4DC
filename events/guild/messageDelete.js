@@ -1,6 +1,8 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
+const { dbUpdateOne } = require('../../utils/utils');
 const { checkDeletedCountingMessage } = require('../../modules/games/counting_game');
 const { checkDeletedLetterMessage } = require('../../modules/games/last_letter');
+const timerSchema = require('../../schemas/misc/timer_schema');
 const { ImgurClient } = require('imgur');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -68,6 +70,25 @@ module.exports = {
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         }, 2000);
+
+        // If a user deletes there post in the spotlight channel before the timer is up, open the channel to be reposted in
+        if (message?.channel.id === process.env.SPOTLIGHT_CHAN && !message?.author.bot) {
+            const guild = client.guilds.cache.get(process.env.GUILD_ID);
+            const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
+            const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
+
+            (await spotlightChannel.messages.fetch()).forEach(message => {
+                if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            });
+
+            message?.member?.roles.remove(spotlightRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+
+            spotlightChannel.permissionOverwrites.edit(guild.id, {
+                SendMessages: true,
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
+
+            await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: 'null' });
+        }
 
         // Game message delete checks
         checkDeletedCountingMessage(message);

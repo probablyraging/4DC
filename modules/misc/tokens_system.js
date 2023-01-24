@@ -28,9 +28,9 @@ module.exports = async (message, client) => {
             await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { tokens: tokens + 1 });
 
             // If it's the user's first time earning 5 tokens, let them know how to spend them
-            if (!results[0]?.initialNotification && (tokens + 1) === 5) {
+            if (!results[0]?.initialNotification && (tokens + 1) === 10) {
                 tokenLog.send({
-                    content: `${process.env.TOKENS_UP} ${message?.author} you just earnt your first **5** tokens! Head over to the <#1049791650060324954> to spend them`
+                    content: `${process.env.TOKENS_UP} ${message?.author} you just earnt your first **10** tokens! Hoard them, or gamble them in <#1064425998214508598>`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 // Add a db entry so we don't notify them again
                 await dbUpdateOne(tokensSchema, { userId: message?.author.id }, { initialNotification: true });

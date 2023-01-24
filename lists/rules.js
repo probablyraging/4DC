@@ -5,7 +5,7 @@ module.exports = {
         `Advertising or requesting paid services, products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,
         `Posts that violate other platform's terms of service (e.g. sub4sub, buying/selling accounts, fake inflation) are not allowed`,
         `Keep self-promotional content to the 'CONTENT SHARE' section`,
-        `Do not send repeated or purposeless messages in an attempt to gain XP or tokens`,
+        `Do not send repeated or purposeless messages`,
         `For moderating purposes, please keep your messages in English`
     ]
 }

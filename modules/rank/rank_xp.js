@@ -1,7 +1,6 @@
 const { Message } = require('discord.js');
 const { dbFind, dbCreate, dbUpdateOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
-const tokensSchema = require('../../schemas/misc/tokens_schema');
 const xpLimit = new Set();
 
 /**
@@ -10,8 +9,8 @@ const xpLimit = new Set();
  * @param {Object} userTokenData The user token data object
  * @return {number} A random number
  */
-function randomNum(message, userTokenData) {
-    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570')) || (userTokenData?.doublexp - new Date()) > 1)
+function randomNum(message) {
+    return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570')))
         ? Math.floor(Math.random() * (50 - 30 + 1) + 30)
         : Math.floor(Math.random() * (25 - 15 + 1) + 15);
 }
@@ -49,13 +48,10 @@ module.exports = async (message, client) => {
             userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
         }
 
-        // Fetch users with an active sub to double XP
-        const userTokenData = await dbFind(tokensSchema, { userId: message?.author.id });
-
         for (const data of userRankData) {
             const { xp, xxp, xxxp, level } = data;
 
-            const random = randomNum(message, userTokenData);
+            const random = randomNum(message);
             const xpMath = parseInt(xp + random);
             const xxpMath = parseInt(xxp + random);
 

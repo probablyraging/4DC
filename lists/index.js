@@ -40,7 +40,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://i.imgur.com/4qnr530.png`,
 
         `**When/how can I share my content?**
-> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section. Please note that users with a rank below 5 will not have the option to display an embedded preview when sharing links. To gain this feature, we recommend becoming a <@&1061532395314098229> or <@&821876910253670442> or purchasing it with tokens in <#1049791650060324954>
+> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section
 
 **Can I advertise a paid service?**
 > Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services, and products are only permitted in <#907446635435540551>. There are fees associated with creating a premium ad which you can find in [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>)
@@ -54,19 +54,16 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 
         `**How does the rank/XP system work?**
 > All new users begin at Rank 0 and unlock higher ranks in increments of five *(e.g. Rank 5, Rank 10, Rank 15)*. By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards, which can be found in the <#1005283113775157349> channel. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1040546996735451176> command in the <#837945839799500850> channel. Please note that you will not receive XP for posting messages in the 'CONTENT SHARE' section
-
-**What are Tokens?**
-> Tokens are the virtual currency used in the ForTheContent community. They can be used to purchase server perks, promote your content, and unlock channels. You can gain tokens in a few different ways including sending messages *(chatting)*, bumping the server, or as a reward for a useful or helpful post
         
 **How do I link my channels/socials?**
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)
 
 **Will people here actually watch my videos?**
-> While self-promotion is a perk of being a member of this server, it is not the primary focus. It is more an opportunity to expose your content to a wider audience, but it is also important to remember that many of the members here are also content creators and may not be your intended target audience. However, the community is generally supportive of those who are active, helpful, and supportive of others
+> While self-promotion is a perk of supporting the server, there is no guarantee that people will watch, it is more an opportunity to expose your content to a wider audience. It is important to remember that many of the members here are also content creators and may not be your intended target audience. However, the community is generally supportive of those who are active, helpful, and supportive of others
 ⠀`,
 
         `**Why do I keep receiving spam and promotional content through DMs?**
-> Unfortunately, this is a common occurrence on Discord. While we do our best to remove spam accounts, it is recommended to disable DMs from users who are not on your friends list. This can be done by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members. You can also report these accounts to staff by using the </report:1031245457902555213> command
+> Unfortunately, this is a common occurrence on Discord and we do our best to remove these spam accounts. It is recommended to disable DMs from users who are not on your friends list. This can be done by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members. You can also report these accounts to staff by using the </report:1031245457902555213> command
         
 **How can I apply for a staff role?**
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by filling out [this form](https://docs.google.com/forms/d/1W7K6WtKes3otlWYiSO_vdZ-dg9f4H0xS-g87gvhGvqY). Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
@@ -238,15 +235,12 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 **VOICE CHAT**
 <#1038671738764017765> Create a new voice channel to hang out in
 
-**TOKENS**
-<#1049791650060324954> Spend your tokens on fun server perks
-<#1049697878311976970> A log channel for tokens gained and lost
-
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
 <#1040381607674130492> Real time leaderboards for server ranks and games
 <#987212586007281674> It's like a revolving door
+<#1049697878311976970> A log channel for tokens gained and lost
 <#995882451446546502> All of these people are on Santa's naughty list
 ⠀`,
 

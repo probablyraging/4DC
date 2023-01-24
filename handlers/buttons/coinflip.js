@@ -1,7 +1,7 @@
 const { ButtonInteraction, AttachmentBuilder } = require('discord.js');
-const { dbFindOne, dbUpdateOne, dbDeleteOne, dbCreate } = require('../../../utils/utils');
-const coinflipSchema = require('../../../schemas/games/coinflip_schema');
-const tokensSchema = require('../../../schemas/misc/tokens_schema');
+const { dbFindOne, dbUpdateOne, dbDeleteOne, dbCreate } = require('../../utils/utils');
+const coinflipSchema = require('../../schemas/games/coinflip_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
 const gifEncoder = require('gifencoder');
 const fs = require('fs');
@@ -65,9 +65,9 @@ async function createCanvas(client, guild, channel, playerOne, playerTwo, winner
     // Fetch the winner of the coinflip
     const winnerStats = await dbFindOne(tokensSchema, { userId: winnerId });
     const playerOneStats = await dbFindOne(tokensSchema, { userId: playerOne });
-    const playerOneWinLoss = `win:${playerOneStats?.gameWins || 0} loss:${playerOneStats?.gameLosses || 0} net:${playerOneStats?.tokenWins}`;
+    const playerOneWinLoss = `win:${playerOneStats?.gameWins || 0} loss:${playerOneStats?.gameLosses || 0}`;
     const playerTwoStats = await dbFindOne(tokensSchema, { userId: playerTwo });
-    const playerTwoWinLoss = `win:${playerTwoStats?.gameWins || 0} loss:${playerTwoStats?.gameLosses || 0} net:${playerTwoStats?.tokenWins}`;
+    const playerTwoWinLoss = `win:${playerTwoStats?.gameWins || 0} loss:${playerTwoStats?.gameLosses || 0}`;
     const tokenLog = client.channels.cache.get(process.env.CREDITLOG_CHAN);
     const fetchWinner = await guild.members.fetch(winnerId).catch(err => console.error(err));
     const fileName = uuidv4();

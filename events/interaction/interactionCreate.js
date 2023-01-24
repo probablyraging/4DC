@@ -1,13 +1,9 @@
 const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
-const reportActionButton = require('../../handlers/buttons/misc/report_action_button');
-const storePermButton = require('../../handlers/buttons/store/store_perm');
-const storeTempButton = require('../../handlers/buttons/store/store_temp');
-const storeMiscButton = require('../../handlers/buttons/store/store_misc');
-const storeInfoButton = require('../../handlers/buttons/store/store_info');
-const reportImageButton = require('../../handlers/buttons/misc/txt2img_button');
-const coinflipButton = require('../../handlers/buttons/misc/coinflip');
-const helpButton = require('../../handlers/buttons/misc/help_menu');
+const reportActionButton = require('../../handlers/buttons/report_action_button');
+const reportImageButton = require('../../handlers/buttons/txt2img_button');
+const coinflipButton = require('../../handlers/buttons/coinflip');
+const helpButton = require('../../handlers/buttons/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const channelMuteModal = require('../../handlers/modals/channel_mute_modal');
@@ -73,17 +69,9 @@ module.exports = {
 
             // A map of customIds for the buttons with prefixed custom IDs
             const prefixedButtons = {
-                'perm': storePermButton,
-                'giftperm': storePermButton,
-                'temp': storeTempButton,
-                'gifttemp': storeTempButton,
-                'misc': storeMiscButton,
-                'giftmisc': storeMiscButton,
-                'info': storeInfoButton,
                 'help': helpButton,
                 'coinflip': coinflipButton
             };
-            // Handle tokens store buttons
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
 
             // A map of customIds for misc buttons
@@ -99,20 +87,6 @@ module.exports = {
         if (interaction.type === InteractionType.ModalSubmit) {
             // The customId of the modal
             const customId = interaction.customId;
-            const customIdPrefix = interaction.customId.split('-')[0];
-
-            // A map of customIds for the modals with prefixed custom IDs
-            const prefixedModals = {
-                'perm': storePermButton,
-                'giftperm': storePermButton,
-                'temp': storeTempButton,
-                'gifttemp': storeTempButton,
-                'misc': storeMiscButton,
-                'giftmisc': storeMiscButton,
-                'info': storeInfoButton
-            };
-            // Handle tokens store modals
-            if (customIdPrefix in prefixedModals) prefixedModals[customIdPrefix](interaction);
 
             // A map of customIds for misc modals
             const miscModals = {

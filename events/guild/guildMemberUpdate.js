@@ -9,14 +9,14 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
         // Premium member subscription
-        if (newMember._roles !== oldMember._roles && newMember._roles.includes('1066951903776350279')) {
+        if (!oldMember._roles.includes(process.env.SUBSCRIBER_ROLE) && newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
             newMember.send({
                 content: `Thank you for supporting ForTheContent!
                 
 Here are a list of perks you now have access, and how you can go about claiming them;
 <:minidot:923683258871472248> **Share Your Server** - FTC++ only. Share your Discord server invites in the content share section
 <:minidot:923683258871472248> **Premium Ad** - FTC++ only. Claim a free 1-week premium ad spot by contacting a staff member
-<:minidot:923683258871472248> **Automatic Link Sharing** - also known as YouTube Auto and Twitch Auto, can be purhased for free from <#1049791650060324954>
+<:minidot:923683258871472248> **Automatic Link Sharing** - will share your YouTube and Twitch links when you go upload a new video or go live. Contact a staff member to get access
 <:minidot:923683258871472248> **Live Now Role** - will be automatically applied when you go live on YouTube or Twitch. You will need to use a compatible streaming program such as OBS, Streamlabs OBS, or XSplit. You will also need to link your YouTube and Twitch channel to your Discord account
 <:minidot:923683258871472248> **Link Embeds** - link embeds will be automatically added to your messages when sharing links in the content share channels
 <:minidot:923683258871472248> **Double XP** - will be automatically gained when chatting in the server
