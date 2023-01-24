@@ -41,9 +41,6 @@ module.exports = {
                 const gameCode = uuidv4().split('-')[0];
                 // Amount to wager must be greater than 10
                 if (amountToWager < 10) return sendResponse(interaction, `${process.env.BOT_DENY} Wager amount must be **10** tokens or more`);
-                // Check is they already have an active game
-                const checkActiveGames = await dbFindOne(coinflipSchema, { playerOne: member.id });
-                if (checkActiveGames) return sendResponse(interaction, `${process.env.BOT_DENY} You already have an active wager. Use **/coinflip cancel** to cancel your current wager before creating a new one`);
                 // Check if the user has enough tokens to create the wager
                 const checkUserTokens = await dbFindOne(tokensSchema, { userId: member.id });
                 if (checkUserTokens.tokens < amountToWager)
