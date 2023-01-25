@@ -116,6 +116,19 @@ async function dbDeleteOne(model, filter) {
 }
 
 /**
+ * Deletes a single document in a MongoDB collection 
+ * @param {Object} model The Mongoose model
+ * @param {Object} filter The filter object to identify the document to delete
+ */
+async function dbDeleteMany(model, filter) {
+    try {
+        await model.deleteMany(filter);
+    } catch (err) {
+        return console.error(`There was a problem deleting a database entry: `, err);
+    }
+}
+
+/**
  * Adds a URL to a key in an attachment map
  * @param {string} key The key to store the URL at
  * @param {string} url The URL to store
@@ -143,6 +156,7 @@ module.exports = {
     dbCreate,
     dbUpdateOne,
     dbDeleteOne,
+    dbDeleteMany,
     addAttachment,
     getAttachment
 }

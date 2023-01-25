@@ -3,12 +3,22 @@ const Canvas = require("canvas");
 const rankSchema = require('../../schemas/misc/rank_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const letterSchema = require('../../schemas/games/letter_lb_schema');
-const tokensSchema =  require('../../schemas/misc/tokens_schema');
+const tokensSchema = require('../../schemas/misc/tokens_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
+function fetchMember(guild, userId) {
+    let userDisplayName = guild.members.cache.get(userId)?.displayName || 'Unknown User';
+    if (userDisplayName.length > 21) userDisplayName = userDisplayName.slice(0, 21) + '..';
+    return userDisplayName
+}
+
 function numberWithCommas(x) {
-    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (x >= 1000000) {
+        return (x / 1000000).toFixed(1) + "M";
+    } else {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }
 
 module.exports = async (client) => {
@@ -22,90 +32,58 @@ module.exports = async (client) => {
                     // Ranks
                     if (message?.content.includes('rank_lb') || message?.attachments.first()?.name.includes('rank_lb')) {
                         const results = await rankSchema.find({ 'rank': { $gte: 1, $lte: 20 } }).limit(10).sort({ 'rank': 1 });
-                        // Image 1
-                        const background = await Canvas.loadImage("./res/images/leaderboard_rank_bg.png");
+                        // Left
+                        const background = await Canvas.loadImage("./res/images/leaderboard_xp_bg.png");
                         const canvas = Canvas.createCanvas(1000, 480);
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                         // Position
-                        ctx.font = "900 30px redhatdisplay";
+                        ctx.font = "900 28px redhatdisplay";
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "center";
-                        ctx.fillText(`1`, 31, 134);
-                        ctx.fillText(`2`, 32, 214);
-                        ctx.fillText(`3`, 32, 294);
-                        ctx.fillText(`4`, 32, 374);
-                        ctx.fillText(`5`, 32, 454);
+                        ctx.fillText(`1`, 65, 128);
+                        ctx.fillText(`2`, 65, 202);
+                        ctx.fillText(`3`, 65, 274);
+                        ctx.fillText(`4`, 65, 348);
+                        ctx.fillText(`5`, 65, 422);
+                        ctx.fillText(`6`, 560, 128);
+                        ctx.fillText(`7`, 560, 202);
+                        ctx.fillText(`8`, 560, 274);
+                        ctx.fillText(`9`, 560, 348);
+                        ctx.fillText(`10`, 560, 422);
                         // Username
-                        ctx.font = "900 38px redhatdisplay";
+                        ctx.font = "900 22px redhatdisplay";
+                        ctx.fillStyle = "#bebebe"
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(results[0]?.userId)?.user?.username || 'null'}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(results[1].userId)?.user?.username || 'null'}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(results[2].userId)?.user?.username || 'null'}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(results[3].userId)?.user?.username || 'null'}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(results[4].userId)?.user?.username || 'null'}`, 78, 454);
+                        ctx.fillText(`${fetchMember(guild, results[0]?.userId)}`, 110, 126);
+                        ctx.fillText(`${fetchMember(guild, results[1]?.userId)}`, 110, 198);
+                        ctx.fillText(`${fetchMember(guild, results[2]?.userId)}`, 110, 270);
+                        ctx.fillText(`${fetchMember(guild, results[3]?.userId)}`, 110, 344);
+                        ctx.fillText(`${fetchMember(guild, results[4]?.userId)}`, 110, 418);
+                        ctx.fillText(`${fetchMember(guild, results[5]?.userId)}`, 605, 126);
+                        ctx.fillText(`${fetchMember(guild, results[6]?.userId)}`, 605, 198);
+                        ctx.fillText(`${fetchMember(guild, results[7]?.userId)}`, 605, 270);
+                        ctx.fillText(`${fetchMember(guild, results[8]?.userId)}`, 605, 344);
+                        ctx.fillText(`${fetchMember(guild, results[9]?.userId)}`, 605, 418);
                         // Values
                         ctx.fillStyle = "#5cb6fc";
-                        ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(results[0]?.xp)}`, 920, 134);
-                        ctx.fillText(`${numberWithCommas(results[1].xp)}`, 920, 214);
-                        ctx.fillText(`${numberWithCommas(results[2].xp)}`, 920, 294);
-                        ctx.fillText(`${numberWithCommas(results[3].xp)}`, 920, 374);
-                        ctx.fillText(`${numberWithCommas(results[4].xp)}`, 920, 454);
-                        // XP
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "left";
-                        ctx.fillText(`XP`, 940, 134);
-                        ctx.fillText(`XP`, 940, 214);
-                        ctx.fillText(`XP`, 940, 294);
-                        ctx.fillText(`XP`, 940, 374);
-                        ctx.fillText(`XP`, 940, 454);
-
-                        // Image 2
-                        const background2 = await Canvas.loadImage("./res/images/leaderboard_rank_bg2.png");
-                        const canvas2 = Canvas.createCanvas(1000, 420);
-                        const ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
-                        ctx2.font = "900 30px redhatdisplay";
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "center";
-                        // Position
-                        ctx2.fillText(`6`, 32, 46);
-                        ctx2.fillText(`7`, 33, 126);
-                        ctx2.fillText(`8`, 33, 206);
-                        ctx2.fillText(`9`, 33, 286);
-                        ctx2.fillText(`10`, 33, 366);
-                        // Username
-                        ctx2.font = "900 38px redhatdisplay";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(results[5].userId)?.user?.username || 'null'}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(results[6].userId)?.user?.username || 'null'}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(results[7].userId)?.user?.username || 'null'}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(results[8].userId)?.user?.username || 'null'}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(results[9].userId)?.user?.username || 'null'}`, 78, 366);
-                        // Values
-                        ctx2.fillStyle = "#5cb6fc";
-                        ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(results[5].xp)}`, 920, 46);
-                        ctx2.fillText(`${numberWithCommas(results[6].xp)}`, 920, 126);
-                        ctx2.fillText(`${numberWithCommas(results[7].xp)}`, 920, 206);
-                        ctx2.fillText(`${numberWithCommas(results[8].xp)}`, 920, 286);
-                        ctx2.fillText(`${numberWithCommas(results[9].xp)}`, 920, 366);
-                        // XP
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`XP`, 940, 46);
-                        ctx2.fillText(`XP`, 940, 126);
-                        ctx2.fillText(`XP`, 940, 206);
-                        ctx2.fillText(`XP`, 940, 286);
-                        ctx2.fillText(`XP`, 940, 366);
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${numberWithCommas(results[0].xp)}`, 412, 126);
+                        ctx.fillText(`${numberWithCommas(results[1].xp)}`, 412, 198);
+                        ctx.fillText(`${numberWithCommas(results[2].xp)}`, 412, 270);
+                        ctx.fillText(`${numberWithCommas(results[3].xp)}`, 412, 344);
+                        ctx.fillText(`${numberWithCommas(results[4].xp)}`, 412, 418);
+                        ctx.fillText(`${numberWithCommas(results[5].xp)}`, 905, 126);
+                        ctx.fillText(`${numberWithCommas(results[6].xp)}`, 905, 198);
+                        ctx.fillText(`${numberWithCommas(results[7].xp)}`, 905, 270);
+                        ctx.fillText(`${numberWithCommas(results[8].xp)}`, 905, 344);
+                        ctx.fillText(`${numberWithCommas(results[9].xp)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "rank_lb1.png" });
-                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "rank_lb2.png" });
 
                         message.edit({
                             content: '',
-                            files: [attachment, attachment2]
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
 
@@ -126,84 +104,52 @@ module.exports = async (client) => {
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                         // Position
-                        ctx.font = "900 30px redhatdisplay";
+                        ctx.font = "900 28px redhatdisplay";
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "center";
-                        ctx.fillText(`1`, 31, 134);
-                        ctx.fillText(`2`, 32, 214);
-                        ctx.fillText(`3`, 32, 294);
-                        ctx.fillText(`4`, 32, 374);
-                        ctx.fillText(`5`, 32, 454);
+                        ctx.fillText(`1`, 65, 128);
+                        ctx.fillText(`2`, 65, 202);
+                        ctx.fillText(`3`, 65, 274);
+                        ctx.fillText(`4`, 65, 348);
+                        ctx.fillText(`5`, 65, 422);
+                        ctx.fillText(`6`, 560, 128);
+                        ctx.fillText(`7`, 560, 202);
+                        ctx.fillText(`8`, 560, 274);
+                        ctx.fillText(`9`, 560, 348);
+                        ctx.fillText(`10`, 560, 422);
                         // Username
-                        ctx.font = "900 38px redhatdisplay";
+                        ctx.font = "900 22px redhatdisplay";
+                        ctx.fillStyle = "#bebebe"
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
+                        ctx.fillText(`${fetchMember(guild, dataArr[0]?.userId)}`, 110, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[1]?.userId)}`, 110, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[2]?.userId)}`, 110, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[3]?.userId)}`, 110, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[4]?.userId)}`, 110, 418);
+                        ctx.fillText(`${fetchMember(guild, dataArr[5]?.userId)}`, 605, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[6]?.userId)}`, 605, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[7]?.userId)}`, 605, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[8]?.userId)}`, 605, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[9]?.userId)}`, 605, 418);
                         // Values
-                        ctx.fillStyle = "#85f9b3";
-                        ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].msgCount)}`, 860, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].msgCount)}`, 860, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].msgCount)}`, 860, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].msgCount)}`, 860, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].msgCount)}`, 860, 454);
-                        // XP
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "left";
-                        ctx.fillText(`MSGS`, 880, 134);
-                        ctx.fillText(`MSGS`, 880, 214);
-                        ctx.fillText(`MSGS`, 880, 294);
-                        ctx.fillText(`MSGS`, 880, 374);
-                        ctx.fillText(`MSGS`, 880, 454);
-
-                        // Image 2
-                        const background2 = await Canvas.loadImage("./res/images/leaderboard_message_bg2.png");
-                        const canvas2 = Canvas.createCanvas(1000, 420);
-                        const ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
-                        ctx2.font = "900 30px redhatdisplay";
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "center";
-                        // Position
-                        ctx2.fillText(`6`, 32, 46);
-                        ctx2.fillText(`7`, 33, 126);
-                        ctx2.fillText(`8`, 33, 206);
-                        ctx2.fillText(`9`, 33, 286);
-                        ctx2.fillText(`10`, 33, 366);
-                        // Username
-                        ctx2.font = "900 38px redhatdisplay";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
-                        // Values
-                        ctx2.fillStyle = "#85f9b3";
-                        ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].msgCount)}`, 860, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].msgCount)}`, 860, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].msgCount)}`, 860, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].msgCount)}`, 860, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].msgCount)}`, 860, 366);
-                        // XP
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`MSGS`, 880, 46);
-                        ctx2.fillText(`MSGS`, 880, 126);
-                        ctx2.fillText(`MSGS`, 880, 206);
-                        ctx2.fillText(`MSGS`, 880, 286);
-                        ctx2.fillText(`MSGS`, 880, 366);
+                        ctx.fillStyle = "#42ddc2";
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${numberWithCommas(dataArr[0].msgCount)}`, 412, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].msgCount)}`, 412, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].msgCount)}`, 412, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].msgCount)}`, 412, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].msgCount)}`, 412, 418);
+                        ctx.fillText(`${numberWithCommas(dataArr[5].msgCount)}`, 905, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[6].msgCount)}`, 905, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[7].msgCount)}`, 905, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[8].msgCount)}`, 905, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[9].msgCount)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "message_lb1.png" });
-                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "message_lb2.png" });
 
                         message.edit({
                             content: '',
-                            files: [attachment, attachment2]
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
 
@@ -224,84 +170,52 @@ module.exports = async (client) => {
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                         // Position
-                        ctx.font = "900 30px redhatdisplay";
+                        ctx.font = "900 28px redhatdisplay";
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "center";
-                        ctx.fillText(`1`, 31, 134);
-                        ctx.fillText(`2`, 32, 214);
-                        ctx.fillText(`3`, 32, 294);
-                        ctx.fillText(`4`, 32, 374);
-                        ctx.fillText(`5`, 32, 454);
+                        ctx.fillText(`1`, 65, 128);
+                        ctx.fillText(`2`, 65, 202);
+                        ctx.fillText(`3`, 65, 274);
+                        ctx.fillText(`4`, 65, 348);
+                        ctx.fillText(`5`, 65, 422);
+                        ctx.fillText(`6`, 560, 128);
+                        ctx.fillText(`7`, 560, 202);
+                        ctx.fillText(`8`, 560, 274);
+                        ctx.fillText(`9`, 560, 348);
+                        ctx.fillText(`10`, 560, 422);
                         // Username
-                        ctx.font = "900 38px redhatdisplay";
+                        ctx.font = "900 22px redhatdisplay";
+                        ctx.fillStyle = "#bebebe"
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
+                        ctx.fillText(`${fetchMember(guild, dataArr[0]?.userId)}`, 110, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[1]?.userId)}`, 110, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[2]?.userId)}`, 110, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[3]?.userId)}`, 110, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[4]?.userId)}`, 110, 418);
+                        ctx.fillText(`${fetchMember(guild, dataArr[5]?.userId)}`, 605, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[6]?.userId)}`, 605, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[7]?.userId)}`, 605, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[8]?.userId)}`, 605, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[9]?.userId)}`, 605, 418);
                         // Values
-                        ctx.fillStyle = "#fff7a1";
-                        ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].counts)}`, 830, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].counts)}`, 830, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].counts)}`, 830, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].counts)}`, 830, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].counts)}`, 830, 454);
-                        // XP
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "left";
-                        ctx.fillText(`POINTS`, 850, 134);
-                        ctx.fillText(`POINTS`, 850, 214);
-                        ctx.fillText(`POINTS`, 850, 294);
-                        ctx.fillText(`POINTS`, 850, 374);
-                        ctx.fillText(`POINTS`, 850, 454);
-
-                        // Image 2
-                        const background2 = await Canvas.loadImage("./res/images/leaderboard_count_bg2.png");
-                        const canvas2 = Canvas.createCanvas(1000, 420);
-                        const ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
-                        ctx2.font = "900 30px redhatdisplay";
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "center";
-                        // Position
-                        ctx2.fillText(`6`, 32, 46);
-                        ctx2.fillText(`7`, 33, 126);
-                        ctx2.fillText(`8`, 33, 206);
-                        ctx2.fillText(`9`, 33, 286);
-                        ctx2.fillText(`10`, 33, 366);
-                        // Username
-                        ctx2.font = "900 38px redhatdisplay";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
-                        // Values
-                        ctx2.fillStyle = "#fff7a1";
-                        ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].counts)}`, 830, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].counts)}`, 830, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].counts)}`, 830, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].counts)}`, 830, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].counts)}`, 830, 366);
-                        // XP
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`POINTS`, 850, 46);
-                        ctx2.fillText(`POINTS`, 850, 126);
-                        ctx2.fillText(`POINTS`, 850, 206);
-                        ctx2.fillText(`POINTS`, 850, 286);
-                        ctx2.fillText(`POINTS`, 850, 366);
+                        ctx.fillStyle = "#f37a7a";
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${numberWithCommas(dataArr[0].counts)}`, 412, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].counts)}`, 412, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].counts)}`, 412, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].counts)}`, 412, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].counts)}`, 412, 418);
+                        ctx.fillText(`${numberWithCommas(dataArr[5].counts)}`, 905, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[6].counts)}`, 905, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[7].counts)}`, 905, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[8].counts)}`, 905, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[9].counts)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "count_lb1.png" });
-                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "count_lb2.png" });
 
                         message.edit({
                             content: '',
-                            files: [attachment, attachment2]
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
 
@@ -322,84 +236,52 @@ module.exports = async (client) => {
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                         // Position
-                        ctx.font = "900 30px redhatdisplay";
+                        ctx.font = "900 28px redhatdisplay";
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "center";
-                        ctx.fillText(`1`, 31, 134);
-                        ctx.fillText(`2`, 32, 214);
-                        ctx.fillText(`3`, 32, 294);
-                        ctx.fillText(`4`, 32, 374);
-                        ctx.fillText(`5`, 32, 454);
+                        ctx.fillText(`1`, 65, 128);
+                        ctx.fillText(`2`, 65, 202);
+                        ctx.fillText(`3`, 65, 274);
+                        ctx.fillText(`4`, 65, 348);
+                        ctx.fillText(`5`, 65, 422);
+                        ctx.fillText(`6`, 560, 128);
+                        ctx.fillText(`7`, 560, 202);
+                        ctx.fillText(`8`, 560, 274);
+                        ctx.fillText(`9`, 560, 348);
+                        ctx.fillText(`10`, 560, 422);
                         // Username
-                        ctx.font = "900 38px redhatdisplay";
+                        ctx.font = "900 22px redhatdisplay";
+                        ctx.fillStyle = "#bebebe"
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(dataArr[0].userId)?.user?.username || 'null'}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[1].userId)?.user?.username || 'null'}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[2].userId)?.user?.username || 'null'}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[3].userId)?.user?.username || 'null'}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(dataArr[4].userId)?.user?.username || 'null'}`, 78, 454);
+                        ctx.fillText(`${fetchMember(guild, dataArr[0]?.userId)}`, 110, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[1]?.userId)}`, 110, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[2]?.userId)}`, 110, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[3]?.userId)}`, 110, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[4]?.userId)}`, 110, 418);
+                        ctx.fillText(`${fetchMember(guild, dataArr[5]?.userId)}`, 605, 126);
+                        ctx.fillText(`${fetchMember(guild, dataArr[6]?.userId)}`, 605, 198);
+                        ctx.fillText(`${fetchMember(guild, dataArr[7]?.userId)}`, 605, 270);
+                        ctx.fillText(`${fetchMember(guild, dataArr[8]?.userId)}`, 605, 344);
+                        ctx.fillText(`${fetchMember(guild, dataArr[9]?.userId)}`, 605, 418);
                         // Values
-                        ctx.fillStyle = "#ffb967";
-                        ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(dataArr[0].correctCount)}`, 830, 134);
-                        ctx.fillText(`${numberWithCommas(dataArr[1].correctCount)}`, 830, 214);
-                        ctx.fillText(`${numberWithCommas(dataArr[2].correctCount)}`, 830, 294);
-                        ctx.fillText(`${numberWithCommas(dataArr[3].correctCount)}`, 830, 374);
-                        ctx.fillText(`${numberWithCommas(dataArr[4].correctCount)}`, 830, 454);
-                        // XP
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "left";
-                        ctx.fillText(`POINTS`, 850, 134);
-                        ctx.fillText(`POINTS`, 850, 214);
-                        ctx.fillText(`POINTS`, 850, 294);
-                        ctx.fillText(`POINTS`, 850, 374);
-                        ctx.fillText(`POINTS`, 850, 454);
-
-                        // Image 2
-                        const background2 = await Canvas.loadImage("./res/images/leaderboard_letter_bg2.png");
-                        const canvas2 = Canvas.createCanvas(1000, 420);
-                        const ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
-                        ctx2.font = "900 30px redhatdisplay";
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "center";
-                        // Position
-                        ctx2.fillText(`6`, 32, 46);
-                        ctx2.fillText(`7`, 33, 126);
-                        ctx2.fillText(`8`, 33, 206);
-                        ctx2.fillText(`9`, 33, 286);
-                        ctx2.fillText(`10`, 33, 366);
-                        // Username
-                        ctx2.font = "900 38px redhatdisplay";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[5].userId)?.user?.username || 'null'}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[6].userId)?.user?.username || 'null'}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[7].userId)?.user?.username || 'null'}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[8].userId)?.user?.username || 'null'}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(dataArr[9].userId)?.user?.username || 'null'}`, 78, 366);
-                        // Values
-                        ctx2.fillStyle = "#ffb967";
-                        ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(dataArr[5].correctCount)}`, 830, 46);
-                        ctx2.fillText(`${numberWithCommas(dataArr[6].correctCount)}`, 830, 126);
-                        ctx2.fillText(`${numberWithCommas(dataArr[7].correctCount)}`, 830, 206);
-                        ctx2.fillText(`${numberWithCommas(dataArr[8].correctCount)}`, 830, 286);
-                        ctx2.fillText(`${numberWithCommas(dataArr[9].correctCount)}`, 830, 366);
-                        // XP
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`POINTS`, 850, 46);
-                        ctx2.fillText(`POINTS`, 850, 126);
-                        ctx2.fillText(`POINTS`, 850, 206);
-                        ctx2.fillText(`POINTS`, 850, 286);
-                        ctx2.fillText(`POINTS`, 850, 366);
+                        ctx.fillStyle = "#e2b450";
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${numberWithCommas(dataArr[0].correctCount)}`, 412, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[1].correctCount)}`, 412, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[2].correctCount)}`, 412, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[3].correctCount)}`, 412, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[4].correctCount)}`, 412, 418);
+                        ctx.fillText(`${numberWithCommas(dataArr[5].correctCount)}`, 905, 126);
+                        ctx.fillText(`${numberWithCommas(dataArr[6].correctCount)}`, 905, 198);
+                        ctx.fillText(`${numberWithCommas(dataArr[7].correctCount)}`, 905, 270);
+                        ctx.fillText(`${numberWithCommas(dataArr[8].correctCount)}`, 905, 344);
+                        ctx.fillText(`${numberWithCommas(dataArr[9].correctCount)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "letter_lb1.png" });
-                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "letter_lb2.png" });
 
                         message.edit({
                             content: '',
-                            files: [attachment, attachment2]
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
 
@@ -412,84 +294,52 @@ module.exports = async (client) => {
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
                         // Position
-                        ctx.font = "900 30px redhatdisplay";
+                        ctx.font = "900 28px redhatdisplay";
                         ctx.fillStyle = "#fff";
                         ctx.textAlign = "center";
-                        ctx.fillText(`1`, 31, 134);
-                        ctx.fillText(`2`, 32, 214);
-                        ctx.fillText(`3`, 32, 294);
-                        ctx.fillText(`4`, 32, 374);
-                        ctx.fillText(`5`, 32, 454);
+                        ctx.fillText(`1`, 65, 128);
+                        ctx.fillText(`2`, 65, 202);
+                        ctx.fillText(`3`, 65, 274);
+                        ctx.fillText(`4`, 65, 348);
+                        ctx.fillText(`5`, 65, 422);
+                        ctx.fillText(`6`, 560, 128);
+                        ctx.fillText(`7`, 560, 202);
+                        ctx.fillText(`8`, 560, 274);
+                        ctx.fillText(`9`, 560, 348);
+                        ctx.fillText(`10`, 560, 422);
                         // Username
-                        ctx.font = "900 38px redhatdisplay";
+                        ctx.font = "900 22px redhatdisplay";
+                        ctx.fillStyle = "#bebebe"
                         ctx.textAlign = "left";
-                        ctx.fillText(`${guild.members.cache.get(results[0].userId)?.user?.username || 'null'}`, 78, 134);
-                        ctx.fillText(`${guild.members.cache.get(results[1].userId)?.user?.username || 'null'}`, 78, 214);
-                        ctx.fillText(`${guild.members.cache.get(results[2].userId)?.user?.username || 'null'}`, 78, 294);
-                        ctx.fillText(`${guild.members.cache.get(results[3].userId)?.user?.username || 'null'}`, 78, 374);
-                        ctx.fillText(`${guild.members.cache.get(results[4].userId)?.user?.username || 'null'}`, 78, 454);
+                        ctx.fillText(`${fetchMember(guild, results[0]?.userId)}`, 110, 126);
+                        ctx.fillText(`${fetchMember(guild, results[1]?.userId)}`, 110, 198);
+                        ctx.fillText(`${fetchMember(guild, results[2]?.userId)}`, 110, 270);
+                        ctx.fillText(`${fetchMember(guild, results[3]?.userId)}`, 110, 344);
+                        ctx.fillText(`${fetchMember(guild, results[4]?.userId)}`, 110, 418);
+                        ctx.fillText(`${fetchMember(guild, results[5]?.userId)}`, 605, 126);
+                        ctx.fillText(`${fetchMember(guild, results[6]?.userId)}`, 605, 198);
+                        ctx.fillText(`${fetchMember(guild, results[7]?.userId)}`, 605, 270);
+                        ctx.fillText(`${fetchMember(guild, results[8]?.userId)}`, 605, 344);
+                        ctx.fillText(`${fetchMember(guild, results[9]?.userId)}`, 605, 418);
                         // Values
-                        ctx.fillStyle = "#e08eff";
-                        ctx.textAlign = "right";
-                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 820, 134);
-                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 820, 214);
-                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 820, 294);
-                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 820, 374);
-                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 820, 454);
-                        // XP
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "left";
-                        ctx.fillText(`TOKENS`, 840, 134);
-                        ctx.fillText(`TOKENS`, 840, 214);
-                        ctx.fillText(`TOKENS`, 840, 294);
-                        ctx.fillText(`TOKENS`, 840, 374);
-                        ctx.fillText(`TOKENS`, 840, 454);
-
-                        // Image 2
-                        const background2 = await Canvas.loadImage("./res/images/leaderboard_tokens_bg2.png");
-                        const canvas2 = Canvas.createCanvas(1000, 420);
-                        const ctx2 = canvas2.getContext("2d");
-                        ctx2.drawImage(background2, 0, 0, canvas2.width, canvas2.height);
-                        ctx2.font = "900 30px redhatdisplay";
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "center";
-                        // Position
-                        ctx2.fillText(`6`, 32, 46);
-                        ctx2.fillText(`7`, 33, 126);
-                        ctx2.fillText(`8`, 33, 206);
-                        ctx2.fillText(`9`, 33, 286);
-                        ctx2.fillText(`10`, 33, 366);
-                        // Username
-                        ctx2.font = "900 38px redhatdisplay";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`${guild.members.cache.get(results[5].userId)?.user?.username || 'null'}`, 78, 46);
-                        ctx2.fillText(`${guild.members.cache.get(results[6].userId)?.user?.username || 'null'}`, 78, 126);
-                        ctx2.fillText(`${guild.members.cache.get(results[7].userId)?.user?.username || 'null'}`, 78, 206);
-                        ctx2.fillText(`${guild.members.cache.get(results[8].userId)?.user?.username || 'null'}`, 78, 286);
-                        ctx2.fillText(`${guild.members.cache.get(results[9].userId)?.user?.username || 'null'}`, 78, 366);
-                        // Values
-                        ctx2.fillStyle = "#e08eff";
-                        ctx2.textAlign = "right";
-                        ctx2.fillText(`${numberWithCommas(results[5].tokens)}`, 820, 46);
-                        ctx2.fillText(`${numberWithCommas(results[6].tokens)}`, 820, 126);
-                        ctx2.fillText(`${numberWithCommas(results[7].tokens)}`, 820, 206);
-                        ctx2.fillText(`${numberWithCommas(results[8].tokens)}`, 820, 286);
-                        ctx2.fillText(`${numberWithCommas(results[9].tokens)}`, 820, 366);
-                        // XP
-                        ctx2.fillStyle = "#fff";
-                        ctx2.textAlign = "left";
-                        ctx2.fillText(`TOKENS`, 840, 46);
-                        ctx2.fillText(`TOKENS`, 840, 126);
-                        ctx2.fillText(`TOKENS`, 840, 206);
-                        ctx2.fillText(`TOKENS`, 840, 286);
-                        ctx2.fillText(`TOKENS`, 840, 366);
+                        ctx.fillStyle = "#d576e3";
+                        ctx.textAlign = "center";
+                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 412, 126);
+                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 412, 198);
+                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 412, 270);
+                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 412, 344);
+                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 412, 418);
+                        ctx.fillText(`${numberWithCommas(results[5].tokens)}`, 905, 126);
+                        ctx.fillText(`${numberWithCommas(results[6].tokens)}`, 905, 198);
+                        ctx.fillText(`${numberWithCommas(results[7].tokens)}`, 905, 270);
+                        ctx.fillText(`${numberWithCommas(results[8].tokens)}`, 905, 344);
+                        ctx.fillText(`${numberWithCommas(results[9].tokens)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "tokens_lb1.png" });
-                        const attachment2 = new AttachmentBuilder(canvas2.toBuffer(), { name: "tokens_lb2.png" });
 
                         message.edit({
                             content: '',
-                            files: [attachment, attachment2]
+                            files: [attachment]
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     }
 

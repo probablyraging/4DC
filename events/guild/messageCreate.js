@@ -1,4 +1,5 @@
 const { Message } = require('discord.js');
+const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const bumpPost = require('../../modules/timers/bump_post');
 const spotlightPost = require('../../modules/timers/spotlight_post');
@@ -10,6 +11,7 @@ const tokensSystem = require('../../modules/misc/tokens_system');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyReminder = require('../../modules/misc/sticky_reminder');
 const { newUsers } = require('../../events/guild/guildMemberAdd');
+const weeklyLeaderboardSchema = require('../../schemas/misc/weekly_leaderboard_schema')
 const notifiedUsers = new Set();
 const path = require('path');
 
@@ -79,6 +81,17 @@ module.exports = {
                 if (message?.content.includes(promoLinks[i])) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 }
+            }
+        }
+
+        // Log user's message count for weekly leaderboard
+        if (!message?.author.bot) {
+            try {
+                const userWeeklyMessageCount = await dbFindOne(weeklyLeaderboardSchema, { userId: message?.author.id });
+                const currentUseMessageCount = userWeeklyMessageCount ? userWeeklyMessageCount.msgCount : 0;
+                await dbUpdateOne(weeklyLeaderboardSchema, { userId: message?.author.id }, { msgCount: currentUseMessageCount + 1 });
+            } catch (err) {
+                console.error(`There was a problem updating a user's weekly message count: `, err);
             }
         }
     }
