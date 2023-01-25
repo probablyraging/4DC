@@ -19,7 +19,7 @@ module.exports = {
         // If no target
         if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
 
-        const acknowledgements = target.permissions.has("Administrator") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
+        const acknowledgements = target.permissions.has("Administrator") || target.permissions.has("ManageRoles") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
         const permissions = ["BanMembers", "ModerateMembers", "KickMembers", "ManageMessages", "ManageChannels", "MentionEveryone", "ManageNicknames", "ManageRoles", "DeafenMembers"].filter(perm => target.permissions.has(perm));
         // Trim the acknowledgements if they exceed the character limit
         if (acknowledgements && acknowledgements.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Acknowledgements field exceeds 1024 characters`);

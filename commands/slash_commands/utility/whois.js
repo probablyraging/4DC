@@ -23,7 +23,7 @@ module.exports = {
 
         const target = options.getMember(`username`) || member
         // Filter the target's permissions in an array
-        const acknowledgements = target.permissions.has("Administrator") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
+        const acknowledgements = target.permissions.has("Administrator") || target.permissions.has("ManageRoles") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
         const permissions = ["BanMembers", "ModerateMembers", "KickMembers", "ManageMessages", "ManageChannels", "MentionEveryone", "ManageNicknames", "ManageRoles", "DeafenMembers"].filter(perm => target.permissions.has(perm));
         // Trim the acknowledgements if they exceed the character limit
         if (acknowledgements && acknowledgements.length > 1024) acknowledgements.slice(0, 10);
