@@ -45,7 +45,7 @@ module.exports = {
                 if (!userResults) await dbUpdateOne(countingSchema, { userId: member.id }, { userId: member.id, counts: 0, saves: 0 });
 
                 sendResponse(interaction, `You currently have \`${userResults?.saves || 0}/2\` saves
-The guild currently has \`${guildResults.saves || 0}/3 saves\`
+The guild currently has \`${guildResults.saves || 0} saves\`
 
 You can earn game saves either by bumping the server. The server can be bumped once every 2 hours, by anyone
 
@@ -68,22 +68,18 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                 if (!userResults) return sendResponse(interaction, `You have not earned any saves yet. Learn how to earn saves by using the \`/counting save\` command`);
                 // If the user doesn't have any saves
                 if (userCurrentSaves === 0) return sendResponse(interaction, `You have \`0 saves\`. Learn how to earn saves by using the \`/counting save\` command`);
-                // If the amount of saves to donate is more than the max allowed guild saves
-                if ((guildCurrentSaves + savesToAdd / 4) > 3) return sendResponse(interaction, `This would exceed the max amount of saves the guild can have`);
                 // If the user doesn't have enough saves
                 if (userCurrentSaves < savesToAdd) return sendResponse(interaction, `You don't have enough saves. You currently have \`${userCurrentSaves || 0}/2\``);
-                // If the guild already has the max amount of saves
-                if (guildCurrentSaves === 3) return sendResponse(interaction, `The guild already has \`3/3\` saves`);
 
                 // Remove 1 save from the user
                 await dbUpdateOne(countingSchema, { userId: member.id }, { saves: userCurrentSaves - savesToAdd });
                 // Add 0.25 saves to the guild
-                await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildCurrentSaves + (savesToAdd / 4) });
+                await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildCurrentSaves + (savesToAdd) });
 
                 // Send a confirmation message to the game channel
                 const countingChan = client.channels.cache.get(process.env.COUNT_CHAN);
                 countingChan.send({
-                    content: `${member} donated \`${savesToAdd} personal save\`. The guild now has \`${guildCurrentSaves + (savesToAdd / 4)}/3 saves\``,
+                    content: `${member} donated \`${savesToAdd} personal save\`. The guild now has \`${guildCurrentSaves + (savesToAdd)} saves\``,
                     allowedMentions: { repliedUser: true },
                     failIfNotExists: false
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
@@ -91,7 +87,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                 // Send a follow up response
                 sendResponse(interaction, `You have donated \`${savesToAdd} personal saves\` to the guild
 > You now have \`${userCurrentSaves - savesToAdd}/2 personal saves\` left
-> The guild now has \`${guildCurrentSaves + (savesToAdd / 4)}/3 saves\``);
+> The guild now has \`${guildCurrentSaves + (savesToAdd / 4)} saves\``);
                 break;
             }
         }
