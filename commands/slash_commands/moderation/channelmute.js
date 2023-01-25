@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { dbUpdateOne, sendResponse } = require('../../../utils/utils');
+const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -63,6 +63,8 @@ module.exports = {
     async execute(interaction) {
         const { member, guild, channel, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
         switch (options.getSubcommand()) {
@@ -71,12 +73,7 @@ module.exports = {
                 const targetChan = options.getChannel('channel');
                 const reason = options.getString('reason');
                 let duration = options.getString('duration') || `0`;
-                const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-                // If the target is already muted in this channel
-                if (permissionInChannel === false) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`);
                 // If the reason exceeds the character limit
                 if (reason && reason.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Reasons are limited to 1024 characters`);
                 // Update the channel permissions for the target user
@@ -86,7 +83,7 @@ module.exports = {
                 // If a duration was provided, get a timestamp for when the mute should expire and update the database
                 const myDate = new Date();
                 const timestamp = !duration || duration === '0' ? 'null' : myDate.getTime() + (duration * 60 * 60 * 1000);
-                await dbUpdateOne(muteSchema, { userId: target.id, channelId: channel.id }, { userId: target.id, channelId: channel.id, timestamp: timestamp });
+                await dbUpdateOne(muteSchema, { userId: target.id, channelId: targetChan.id }, { userId: target.id, channelId: targetChan.id, timestamp: timestamp });
 
                 duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 
@@ -112,16 +109,10 @@ module.exports = {
             case 'remove': {
                 const target = options.getMember('username');
                 const targetChan = options.getChannel('channel');
-                const permissionInChannel = channel.permissionsFor(target.id)?.has(PermissionFlagsBits.SendMessages);
 
-                await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-
-                // If the target is already muted in this channel
-                if (permissionInChannel === true) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} is already muted in ${targetChan}`);
                 // Update the channel permissions for the target user
-                targetChan.permissionOverwrites.edit(target.id, {
-                    SendMessages: null,
-                }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                await dbDeleteOne(muteSchema, { userId: target?.id, channelId: targetChan.id });
 
                 // Log to channel
                 let log = new EmbedBuilder()
