@@ -52,7 +52,7 @@ module.exports = {
         ctx.fillText(`9`, 560, 348);
         ctx.fillText(`10`, 560, 422);
         // Username
-        ctx.font = "900 22px arial";
+        ctx.font = "900 22px ubuntu";
         ctx.fillStyle = "#bebebe"
         ctx.textAlign = "left";
         ctx.fillText(`${fetchMember(guild, results[0]?.userId)}`, 110, 126);
