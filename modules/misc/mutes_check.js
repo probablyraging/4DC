@@ -15,10 +15,7 @@ module.exports = async (message, client, Discord) => {
         for (const data of results) {
             const { timestamp, userId, channelId } = data;
 
-            const myDate = new Date();
-            const nowTime = myDate.setSeconds(myDate.getSeconds() + 1);
-
-            if (nowTime > timestamp) {
+            if (timestamp !== 'null' && new Date() > timestamp) {
                 // if the timestamp has expired, delete the database entry and remove the mute
                 await dbDeleteOne(muteSchema, { userId });
 

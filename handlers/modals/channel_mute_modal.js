@@ -6,12 +6,12 @@ const path = require('path');
 
 module.exports = async (interaction) => {
     const { member, guild, channel } = interaction
-    
+
     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
     const target = interaction.fields.getTextInputValue('input1');
-    let duration = interaction.fields.getTextInputValue('input2');
+    let duration = interaction.fields.getTextInputValue('input2') || '0';
     const reason = interaction.fields.getTextInputValue('input3');
 
     // Try to match the modal's username input to an actual member
@@ -29,11 +29,9 @@ module.exports = async (interaction) => {
         SendMessages: false,
     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
     // If a duration was provided, get a timestamp for when the mute should expire and update the database
-    if (duration > 0) {
-        const myDate = new Date();
-        const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
-        await dbUpdateOne(muteSchema, { userId: fetchedMember?.user.id }, { userId: fetchedMember?.user.id, timestamp, channelId: channel.id });
-    }
+    const myDate = new Date();
+    const timestamp = !duration || duration === '0' ? 'null' : myDate.getTime() + (duration * 60 * 60 * 1000);
+    await dbUpdateOne(muteSchema, { userId: fetchedMember?.user.id, channelId: channel.id }, { userId: fetchedMember?.user.id, channelId: channel.id, timestamp: timestamp });
 
     duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 

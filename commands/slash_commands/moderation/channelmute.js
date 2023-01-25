@@ -84,11 +84,9 @@ module.exports = {
                     SendMessages: false,
                 }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
                 // If a duration was provided, get a timestamp for when the mute should expire and update the database
-                if (duration > 0) {
-                    const myDate = new Date();
-                    const timestamp = myDate.setHours(myDate.getHours() + parseInt(duration));
-                    await dbUpdateOne(muteSchema, { timestamp, userId: target.id, channelId: channel.id }, { timestamp, userId: target.id, channelId: channel.id });
-                }
+                const myDate = new Date();
+                const timestamp = !duration || duration === '0' ? 'null' : myDate.getTime() + (duration * 60 * 60 * 1000);
+                await dbUpdateOne(muteSchema, { userId: target.id, channelId: channel.id }, { userId: target.id, channelId: channel.id, timestamp: timestamp });
 
                 duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 
