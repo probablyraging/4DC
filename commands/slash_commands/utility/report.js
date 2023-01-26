@@ -33,7 +33,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const staffChannel = guild.channels.cache.get(process.env.TEST_CHAN);
+        const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
         const target = options.getUser('offender');
         const reason = options.getString('reason');
         const attachment = options.getAttachment('screenshot');

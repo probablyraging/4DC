@@ -18,7 +18,7 @@ module.exports = {
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
         const reportId = uuidv4();
-        const staffChannel = client.channels.cache.get(process.env.TEST_CHAN);
+        const staffChannel = client.channels.cache.get(process.env.STAFF_CHAN);
 
         let reportEmbed = new EmbedBuilder()
             .setColor('#E04F5F')
