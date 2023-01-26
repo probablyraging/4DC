@@ -3,7 +3,7 @@ const attachmentMap = new Map();
 
 /**
  * Edit the reply to an interaction
- * @param {CommandInteraction} interaction - The interaction object
+ * @param {CommandInteraction} interaction The interaction object
  * @param {string} content The content of the response
  * @param {Array} embeds An array of embeds
  * @param {Array} files An array of files
@@ -25,7 +25,7 @@ async function sendResponse(interaction, content = '', embeds = [], files = [], 
 
 /**
  * Send a reply to an interaction
- * @param {CommandInteraction} interaction - The interaction object
+ * @param {CommandInteraction} interaction The interaction object
  * @param {string} content The content of the response
  * @param {Array} embeds An array of embeds
  * @param {Array} files An array of files
@@ -34,6 +34,28 @@ async function sendResponse(interaction, content = '', embeds = [], files = [], 
 async function sendReply(interaction, content = '', embeds = [], files = [], components = [], ephemeral = true) {
     try {
         return interaction.reply({
+            content: content,
+            embeds: embeds,
+            files: files,
+            components: components,
+            ephemeral: ephemeral
+        });
+    } catch (err) {
+        console.error(`There was a problem replying to an interaction: `, err);
+    }
+}
+
+/**
+ * Send a follow up to an interaction
+ * @param {CommandInteraction} interaction The interaction object
+ * @param {string} content The content of the response
+ * @param {Array} embeds An array of embeds
+ * @param {Array} files An array of files
+ * @param {Array} components An array of components
+ */
+async function sendFollowUp(interaction, content = '', embeds = [], files = [], components = [], ephemeral = true) {
+    try {
+        return interaction.followUp({
             content: content,
             embeds: embeds,
             files: files,
@@ -151,6 +173,7 @@ function getAttachment(key) {
 module.exports = {
     sendResponse,
     sendReply,
+    sendFollowUp,
     dbFind,
     dbFindOne,
     dbCreate,

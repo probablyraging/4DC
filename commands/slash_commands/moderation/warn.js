@@ -113,7 +113,7 @@ module.exports = {
 
                 if (results.length >= 3) {
                     // Ban the user if this is their third warning
-                    await target.ban({ days: 0, reason: `Warning threshold reached` })
+                    await target.ban({ days: 0, reason: `Warning threshold` })
                         .then(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added`))
                         .catch(() => sendResponse(interaction, `${process.env.BOT_DENY} This is ${target}'s third warning but I could not ban them`));
                 } else {

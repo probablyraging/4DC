@@ -68,6 +68,7 @@ module.exports = {
 
             // A map of customIds for the buttons with prefixed custom IDs
             const prefixedButtons = {
+                'report': reportActionButton,
                 'help': helpButton,
                 'coinflip': coinflipButton
             };
@@ -75,7 +76,6 @@ module.exports = {
 
             // A map of customIds for misc buttons
             const miscButtons = {
-                'report-close': reportActionButton,
                 'delete-image': reportImageButton
             };
             // Handle misc buttons
@@ -94,6 +94,18 @@ module.exports = {
             };
             // Handle misc modals
             if (customId in miscModals) miscModals[customId](interaction);
+        }
+
+        // Select menu handler
+        if (interaction.isStringSelectMenu()) {
+            // Get the customId of the button
+            const customIdPrefix = interaction.customId.split('-')[0];
+
+            // A map of customIds for the buttons with prefixed custom IDs
+            const prefixedButtons = {
+                'report': reportActionButton,
+            };
+            if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
         }
 
         // Command and context menu handler

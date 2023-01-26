@@ -1,20 +1,243 @@
-const { EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
+const { sendFollowUp, sendResponse, dbCreate } = require('../../utils/utils');
+const warnSchema = require('../../schemas/misc/warn_schema');
+const { rules } = require('../../lists/rules');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
+let status = false;
+let originalMessageId;
+let reportedUser;
 module.exports = async (interaction) => {
-    const { client, guild, user } = interaction;
-
-    await interaction.deferUpdate();
+    const { client, guild, member, customId } = interaction;
 
     const channel = client.channels.cache.get(interaction.channelId);
-    const reportMessage = await channel.messages.fetch(interaction.message.id);
+    const screenshotChan = guild.channels.cache.get(process.env.SCREENSHOT_CHAN);
+    const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+
+    if (customId.split('-')[1] === 'action') {
+        if (status) return;
+        status = true;
+
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+        const reportMessage = await channel.messages.fetch(interaction.message.id);
+        const reportEmbed = reportMessage.embeds[0].data;
+        const reportedUserId = reportEmbed.fields[0].value.split(/[@>]/)[1];
+        reportedUser = await guild.members.fetch(reportedUserId);
+        originalMessageId = reportEmbed.footer.text.split('-')[1];
+        // Set the status of the embed to allow other staff to see if someone is currently taking action or not
+        const statusUpdate = new EmbedBuilder(reportEmbed)
+            .setColor("#ebd086")
+            .addFields({ name: `Status`, value: `${member} is taking action`, inline: false })
+
+        // Enable button
+        const enabled = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('report-action')
+                    .setLabel('Action')
+                    .setStyle(ButtonStyle.Primary)
+            );
+        // Disable button
+        const disabled = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('report-action')
+                    .setLabel('Action')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+            );
+        // Action buttons
+        const actions = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('report-warn')
+                    .setLabel(`Warn`)
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('report-ban')
+                    .setLabel(`Ban`)
+                    .setStyle(ButtonStyle.Primary),
+                new ButtonBuilder()
+                    .setCustomId('report-close')
+                    .setLabel('Close Report')
+                    .setStyle(ButtonStyle.Danger)
+            );
+
+        // Send the embed with the status and reply with the action buttons
+        reportMessage.edit({ embeds: [statusUpdate], components: [disabled] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+        await sendFollowUp(interaction, ``, [], [], [actions]);
+
+        // Wait 30 seconds, if not action was taken, clear the status
+        setTimeout(async () => {
+            const reportMessageUpdated = await channel.messages.fetch(interaction.message.id);
+            const reportEmbedUpdated = reportMessageUpdated.embeds[0].data;
+            if (reportEmbedUpdated.color !== 3325606) {
+                // Remove the status
+                const embed = new EmbedBuilder(reportEmbed)
+                    .setColor("#E04F5F")
+
+                reportMessage.edit({ embeds: [embed], components: [enabled] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+                sendResponse(interaction, `Action expired. Action must be taken within 60 seconds of clicking the **Action** button`);
+                status = false;
+            }
+        }, 60000);
+    }
+
+    if (customId.split('-')[1] === 'ban' || customId.split('-')[1] === 'warn') {
+        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+        const type = customId.split('-')[1];
+
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new StringSelectMenuBuilder()
+                    .setCustomId(`report-reasons-${type}`)
+                    .setPlaceholder('Choose a reason')
+                    .addOptions({
+                        label: 'Rule 1',
+                        description: 'harmful posts, username, profile, etc..',
+                        value: '0',
+                    }, {
+                        label: 'Rule 2',
+                        description: 'unsolicited DMs',
+                        value: '1',
+                    }, {
+                        label: 'Rule 3',
+                        description: 'advertising discord servers and paid services',
+                        value: '2',
+                    }, {
+                        label: 'Rule 4',
+                        description: 'breaking another platforms ToS, sub4sub, buying/sellin,g etc..',
+                        value: '3',
+                    }, {
+                        label: 'Rule 5',
+                        description: 'self-promotion outside of content share section',
+                        value: '4',
+                    }, {
+                        label: 'Rule 6',
+                        description: 'sending repeated or purposeless message',
+                        value: '5',
+                    }, {
+                        label: 'Rule 7',
+                        description: 'messages not in English',
+                        value: '6',
+                    }));
+
+        sendResponse(interaction, ``, [], [], [row]);
+    }
+
+    if (customId.split('-')[1] === 'reasons') {
+        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+        if (customId.split('-')[2] === 'ban') {
+            const reportMessage = await channel.messages.fetch(originalMessageId);
+            const reportEmbed = reportMessage.embeds[0].data;
+            const attachment = reportEmbed.image?.url;
+            const value = interaction.values[0];
+            const reason = rules[value];
+            const logId = uuidv4();
+
+            // Send a notification to the target user
+            await reportedUser.send({
+                content: `You have been banned from **ForTheContent**\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
+            }).catch(() => { });
+
+            // Ban the user
+            await guild.bans.create(reportedUser.user, {
+                reason: reason
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+
+            // Send screenshot to channel
+            if (attachment) screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+            // Log to channel
+            let log = new EmbedBuilder()
+                .setColor("#E04F5F")
+                .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${reportedUser.user.tag} *(${reportedUser.id})*
+**Reason:** ${reason} ${attachment ? `\n**Attachment:** [${screenshotMessage.id}](${screenshotMessage.url})` : ""}`)
+                .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
+                .setTimestamp();
+
+            logChan.send({
+                embeds: [log]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+            // Close report
+            closeReport(guild, channel, member);
+        }
+
+        if (customId.split('-')[2] === 'warn') {
+            const guildId = guild.id;
+            const target = reportedUser;
+            const userId = target?.id;
+            const username = target?.user.tag;
+            const authorTag = member.user.tag;
+            const warnId = uuidv4();
+            const author = member.id;
+            const timestamp = new Date().getTime();
+            const value = interaction.values[0];
+            const reason = rules[value];
+
+            // If the target user cannot be found
+            if (!userId || !username) return sendResponse(interaction, `${process.env.BOT_DENY} The was an issue finding the user you are trying to warn`);
+
+            // Log to channel
+            let log = new EmbedBuilder()
+                .setColor("#E04F5F")
+                .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${reportedUser.user.tag} *(${reportedUser.id})* \n**Reason:** ${reason}`)
+                .setFooter({ text: `Warning Added • ${warnId}`, iconURL: process.env.LOG_WARN })
+                .setTimestamp();
+
+            logChan.send({
+                embeds: [log]
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+
+            // Log to database
+            await dbCreate(warnSchema, { guildId, userId, username, warnId, author, authorTag, timestamp, reason });
+            // Fetch warnings for the target user
+            const results = await warnSchema.find({ guildId, userId });
+
+            if (results.length >= 3) {
+                // Ban the user if this is their third warning
+                await guild.bans.create(reportedUser.user, {
+                    reason: `Warning threshold`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+            } else {
+                // Notify the user that they received a warning
+                await target.send({ content: `${target} - you received a warning in ${guild.name} \n\`\`\`${reason}\`\`\`` })
+                    .catch(err => console.error('There was a problem sending a user a warning DM: ', err));
+            }
+
+            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+            // Close report
+            closeReport(guild, channel, member);
+        }
+    }
+
+    if (customId.split('-')[1] === 'close') {
+        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+        // Close report
+        closeReport(guild, channel, member);
+    }
+}
+
+async function closeReport(guild, channel, member) {
+    const reportMessage = await channel.messages.fetch(originalMessageId);
     const reportEmbed = reportMessage.embeds[0].data;
-    const reporterId = reportEmbed.footer.text.split('ID ')[1];
+    const reporterId = reportEmbed.footer.text.split('-')[0].replace('ID ', '');
     const reporterUser = await guild.members.fetch(reporterId);
 
+    reportEmbed.fields[2] = { name: ``, value: `` };
     const closedEmbed = new EmbedBuilder(reportEmbed)
         .setColor("#32BEA6")
-        .addFields({ name: `Closed By`, value: `${user}`, inline: false })
+        .addFields({ name: `Closed By`, value: `${member}`, inline: false })
 
     reportMessage.edit({ embeds: [closedEmbed], components: [] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
 
@@ -24,4 +247,5 @@ module.exports = async (interaction) => {
         .setDescription(`Your report's status has been updated to \`CLOSED\``)
 
     reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message `, err));
+    status = false
 }

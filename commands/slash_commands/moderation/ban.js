@@ -80,7 +80,7 @@ module.exports = {
         sendResponse(interaction, `${process.env.BOT_CONF} ${target.tag} was banned from the server`);
         // Send a notification to the target user
         await target.send({
-            content: `You have been banned from **ForTheContent** for\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
+            content: `You have been banned from **ForTheContent**\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
         }).catch(() => { });
         // Ban the target user, taking into account if their messages should be deleted
         await guild.bans.create(target, {
