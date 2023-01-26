@@ -47,7 +47,7 @@ module.exports = {
             newUsers.delete(message?.member.id);
 
         // Block all "youtu.be" links from being posted in the introduction channel
-        if (message?.channel.id === process.env.INTRO_CHAN && message?.content.includes('youtu.be/'))
+        if (message?.channel.id === process.env.INTRO_CHAN && (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')))
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));;
 
         // Check automod embeds for Discord links and send the user a notification
