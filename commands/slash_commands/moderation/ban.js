@@ -92,7 +92,7 @@ module.exports = {
         const attachments = [attachment, attachment2, attachment3, attachment4];
         for (let i = 0; i < attachments.length; i++) {
             const currentAttachment = attachments[i];
-            if (!currentAttachment) continue;
+            if (!currentAttachment || !currentAttachment.contentType) continue;
             if (!currentAttachment.contentType || !currentAttachment.contentType.includes('image')) {
                 return sendResponse(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
             } else {
