@@ -15,7 +15,7 @@ function fetchMember(guild, userId) {
 
 function numberWithCommas(x) {
     if (x >= 1000000) {
-        return (x / 1000000).toFixed(1) + "M";
+        return (x / 1000000).toFixed(2) + "M";
     } else {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
