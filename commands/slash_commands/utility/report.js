@@ -45,7 +45,7 @@ module.exports = {
 
         let reportEmbed = new EmbedBuilder()
             .setColor("#E04F5F")
-            .setAuthor({ name: `${target?.tag}`, iconURL: target?.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.displayAvatarURL({ dynamic: true }) })
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
                 { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
             .setTimestamp();

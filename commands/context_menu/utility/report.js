@@ -11,7 +11,7 @@ module.exports = {
      * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        const { client, user, member, guild, channel } = interaction;
+        const { client, member, guild, channel } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
@@ -22,11 +22,11 @@ module.exports = {
 
         let reportEmbed = new EmbedBuilder()
             .setColor('#E04F5F')
-            .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.displayAvatarURL({ dynamic: true }) })
             .setDescription(`[View Message](${fetchMsg?.url})`)
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
                 { name: `Reported Content`, value: `\`\`\`${fetchMsg?.content}\`\`\``, inline: false })
-            .setFooter({ text: `ID ${user?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
+            .setFooter({ text: `ID ${member?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp();
 
         const button = new ActionRowBuilder()
