@@ -43,6 +43,24 @@ module.exports = {
         required: true
     },
     {
+        name: `screenshot2`,
+        description: `A screenshot of the reason why the user was banned`,
+        type: ApplicationCommandOptionType.Attachment,
+        required: false
+    },
+    {
+        name: `screenshot3`,
+        description: `A screenshot of the reason why the user was banned`,
+        type: ApplicationCommandOptionType.Attachment,
+        required: false
+    },
+    {
+        name: `screenshot4`,
+        description: `A screenshot of the reason why the user was banned`,
+        type: ApplicationCommandOptionType.Attachment,
+        required: false
+    },
+    {
         name: `custom`,
         description: `Provide a reason for banning the user when selecting custom`,
         type: ApplicationCommandOptionType.String,
@@ -62,13 +80,25 @@ module.exports = {
         const deleteMessages = options.getBoolean('delete_messages');
         const custom = options.getString('custom');
         const attachment = options.getAttachment('screenshot');
+        const attachment2 = options.getAttachment('screenshot2');
+        const attachment3 = options.getAttachment('screenshot3');
+        const attachment4 = options.getAttachment('screenshot4');
         const logId = uuidv4();
         let reason = options.getString('reason');
         reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
+        let attachmentArr = [];
 
-        // If attachment content type isn't an image
-        if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
-            return sendReply(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
+        // Check all attachment's content type to see if they're a valie image
+        const attachments = [attachment, attachment2, attachment3, attachment4];
+        for (let i = 0; i < attachments.length; i++) {
+            const currentAttachment = attachments[i];
+            if (!currentAttachment) continue;
+            if (!currentAttachment.contentType || !currentAttachment.contentType.includes('image')) {
+                return sendResponse(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
+            } else {
+                attachmentArr.push(currentAttachment);
+            }
+        }
         // If no target
         if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
         // If no reason was provided when using the custom reason option
@@ -88,7 +118,7 @@ module.exports = {
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
         // Send screenshot to channel
-        const screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         // Log to channel
         let log = new EmbedBuilder()
