@@ -17,7 +17,7 @@ module.exports = {
         options: [{
             name: `amount`,
             description: `The amount of tokens to wager`,
-            type: ApplicationCommandOptionType.String,
+            type: ApplicationCommandOptionType.Number,
             required: true
         }]
     },
