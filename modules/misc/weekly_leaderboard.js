@@ -1,8 +1,6 @@
 const { AttachmentBuilder } = require('discord.js');
-const { dbFindOne, dbUpdateOne, dbDeleteMany } = require('../../utils/utils');
 const Canvas = require("canvas");
 const userWeeklyMessageCount = require('../../schemas/misc/weekly_leaderboard_schema');
-const timerSchema = require('../../schemas/misc/timer_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -22,18 +20,9 @@ function numberWithCommas(x) {
 }
 
 module.exports = async (client) => {
-    const leaderboards = new cronjob('0 */3 * * *', async function () {
+    const leaderboards = new cronjob('0 */4 * * *', async function () {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const generalChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
-        // Check leaderboard timestamp and reset if expired
-        const leaderboardTimer = await dbFindOne(timerSchema, { timer: 'leaderboard' });
-        const myDate = new Date();
-        const addOneWeek = myDate.getTime() + (24 * 7 * 60 * 60 * 1000);
-        if (!leaderboardTimer?.timestamp || myDate.valueOf() > leaderboardTimer?.timestamp) {
-            await dbDeleteMany(userWeeklyMessageCount, {});
-            await dbUpdateOne(timerSchema, { timer: 'leaderboard' }, { timestamp: addOneWeek });
-        };
-
         const results = await userWeeklyMessageCount.find().sort({ msgCount: -1 }).limit(10);
         // Image 1
         const background = await Canvas.loadImage("./res/images/leaderboard_weekly_bg.png");
