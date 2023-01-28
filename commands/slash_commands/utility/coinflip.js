@@ -37,7 +37,7 @@ module.exports = {
         // Create a new coinflip game
         switch (options.getSubcommand()) {
             case 'create': {
-                const amountToWager = options.getString('amount');
+                const amountToWager = options.getNumber('amount');
                 const gameCode = uuidv4().split('-')[0];
                 // Amount to wager must be greater than 10
                 if (amountToWager < 10) return sendResponse(interaction, `${process.env.BOT_DENY} Wager amount must be **10** tokens or more`);
