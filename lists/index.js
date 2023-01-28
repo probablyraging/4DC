@@ -202,7 +202,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#1005283113775157349> You are here
 <#843127402435313724> Let us know how we can improve the server
 <#900243955847938078> Stay up to date with trends and platform changes
-<#1043302855941042206> Grab an occasional free game or product here
 <#887642369598570527> Look at all these awesome server boosters
 
 **CHATTING**
