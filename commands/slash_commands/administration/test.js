@@ -3,7 +3,7 @@ const { sendReply, dbFindOne, dbUpdateOne } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 const path = require("path");
-const schema = require('../../../schemas/misc/tokens_schema');
+const schema = require('../../../schemas/misc/rank_schema');
 
 module.exports = {
     name: `test`,
@@ -18,6 +18,15 @@ module.exports = {
         const { options, member, guild, channel, user } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
+        const results = await schema.find();
+
+        let count = 0;
+        for (const data of results) {
+            if (!data.xp) await schema.deleteOne({ userId: data.userId })
+            count++
+            console.log(count);
+        }
 
         interaction.deleteReply();
     }

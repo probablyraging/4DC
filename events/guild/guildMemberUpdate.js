@@ -5,8 +5,17 @@ const path = require('path');
 module.exports = {
     name: 'guildMemberUpdate',
     async execute(oldMember, newMember, client, Discord) {
+        if (oldMember.guild.id === process.env.SHARE_GUILD) return;
+
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
+
+        // If the user is no longer supporting the server, remove the supporter role from the share server
+        if (!newMember._roles.includes(process.env.BOOSTER_ROLE) && !newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
+            if (sgMember) sgMember.roles.remove('1069330873637412924');
+        }
 
         // Premium member subscription
         if (!oldMember._roles.includes(process.env.SUBSCRIBER_ROLE) && newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {

@@ -21,6 +21,7 @@ function randomNum(message) {
  */
 module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
+    const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
     const disableXP = [process.env.CONTENT_SHARE, process.env.BOT_CHAN]
 
@@ -73,7 +74,8 @@ module.exports = async (message, client) => {
                 // Update the user's database entry
                 await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { level: levelMath, xp: xpMath, xxp: 0, xxxp: exponential });
                 // Add and/or remove the appropriate rank roles for the user
-                try {
+                // try {
+                    // Main guild
                     const ver = guild.roles.cache.get(process.env.VERIFIED_ROLE);
                     const lv5 = guild.roles.cache.get(process.env.RANK5_ROLE);
                     const lv10 = guild.roles.cache.get(process.env.RANK10_ROLE);
@@ -85,53 +87,78 @@ module.exports = async (message, client) => {
                     const lv40 = guild.roles.cache.get(process.env.RANK40_ROLE);
                     const lv45 = guild.roles.cache.get(process.env.RANK45_ROLE);
                     const lv50 = guild.roles.cache.get(process.env.RANK50_ROLE);
+                    // Share guild
+                    const sgMember = await shareGuild.members.fetch(message?.member?.id).catch(() => { });
+                    const sglv5 = shareGuild.roles.cache.get('1069331120019210410');
+                    const sglv10 = shareGuild.roles.cache.get('1069331129464787054');
+                    const sglv15 = shareGuild.roles.cache.get('1069331143062732931');
+                    const sglv20 = shareGuild.roles.cache.get('1069331140936224809');
                     if (levelMath === 5) {
                         message?.member?.roles.add(lv5);
+                        if (sgMember) sgMember?.roles.add(sglv5);
                     }
                     if (levelMath === 10) {
                         message?.member?.roles.add(lv10);
                         message?.member?.roles.add(ver);
                         message?.member?.roles.remove(lv5);
+                        if (sgMember) {
+                            sgMember?.roles.add(sglv10);
+                            sgMember?.roles.remove(sglv5);
+                        }
                     }
                     if (levelMath === 15) {
                         message?.member?.roles.add(lv15);
                         message?.member?.roles.remove(lv10);
+                        if (sgMember) {
+                            sgMember?.roles.add(sglv15);
+                            sgMember?.roles.remove(sglv10);
+                        }
                     }
                     if (levelMath === 20) {
                         message?.member?.roles.add(lv20);
                         message?.member?.roles.remove(lv15);
+                        if (sgMember) {
+                            sgMember?.roles.add(sglv20);
+                            sgMember?.roles.remove(sglv15);
+                        }
                     }
                     if (levelMath === 25) {
                         message?.member?.roles.add(lv25);
                         message?.member?.roles.remove(lv20);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     if (levelMath === 30) {
                         message?.member?.roles.add(lv30);
                         message?.member?.roles.remove(lv25);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     if (levelMath === 35) {
                         message?.member?.roles.add(lv35);
                         message?.member?.roles.remove(lv30);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     if (levelMath === 40) {
                         message?.member?.roles.add(lv40);
                         message?.member?.roles.remove(lv35);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     if (levelMath === 45) {
                         message?.member?.roles.add(lv45);
                         message?.member?.roles.remove(lv40);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     if (levelMath === 50) {
                         message?.member?.roles.add(lv50);
                         message?.member?.roles.remove(lv45);
+                        if (sgMember) sgMember?.roles.add(sglv20);
                     }
                     // Send the user a notification
                     botChan.send({
                         content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
                     });
-                } catch (err) {
-                    console.error('There was a problem updating roles in the rank_xp module: ', err);
-                }
+                // } catch (err) {
+                //     console.error('There was a problem updating roles in the rank_xp module: ', err);
+                // }
             }
         }
         // add user to xpLimit for 60 seconds to prevent spamming for xp

@@ -3,6 +3,8 @@ const { ChannelType } = require('discord.js')
 module.exports = {
     name: 'voiceStateUpdate',
     execute(oldState, newState, client) {
+        if (oldState.guild.id === process.env.SHARE_GUILD) return;
+        
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const vcHub = guild.channels.cache.get(process.env.VC_HUB);
         const vcCategory = guild.channels.cache.get(process.env.VC_CATEGORY);

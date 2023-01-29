@@ -21,8 +21,8 @@ module.exports = {
      * @param {Message} message
      */
     async execute(message, client) {
-        // Ignore DM messages
-        if (message?.channel.type === 1) return;
+        // Ignore share server and DM messages
+        if (message.guildId === process.env.SHARE_GUILD || message?.channel.type === 1) return;
 
         // Blacklist checks
         linkCooldown(message, client);

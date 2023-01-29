@@ -5,6 +5,8 @@ const path = require('path');
 module.exports = {
     name: 'emojiDelete',
     async execute(emoji, client, Discord) {
+        if (emoji.guild.id === process.env.SHARE_GUILD) return;
+        
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
 
