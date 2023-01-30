@@ -16,7 +16,7 @@ async function initCoinflip(client, guild, channel, gameCode) {
 
     await channel.send({ content: `<:botconfirm:845719660812435496> <@${playerTwo}> has accepted <@${playerOne}>'s wager, there are **${wagerAmount}** tokens in the pot. Good luck!` }).catch(err => console.error(err));
     // Get a random number, 1 = playerOne, 2 = playerTwo
-    const pickWinner = randomNum(1, 2);
+    let pickWinner = randomNum(1, 2);  
     let checkWinnersTokens;
     let checkLosersTokens;
     if (pickWinner === 1) {

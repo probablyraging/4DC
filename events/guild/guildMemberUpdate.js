@@ -16,6 +16,11 @@ module.exports = {
             const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
             if (sgMember) sgMember.roles.remove('1069330873637412924');
         }
+        if (newMember._roles.includes(process.env.BOOSTER_ROLE) || newMember._roles.includes('1069409478660870235')) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id)
+            if (sgMember) sgMember.roles.add('1069330873637412924');
+        }
 
         // Premium member subscription
         if (!oldMember._roles.includes(process.env.SUBSCRIBER_ROLE) && newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
