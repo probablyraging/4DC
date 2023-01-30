@@ -4,7 +4,6 @@ const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/games/letter_lb_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const guardiansSchema = require('../../schemas/misc/guardians_schema');
 const weeklyLeaderboard = require('../../schemas/misc/weekly_leaderboard_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
@@ -101,20 +100,6 @@ module.exports = async (client) => {
         }
     });
 
-    // Check guardian role to see if any timestamps have expired - runs every 2 hours
-    const guardianCheck = new cronjob('0 */2 * * *', async function () {
-        const guardianRole =  guild.roles.cache.get('1068065444935766046');
-        const results = await dbFind(guardiansSchema, {});
-        for (const data of results) {
-            const { userId, timestamp } = data;
-            const member = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the guardians role that no longer exists`));
-            if (!member || new Date() > timestamp) {
-                member.roles.remove(guardianRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
-                await dbDeleteOne(guardiansSchema, { userId: userId });
-            }
-        }
-    });
-
     // Reset weekly message leaderboard - runs every Monday at 00:00
     const weeklyLeaderboardCheck = new cronjob('0 0 * * 1', async function () {
         await dbDeleteMany(weeklyLeaderboard, {});
@@ -126,6 +111,5 @@ module.exports = async (client) => {
     countingCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
-    guardianCheck.start();
     weeklyLeaderboardCheck.start();
 }
