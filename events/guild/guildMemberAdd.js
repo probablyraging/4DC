@@ -10,7 +10,7 @@ module.exports = {
     async execute(member, client, Discord) {
         if (member.guild.id === process.env.SHARE_GUILD) {
             const mainGuild = client.guilds.cache.get(process.env.GUILD_ID);
-            const mainGuildMember = mainGuild.members.cache.get(member.id);
+            const mainGuildMember = await mainGuild.members.fetch(member.id).catch(() => { });
             // Staff roles
             if (mainGuildMember.roles.cache.has(process.env.STAFF_ROLE)) member.roles.add('1069322534748700774');
             // Supporter roles
@@ -22,7 +22,7 @@ module.exports = {
             if (mainGuildMember.roles.cache.has(process.env.RANK20_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK25_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK30_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK35_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK40_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK45_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK50_ROLE)) member.roles.add('1069331140936224809');
             return;
         }
-        
+
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);

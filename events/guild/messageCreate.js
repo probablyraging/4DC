@@ -22,7 +22,20 @@ module.exports = {
      */
     async execute(message, client) {
         // Ignore share server and DM messages
-        if (message.guildId === process.env.SHARE_GUILD || message?.channel.type === 1) return;
+        if (message?.channel.type === 1) return;
+
+        if (message.guildId === process.env.SHARE_GUILD) {
+            const mainGuild = client.guilds.cache.get(process.env.GUILD_ID);
+            const mainGuildMember = await mainGuild.members.fetch(message?.author.id).catch(() => { });
+            if (!mainGuildMember) {
+                message?.delete().catch(() => { });
+                message?.channel.send({
+                    content: `${message.author} **you must join ForTheContent's main server to share content - discord.gg/forthecontent **`
+                }).catch(() => { })
+                    .then(msg => { setTimeout(() => { msg.delete().catch(() => { }) }, 10000); })
+            }
+            return;
+        }
 
         // Blacklist checks
         linkCooldown(message, client);
