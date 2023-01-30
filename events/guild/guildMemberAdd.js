@@ -12,14 +12,14 @@ module.exports = {
             const mainGuild = client.guilds.cache.get(process.env.GUILD_ID);
             const mainGuildMember = await mainGuild.members.fetch(member.id).catch(() => { });
             // Staff roles
-            if (mainGuildMember.roles.cache.has(process.env.STAFF_ROLE)) member.roles.add('1069322534748700774');
+            if (mainGuildMember?.roles.cache.has(process.env.STAFF_ROLE)) member.roles.add('1069322534748700774');
             // Supporter roles
-            if (mainGuildMember.roles.cache.has(process.env.BOOSTER_ROLE) || mainGuildMember.roles.cache.has(process.env.SUBSCRIBER_ROLE)) member.roles.add('1069330873637412924');
+            if (mainGuildMember?.roles.cache.has(process.env.BOOSTER_ROLE) || mainGuildMember.roles.cache.has(process.env.SUBSCRIBER_ROLE)) member.roles.add('1069330873637412924');
             // Rank roles
-            if (mainGuildMember.roles.cache.has(process.env.RANK5_ROLE)) member.roles.add('1069331120019210410');
-            if (mainGuildMember.roles.cache.has(process.env.RANK10_ROLE)) member.roles.add('1069331129464787054');
-            if (mainGuildMember.roles.cache.has(process.env.RANK15_ROLE)) member.roles.add('1069331143062732931');
-            if (mainGuildMember.roles.cache.has(process.env.RANK20_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK25_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK30_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK35_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK40_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK45_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK50_ROLE)) member.roles.add('1069331140936224809');
+            if (mainGuildMember?.roles.cache.has(process.env.RANK5_ROLE)) member.roles.add('1069331120019210410');
+            if (mainGuildMember?.roles.cache.has(process.env.RANK10_ROLE)) member.roles.add('1069331129464787054');
+            if (mainGuildMember?.roles.cache.has(process.env.RANK15_ROLE)) member.roles.add('1069331143062732931');
+            if (mainGuildMember?.roles.cache.has(process.env.RANK20_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK25_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK30_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK35_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK40_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK45_ROLE) || mainGuildMember.roles.cache.has(process.env.RANK50_ROLE)) member.roles.add('1069331140936224809');
             return;
         }
 
