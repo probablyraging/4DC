@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../utils/utils');
+const { dbCreate, dbUpdateOne, dbFindOne } = require('../../utils/utils');
 const countingSchema = require('../../schemas/games/counting_schema');
 const countingCurrent = require('../../schemas/games/counting_current_schema');
 const path = require('path');
@@ -226,7 +226,8 @@ module.exports = async (message, client) => {
             // If number is an increment of 100, add a free guild save
             async function isIncrementOf100() {
                 if (parseInt(message.content) % 50 === 0) {
-                    await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: 3 });
+                    const results = await dbFindOne(countingSchema, { userId: guild.id });
+                    await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: results.saves + 1 });
                     message.react('1061798848890142800')
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
                 }

@@ -71,9 +71,9 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                 // If the user doesn't have enough saves
                 if (userCurrentSaves < savesToAdd) return sendResponse(interaction, `You don't have enough saves. You currently have \`${userCurrentSaves || 0}/2\``);
 
-                // Remove 1 save from the user
+                // Remove saves from the user
                 await dbUpdateOne(countingSchema, { userId: member.id }, { saves: userCurrentSaves - savesToAdd });
-                // Add 0.25 saves to the guild
+                // Add saves to the guild
                 await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: guildCurrentSaves + (savesToAdd) });
 
                 // Send a confirmation message to the game channel
@@ -87,7 +87,7 @@ To be notified when the server is ready to be bumped again, you can get the <@&$
                 // Send a follow up response
                 sendResponse(interaction, `You have donated \`${savesToAdd} personal saves\` to the guild
 > You now have \`${userCurrentSaves - savesToAdd}/2 personal saves\` left
-> The guild now has \`${guildCurrentSaves + (savesToAdd / 4)} saves\``);
+> The guild now has \`${guildCurrentSaves + (savesToAdd)} saves\``);
                 break;
             }
         }
