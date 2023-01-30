@@ -112,7 +112,7 @@ module.exports = async (client) => {
     // Check live now role members to see if someone stopped streaming
     setInterval(async () => {
         liveRole?.members?.forEach(async member => {
-            const activity = member.presence.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
+            const activity = member.presence?.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
             if (!activity) {
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
                 await dbDeleteOne(streamSchema, { userId: member.id });
