@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
     name: 'messageUpdate',
     async execute(oldMessage, newMessage, client, Discord) {
-        if (oldMessage.guild.id === process.env.SHARE_GUILD) return;
+        if (oldMessage.guildId === process.env.SHARE_GUILD) return;
         
         if (oldMessage?.author?.bot || oldMessage?.author.id === process.env.OWNER_ID) return;
 
