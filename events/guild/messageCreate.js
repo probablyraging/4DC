@@ -72,6 +72,15 @@ module.exports = {
                     files: ['./res/images/supporter_rewards.png']
                 }).catch(() => { });
                 notifiedUsers.add(message?.author.id);
+            } else {
+                message?.embeds[0].fields.forEach(field => {
+                    if (field.value.toLowerCase() === 'self promotion') {
+                        message?.author.send({
+                            content: `Share your content at discord.gg/kCPxpjmJyY`
+                        }).catch(() => { });
+                        notifiedUsers.add(message?.author.id);
+                    }
+                })
             }
         }
 
