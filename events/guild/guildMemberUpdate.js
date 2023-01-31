@@ -10,16 +10,36 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        // If the user is no longer supporting the server, remove the supporter role from the share server
-        if (!newMember._roles.includes(process.env.BOOSTER_ROLE) && !newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
+        // If the user starts or stops supporting the server, remove/add the the appropriate roles from the share server
+        if (!newMember._roles.includes(process.env.BOOSTER_ROLE)) {
             const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
             const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
-            if (sgMember) sgMember.roles.remove('1069330873637412924');
+            if (sgMember) sgMember.roles.remove('1070035729754890300');
         }
-        if (newMember._roles.includes(process.env.BOOSTER_ROLE) || newMember._roles.includes('1069409478660870235')) {
+        if (!newMember._roles.includes(process.env.FTCP_ROLE)) {
             const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
             const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
-            if (sgMember) sgMember.roles.add('1069330873637412924');
+            if (sgMember) sgMember.roles.remove('1070034838817615923');
+        }
+        if (!newMember._roles.includes(process.env.FTCPP_ROLE)) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
+            if (sgMember) sgMember.roles.remove('1070034943998185473');
+        }
+        if (newMember._roles.includes(process.env.BOOSTER_ROLE)) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
+            if (sgMember) sgMember.roles.add('1070035729754890300');
+        }
+        if (newMember._roles.includes(process.env.FTCP_ROLE)) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
+            if (sgMember) sgMember.roles.add('1070034838817615923');
+        }
+        if (newMember._roles.includes(process.env.FTCPP_ROLE)) {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
+            const sgMember = await shareGuild.members.fetch(newMember.id).catch(() => { });
+            if (sgMember) sgMember.roles.add('1070034943998185473');
         }
 
         // Premium member subscription

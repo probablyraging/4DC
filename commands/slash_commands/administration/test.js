@@ -19,15 +19,6 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const results = await schema.find();
-
-        let count = 0;
-        for (const data of results) {
-            if (!data.xp) await schema.deleteOne({ userId: data.userId })
-            count++
-            console.log(count);
-        }
-
         interaction.deleteReply();
     }
 }

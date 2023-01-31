@@ -14,7 +14,9 @@ module.exports = {
             // Staff roles
             if (mainGuildMember?.roles.cache.has(process.env.STAFF_ROLE)) member.roles.add('1069322534748700774');
             // Supporter roles
-            if (mainGuildMember?.roles.cache.has(process.env.BOOSTER_ROLE) || mainGuildMember.roles.cache.has(process.env.SUBSCRIBER_ROLE)) member.roles.add('1069330873637412924');
+            if (mainGuildMember?.roles.cache.has(process.env.BOOSTER_ROLE)) member.roles.add('1070035729754890300');
+            if (mainGuildMember?.roles.cache.has(process.env.FTCP_ROLE)) member.roles.add('1070034838817615923');
+            if (mainGuildMember?.roles.cache.has(process.env.FTCPP_ROLE)) member.roles.add('1070034943998185473');
             // Rank roles
             if (mainGuildMember?.roles.cache.has(process.env.RANK5_ROLE)) member.roles.add('1069331120019210410');
             if (mainGuildMember?.roles.cache.has(process.env.RANK10_ROLE)) member.roles.add('1069331129464787054');

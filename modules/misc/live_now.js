@@ -86,6 +86,7 @@ module.exports = async (client) => {
                         // Check if user has already manually posted their own URL, if so we don't post it
                         let boostAlreadyPosted = false;
                         (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
+                            if (!liveMember.url) return;
                             if (message.content.includes(liveMember.url.split('https://www.')[1])) {
                                 boostAlreadyPosted = true;
                             }
