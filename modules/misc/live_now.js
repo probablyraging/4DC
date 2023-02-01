@@ -38,7 +38,8 @@ async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
     const results = await tokensSchema.find();
     for (const data of results) {
         if ((data?.twitchauto - new Date()) > 1 || data?.twitchauto === true) {
-            const member = await guild.members.fetch(data.userId);
+            const member = await guild.members.fetch(data.userId).catch(() => {});
+            if (!member) continue;
             for (let i = 0; i < 7; i++) {
                 const activity = member.presence?.activities[i];
                 if (activity && platforms.includes(activity.name)) {
@@ -108,7 +109,7 @@ module.exports = async (client) => {
         } catch (error) {
             console.error(`${path.basename(__filename)} There was a problem with the live_now module: `, error);
         }
-    }, 300000);
+    }, 10000);
 
     // Check live now role members to see if someone stopped streaming
     setInterval(async () => {
