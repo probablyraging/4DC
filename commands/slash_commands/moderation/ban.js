@@ -70,10 +70,11 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, guild, options } = interaction;
+        const { client, member, guild, options } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
+        const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const screenshotChan = guild.channels.cache.get(process.env.SCREENSHOT_CHAN);
         const target = options.getUser('user');
@@ -114,6 +115,11 @@ module.exports = {
         }).catch(() => { });
         // Ban the target user, taking into account if their messages should be deleted
         await guild.bans.create(target, {
+            deleteMessageSeconds: deleteMessages ? 604800 : 0,
+            reason: reason
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+        // Ban from share guild
+        await shareGuild.bans.create(target, {
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
