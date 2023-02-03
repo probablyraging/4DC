@@ -20,7 +20,7 @@ function numberWithCommas(x) {
 }
 
 module.exports = async (client) => {
-    const leaderboards = new cronjob('0 */4 * * *', async function () {
+    const leaderboards = new cronjob('0 */12 * * *', async function () {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const generalChan = guild.channels.cache.get(process.env.GENERAL_CHAN);
         const results = await userWeeklyMessageCount.find().sort({ msgCount: -1 }).limit(10);

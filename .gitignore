@@ -5,3 +5,4 @@ templates
 *.test
 .env.prod
 *.txt
+poll*.js
