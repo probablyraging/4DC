@@ -132,12 +132,17 @@ module.exports = async (interaction) => {
         await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         if (customId.split('-')[2] === 'ban') {
+            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
             const reportMessage = await channel.messages.fetch(originalMessageId);
             const reportEmbed = reportMessage.embeds[0].data;
             const attachment = reportEmbed.image?.url;
             const value = interaction.values[0];
             const reason = rules[value];
             const logId = uuidv4();
+
+            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+            // Close report
+            closeReport(guild, channel, member);
 
             // Send a notification to the target user
             await reportedUser.send({
@@ -146,6 +151,11 @@ module.exports = async (interaction) => {
 
             // Ban the user
             await guild.bans.create(reportedUser.user, {
+                reason: reason
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+
+            // Ban from share guild
+            await shareGuild.bans.create(target, {
                 reason: reason
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
@@ -165,10 +175,6 @@ module.exports = async (interaction) => {
             logChan.send({
                 embeds: [log]
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
-
-            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-            // Close report
-            closeReport(guild, channel, member);
         }
 
         if (customId.split('-')[2] === 'warn') {
