@@ -155,7 +155,7 @@ module.exports = async (interaction) => {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
             // Ban from share guild
-            await shareGuild.bans.create(target, {
+            await shareGuild.bans.create(reportedUser.user, {
                 reason: reason
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 
