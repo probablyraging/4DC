@@ -53,7 +53,6 @@ module.exports = {
         rankXP(message, client);
         tokensSystem(message, client);
         suggestionPost(message);
-        stickyReminder(message, client);
         shareCheck(message, client)
 
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
