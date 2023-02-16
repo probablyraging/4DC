@@ -6,7 +6,7 @@ const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const contentShare = guild.channels.cache.get(process.env.CONTENT_SHARE);
+    const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_SHARE);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
 
     setInterval(async () => {
@@ -42,6 +42,9 @@ module.exports = async (client) => {
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
                             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
+                        youtubeShare.send({
+                            content: `**${userTag}** just uploaded a new video - ${item.link}`,
+                        }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
                 });
             });
