@@ -39,5 +39,5 @@ module.exports = async (client) => {
 
             await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: 'null' });
         }
-    }, 5000);
+    }, 60000);
 };
