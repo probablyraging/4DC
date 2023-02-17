@@ -6,12 +6,29 @@ module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const spotlightChannel = guild.channels.cache.get(process.env.SPOTLIGHT_CHAN);
     const spotlightRole = guild.roles.cache.get(process.env.SPOTLIGHT_ROLE);
+    const spotlightPingRole = guild.roles.cache.get(process.env.SPOTLIGHT_PING);
 
     setInterval(async () => {
         const results = await dbFindOne(timerSchema, { timer: 'spotlight' });
+        const tenMinutes = 10 * 60 * 1000;
+
+        if (results.timestamp && new Date() > (results.timestamp - tenMinutes)) {
+            const fetchMessages = await spotlightChannel.messages.fetch();
+            let pingSent = false;
+            for await (const message of fetchMessages) {
+                if (message.content.includes(process.env.SPOTLIGHT_PING)) {
+                    pingSent = true;
+                    break;
+                }
+            }
+            if (!pingSent) spotlightChannel.send({
+                content: `${spotlightPingRole} The channel will open soon`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }
 
         if (results.timestamp && new Date() > results.timestamp) {
             (await spotlightChannel.messages.fetch()).forEach(message => {
+                if (message.content.includes(process.env.SPOTLIGHT_PING)) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 if (!message.author.bot) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             });
 

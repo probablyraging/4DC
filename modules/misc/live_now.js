@@ -98,7 +98,7 @@ module.exports = async (client) => {
         } catch (error) {
             console.error(`${path.basename(__filename)} There was a problem with the live_now module: `, error);
         }
-    }, 10000);
+    }, 300000);
 
     // Check live now role members to see if someone stopped streaming
     setInterval(async () => {
