@@ -18,8 +18,6 @@ function get64bin(int) {
 module.exports = {
     name: 'messageDelete',
     async execute(message, client) {
-        if (message.guildId === process.env.SHARE_GUILD) return;
-        
         if (message?.author.bot || message?.channel.id === process.env.TEST_CHAN) return;
 
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

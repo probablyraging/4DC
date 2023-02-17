@@ -7,8 +7,6 @@ module.exports = {
      * @param {ThreadChannel} thread
      */
     async execute(thread, newlyCreated, client) {
-        if (thread.guild.id === process.env.SHARE_GUILD) return;
-        
         // Information for video/gfx review threads
         if (newlyCreated && thread.parentId === process.env.REVIEW_CHAN) {
             setTimeout(() => {

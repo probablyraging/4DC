@@ -132,7 +132,6 @@ module.exports = async (interaction) => {
         await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         if (customId.split('-')[2] === 'ban') {
-            const shareGuild = client.guilds.cache.get(process.env.SHARE_GUILD);
             const reportMessage = await channel.messages.fetch(originalMessageId);
             const reportEmbed = reportMessage.embeds[0].data;
             const attachment = reportEmbed.image?.url;
@@ -151,11 +150,6 @@ module.exports = async (interaction) => {
 
             // Ban the user
             await guild.bans.create(reportedUser.user, {
-                reason: reason
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
-
-            // Ban from share guild
-            await shareGuild.bans.create(reportedUser.user, {
                 reason: reason
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
 

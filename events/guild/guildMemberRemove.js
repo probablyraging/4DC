@@ -4,8 +4,6 @@ const path = require('path');
 module.exports = {
     name: 'guildMemberRemove',
     async execute(member, client, Discord) {
-        if (member.guild.id === process.env.SHARE_GUILD) return;
-        
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
