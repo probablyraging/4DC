@@ -15,12 +15,9 @@ module.exports = async (client) => {
         if (results.timestamp && new Date() > (results.timestamp - tenMinutes)) {
             const fetchMessages = await spotlightChannel.messages.fetch();
             let pingSent = false;
-            for await (const message of fetchMessages) {
-                if (message.content.includes(process.env.SPOTLIGHT_PING)) {
-                    pingSent = true;
-                    break;
-                }
-            }
+            fetchMessages.forEach(message => {
+                if (message.content.includes(process.env.SPOTLIGHT_PING)) pingSent = true;
+            });
             if (!pingSent) spotlightChannel.send({
                 content: `${spotlightPingRole} The channel will open soon`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
@@ -42,5 +39,5 @@ module.exports = async (client) => {
 
             await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: 'null' });
         }
-    }, 10000);
+    }, 5000);
 };
