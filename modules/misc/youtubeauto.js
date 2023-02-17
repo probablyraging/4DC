@@ -1,12 +1,11 @@
 const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const ytNotificationSchema = require('../../schemas/misc/yt_notification_schema');
-const tokensSchema = require('../../schemas/misc/tokens_schema');
 const res = new (require('rss-parser'))();
 const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_SHARE);
+    const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_CHAN);
     const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
 
     setInterval(async () => {
@@ -21,10 +20,8 @@ module.exports = async (client) => {
             const isStaff = member?.roles?.cache.has(process.env.STAFF_ROLE);
             const isSubscriber = member?.roles?.cache.has(process.env.SUBSCRIBER_ROLE);
             const isBooster = member?.roles?.cache.has(process.env.BOOSTER_ROLE);
-            const tokenResult = await tokensSchema.findOne({ userId });
-            const isTokenSub = (tokenResult?.youtubeauto - new Date()) < 1 || tokenResult?.youtubeauto !== true;
 
-            if (!isBooster && !isStaff && !isTokenSub && !isSubscriber) return dbDeleteOne(ytNotificationSchema, { userId: userId });
+            if (!isBooster && !isStaff && !isSubscriber) return dbDeleteOne(ytNotificationSchema, { userId: userId });
 
             res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, (err, resolve) => {
                 if (err) return;

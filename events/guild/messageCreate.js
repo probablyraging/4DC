@@ -7,7 +7,6 @@ const blSpam = require('../../modules/misc/spam');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
-const tokensSystem = require('../../modules/misc/tokens_system');
 const suggestionPost = require('../../modules/misc/suggestion_post');
 const shareCheck = require('../../modules/misc/share_check');
 const { newUsers } = require('../../events/guild/guildMemberAdd');
@@ -38,7 +37,6 @@ module.exports = {
 
         // Misc checks
         rankXP(message, client);
-        tokensSystem(message, client);
         suggestionPost(message);
         shareCheck(message, client)
 

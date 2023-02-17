@@ -11,7 +11,6 @@ const fetchReddit = require('../../modules/misc/fetch_reddit');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const weeklyLeaderboard = require('../../modules/misc/weekly_leaderboard');
-const coinflipGiveaway = require('../../modules/games/coinflip_giveaway');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
 const fs = require('fs');
@@ -77,6 +76,5 @@ module.exports = {
         welcomeCheck(client);
         leaderboardUpdate(client);
         weeklyLeaderboard(client);
-        coinflipGiveaway(client);
     }
 };

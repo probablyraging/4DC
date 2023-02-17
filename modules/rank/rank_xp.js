@@ -6,8 +6,6 @@ const xpLimit = new Set();
 /**
  * Get a random number.
  * @param {Object} message The message object
- * @param {Object} userTokenData The user token data object
- * @return {number} A random number
  */
 function randomNum(message) {
     return (message?.member?.roles.cache.has(process.env.BOOSTER_ROLE) || (message?.member?.roles.cache.has('1061554108005355570')))

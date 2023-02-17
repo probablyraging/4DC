@@ -1,5 +1,4 @@
 const streamSchema = require('../../schemas/misc/stream_schema');
-const tokensSchema = require('../../schemas/misc/tokens_schema');
 const { dbCreate, dbDeleteOne } = require('../../utils/utils');
 const cooldown = new Set();
 const path = require('path');
@@ -33,26 +32,6 @@ async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
                 }
             }
         });
-    }
-    // Find all members in the tokens database with an active twitch auto sub and add them to the array
-    const results = await tokensSchema.find();
-    for (const data of results) {
-        if ((data?.twitchauto - new Date()) > 1 || data?.twitchauto === true) {
-            const member = await guild.members.fetch(data.userId).catch(() => { });
-            if (!member) continue;
-            for (let i = 0; i < 7; i++) {
-                const activity = member.presence?.activities[i];
-                if (activity && platforms.includes(activity.name)) {
-                    liveNowMembers.push({
-                        username: member.user.username,
-                        id: member.user.id,
-                        platform: activity.name,
-                        url: activity.url,
-                        booster: member.premiumSinceTimestamp != null || member?.roles.cache.has(process.env.STAFF_ROLE) ? true : false
-                    });
-                }
-            }
-        }
     }
     // Filter out any duplicates and 'undefined' items
     return liveNowMembers.filter((obj, index, array) => array.findIndex((t) => t.id === obj.id) === index);

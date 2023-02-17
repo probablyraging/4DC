@@ -2,7 +2,6 @@ const { client, CommandInteraction, InteractionType } = require('discord.js');
 const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action_button');
 const reportImageButton = require('../../handlers/buttons/txt2img_button');
-const coinflipButton = require('../../handlers/buttons/coinflip');
 const helpButton = require('../../handlers/buttons/help_menu');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
@@ -70,7 +69,6 @@ module.exports = {
             const prefixedButtons = {
                 'report': reportActionButton,
                 'help': helpButton,
-                'coinflip': coinflipButton
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
 

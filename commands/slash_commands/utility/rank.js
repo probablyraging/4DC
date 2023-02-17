@@ -1,7 +1,6 @@
 const { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
 const { sendResponse } = require('../../../utils/utils');
 const rankSchema = require("../../../schemas/misc/rank_schema");
-const tokensSchema = require('../../../schemas/misc/tokens_schema');
 const Canvas = require("canvas");
 const path = require("path");
 
@@ -35,7 +34,6 @@ module.exports = {
         const background = await Canvas.loadImage("./res/images/rankbg.png");
 
         const results = await rankSchema.find({ userId: targetId });
-        const results2 = await tokensSchema.find({ userId: targetId });
         // If there are no results
         if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`);
 
@@ -75,17 +73,6 @@ module.exports = {
             let xp2 = kFormatter(xxxp);
             let xp3 = kFormatter(xxp);
             let count = kFormatter(msgCount);
-
-            // Tokens
-            let tokenBal;
-            if (results2.length === 0) tokenBal = 0; 
-            for (const data of results2) {
-                let { tokens } = data;
-                tokenBal = tokens
-            }
-            ctx.font = "22px grotesk";
-            ctx.fillStyle = "#ffffff";
-            ctx.fillText(`Tokens: ${tokenBal}`, 243, 220);
 
             // Message count
             ctx.font = "22px grotesk";

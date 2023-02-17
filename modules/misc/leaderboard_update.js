@@ -3,7 +3,6 @@ const Canvas = require("canvas");
 const rankSchema = require('../../schemas/misc/rank_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const letterSchema = require('../../schemas/games/letter_lb_schema');
-const tokensSchema = require('../../schemas/misc/tokens_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -278,64 +277,6 @@ module.exports = async (client) => {
                         ctx.fillText(`${numberWithCommas(dataArr[9].correctCount)}`, 905, 418);
 
                         const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "letter_lb1.png" });
-
-                        message.edit({
-                            content: '',
-                            files: [attachment]
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
-                    }
-
-                    // Tokens
-                    if (message?.content.includes('tokens_lb') || message?.attachments.first()?.name.includes('tokens_lb')) {
-                        const results = await tokensSchema.find().limit(10).sort({ tokens: -1 });
-                        // Image 1
-                        const background = await Canvas.loadImage("./res/images/leaderboard_tokens_bg.png");
-                        const canvas = Canvas.createCanvas(1000, 480);
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-                        // Position
-                        ctx.font = "900 28px redhatdisplay";
-                        ctx.fillStyle = "#fff";
-                        ctx.textAlign = "center";
-                        ctx.fillText(`1`, 65, 128);
-                        ctx.fillText(`2`, 65, 202);
-                        ctx.fillText(`3`, 65, 274);
-                        ctx.fillText(`4`, 65, 348);
-                        ctx.fillText(`5`, 65, 422);
-                        ctx.fillText(`6`, 560, 128);
-                        ctx.fillText(`7`, 560, 202);
-                        ctx.fillText(`8`, 560, 274);
-                        ctx.fillText(`9`, 560, 348);
-                        ctx.fillText(`10`, 560, 422);
-                        // Username
-                        ctx.font = "900 22px redhatdisplay";
-                        ctx.fillStyle = "#bebebe"
-                        ctx.textAlign = "left";
-                        ctx.fillText(`${fetchMember(guild, results[0]?.userId)}`, 110, 126);
-                        ctx.fillText(`${fetchMember(guild, results[1]?.userId)}`, 110, 198);
-                        ctx.fillText(`${fetchMember(guild, results[2]?.userId)}`, 110, 270);
-                        ctx.fillText(`${fetchMember(guild, results[3]?.userId)}`, 110, 344);
-                        ctx.fillText(`${fetchMember(guild, results[4]?.userId)}`, 110, 418);
-                        ctx.fillText(`${fetchMember(guild, results[5]?.userId)}`, 605, 126);
-                        ctx.fillText(`${fetchMember(guild, results[6]?.userId)}`, 605, 198);
-                        ctx.fillText(`${fetchMember(guild, results[7]?.userId)}`, 605, 270);
-                        ctx.fillText(`${fetchMember(guild, results[8]?.userId)}`, 605, 344);
-                        ctx.fillText(`${fetchMember(guild, results[9]?.userId)}`, 605, 418);
-                        // Values
-                        ctx.fillStyle = "#d576e3";
-                        ctx.textAlign = "center";
-                        ctx.fillText(`${numberWithCommas(results[0].tokens)}`, 412, 126);
-                        ctx.fillText(`${numberWithCommas(results[1].tokens)}`, 412, 198);
-                        ctx.fillText(`${numberWithCommas(results[2].tokens)}`, 412, 270);
-                        ctx.fillText(`${numberWithCommas(results[3].tokens)}`, 412, 344);
-                        ctx.fillText(`${numberWithCommas(results[4].tokens)}`, 412, 418);
-                        ctx.fillText(`${numberWithCommas(results[5].tokens)}`, 905, 126);
-                        ctx.fillText(`${numberWithCommas(results[6].tokens)}`, 905, 198);
-                        ctx.fillText(`${numberWithCommas(results[7].tokens)}`, 905, 270);
-                        ctx.fillText(`${numberWithCommas(results[8].tokens)}`, 905, 344);
-                        ctx.fillText(`${numberWithCommas(results[9].tokens)}`, 905, 418);
-
-                        const attachment = new AttachmentBuilder(canvas.toBuffer(), { name: "tokens_lb1.png" });
 
                         message.edit({
                             content: '',

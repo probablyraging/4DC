@@ -239,7 +239,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#837945839799500850> Check your rank, and get notified when you rank up
 <#1040381607674130492> Real time leaderboards for server ranks and games
 <#987212586007281674> It's like a revolving door
-<#1049697878311976970> A log channel for tokens gained and lost
 <#995882451446546502> All of these people are on Santa's naughty list
 ⠀`,
 
