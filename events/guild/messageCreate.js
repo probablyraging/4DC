@@ -61,11 +61,11 @@ module.exports = {
                 message?.embeds[0].fields.forEach(field => {
                     if (field.value.toLowerCase() === 'self promotion') {
                         message?.author.send({
-                            content: `Share your content at discord.gg/kCPxpjmJyY`
+                            content: `Share your content in the 'CONTENT SHARE' section. Some available channels to share content in are; \n<#856719763187302441> \n<#1075915365105807533> \n<#1075915526833967269>`
                         }).catch(() => { });
                         notifiedUsers.add(message?.author.id);
                     }
-                })
+                });
             }
         }
 
