@@ -77,7 +77,7 @@ module.exports = {
             // Message count
             ctx.font = "22px grotesk";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(`Message Count: ${count}`, 243, 190);
+            ctx.fillText(`Message Count: ${count}`, 243, 220);
 
             // Current xp and xp needed
             ctx.font = "16px grotesk";
