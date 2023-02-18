@@ -69,11 +69,12 @@ module.exports = {
 
         switch (options.getSubcommand()) {
             case 'add': {
-                const target = options.getUser('username');
+                const target = options.getMember('username');
                 const targetChan = options.getChannel('channel');
                 const reason = options.getString('reason');
                 let duration = options.getString('duration') || `0`;
 
+                if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} The user no longer exists`);
                 // If the reason exceeds the character limit
                 if (reason && reason.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Reasons are limited to 1024 characters`);
                 // Update the channel permissions for the target user
