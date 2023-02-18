@@ -69,7 +69,7 @@ module.exports = {
 
         switch (options.getSubcommand()) {
             case 'add': {
-                const target = options.getMember('username');
+                const target = options.getUser('username');
                 const targetChan = options.getChannel('channel');
                 const reason = options.getString('reason');
                 let duration = options.getString('duration') || `0`;
