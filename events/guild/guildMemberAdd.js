@@ -71,7 +71,7 @@ module.exports = {
             try {
                 if (member.id === id) {
                     guild.channels.cache.get(process.env.STAFF_CHAN).send({
-                        content: `<@&${process.env.STAFF_ROLE}> \n${member} was flagged as being previous banned, do with this information what you will. I vote we ban them :smiling_imp:`
+                        content: `<@&${process.env.STAFF_ROLE}> \n${member} was flagged as being previously banned, do with this information what you will. I vote we ban them :smiling_imp:`
                     })
                 }
             } catch (err) {
