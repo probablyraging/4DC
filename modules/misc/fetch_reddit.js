@@ -12,6 +12,7 @@ module.exports = async (client) => {
     const redditFetch = new cronjob('0 */2 * * *', async function () {
         // Fetch already published reddit post IDs from the database
         const results = await dbFindOne(redditSchema);
+        if (!results) await dbUpdateOne(redditSchema, {}, { postIds: [] });
         const postIds = results ? results.postIds : [];
         // Fetch the previous 10 "top" posts from r/memes
         let newPosts = [];
