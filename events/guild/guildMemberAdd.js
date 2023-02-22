@@ -12,7 +12,23 @@ module.exports = {
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
+        // Check if the user was muted, and left the server while a mute was action
         previousMutesCheck(member, client);
+
+        // Advertise chrome extension
+        member?.send({
+            content: `Welcome to ForTheContent,
+
+If you're a **YouTube creator** looking for easy **likes and views**, then download the ForTheContent browser extension.
+
+Our extension allows users to submit YouTube videos that 100s of other server members will like and watch. Check <#820922632227913759> for more informatiion
+
+Chrome Web Store: https://chrome.google.com/webstore/detail/forthecontent/kbnghoajbjomkegkhiiafelmmecnajhd
+
+Sincerely, 
+ForTheContent Staff Team
+⠀`
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
         // Add all new user to a set
         newUsers.add(member.id);
