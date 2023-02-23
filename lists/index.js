@@ -147,7 +147,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > General FAQ: <https://support.google.com/youtube/thread/677314/>
 > Discovery and Performance FAQ: <https://support.google.com/youtube/answer/141805/>
 > Top Questions: <https://www.youtube.com/creators/top-questions/>
-> Creators FAQ: <https://www.youtube.com/creators/top-questions/>
 > Community Guidelines: <https://support.google.com/youtube/answer/9288567/>
 > Guidelines Strikes: <https://support.google.com/youtube/answer/2802032/>
 > Partner Program: <https://support.google.com/youtube/answer/72851/>
