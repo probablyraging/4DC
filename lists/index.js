@@ -16,7 +16,6 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <id:customize> Grab yourself some profile flair
 > <#1040530300515647548> Find answers to frequently asked question
 > <#978553334854205450> Get assistance or support for specific topics
-> <#1066873011761856522> Share your channels, videos, projects & hobbies
 ⠀`,
 
         `https://i.imgur.com/zD5ueDZ.png`,
@@ -147,6 +146,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Help Center: <https://support.google.com/youtube/>
 > General FAQ: <https://support.google.com/youtube/thread/677314/>
 > Discovery and Performance FAQ: <https://support.google.com/youtube/answer/141805/>
+> Top Questions: <https://www.youtube.com/creators/top-questions/>
 > Creators FAQ: <https://www.youtube.com/creators/top-questions/>
 > Community Guidelines: <https://support.google.com/youtube/answer/9288567/>
 > Guidelines Strikes: <https://support.google.com/youtube/answer/2802032/>
