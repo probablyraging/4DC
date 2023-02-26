@@ -38,7 +38,14 @@ module.exports = async (message, client, Discord) => {
 
     // Spotify channel
     if (message?.channel.id === process.env.SPOTIFY_CHAN && !message.author.bot) {
-        if (!message?.content.includes('spotify.com/') && !message?.content.includes('soundcloud.com')) {
+        if (!message?.content.includes('spotify.com/') && !message?.content.includes('soundcloud.com/')) {
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
+    }
+
+    // Misc channel
+    if (message?.channel.id === process.env.MISCSHARE_CHAN && !message.author.bot) {
+        if (['youtube.com/', 'youtu.be/', 'twitch.com/', 'twitch.tv/', 'tiktok.com/', 'instagram.com/', 'twitter.com/', 't.co/', 'spotify.com/', 'soundcloud.com/',].some(str => message?.content.includes(str))) {
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
     }

@@ -228,7 +228,13 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
 <#878229815541497857> Content sharing, but with a twist
 <#859117794779987978> A channel for our awesome server boosters to share their awesome content
-<#1066873011761856522> Share your content with other server members
+<#856719763187302441> Share your YouTube content
+<#1075915365105807533> Share your Twitch content
+<#1075915526833967269> Share your TikTok content
+<#1075915468315050115> Share your Instagram content
+<#1075915586053357689> Share your Twitter content
+<#1075915738721833061> Share your Soundcloud & Spotify content
+<#1075916325077131316> Share your other forms of content
 
 **VOICE CHAT**
 <#1038671738764017765> Create a new voice channel to hang out in
