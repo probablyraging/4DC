@@ -25,6 +25,7 @@ module.exports = async (interaction) => {
         const reportEmbed = reportMessage.embeds[0].data;
         const reportedUserId = reportEmbed.fields[0].value.split(/[@>]/)[1];
         reportedUser = await guild.members.fetch(reportedUserId).catch(() => { });
+        if (!reportedUser) return sendResponse(interaction, 'This user no longer exists');
         originalMessageId = reportEmbed.footer.text.split('-')[1];
         // Set the status of the embed to allow other staff to see if someone is currently taking action or not
         const statusUpdate = new EmbedBuilder(reportEmbed)
@@ -246,6 +247,6 @@ async function closeReport(guild, channel, member) {
         .setTitle(`ForTheContent Report`)
         .setDescription(`Your report's status has been updated to \`CLOSED\``)
 
-    reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message `, err));
+    if (reporterUser) reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message `, err));
     status = false
 }
