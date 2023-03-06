@@ -14,7 +14,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const target = await guild.members.fetch(interaction.targetId);
+        const target = await guild.members.fetch(interaction.targetId).catch(() => {});
 
         // If no target
         if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);

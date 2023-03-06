@@ -24,7 +24,7 @@ module.exports = async (interaction) => {
         const reportMessage = await channel.messages.fetch(interaction.message.id);
         const reportEmbed = reportMessage.embeds[0].data;
         const reportedUserId = reportEmbed.fields[0].value.split(/[@>]/)[1];
-        reportedUser = await guild.members.fetch(reportedUserId);
+        reportedUser = await guild.members.fetch(reportedUserId).catch(() => { });
         originalMessageId = reportEmbed.footer.text.split('-')[1];
         // Set the status of the embed to allow other staff to see if someone is currently taking action or not
         const statusUpdate = new EmbedBuilder(reportEmbed)
@@ -232,7 +232,7 @@ async function closeReport(guild, channel, member) {
     const reportMessage = await channel.messages.fetch(originalMessageId);
     const reportEmbed = reportMessage.embeds[0].data;
     const reporterId = reportEmbed.footer.text.split('-')[0].replace('ID ', '');
-    const reporterUser = await guild.members.fetch(reporterId);
+    const reporterUser = await guild.members.fetch(reporterId).catch(() => {});
 
     reportEmbed.fields[2] = { name: ``, value: `` };
     const closedEmbed = new EmbedBuilder(reportEmbed)

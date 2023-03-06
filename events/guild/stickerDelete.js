@@ -19,7 +19,7 @@ module.exports = {
 
         if (found) {
             if (found >= 5) {
-                const member = await guild.members.fetch(entry.executor.id);
+                const member = await guild.members.fetch(entry.executor.id).catch(() => {});
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing roles`, err));;

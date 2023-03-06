@@ -45,7 +45,7 @@ module.exports = {
                 .setTimestamp()
 
             if ((new Date() - timestamp) < 10000) {
-                const executor = await guild.members.fetch(entry.executor.id);
+                const executor = await guild.members.fetch(entry.executor.id).catch(() => {});
                 log.setAuthor({ name: `${executor?.user.tag}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) })
             }
 

@@ -57,7 +57,7 @@ module.exports = {
 
             case 'delete': {
                 // If a thread owner is found, send them a notification
-                const threadOwner = await guild.members.fetch(channel.ownerId);
+                const threadOwner = await guild.members.fetch(channel.ownerId).catch(() => {});
                 if (threadOwner) {
                     await threadOwner.send({
                         content: `Your <#1052096719778762822> thread has been deleted as it did not follow the channel guidelines. Please make sure you read the guidelines before creating a new thread`

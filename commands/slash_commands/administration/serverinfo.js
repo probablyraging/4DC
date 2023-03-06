@@ -23,7 +23,7 @@ module.exports = {
 
         const activityTypes = [ActivityType.Streaming, ActivityType.Playing, ActivityType.Listening, ActivityType.Watching, ActivityType.Competing, ActivityType.Custom];
 
-        guild.members.fetch().then(async fetchedMembers => {
+        guild.members.fetch().catch(() => {}).then(async fetchedMembers => {
             const data = await (await fetch('https://discord.com/api/v9/guilds/820889004055855144?with_counts=true', { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } })).json();
             const online = data.approximate_presence_count;
             const idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;

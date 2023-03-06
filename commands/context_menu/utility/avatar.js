@@ -11,7 +11,7 @@ module.exports = {
      */
     async execute(interaction) {
         const { guild } = interaction;
-        const target = await guild.members.fetch(interaction.targetId);
+        const target = await guild.members.fetch(interaction.targetId).catch(() => {});
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 

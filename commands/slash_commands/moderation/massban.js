@@ -17,7 +17,7 @@ async function banUsers(interaction, users, reason) {
     const oneDay = 24 * 60 * 60 * 1000;
     // Split the users string into an array of user tags
     const userList = users.split(/\r?\n/);
-    let fetchedMemberArrays = await guild.members.fetch();
+    let fetchedMemberArrays = await guild.members.fetch().catch(() => {});
     let bannedUsers = [];
     let skippedUsers = [];
     for (let fetchedMemberArray of fetchedMemberArrays) {

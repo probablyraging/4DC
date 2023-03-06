@@ -18,7 +18,7 @@ async function drawWinner(guild) {
     const results = await spotlightSchema.find();
     if (results.length === 0) return null;
     const draw = results[randomNum(0, results.length - 1)];
-    const member = await guild.members.fetch(draw.userId);
+    const member = await guild.members.fetch(draw.userId).catch(() => {});
     // If member no longer exists, try again
     if (!member) return drawWinner(guild);
     for (const data of results) {
