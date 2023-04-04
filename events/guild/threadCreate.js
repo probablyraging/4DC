@@ -1,4 +1,5 @@
 const { ThreadChannel } = require('discord.js');
+const fetch = require('node-fetch');
 const path = require('path');
 
 module.exports = {
@@ -19,6 +20,37 @@ module.exports = {
 <:minidot:923683258871472248> Example of a bad title: "Does this look good?"
 If you need to edit your title or post, please do so now or it may be deleted`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }, 3000);
+        }
+
+        // Use OpenAI to give a user a response to their help thread
+        if (newlyCreated && thread.parentId === process.env.HELP_CHAN) {
+            setTimeout(() => {
+                try {
+                    fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer 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`
+                        },
+                        body: JSON.stringify({
+                            "model": "gpt-3.5-turbo-0301",
+                            "messages": [{ "role": "user", "content": `${thread.name} ${thread.lastMessage.content}` }],
+                            "temperature": 0.7,
+                            "max_tokens": 2048
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(async data => {
+                            await thread.messages.fetch(thread.lastMessage)
+                                .then(originalMessage => {
+                                    originalMessage.reply({ content: `${thread.lastMessage.author} ${data.choices[0].message.content}` })
+                                })
+                        })
+                        .catch(err => console.error(err));
+                } catch (err) {
+                    console.error('There was a problem replying with an OpenAI response: ', err);
+                }
             }, 3000);
         }
     }
