@@ -31,7 +31,7 @@ If you need to edit your title or post, please do so now or it may be deleted`
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer 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`
+                            'Authorization': `Bearer ${process.env.OAI_KEY}`
                         },
                         body: JSON.stringify({
                             "model": "gpt-3.5-turbo-0301",
