@@ -44,7 +44,7 @@ If you need to edit your title or post, please do so now or it may be deleted`
                         .then(async data => {
                             await thread.messages.fetch(thread.lastMessage)
                                 .then(originalMessage => {
-                                    originalMessage.reply({ content: `${thread.lastMessage.author} ${data.choices[0].message.content}` })
+                                    originalMessage.reply({ content: `${data.choices[0].message.content}` })
                                 })
                         })
                         .catch(err => console.error(err));
