@@ -24,7 +24,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const channelIds = ['1038766290246062100', '851584454036029441', '896069772624683018', '1064425998214508598'];
+        const channelIds = ['1038766290246062100', '851584454036029441', '896069772624683018'];
 
         switch (options.getString('option')) {
             case 'start': {
