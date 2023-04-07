@@ -38,7 +38,7 @@ module.exports = async (interaction) => {
 *One link per ad spot*
 *PayPal only*
 
-Please send <@438434841617367080> a DM to purchase an ad spot`,
+Contact <@438434841617367080> to purchase an ad spot`,
                 inline: false
             })
 
