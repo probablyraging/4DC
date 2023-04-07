@@ -3,6 +3,7 @@ const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action_button');
 const reportImageButton = require('../../handlers/buttons/txt2img_button');
 const helpButton = require('../../handlers/buttons/help_menu');
+const adInformationButton = require('../../handlers/buttons/ad_information');
 const reportModal = require('../../handlers/modals/report_modal');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const path = require('path');
@@ -74,7 +75,8 @@ module.exports = {
 
             // A map of customIds for misc buttons
             const miscButtons = {
-                'delete-image': reportImageButton
+                'delete-image': reportImageButton,
+                'ad-info': adInformationButton
             };
             // Handle misc buttons
             if (customId in miscButtons) miscButtons[customId](interaction);

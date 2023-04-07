@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
 const path = require('path');
 /**
  * 
@@ -27,6 +27,14 @@ module.exports = async (message, client) => {
     }
 
     // Premium Ads
+    const button = new ActionRowBuilder()
+        .addComponents(
+            new ButtonBuilder()
+                .setCustomId('ad-info')
+                .setLabel('Information')
+                .setStyle(ButtonStyle.Primary)
+        );
+
     if (message?.channel.id === process.env.PREM_CHAN && !message?.author.bot) {
         try {
             // Fetch a group of messages and find the previous reminder
@@ -36,7 +44,8 @@ module.exports = async (message, client) => {
             if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
             await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
-                    content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Take a look at [this post](https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473)`,
+                    content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Click for more information`,
+                    components: [button]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err))
                     .then(() => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
