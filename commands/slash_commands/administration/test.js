@@ -19,8 +19,6 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        interaction.thisWillThrowAnError();
-
         interaction.deleteReply();
     }
 }

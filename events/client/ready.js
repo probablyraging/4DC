@@ -1,4 +1,3 @@
-const { EmbedBuilder, codeBlock } = require('discord.js');
 const statusCounter = require('../../modules/misc/activity_update');
 const spotlightCheck = require('../../modules/timers/spotlight_check');
 const bumpCheck = require('../../modules/timers/bump_check');
@@ -77,31 +76,5 @@ module.exports = {
         welcomeCheck(client);
         leaderboardUpdate(client);
         weeklyLeaderboard(client);
-
-        // Error logging
-        const errorLogChan = client.channels.cache.get(process.env.ERRLOG_CHAN);
-        const log = new EmbedBuilder()
-
-        process.on('uncaughtException', async (error) => {
-            log.addFields({ name: `Error`, value: codeBlock(error), inline: false },
-                { name: `Stack`, value: codeBlock('js', error.stack.slice(0, 1024)), inline: false })
-
-            await errorLogChan.send({
-                embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an error embed: `, err));
-
-            process.exit(1, error.stack);
-        });
-
-        process.on('unhandledRejection', async (reason, promise) => {
-            log.addFields({ name: `Error`, value: codeBlock(reason), inline: false },
-                { name: `Stack`, value: codeBlock('js', reason.stack.slice(0, 1024)), inline: false })
-
-            await errorLogChan.send({
-                embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an error embed: `, err));
-
-            process.exit(1, reason.stack);
-        });
     }
 };
