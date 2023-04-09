@@ -1,4 +1,4 @@
-const { Message, EmbedBuilder } = require('discord.js');
+const { Message, EmbedBuilder, codeBlock } = require('discord.js');
 /**
  * @param {Message} message 
  */
@@ -8,7 +8,7 @@ module.exports = async (message) => {
             const suggestionEmbed = new EmbedBuilder()
                 .setColor('Random')
                 .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
-                .addFields({ name: `Suggestion`, value: `\`\`\`${message?.content}\`\`\`` })
+                .addFields({ name: `Suggestion`, value: codeBlock(message?.content) })
 
             message?.delete();
             const suggestionMessage = await message?.channel.send({ embeds: [suggestionEmbed] });

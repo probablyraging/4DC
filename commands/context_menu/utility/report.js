@@ -1,4 +1,4 @@
-const { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -25,7 +25,7 @@ module.exports = {
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.displayAvatarURL({ dynamic: true }) })
             .setDescription(`[View Message](${fetchMsg?.url})`)
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
-                { name: `Reported Content`, value: `\`\`\`${fetchMsg?.content}\`\`\``, inline: false })
+                { name: `Reported Content`, value: codeBlock(fetchMsg?.content), inline: false })
             .setFooter({ text: `ID ${member?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
             .setTimestamp();
 

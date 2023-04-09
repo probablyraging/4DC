@@ -47,7 +47,7 @@ module.exports = {
             .setColor("#E04F5F")
             .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.displayAvatarURL({ dynamic: true }) })
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
-                { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
+                { name: `Reason`, value: codeBlock(reason), inline: false })
             .setTimestamp();
         // Get the attachment if one exists and add it to the embed
         if (attachment) reportEmbed.setImage(attachment.url);

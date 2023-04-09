@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, codeBlock } = require('discord.js');
 const { dbCreate, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const warnSchema = require('../../../schemas/misc/warn_schema');
 const { rules } = require('../../../lists/rules');
@@ -118,7 +118,7 @@ module.exports = {
                         .catch(() => sendResponse(interaction, `${process.env.BOT_DENY} This is ${target}'s third warning but I could not ban them`));
                 } else {
                     // Notify the user that they received a warning
-                    await target.send({ content: `${target} - you received a warning in ${guild.name} \n\`\`\`${reason}\`\`\`` })
+                    await target.send({ content: `${target} - you received a warning in ${guild.name} \n${codeBlock(reason)}` })
                         .then(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added`))
                         .catch(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added \n${process.env.BOT_DENY} I could not send ${target} a notification`));
                 }

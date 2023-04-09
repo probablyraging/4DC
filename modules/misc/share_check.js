@@ -49,4 +49,11 @@ module.exports = async (message, client, Discord) => {
             message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
     }
+
+    // GIF only channel
+    if (message?.channel.id === process.env.GIFONLY_CHAN && !message.author.bot) {
+        if (!message?.content.includes('tenor.com/')) {
+            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        }
+    }
 }

@@ -1,4 +1,4 @@
-const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require("discord.js");
+const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, codeBlock } = require("discord.js");
 const { sendFollowUp, sendResponse, dbCreate } = require('../../utils/utils');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const { rules } = require('../../lists/rules');
@@ -211,7 +211,7 @@ module.exports = async (interaction) => {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
             } else {
                 // Notify the user that they received a warning
-                await target.send({ content: `${target} - you received a warning in ${guild.name} \n\`\`\`${reason}\`\`\`` })
+                await target.send({ content: `${target} - you received a warning in ${guild.name} \n${codeBlock(reason)}` })
                     .catch(err => console.error('There was a problem sending a user a warning DM: ', err));
             }
 

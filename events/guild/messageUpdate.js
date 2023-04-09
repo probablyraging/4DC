@@ -1,3 +1,4 @@
+const { codeBlock } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
@@ -19,8 +20,8 @@ module.exports = {
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addFields({ name: `Author`, value: `${oldMessage?.author}`, inline: true },
                     { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
-                    { name: `Old Message`, value: `\`\`\`${original}\`\`\``, inline: false },
-                    { name: `New Message`, value: `\`\`\`${edited}\`\`\``, inline: false })
+                    { name: `Old Message`, value: codeBlock(original), inline: false },
+                    { name: `New Message`, value: codeBlock(edited), inline: false })
                 .setFooter({ text: `Edit • ${uuidv4()}`, iconURL: process.env.LOG_EDIT })
                 .setTimestamp()
 

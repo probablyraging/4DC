@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } = require('discord.js');
 const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
 const { sendReply, getAttachment } = require('../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
@@ -27,7 +27,7 @@ module.exports = async (interaction) => {
         .setColor("#E04F5F")
         .setAuthor({ name: `${user?.tag}`, iconURL: user?.displayAvatarURL({ dynamic: true }) })
         .addFields({ name: `Reported User`, value: `${target}`, inline: false },
-            { name: `Reason`, value: `\`\`\`${reason}\`\`\``, inline: false })
+            { name: `Reason`, value: codeBlock(reason), inline: false })
         .setFooter({ text: `ID ${user?.id}`, iconURL: guild.iconURL({ dynamic: true }) })
         .setTimestamp();
     // Get the attachment if one exists and add it to the embed

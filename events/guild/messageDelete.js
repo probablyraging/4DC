@@ -1,4 +1,4 @@
-const { EmbedBuilder, AuditLogEvent } = require('discord.js');
+const { EmbedBuilder, AuditLogEvent, codeBlock } = require('discord.js');
 const { dbUpdateOne } = require('../../utils/utils');
 const { checkDeletedCountingMessage } = require('../../modules/games/counting_game');
 const { checkDeletedLetterMessage } = require('../../modules/games/last_letter');
@@ -40,7 +40,7 @@ module.exports = {
                 .setColor("#E04F5F")
                 .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
                     { name: `Channel`, value: `${message?.channel}`, inline: true },
-                    { name: `Message`, value: `\`\`\`${content}\`\`\``, inline: false })
+                    { name: `Message`, value: codeBlock(content), inline: false })
                 .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: process.env.LOG_DELETE })
                 .setTimestamp()
 
