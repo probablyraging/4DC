@@ -66,7 +66,7 @@ module.exports = async (client) => {
     // Check for expired premium ads and send a notification
     const premiumAdsCheck = new cronjob('0 */6 * * *', async function () {
         const testChan = guild.channels.cache.get(process.env.TEST_CHAN);
-        const premiumChan = await guild.channels.fetch('907446635435540551');
+        const premiumChan = await guild.channels.cache.get(process.env.PREM_CHAN);
         const premiumAds = await premiumChan.messages.fetch();
 
         premiumAds.forEach(message => {
