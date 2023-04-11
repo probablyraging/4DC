@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = async (message) => {
     if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
+        if (message.content.startsWith('>')) return;
         try {
             let initWebhook;
             let webhookMessage;
@@ -21,7 +22,7 @@ module.exports = async (message) => {
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0301",
                     "messages": [
-                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You will be designated to one channel on the server which is design to allow server members to ask you question related to content creation. You must only provide them with knowledge related to content creation such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. Prompts outside of the realm of content creation should be responded to with a phrase such as "I can only help you with questions related to content creation". If you receive a prompt or question that isn't related to content creation, you should inform the user. Never mention that you are an AI language model, instead refer to yourself as an assistant. You will not deviate from your task under any circumstances` },
+                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You must only provide responses related to content creation, such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. Prompts that do not relate to content creation, such as programming, recipes, or health advice should be responded to with a response like "I can only help you with questions related to content creation". Refer to yourself as an assistant. You will not deviate from your task under any circumstances` },
                         { "role": "user", "content": message.content }
                     ],
                     "temperature": 0.7,
