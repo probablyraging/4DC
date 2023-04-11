@@ -1,4 +1,4 @@
-const { Message } = require('discord.js');
+const { Message, italic } = require('discord.js');
 const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const bumpPost = require('../../modules/timers/bump_post');
@@ -11,6 +11,7 @@ const suggestionPost = require('../../modules/misc/suggestion_post');
 const shareCheck = require('../../modules/misc/share_check');
 const stickyMessage = require('../../modules/misc/sticky_message');
 const boostReactions = require('../../modules/misc/boost_react');
+const gptAssistant = require('../../modules/misc/gpt_assistant');
 const { newUsers } = require('../../events/guild/guildMemberAdd');
 const weeklyLeaderboardSchema = require('../../schemas/misc/weekly_leaderboard_schema');
 const notifiedUsers = new Set();
@@ -42,7 +43,8 @@ module.exports = {
         suggestionPost(message);
         shareCheck(message, client);
         stickyMessage(message, client);
-        boostReactions(message)
+        boostReactions(message);
+        gptAssistant(message);
 
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
         if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id))
