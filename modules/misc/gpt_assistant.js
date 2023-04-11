@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = async (message) => {
     if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
-        const mentionableUser = message.mentions > 1 ? message.mentions.first() : message.author;
+        const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {
             let initWebhook;
             let webhookMessage;
