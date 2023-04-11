@@ -33,7 +33,7 @@ module.exports = async (message) => {
                 .then(res => res.json())
                 .then(async data => {
                     initWebhook.editMessage(webhookMessage, {
-                        content: `${mentionableUser} ${data.choices[0].message.content}`
+                        content: `${mentionableUser} ${data.choices[0].message.content.slice(0, 1900)}`
                     }).then(() => {
                         initWebhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
