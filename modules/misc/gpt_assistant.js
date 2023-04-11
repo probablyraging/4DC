@@ -5,14 +5,9 @@ module.exports = async (message) => {
         if (message.content.startsWith('>')) return;
         const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {
-            let initWebhook;
-            let webhookMessage;
-            await message.channel.createWebhook({ name: 'ForTheContentGPT', avatar: 'https://cdn-icons-png.flaticon.com/512/2021/2021646.png' }).then(async webhook => {
-                initWebhook = webhook;
-                webhookMessage = await webhook.send({
-                    content: `${mentionableUser} Let me think..`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-            });
+            const initMessage = await message.reply({
+                content: `${mentionableUser} Let me think..`
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
             const fetch = require('node-fetch');
             fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
@@ -32,10 +27,8 @@ module.exports = async (message) => {
             })
                 .then(res => res.json())
                 .then(async data => {
-                    initWebhook.editMessage(webhookMessage, {
+                    initMessage.edit({
                         content: `${mentionableUser} ${data.choices[0].message.content.slice(0, 1900)}`
-                    }).then(() => {
-                        initWebhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
                 })
                 .catch(err => console.error(err));
