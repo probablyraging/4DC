@@ -8,8 +8,8 @@ module.exports = async (client) => {
     (await PG(`${process.cwd()}/commands/*/*/*.js`)).map(async (file) => {
         let command = require(file);
         client.commands.set(command.name, command);
-        if (command.name !== 'rank') commandsArr.push(command);
-        // if (command.name === 'rank') globalCom.push(command)
+        if (command.name !== 'rank' || command.name !== 'automodcreate' || command.name !== 'automoddelete' || command.name !== 'automodfetch') commandsArr.push(command);
+        // if (command.name === 'rank' || command.name === 'automodcreate' || command.name === 'automoddelete' || command.name === 'automodfetch') globalCom.push(command);
     });
     client.on('ready', async () => {
         const guild = await client.guilds.cache.get(process.env.GUILD_ID);
