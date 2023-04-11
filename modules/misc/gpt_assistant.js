@@ -27,9 +27,15 @@ module.exports = async (message) => {
             })
                 .then(res => res.json())
                 .then(async data => {
-                    initMessage.edit({
-                        content: `${mentionableUser} ${data.choices[0].message.content.slice(0, 1900)}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                    if (!data || !data.choices) {
+                        initMessage.edit({
+                            content: `${mentionableUser} Sorry, I was unable to generate an answer. Please try again`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                    } else {
+                        initMessage.edit({
+                            content: `${mentionableUser} ${data.choices[0].message.content.slice(0, 1900)}`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                    }                    
                 })
                 .catch(err => console.error(err));
         } catch (err) {
