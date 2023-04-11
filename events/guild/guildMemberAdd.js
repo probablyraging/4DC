@@ -28,7 +28,7 @@ Chrome Web Store: https://chrome.google.com/webstore/detail/forthecontent/kbngho
 Sincerely, 
 ForTheContent Staff Team
 ⠀`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }).catch(() => {});
 
         // Add all new user to a set
         newUsers.add(member.id);
