@@ -23,13 +23,15 @@ module.exports = {
 
         const target = options.getMember(`username`) || member
         // Filter the target's permissions in an array
-        const acknowledgements = target.permissions.has("Administrator") || target.permissions.has("ManageRoles") ? "Administrator" : target.permissions.has("ManageMessages") ? "Moderator" : target.id == interaction.guild.ownerId ? "Server Owner" : "None";
-        const permissions = ["BanMembers", "ModerateMembers", "KickMembers", "ManageMessages", "ManageChannels", "MentionEveryone", "ManageNicknames", "ManageRoles", "DeafenMembers"].filter(perm => target.permissions.has(perm));
+        const permissions = target.permissions.toArray();
+        const sortedPermissionsArray = permissions.sort();
+        const formattedPermissions = sortedPermissionsArray.join(', ');
+        const acknowledgements = permissions.includes('Administrator') ? 'Server Owner' : 'None' || permissions.includes('Administrator') ? 'Administrator' : 'None';
         // Trim the acknowledgements if they exceed the character limit
         if (acknowledgements && acknowledgements.length > 1024) acknowledgements.slice(0, 10);
-        if (permissions && permissions.length > 1024) permissions.slice(0, 10);
+        if (formattedPermissions && formattedPermissions.length > 1024) formattedPermissions.slice(0, 10);
         // If the target has no permissions
-        if (permissions.length == 0) permissions.push("No Key Permissions Found");
+        if (formattedPermissions.length == 0) permissions.push("No Key Permissions Found");
         // Get the targets current presence
         if (target?.presence?.status === 'online') targetStatus = 'Online';
         if (target?.presence?.status === 'idle') targetStatus = 'Idle';
@@ -43,8 +45,9 @@ module.exports = {
             .addFields(
                 { name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
                 { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}> \n*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
+                { name: `Status`, value: `${targetStatus}`, inline: false },
                 { name: `Acknowledgements`, value: `${acknowledgements}`, inline: false },
-                { name: `Permissions`, value: `${permissions.join(`, `)}`, inline: false })
+                { name: `Permissions`, value: `${formattedPermissions}`, inline: false })
             .setFooter({ text: target?.id })
             .setTimestamp()
 
