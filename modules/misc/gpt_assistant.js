@@ -3,13 +3,14 @@ const path = require('path');
 module.exports = async (message) => {
     if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
+        const mentionableUser = message.mentions > 1 ? message.mentions.first() : message.author;
         try {
             let initWebhook;
             let webhookMessage;
             await message.channel.createWebhook({ name: 'ForTheContentGPT', avatar: 'https://cdn-icons-png.flaticon.com/512/2021/2021646.png' }).then(async webhook => {
                 initWebhook = webhook;
                 webhookMessage = await webhook.send({
-                    content: `${message.author} Let me think..`
+                    content: `${mentionableUser} Let me think..`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
             });
             const fetch = require('node-fetch');
@@ -32,10 +33,10 @@ module.exports = async (message) => {
                 .then(res => res.json())
                 .then(async data => {
                     initWebhook.editMessage(webhookMessage, {
-                        content: `${message.author} ${data.choices[0].message.content}`
+                        content: `${mentionableUser} ${data.choices[0].message.content}`
                     }).then(() => {
                         initWebhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
-                    })
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
                 })
                 .catch(err => console.error(err));
         } catch (err) {
