@@ -13,7 +13,6 @@ module.exports = async (client) => {
         // if (command.name === 'rank' || command.name === 'automodcreate' || command.name === 'automoddelete' || command.name === 'automodfetch') globalCom.push(command);
     });
     client.on('ready', async () => {
-        if (!process.env.DEV) return;
         const guild = await client.guilds.cache.get(process.env.GUILD_ID);
         guild.commands.set(commandsArr);
         // client.application.commands.set(globalCom);
