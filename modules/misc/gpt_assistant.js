@@ -1,13 +1,14 @@
 const path = require('path');
 
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {
             const initMessage = await message.reply({
                 content: `${mentionableUser} Let me think..`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+            // Send request to the open AI API
             const fetch = require('node-fetch');
             fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
@@ -27,15 +28,42 @@ module.exports = async (message) => {
             })
                 .then(res => res.json())
                 .then(async data => {
+                    // If the response is empty or there are no choices, edit the initial message to show an error message
                     if (!data || !data.choices) {
                         initMessage.edit({
                             content: `${mentionableUser} Sorry, I was unable to generate an answer. Please try again`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
                     } else {
-                        initMessage.edit({
-                            content: `${mentionableUser} ${data.choices[0].message.content.slice(0, 1900)}`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
-                    }                    
+                        // If there is a response, check if it is longer than 1900
+                        const response = data.choices[0].message.content;
+                        if (response.length > 1900) {
+                            // If the response is longer than 1900 characters, split it into separate messages and send them one by one
+                            let responseParts = [];
+                            for (let i = 0; i < response.length; i += 1900) {
+                                responseParts.push(response.slice(i, i + 1900));
+                            }
+                            for (let i = 0; i < responseParts.length; i++) {
+                                setTimeout(() => {
+                                    if (i === 0) {
+                                        // Edit the initial message with the first part of the response
+                                        initMessage.edit({
+                                            content: `${mentionableUser} ${responseParts[i]}.. \n**${i + 1}/${responseParts.length}**`
+                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+                                    } else {
+                                        // Send a reply to the channel with the next part of the response
+                                        message.reply({
+                                            content: `..${responseParts[i]} \n**${i + 1}/${responseParts.length}**`
+                                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a messagee: `, err));
+                                    }
+                                }, i * 1000);
+                            }
+                        } else {
+                            // Edit the initial message with the full response if it can fit in one message
+                            initMessage.edit({
+                                content: `${mentionableUser} ${response}`
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                        }
+                    }
                 })
                 .catch(err => console.error(err));
         } catch (err) {

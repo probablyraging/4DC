@@ -20,7 +20,7 @@ function randomNum(message) {
 module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
-    const disableXP = [process.env.BOT_CHAN, process.env.YOUTUBE_CHAN, process.env.TWITCH_CHAN, process.env.TIKTOK_CHAN, process.env.INSTAGRAM_CHAN, process.env.TWITTER_CHAN, process.env.SPOTIFY_CHAN]
+    const disableXP = [process.env.BOT_CHAN, process.env.YOUTUBE_CHAN, process.env.TWITCH_CHAN, process.env.TIKTOK_CHAN, process.env.INSTAGRAM_CHAN, process.env.TWITTER_CHAN, process.env.SPOTIFY_CHAN];
 
     let userRankData;
     if (!message?.author?.bot && !xpLimit.has(message?.author?.id)) {
