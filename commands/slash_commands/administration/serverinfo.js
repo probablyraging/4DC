@@ -50,7 +50,6 @@ module.exports = {
             });
 
             const vanityURL = guild.vanityURLCode ? `https://discord.gg/${guild.vanityURLCode}` : 'None';
-            const createdAt = convertTimestamp(new Date(guild.createdTimestamp).getTime());
             const description = guild.description || 'None';
             const premiumTier = guild.premiumTier;
 
@@ -65,7 +64,7 @@ module.exports = {
                     { name: `Description`, value: `${description}`, inline: false },
                     { name: `Server Boosts`, value: `${guild.premiumSubscriptionCount}`, inline: true },
                     { name: `Boost Tier`, value: `${premiumTier}`, inline: true },
-                    { name: `Created On`, value: `${createdAt}`, inline: true },
+                    { name: `Created On`, value: `<t:${parseInt(guild.createdTimestamp / 1000)}>`, inline: true },
                     { name: `Vanity URL`, value: `${vanityURL}`, inline: false })
 
             const response2 = new EmbedBuilder()

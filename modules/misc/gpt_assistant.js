@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {

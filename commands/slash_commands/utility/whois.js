@@ -40,7 +40,6 @@ module.exports = {
         // Create a response embed
         const response = new EmbedBuilder()
             .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-            .setColor('Random')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
             .addFields(
                 { name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
