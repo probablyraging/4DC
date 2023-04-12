@@ -1,4 +1,4 @@
-const { client, CommandInteraction, InteractionType } = require('discord.js');
+const { client, CommandInteraction, InteractionType, PermissionFlagsBits } = require('discord.js');
 const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action_button');
 const reportImageButton = require('../../handlers/buttons/txt2img_button');
@@ -35,7 +35,7 @@ module.exports = {
             const cooldownAmount = (command.cooldown) * 1000;
 
             // Ignore user's with the administrator role for command cooldowns
-            if (!member.permissions.has("Administrator")) {
+            if (!member.permissions.has(PermissionFlagsBits.Administrator)) {
                 // If the user is on cooldown for the specific command, notify them
                 if (cooldownUsers.has(member.id)) {
                     const expirationTime = cooldownUsers.get(member.id) + cooldownAmount;
