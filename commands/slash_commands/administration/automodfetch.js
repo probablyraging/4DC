@@ -18,8 +18,6 @@ module.exports = {
 
         const autmodRules = await guild.autoModerationRules.fetch();
 
-        console.log(autmodRules);
-
         let automodRuleNames = [];
         autmodRules.forEach(rule => {
             automodRuleNames.push(rule.name);

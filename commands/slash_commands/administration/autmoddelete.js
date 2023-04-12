@@ -19,7 +19,6 @@ module.exports = {
         const autmodRules = await guild.autoModerationRules.fetch();
 
         autmodRules.forEach(rule => {
-            console.log(rule.name);
             if (rule.name === 'Test') {
                 guild.autoModerationRules.delete(rule.id);
             }

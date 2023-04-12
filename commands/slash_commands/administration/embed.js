@@ -1,5 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
+const { ImgurClient } = require('imgur');
 const path = require('path');
 
 module.exports = {
@@ -130,9 +131,37 @@ module.exports = {
                 const title = options.getString('title');
                 const description = options.getString('description');
                 const color = options.getString('color');
-                const thumbnail = options.getAttachment('thumbnail');
-                const image = options.getAttachment('image');
                 const author = options.getBoolean('author');
+                let thumbnail = options.getAttachment('thumbnail');
+                let image = options.getAttachment('image');
+
+                // Upload images to imgur
+                if (thumbnail) {
+                    // Create a new imgur client
+                    const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+                    // Upload attachment to imgur, get the link and attach it to the embed
+                    const response = await imgur.upload({
+                        image: thumbnail.url,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+                    // Update the variable with the returned imgur URL
+                    if (response.length > 0) {
+                        if (response[0].status !== 200) return;
+                        thumbnail = response[0].data.link;
+                    }
+                }
+                if (image) {
+                    // Create a new imgur client
+                    const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
+                    // Upload attachment to imgur, get the link and attach it to the embed
+                    const response = await imgur.upload({
+                        image: image.url,
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+                    // Update the variable with the returned imgur URL
+                    if (response.length > 0) {
+                        if (response[0].status !== 200) return;
+                        image = response[0].data.link;
+                    }
+                }
 
                 // Make sure the message ID is valid
                 const letterRegex = /[a-zA-Z]/g;
@@ -160,9 +189,9 @@ module.exports = {
                 if (color) editEmbed = EmbedBuilder.from(embed)
                     .setColor(color)
                 if (thumbnail) editEmbed = EmbedBuilder.from(embed)
-                    .setThumbnail(thumbnail.url)
+                    .setThumbnail(thumbnail)
                 if (image) editEmbed = EmbedBuilder.from(embed)
-                    .setImage(image.url)
+                    .setImage(image)
                 if (author) editEmbed = EmbedBuilder.from(embed)
                     .setFooter({ text: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) });
 

@@ -3,6 +3,8 @@ const { glob } = require('glob');
 const PG = promisify(glob);
 
 module.exports = async (client) => {
+    // Only register commands in dev environment
+    if (!process.env.DEV) return;
     commandsArr = [];
     // globalCom = [];
     (await PG(`${process.cwd()}/commands/*/*/*.js`)).map(async (file) => {
