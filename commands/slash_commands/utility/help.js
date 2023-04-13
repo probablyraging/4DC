@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
     name: `help`,
-    description: `Help system for 4DC and the ForTheContent server`,
+    description: `Help system for 4DC and the server`,
     cooldown: 5,
     type: ApplicationCommandType.ChatInput,
     /**
@@ -18,7 +18,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor('#5865f2')
             .setTitle('Home')
-            .setDescription(`Use the buttons below to access help menus for 4DC and ForTheContent's features`)
+            .setDescription(`Use the buttons below to access help menus for 4DC and the servers's features`)
 
             const btn = new ActionRowBuilder()
             .addComponents(

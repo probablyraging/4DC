@@ -146,7 +146,7 @@ module.exports = async (interaction) => {
 
             // Send a notification to the target user
             await reportedUser.send({
-                content: `You have been banned from **ForTheContent**\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
+                content: `You have been banned from **ContentCreator**\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
             }).catch(() => { });
 
             // Ban the user
@@ -244,7 +244,7 @@ async function closeReport(guild, channel, member) {
 
     const replyEmbed = new EmbedBuilder(reportEmbed)
         .setColor("#32BEA6")
-        .setTitle(`ForTheContent Report`)
+        .setTitle(`Server Report`)
         .setDescription(`Your report's status has been updated to \`CLOSED\``)
 
     if (reporterUser) reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message `, err));

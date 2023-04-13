@@ -11,7 +11,7 @@ module.exports = {
         // Premium member subscription
         if (!oldMember._roles.includes(process.env.SUBSCRIBER_ROLE) && newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
             newMember.send({
-                content: `Thank you for supporting ForTheContent!
+                content: `Thank you for supporting ContentCreator!
                 
 Here are a list of perks you now have access, and how you can go about claiming them;
 <:minidot:923683258871472248> **Share Your Server** - FTC++ only. Share your Discord server invites in the content share section

@@ -17,7 +17,7 @@ module.exports = {
 
         // Advertise chrome extension
         member?.send({
-            content: `Welcome to ForTheContent,
+            content: `Welcome to ContentCreator,
 
 If you're a **YouTube creator** looking for easy **likes and views**, then download the ForTheContent browser extension.
 
@@ -26,7 +26,7 @@ Our extension allows users to submit YouTube videos that 100s of other server me
 Chrome Web Store: https://chrome.google.com/webstore/detail/forthecontent/kbnghoajbjomkegkhiiafelmmecnajhd
 
 Sincerely, 
-ForTheContent Staff Team
+ContentCreator Staff Team
 ⠀`
         }).catch(() => {});
 

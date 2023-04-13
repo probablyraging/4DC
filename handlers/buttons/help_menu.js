@@ -53,7 +53,7 @@ module.exports = async (interaction) => {
         interaction.fetchReply('@original').then(reply => {
             if (reply.embeds[0].title.toLowerCase().includes('home')) return;
             embed.setTitle('Home');
-            embed.setDescription(`Use the buttons below to access help menus for 4DC and ForTheContent's features`);
+            embed.setDescription(`Use the buttons below to access help menus for 4DC and the server's features`);
             reply.edit({ embeds: [embed], components: [btn] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));
         });
     }
@@ -62,7 +62,7 @@ module.exports = async (interaction) => {
         interaction.fetchReply('@original').then(reply => {
             if (reply.embeds[0].title.toLowerCase().includes('games')) return;
             embed.setTitle('Games');
-            embed.setDescription(`ForTheContent has two game channels, the <#851584454036029441> channel and the <#896069772624683018> channel
+            embed.setDescription(`The server has two game channels, the <#851584454036029441> channel and the <#896069772624683018> channel
 
 Use the buttons below to access information on how to play these games`);
             reply.edit({ embeds: [embed], components: [gamesbtn] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an interaction: `, err));

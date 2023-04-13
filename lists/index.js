@@ -4,7 +4,7 @@ module.exports = {
     welcome: [
         `https://i.imgur.com/wC1Lu54.png`,
 
-        `Welcome to ForTheContent, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, our aim is to provide our members with the resources and support they need to grow their online presence and achieve their goals
+        `Welcome to ContentCreator, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, our aim is to provide our members with the resources and support they need to grow their online presence and achieve their goals
 
 **NEW TO DISCORD?**
 Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
@@ -20,7 +20,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 
         `https://i.imgur.com/zD5ueDZ.png`,
 
-        `By participating in this server, you agree to follow [ForTheContent's Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
+        `By participating in this server, you agree to follow [Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
 > **1.** ${rules[0]}
 > **2.** ${rules[1]}
@@ -48,7 +48,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 > Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active <@&1061554108005355570> subscriber. You can become a subscriber by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 
 **What is server subscribing and boosting?**
-> Subscribing to or boosting the server is a way to support ForTheContent. By becoming a server subscriber or booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
+> Subscribing to or boosting the server is a way to support the server. By becoming a server subscriber or booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 ⠀`,
 
         `**How does the rank/XP system work?**
@@ -252,8 +252,8 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `⠀
 **STAFF**
 <@&1033563360660291615> A joint staff role for both server admins and mods
-<@&885919072791973898> ForTheContent administrators
-<@&931054970327932928> ForTheContent moderators
+<@&885919072791973898> Server administrators
+<@&931054970327932928> Server moderators
 
 **MEMBERS**
 <@&1061532395314098229> View server subscriber perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
