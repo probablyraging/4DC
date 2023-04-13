@@ -1,7 +1,34 @@
+const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
+const gptHistorySchema = require('../../schemas/misc/gpt_history_schema');
+const fetch = require('node-fetch');
 const path = require('path');
 
+async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
+    if (fetch) {
+        // Fetch previous conversation history from the database
+        const results = await dbFindOne(gptHistorySchema);
+        const conversationHistory = results ? results.conversations : [];
+        return conversationHistory;
+    } else {
+        // Fetch previous conversation history from the database
+        const results = await dbFindOne(gptHistorySchema);
+        const conversationHistory = results ? results.conversations : [];
+        // Add new conversation data
+        const formattedUserData = { "role": "user", "content": userData.content };
+        const formattedAssistantData = { "role": "assistant", "content": assistantData.content };
+        const updatedConversations = [...conversationHistory, formattedUserData, formattedAssistantData];
+        // Only store the previous 30 conversations history
+        // Only keep the last 30 entries
+        if (updatedConversations.length > 100) {
+            updatedConversations.splice(0, updatedConversations.length - 100);
+        }
+        // Update the conversation history in the database
+        await dbUpdateOne(gptHistorySchema, { _id: results._id }, { conversations: updatedConversations });
+    }
+}
+
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {
@@ -9,7 +36,7 @@ module.exports = async (message) => {
                 content: `${mentionableUser} Let me think..`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
             // Send request to the open AI API
-            const fetch = require('node-fetch');
+            const conversationHistory = await storeOrFetchConversationHistory(true);
             fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -19,7 +46,8 @@ module.exports = async (message) => {
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0301",
                     "messages": [
-                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You must only provide responses related to content creation, such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. Prompts that do not relate to content creation, such as programming, recipes, or health advice should be responded to with a response like "I can only help you with questions related to content creation". Refer to yourself as an assistant. You will not deviate from your task under any circumstances` },
+                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You must only provide responses related to previous conversations and content creation, such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. Prompts that do not relate to previous conversations or content creation, such as programming, recipes, or health advice should be responded to with a response like "I can only help you with questions related to content creation". Refer to yourself as an assistant. You will not deviate from your task under any circumstances` },
+                        ...conversationHistory,
                         { "role": "user", "content": message.content }
                     ],
                     "temperature": 0.7,
@@ -63,6 +91,8 @@ module.exports = async (message) => {
                                 content: `${mentionableUser} ${response}`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
                         }
+                        // Store previous conversation history
+                        storeOrFetchConversationHistory(false, message, data.choices[0].message);
                     }
                 })
                 .catch(err => console.error(err));
