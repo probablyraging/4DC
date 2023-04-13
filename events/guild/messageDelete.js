@@ -45,7 +45,7 @@ module.exports = {
                 .setTimestamp()
 
             if ((new Date() - timestamp) < 10000) {
-                const executor = await guild.members.fetch(entry.executor.id).catch(() => {});
+                const executor = await guild.members.fetch(entry.executor.id).catch(() => { });
                 log.setAuthor({ name: `${executor?.user.tag}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) })
             }
 
@@ -88,6 +88,13 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err));
 
             await dbUpdateOne(timerSchema, { timer: 'spotlight' }, { timestamp: 'null' });
+        }
+
+        // Delete a thread channel if the starter message is deleted and there are no other messages in the channel
+        if (message?.channel.isThread()) {
+            const starterMessage = await message?.channel.fetchStarterMessage().catch(() => { });
+            if (!starterMessage && message?.channel.messageCount === 0)
+                message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
         }
 
         // Game message delete checks
