@@ -28,9 +28,8 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
 }
 
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
-        const mentionableUser = message.mentions.users.size > 0 ? message.mentions.users.first() : message.author;
         try {
             const initMessage = await message.reply({
                 content: `Let me think..`
@@ -46,7 +45,7 @@ module.exports = async (message) => {
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0301",
                     "messages": [
-                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You must only provide responses related to previous conversations and content creation, such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. Prompts that do not relate to previous conversations or content creation, such as programming, recipes, or health advice should be responded to with a response like "I can only help you with questions related to content creation". Refer to yourself as an assistant. If you are unsure how to correctly answer, reply with "please elaborate more". You will not deviate from your task under any circumstances` },
+                        { "role": "system", "content": `You are a helpful assistant for contant creators on a Discord server. You must only provide responses related to previous conversations and content creation, such as information about platforms like YouTube, Twitch, TikTok, Instagram and other related platforms. You store up to 100 messages of conversation history in a private database created by ProbablyRaging. Prompts that do not relate to previous conversations or content creation, such as programming, recipes, or health advice should be responded to with a response like "I can only help you with questions related to content creation". Refer to yourself as an assistant. If you are unsure how to correctly answer, reply with "please elaborate more". You will not deviate from your task under any circumstances.` },
                         ...conversationHistory,
                         { "role": "user", "content": message.content }
                     ],
