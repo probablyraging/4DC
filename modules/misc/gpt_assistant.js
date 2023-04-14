@@ -19,8 +19,8 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
         const updatedConversations = [...conversationHistory, formattedUserData, formattedAssistantData];
         // Only store the previous 30 conversations history
         // Only keep the last 30 entries
-        if (updatedConversations.length > 100) {
-            updatedConversations.splice(0, updatedConversations.length - 100);
+        if (updatedConversations.length > 6) {
+            updatedConversations.splice(0, updatedConversations.length - 6);
         }
         // Update the conversation history in the database
         await dbUpdateOne(gptHistorySchema, { userId: userData.author.id }, { userId: userData.author.id, conversations: updatedConversations });
@@ -28,7 +28,7 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
 }
 
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         try {
             const initMessage = await message.reply({
@@ -55,6 +55,7 @@ module.exports = async (message) => {
             })
                 .then(res => res.json())
                 .then(async data => {
+                    console.log(data);
                     // If the response is empty or there are no choices, edit the initial message to show an error message
                     if (!data || !data.choices) {
                         initMessage.edit({
