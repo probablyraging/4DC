@@ -55,7 +55,6 @@ module.exports = async (message) => {
             })
                 .then(res => res.json())
                 .then(async data => {
-                    console.log(data);
                     // If the response is empty or there are no choices, edit the initial message to show an error message
                     if (!data || !data.choices) {
                         initMessage.edit({
