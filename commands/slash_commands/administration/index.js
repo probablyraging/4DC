@@ -60,14 +60,19 @@ module.exports = {
 
             // SERVER GUIDE
             case 'serverguide': {
+                let initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.servermap.length; i++) {
-                        setTimeout(function () {
-                            webhook.send({
+                        setTimeout(async function () {
+                            const message = await webhook.send({
                                 content: `${index.servermap[i]}`,
                                 allowedMentions: {
                                     parse: []
                                 }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            initMessage.push(message.url);
+                            if (i === index.servermap.length - 1) webhook.send({
+                                content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
                             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         }, i * 1000);
                     }
@@ -83,28 +88,23 @@ module.exports = {
 
             // FAQ SERVER
             case 'faqs': {
+                let initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     for (let i = 0; i < index.faqs.length; i++) {
-                        setTimeout(function () {
-                            if (channel.type === 15) {
-                                webhook.send({
-                                    content: `${index.faqs[i]}`,
-                                    threadId: threadId,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                            } else {
-                                webhook.send({
-                                    content: `${index.faqs[i]}`,
-                                    allowedMentions: {
-                                        parse: []
-                                    }
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                            }
+                        setTimeout(async function () {
+                            const message = await webhook.send({
+                                content: `${index.faqs[i]}`,
+                                allowedMentions: {
+                                    parse: []
+                                }
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            initMessage.push(message.url);
+                            if (i === index.faqs.length - 1) webhook.send({
+                                content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
+                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                         }, i * 1000);
                     }
-                    setTimeout(() => {
+                    setTimeout(async () => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
