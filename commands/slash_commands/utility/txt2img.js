@@ -46,7 +46,7 @@ async function initiateGeneration(interaction, member, prompt, count, fileName, 
         if (data.includes('send_data')) {
             // Check if the websocket is ready, notify the user if there is an error
             if (ws.readyState !== 1) return initiateGeneration(interaction, member, prompt, count, fileName, timerStart, buttons);
-            const body = { "fn_index": 2, "data": [`${prompt} highly stylized digital artwork, trending on artstation, incredible vibrant colors, realistic proportions, dramatic lighting, dynamic epic composition, foamy stylized water, ray tracing, traditional art by studio ghibli, 8k, wlop`] };
+            const body = { "fn_index": 2, "data": [`${prompt}, highly stylized digital artwork, trending on artstation, realism, realistic proportions, dramatic lighting, dynamic epic composition, ray tracing, 8k, wlop`] };
             ws.send(JSON.stringify(body));
         }
         // If the response contains "process_completed" get the output data that contains the image data
