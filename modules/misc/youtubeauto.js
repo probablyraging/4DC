@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_CHAN);
-    const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
+    const boostPromoChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
 
     setInterval(async () => {
         const results = await ytNotificationSchema.find();

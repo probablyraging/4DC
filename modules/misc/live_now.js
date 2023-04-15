@@ -50,7 +50,7 @@ module.exports = async (client) => {
     const subscriberRole = guild.roles.cache.get(process.env.SUBSCRIBER_ROLE);
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
 
-    const boostPromoChan = guild.channels.cache.get(process.env.BOOSTER_PROMO);
+    const boostPromoChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
     const twitchChan = guild.channels.cache.get(process.env.TWITCH_CHAN);
 
     // Fetch live streaming mmbers
