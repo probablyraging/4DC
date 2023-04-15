@@ -213,39 +213,26 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#851584454036029441> It basically explains itself
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 
-**RESOURCES**
-<#1040530300515647548> Find answers to common questions as well as some useful links
-<#1049118939164188743> Useful resources for content creators
-
-**FORUMS**
+**SUPPORT**
 <#978553334854205450> Get assistance or support for specific topics
 <#978691673842389053> Get some constructive feedback on your graphics or videos
 <#978694637088804884> Looking for something specific? Like new friends? Find them here
+<#1040530300515647548> Find answers to common questions as well as some useful links
+<#1049118939164188743> Useful resources for content creators
+<#1095203236232843374> Ask ChatGPT questions regarding content creation
 
 **COMMISSIONS**
 <#1052096719778762822> List your paid services for others to browse
-<#1096198410664689744> List your paid services for others to browse
+<#1096198410664689744> List your free services for others to browse
 ⠀`,
 
         `**CONTENT SHARE**
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
-<#878229815541497857> Content sharing, but with a twist
-<#859117794779987978> A channel for our awesome server boosters to share their awesome content
-<#856719763187302441> Share your YouTube content
-<#1075915365105807533> Share your Twitch content
-<#1075915526833967269> Share your TikTok content
-<#1075915468315050115> Share your Instagram content
-<#1075915586053357689> Share your Twitter content
-<#1075915738721833061> Share your Soundcloud & Spotify content
-<#1075916325077131316> Share your other forms of content
-
-**VOICE CHAT**
-<#1038671738764017765> Create a new voice channel to hang out in
+<#859117794779987978> A channel for server supporters to share their content
 
 **BOT**
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
-<#1040381607674130492> Real time leaderboards for server ranks and games
 <#987212586007281674> It's like a revolving door
 <#995882451446546502> All of these people are on Santa's naughty list
 ⠀`,
@@ -261,9 +248,7 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 **MEMBERS**
 <@&1061532395314098229> View server subscriber perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 <@&821876910253670442> View server booster perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
-<@&839527054465826867> Displays currently live streaming server boosters
-<@&878229140992589906> Awarded to the user who claimed the #content-spotlight
-<@&998861546530820207> Displays a randomly selected user who is currently live streaming
+<@&839527054465826867> Displays currently live streaming server supporters
 
 **RANKS AND REWARDS**
 <@&1033910783400230953> Access to all server booster perks upon request

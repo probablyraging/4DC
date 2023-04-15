@@ -1,7 +1,5 @@
 const statusCounter = require('../../modules/misc/activity_update');
-const spotlightCheck = require('../../modules/timers/spotlight_check');
 const bumpCheck = require('../../modules/timers/bump_check');
-const featuredCheck = require('../../modules/timers/featured_check');
 const mutesCheck = require('../../modules/misc/mutes_check');
 const databaseCleanup = require('../../modules/timers/cronjobs');
 const liveNow = require('../../modules/misc/live_now');
@@ -9,7 +7,6 @@ const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
 const fetchReddit = require('../../modules/misc/fetch_reddit');
 const welcomeCheck = require('../../modules/misc/welcome_check');
-const leaderboardUpdate = require('../../modules/misc/leaderboard_update');
 const weeklyLeaderboard = require('../../modules/misc/weekly_leaderboard');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
@@ -65,16 +62,13 @@ module.exports = {
         // Misc intervals
         mutesCheck(message, client, Discord);
         statusCounter(client);
-        spotlightCheck(client);
         bumpCheck(message, client, Discord);
-        featuredCheck(client);
         databaseCleanup(client);
         liveNow(client);
         youtubeAuto(client);
         fetchTweets(client);
         fetchReddit(client);
         welcomeCheck(client);
-        leaderboardUpdate(client);
         weeklyLeaderboard(client);
     }
 };

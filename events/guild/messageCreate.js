@@ -2,7 +2,6 @@ const { Message, italic } = require('discord.js');
 const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
 const linkCooldown = require('../../modules/misc/link_cooldown');
 const bumpPost = require('../../modules/timers/bump_post');
-const spotlightPost = require('../../modules/timers/spotlight_post');
 const blSpam = require('../../modules/misc/spam');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
@@ -29,9 +28,8 @@ module.exports = {
         linkCooldown(message, client);
         blSpam(message, client);
 
-        // Bump and spotlight checks
+        // Bump checks
         bumpPost(message, client);
-        spotlightPost(message);
 
         // Game checks
         lastLetter(message, client);

@@ -15,8 +15,7 @@ module.exports = {
         required: true,
         choices: [{ name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
-        { name: 'faqs', value: 'faqs' },
-        { name: 'spotlight', value: 'spotlight' }]
+        { name: 'faqs', value: 'faqs' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -108,21 +107,6 @@ module.exports = {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
-
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
-
-                break;
-            }
-
-            // SPOTLIGHT CHANNEL
-            case 'spotlight': {
-                const liveNowEmbed = new EmbedBuilder()
-                    .setColor("#9c59ff")
-                    .setTitle(`:crown: Content Spotlight`)
-                    .setDescription(`**How Does It Work?**
-Every 2 hours the channel will unlock, allowing anyone to post a single link to their content`);
-
-                channel.send({ embeds: [liveNowEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
