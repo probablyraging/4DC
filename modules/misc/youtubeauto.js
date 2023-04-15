@@ -5,8 +5,7 @@ const path = require('path');
 
 module.exports = async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_CHAN);
-    const boostPromoChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
+    const supporterChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
 
     setInterval(async () => {
         const results = await ytNotificationSchema.find();
@@ -35,13 +34,10 @@ module.exports = async (client) => {
                         await dbUpdateOne(ytNotificationSchema, { userId }, { userId, channelId, videoIds });
 
                         if (isBooster || isSubscriber || isStaff) {
-                            boostPromoChan.send({
+                            supporterChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
                             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                         }
-                        youtubeShare.send({
-                            content: `**${userTag}** just uploaded a new video - ${item.link}`,
-                        }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
                 });
             });
