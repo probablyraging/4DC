@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const gptHistorychema = mongoose.Schema({
+const gptHistoryschema = mongoose.Schema({
     userId: {
         type: String,
         required: true
@@ -11,4 +11,4 @@ const gptHistorychema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('gpthistory', gptHistorychema)
+module.exports = mongoose.model('gpthistory', gptHistoryschema)
