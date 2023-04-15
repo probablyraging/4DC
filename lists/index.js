@@ -39,16 +39,16 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
         `https://i.imgur.com/4qnr530.png`,
 
         `**When/how can I share my content?**
-> Content sharing is available in the dedicated channels located under the 'CONTENT SHARE' section
+> Content sharing is available for server supporters in the dedicated channels located under the 'CONTENT SHARE' section
 
 **Can I advertise a paid service?**
-> Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services, and products are only permitted in <#907446635435540551>. There are fees associated with creating a premium ad which you can find in [this post](<https://discord.com/channels/820889004055855144/907446635435540551/907463741174587473>)
+> Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services and products are only permitted in <#907446635435540551>
 
 **Can I advertise my own Discord server?**
 > Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active <@&1061554108005355570> subscriber. You can become a subscriber by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 
-**What is server subscribing and boosting?**
-> Subscribing to or boosting the server is a way to support the server. By becoming a server subscriber or booster, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
+**What is server a server support?**
+> Subscribing to or boosting the server is a way to support the server. By becoming a server supporter, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 ⠀`,
 
         `**How does the rank/XP system work?**

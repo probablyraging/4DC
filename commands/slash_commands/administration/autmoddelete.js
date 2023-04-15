@@ -7,6 +7,7 @@ module.exports = {
     description: `Delete an AutoMod rule`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

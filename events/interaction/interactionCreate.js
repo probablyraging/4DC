@@ -15,15 +15,7 @@ module.exports = {
      * @param {client} client 
      */
     async execute(interaction, client, Discord) {
-        const { member, channel } = interaction;
-
-        // Ignore commands ran in DMs
-        if (channel.isDMBased() && (!interaction.customId || interaction.customId.split('-')[0] !== 'help')) {
-            return interaction.reply({
-                content: 'Command not available via DMs',
-                ephemeral: true
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
-        }
+        const { member } = interaction;
 
         // Get the interaction by name
         let command = client.commands.get(interaction.commandName);
