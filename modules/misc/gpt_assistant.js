@@ -28,7 +28,7 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
 }
 
 module.exports = async (message) => {
-    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot || message.channel.id === process.env.TEST_CHAN && !message.author.bot) {
+    if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         try {
             const initMessage = await message.reply({
