@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, codeBlock } = require("discord.js");
 const { sendResponse } = require('../../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
 
@@ -60,12 +60,12 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
             );
 
-        const reportMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed], components: [button] })
+        const reportMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] })
             .catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
         reportEmbed = new EmbedBuilder(reportEmbed)
             .setFooter({ text: `ID ${member?.id}-${reportMessage.id}`, iconURL: guild.iconURL({ dynamic: true }) })
-        reportMessage.edit({ embeds: [reportEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+        reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
 
         sendResponse(interaction, `${process.env.BOT_CONF} Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
     }
