@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
 const muteSchema = require('../../../schemas/misc/mute_schema');
 const { v4: uuidv4 } = require('uuid');
@@ -61,7 +61,7 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const { member, guild, channel, options } = interaction;
+        const { member, guild, options } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 

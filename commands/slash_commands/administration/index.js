@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
