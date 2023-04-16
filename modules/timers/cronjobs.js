@@ -1,10 +1,9 @@
-const { dbUpdateOne, dbDeleteOne, dbDeleteMany, dbFind } = require('../../utils/utils');
+const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/games/letter_lb_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const weeklyLeaderboard = require('../../schemas/misc/weekly_leaderboard_schema');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -100,16 +99,10 @@ module.exports = async (client) => {
         }
     });
 
-    // Reset weekly message leaderboard - runs every Monday at 00:00
-    const weeklyLeaderboardCheck = new cronjob('0 0 * * 1', async function () {
-        await dbDeleteMany(weeklyLeaderboard, {});
-    });
-
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
-    weeklyLeaderboardCheck.start();
 }

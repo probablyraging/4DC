@@ -1,13 +1,11 @@
 const statusCounter = require('../../modules/misc/activity_update');
 const bumpCheck = require('../../modules/timers/bump_check');
-const mutesCheck = require('../../modules/misc/mutes_check');
+const mutesCheck = require('../../modules/misc/expired_mutes_check');
 const databaseCleanup = require('../../modules/timers/cronjobs');
 const liveNow = require('../../modules/misc/live_now');
 const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
-const fetchReddit = require('../../modules/misc/fetch_reddit');
 const welcomeCheck = require('../../modules/misc/welcome_check');
-const weeklyLeaderboard = require('../../modules/misc/weekly_leaderboard');
 const cronjob = require('cron').CronJob;
 const { dbOne } = require('../../mongo');
 const fs = require('fs');
@@ -47,18 +45,6 @@ module.exports = {
         });
         boostTimer.start();
 
-        // Delete txt2img files from the temp folder
-        fs.readdir('./res/temp', (err, files) => {
-            if (err) return;
-            for (const file of files) {
-                if (file.endsWith('.png') || file.endsWith('.gif')) {
-                    fs.unlink(`./res/temp/${file}`, (err) => {
-                        if (err) console.error('There was a problem deleting a txt2img file: ', err);
-                    });
-                }
-            }
-        });
-
         // Misc intervals
         mutesCheck(message, client, Discord);
         statusCounter(client);
@@ -67,8 +53,6 @@ module.exports = {
         liveNow(client);
         youtubeAuto(client);
         fetchTweets(client);
-        fetchReddit(client);
         welcomeCheck(client);
-        weeklyLeaderboard(client);
     }
 };

@@ -6,25 +6,8 @@ const path = require('path');
  */
 module.exports = async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
-    const youtubeShare = guild.channels.cache.get(process.env.YOUTUBE_CHAN);
     const premChan = guild.channels.cache.get(process.env.PREM_CHAN);
     const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
-
-    // Content share
-    if (message?.channel.id === process.env.YOUTUBE_CHAN && !message.author.bot) {
-        try {
-            // Fetch a group of messages and find the previous reminder
-            const messages = await youtubeShare.messages.fetch({ limit: 5 });
-            const messageFound = messages.find(m => m.author.id === client.user.id && m.content.includes('browser extension'));
-            // Delete the previous reminder and resend it
-            if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
-            await youtubeShare.send({
-                content: `:warning:** Want likes and views on your YouTube videos? Check out the ForTheContent browser extension at** <https://chrome.google.com/webstore/detail/forthecontent/kbnghoajbjomkegkhiiafelmmecnajhd>`
-            }).catch(err => console.error(`There was a problem sending a message: `, err));
-        } catch (err) {
-            console.error(`There was a problem fetching messages in the content share channel: `, err);
-        }
-    }
 
     // Premium Ads
     const button = new ActionRowBuilder()

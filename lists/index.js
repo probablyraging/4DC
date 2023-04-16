@@ -4,7 +4,7 @@ module.exports = {
     welcome: [
         `https://i.imgur.com/wC1Lu54.png`,
 
-        `Welcome to ContentCreator, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, our aim is to provide our members with the resources and support they need to grow their online presence and achieve their goals
+        `Welcome to ContentCreator, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, we provide our members with the resources and support they need to grow their online presence and achieve their goals
 
 **NEW TO DISCORD?**
 Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
@@ -209,7 +209,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
 <#1049263519255777301> Let us know who you are, what you do, and where we can find your content
 <#843103680592609320> Reached a personal milestone? Flex on us
 <#846449072105586708> Current game deals and random game related chat
-<#1038766290246062100> Create AI generated images based of written prompts
 <#851584454036029441> It basically explains itself
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
 

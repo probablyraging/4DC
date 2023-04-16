@@ -1,7 +1,6 @@
 const { client, CommandInteraction, PermissionFlagsBits, ChannelType } = require('discord.js');
 const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action_button');
-const reportImageButton = require('../../handlers/buttons/txt2img_button');
 const helpButton = require('../../handlers/buttons/help_menu');
 const adInformationButton = require('../../handlers/buttons/ad_information');
 const reportModal = require('../../handlers/modals/report_modal');
@@ -115,7 +114,6 @@ module.exports = {
 
             // A map of customIds for misc buttons
             const miscButtons = {
-                'delete-image': reportImageButton,
                 'ad-info': adInformationButton
             };
             if (customId in miscButtons) miscButtons[customId](interaction);

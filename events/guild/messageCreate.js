@@ -8,7 +8,6 @@ const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
 const suggestionPost = require('../../modules/misc/suggestion_post');
-const shareCheck = require('../../modules/misc/share_check');
 const stickyMessage = require('../../modules/misc/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
 const introductionCheck = require('../../modules/misc/log_introduction');
@@ -40,7 +39,6 @@ module.exports = {
         // Misc checks
         rankXP(message, client);
         suggestionPost(message);
-        shareCheck(message, client);
         stickyMessage(message, client);
         gptAssistant(message);
         introductionCheck(message);

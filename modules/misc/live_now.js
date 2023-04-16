@@ -20,7 +20,7 @@ async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
         role.members.map(async member => {
             // Iterate through each member's presence activities
 
-            // const isStreamingBadHabitsRP = activities.some(activity => {
+            // activities.some(activity => {
             //     return activity.type === 'STREAMING' && activity.name.toLowerCase().includes('badhabitsrp');
             // });
 
@@ -49,9 +49,7 @@ module.exports = async (client) => {
     const boostRole = guild.roles.cache.get(process.env.BOOSTER_ROLE);
     const subscriberRole = guild.roles.cache.get(process.env.SUBSCRIBER_ROLE);
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
-
     const boostPromoChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
-    const twitchChan = guild.channels.cache.get(process.env.TWITCH_CHAN);
 
     // Fetch live streaming mmbers
     setInterval(async () => {
@@ -70,26 +68,16 @@ module.exports = async (client) => {
                     if (!cooldown.has(id)) {
                         // Check if user has already manually posted their own URL, if so we don't post it
                         let boostAlreadyPosted = false;
-                        let shareAlreadyPosted = false;
                         (await boostPromoChan.messages.fetch({ limit: 5 })).forEach(message => {
                             if (!liveMember.url) return;
                             if (message.content.includes(liveMember.url.split('https://www.')[1])) {
                                 boostAlreadyPosted = true;
                             }
                         });
-                        (await twitchChan.messages.fetch({ limit: 5 })).forEach(message => {
-                            if (!liveMember.url) return;
-                            if (message.content.includes(liveMember.url.split('https://www.')[1])) {
-                                shareAlreadyPosted = true;
-                            }
-                        });
                         // If no URL was found, return
                         if (liveMember.url == null) return;
                         // Send the URL to the appropriate channels
                         if (!boostAlreadyPosted && liveMember.booster) boostPromoChan.send({
-                            content: `**${liveMember.username}** just went live - ${liveMember.url}`
-                        });
-                        if (!shareAlreadyPosted) twitchChan.send({
                             content: `**${liveMember.username}** just went live - ${liveMember.url}`
                         });
                         // Add the user to a cooldown for 6 hours so we only send one live notice
