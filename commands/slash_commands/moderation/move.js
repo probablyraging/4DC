@@ -72,6 +72,8 @@ module.exports = {
     async execute(interaction) {
         const { guild, channel, options } = interaction;
 
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+
         const destinationChannel = options.getChannel('channel');
         // Get the message IDs of all options
         const messageIds = [
