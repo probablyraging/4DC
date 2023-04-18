@@ -13,7 +13,7 @@ module.exports = async (client) => {
     });
     client.on('ready', async () => {
         const guild = await client.guilds.cache.get(process.env.GUILD_ID);
-        // guild.commands.set(commandsArr);
+        guild.commands.set(commandsArr);
         // client.application.commands.set(globalCom);
     });
 }
