@@ -7,8 +7,7 @@ const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/misc/fetch_tweets');
 const welcomeCheck = require('../../modules/misc/welcome_check');
 const cronjob = require('cron').CronJob;
-const { dbOne } = require('../../mongo');
-const fs = require('fs');
+const mongoose = require('mongoose');
 const Canvas = require("canvas");
 const path = require('path');
 
@@ -20,7 +19,10 @@ module.exports = {
         console.timeEnd('Time to online');
 
         // Connect to database
-        dbOne.then(() => console.log('Connected to database')).catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err));
+        mongoose.set('strictQuery', true); // Remove dep warning
+        mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true, useUnifiedTopology: true })
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err))
+            .then(() => console.log('Connected to database'))
 
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });

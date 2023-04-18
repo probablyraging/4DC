@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, codeBlock } = require("discord.js");
+const Discord = require("discord.js");
 const { sendResponse } = require("../../../utils/utils");
 const path = require("path");
 
@@ -8,11 +8,11 @@ module.exports = {
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
     dm_permission: false,
-    type: ApplicationCommandType.ChatInput,
+    type: Discord.ApplicationCommandType.ChatInput,
     options: [{
         name: `code`,
         description: `Code to be evaluated`,
-        type: ApplicationCommandOptionType.String,
+        type: Discord.ApplicationCommandOptionType.String,
         required: true,
     }],
     /**
@@ -24,14 +24,14 @@ module.exports = {
         await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const code = options.getString('code');
-        const initReply = `Evaluating ${codeBlock(code)}`;
+        const initReply = `Evaluating ${Discord.codeBlock(code)}`;
 
         sendResponse(interaction, initReply);
 
         try {
             await eval(code);
         } catch (error) {
-            return sendResponse(interaction, `${initReply} \nError ${codeBlock(error)}`);
+            return sendResponse(interaction, `${initReply} \nError ${Discord.codeBlock(error)}`);
         }
     }
 }
