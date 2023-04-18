@@ -29,33 +29,8 @@ module.exports = {
 
         // Only allow solved and closed to be ran in threads channels in the help and advice forum
         if (!channel.isThread()) return sendResponse(interaction, `${process.env.BOT_DENY} This is not a thread channel`);
-        // If not deleting a thread and the channel is not in the help and advice forum
-        if (option !== 'delete' && channel.parentId !== process.env.HELP_CHAN)
-            return sendResponse(interaction, `${process.env.BOT_DENY} This command can only be used in a <#${process.env.HELP_CHAN}> thread`);
 
         switch (option) {
-            case 'solved': {
-                // Get the current channel tags, keep only the last 5 tags and add the solved tag
-                const tagsToApply = [...channel.appliedTags, '1033879593775538196'].slice(-5);
-                // Close and mark thread as solved
-                const channelName = channel.name.slice(0, 90);
-                await channel.edit({
-                    name: `[SOLVED] ${channelName}`,
-                    appliedTags: tagsToApply,
-                    archived: true,
-                    locked: true
-                });
-                sendResponse(interaction, `${process.env.BOT_CONF} Thread has been closed and marked as solved`);
-                break;
-            }
-
-            case 'close': {
-                // Close the thread
-                await channel.edit({ archived: true, locked: true });
-                sendResponse(interaction, `${process.env.BOT_CONF} Thread has been closed`);
-                break;
-            }
-
             case 'delete': {
                 // If a thread owner is found, send them a notification
                 const threadOwner = await guild.members.fetch(channel.ownerId).catch(() => {});

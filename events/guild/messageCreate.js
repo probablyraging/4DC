@@ -7,7 +7,7 @@ const blSpam = require('../../modules/misc/spam');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/rank/rank_xp');
-const suggestionPost = require('../../modules/misc/suggestion_post');
+// const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyMessage = require('../../modules/misc/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
 const introductionCheck = require('../../modules/misc/log_introduction');
@@ -22,7 +22,7 @@ module.exports = {
      * @param {Message} message
      */
     async execute(message, client) {
-        // Ignore share server and DM messages
+        // Ignore DM messages
         if (message?.channel.type === 1) return;
 
         // Blacklist checks
@@ -38,7 +38,7 @@ module.exports = {
 
         // Misc checks
         rankXP(message, client);
-        suggestionPost(message);
+        // suggestionPost(message);
         stickyMessage(message, client);
         gptAssistant(message);
         introductionCheck(message);
@@ -49,7 +49,7 @@ module.exports = {
             newUsers.delete(message?.member.id);
         }
 
-        // Block all "youtu.be" links from being posted in the introduction channel
+        // Block all youtube video links from being posted in the introduction channel
         if (message?.channel.id === process.env.INTRO_CHAN && !message?.author.bot) {
             if (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')) {
                 message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
@@ -90,11 +90,11 @@ module.exports = {
             }, 3000);
         }
 
-        // Users must be in the server for more than 1 week before they can post links links in the media channels
+        // Users must be in the server for 3 days before they can post links in the media channels
         const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
-        const oneDay = 24 * 7 * 60 * 60 * 1000;
+        const oneDay = 24 * 3 * 60 * 60 * 1000;
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
-            for (let i in promoLinks) {
+            for (const i in promoLinks) {
                 if (message?.content.includes(promoLinks[i])) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 }
