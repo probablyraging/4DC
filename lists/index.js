@@ -138,36 +138,36 @@ Grab yourself some roles and profile flair from <id:customize>
         `# YOUTUBE FAQ
 ## How do I get started?
 > Starting a YouTube channel is super easy, but knowing what tools to use in the process is a little harder and usually depends on what type of content you plan to make, your financial situation, and your personal preference. To get started, there are 3 main tools you are going to need;
-> <:minidot:923683258871472248> Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like [OBS](<https://obsproject.com>)
-> <:minidot:923683258871472248> A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
-> <:minidot:923683258871472248> A photo editing suite, such as [GIMP](<https://www.gimp.org/>) *(free)* or [Adobe Photoshop](<https://www.adobe.com/au/products/photoshop.html>) *(paid)*. You can also download some free thumbnails templates from [FreePik](<https://www.freepik.com/free-photos-vectors/youtube-thumbnail>) and [Fotor](<https://www.fotor.com/youtube-thumbnail/templates/>). This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
+> * Recording gear or software for recording yourself or your device. This might be a handheld camera or a screen recording program like [OBS](<https://obsproject.com>)
+> * A video editing suite, such as [DaVinci Resolve](<https://www.blackmagicdesign.com/products/davinciresolve>) *(free)* or [Adobe Premiere Pro](<https://www.adobe.com/au/products/premiere.html>) *(paid)*. This is what you will use to edit your recorded footage into a watchable video
+> * A photo editing suite, such as [GIMP](<https://www.gimp.org/>) *(free)* or [Adobe Photoshop](<https://www.adobe.com/au/products/photoshop.html>) *(paid)*. You can also download some free thumbnails templates from [FreePik](<https://www.freepik.com/free-photos-vectors/youtube-thumbnail>) and [Fotor](<https://www.fotor.com/youtube-thumbnail/templates/>). This is what you will use to create graphics such as thumbnails, profile pictures, banners etc..
 > Take the time to do some research about the gear and software you plan to use. Each option can vary in difficulty to use and some are better suited for biginners while others are better suited for people with prior experience
 ⠀`,
 
         `## How do I get monetized?
 > The option to monetize your content becomes available once you have reached the requirements set by YouTube, which currently are;
-> <:minidot:923683258871472248> 1000 subscribers
-> <:minidot:923683258871472248> 4000 watch time hours (over a 12-month period)
-> <:minidot:923683258871472248> 2FA enabled on your account
-> <:minidot:923683258871472248> 0 community strikes
+> * 1000 subscribers
+> * 4000 watch time hours (over a 12-month period)
+> * 2FA enabled on your account
+> * 0 community strikes
 > Once you have met these requirements you will be able to visit the monetization tab in YouTube studio and apply for the YouTube partner program. The application process can take anywhere from 24 hours to a couple of weeks, but it is usually pretty quick. Meeting the above requirements does not guarantee you will be approved for partnership. More information here <https://support.google.com/youtube/answer/72851/>
 ⠀`,
 
         `## How can I get more subscribers/views?
 > There is no simple answer to this question, but it's going to take time, patience, and an understanding of the platform. Some strategies worth noting are;
-> <:minidot:923683258871472248> Start by doing your own research on SEO (Search Engine Optimization). SEO such as using good keywords, thumbnails, titles, and descriptions can drastically improve the chances of YouTube and Google choosing your content to fill their search results with when someone makes a search request using keywords that you've used
-> <:minidot:923683258871472248> Your YouTube studio analytics page has a bunch of really useful information that can help give you an understanding of how to maximize your reach. Things such as time frames of when your audience is most active on YouTube, other channels/content that your audience watches, the age and gender of your audience, and so on. Use this information to better match your content and uploading schedule so that you are doing everything possible to make sure your audience is seeing not only your content, but the content they want to watch
-> <:minidot:923683258871472248> Use tools such as [VidIQ](<https://vidiq.com>), [TubeBuddy](<https://www.tubebuddy.com>), and the new research tab in YouTube studio to plan your videos ahead of time. Make sure your content ideas are what people actually want to see, and then use suitable titles, tags and descriptions to make sure YouTube knows how to recommend your content
-> <:minidot:923683258871472248> Put call to actions in your videos. They remind people to like, comment and subscribe to your content. Video interaction like these, as well as viewer retention and average watch time are what the YouTube algorithm looks for when deciding what content to recommend
+> * Start by doing your own research on SEO (Search Engine Optimization). SEO such as using good keywords, thumbnails, titles, and descriptions can drastically improve the chances of YouTube and Google choosing your content to fill their search results with when someone makes a search request using keywords that you've used
+> * Your YouTube studio analytics page has a bunch of really useful information that can help give you an understanding of how to maximize your reach. Things such as time frames of when your audience is most active on YouTube, other channels/content that your audience watches, the age and gender of your audience, and so on. Use this information to better match your content and uploading schedule so that you are doing everything possible to make sure your audience is seeing not only your content, but the content they want to watch
+> * Use tools such as [VidIQ](<https://vidiq.com>), [TubeBuddy](<https://www.tubebuddy.com>), and the new research tab in YouTube studio to plan your videos ahead of time. Make sure your content ideas are what people actually want to see, and then use suitable titles, tags and descriptions to make sure YouTube knows how to recommend your content
+> * Put call to actions in your videos. They remind people to like, comment and subscribe to your content. Video interaction like these, as well as viewer retention and average watch time are what the YouTube algorithm looks for when deciding what content to recommend
 ⠀`,
 
         `## What is SEO and how do I utilize it?
 > Search Engine Optimization (SEO) is the practice of using good thumbnails, titles, descriptions and keywords to improve the chances of YouTube and Google recommending your content to others by choosing your content to fill their search results. Here is how they are utilized;
-> <:minidot:923683258871472248> Thumbnails entice viewers to click on your content, leading to a higher watch time and click through rate, both of which help your content rank higher in search results
-> <:minidot:923683258871472248> Titles tell humans and search engines what your content is about, so make sure your title brielfy and accurately describes your content 
-> <:minidot:923683258871472248> Description are a longer form of your contents description and will also be used by search engines to determine what your content is about
-> <:minidot:923683258871472248> Keywords give YouTube and other search engines information and context about your content. Using 5-10 keywords related to your content is the best practice
-> <:minidot:923683258871472248> Closed Captions are yet another way search engines can get an understanding into your video. You can turn on closed captions for your videos in YouTube studio
+> * Thumbnails entice viewers to click on your content, leading to a higher watch time and click through rate, both of which help your content rank higher in search results
+> * Titles tell humans and search engines what your content is about, so make sure your title brielfy and accurately describes your content 
+> * Description are a longer form of your contents description and will also be used by search engines to determine what your content is about
+> * Keywords give YouTube and other search engines information and context about your content. Using 5-10 keywords related to your content is the best practice
+> * Closed Captions are yet another way search engines can get an understanding into your video. You can turn on closed captions for your videos in YouTube studio
 > Some other tactics that have been mentioned but have not been verified includes using descriptive imagery and text in your thumbnails and videos, audible keywords in your commentary script, as well as keywords in your embedded subtitles. YouTube and Google use image, audio and video recognition that can detect objects, text and keywords in your thumbnails and videos, adding to the overall SEO of those videos4
 ⠀`,
 
@@ -177,17 +177,17 @@ Grab yourself some roles and profile flair from <id:customize>
 
 ## Where can I get overlays, alert notifications, panels, emotes etc..?
 > There are plenty of free and paid services to use that can improve your stream by adding overlays, alert notifications, subscriber badges, and more. If you are just starting out on Twitch, you probably don't want to be investing too much (if any) money into your stream early on, so your best option would be to use a free service like one of the following;
-> <:minidot:923683258871472248> [StreamElements](<https://streamelements.com>) offers a variety of free and paid features ranging from overlays, alert graphics, chatbots, and donation options right up to having your very own merch store
-> <:minidot:923683258871472248> [NerdOrDie](<https://nerdordie.com>) offers everything you could really ever need as streamer with both free and paid features, such as overlays, alert graphics, sub badges, emotes, and lots more
-> <:minidot:923683258871472248> For custom subscriber and badge emotes you are likely going to have to invest some money into these. Fiverr would probably be the best place to start
+> * [StreamElements](<https://streamelements.com>) offers a variety of free and paid features ranging from overlays, alert graphics, chatbots, and donation options right up to having your very own merch store
+> * [NerdOrDie](<https://nerdordie.com>) offers everything you could really ever need as streamer with both free and paid features, such as overlays, alert graphics, sub badges, emotes, and lots more
+> * For custom subscriber and badge emotes you are likely going to have to invest some money into these. Fiverr would probably be the best place to start
 ⠀`,
 
         `## How do I reach affiliate?
 > Currently, the requirements for becoming an affiliate on Twitch, which are tracked over a 30-day period are;
-> <:minidot:923683258871472248> 500 minutes of total stream time
-> <:minidot:923683258871472248> Stream on 7 unique days
-> <:minidot:923683258871472248> Average 3 concurrent viewers or more
-> <:minidot:923683258871472248> 50 followers
+> * 500 minutes of total stream time
+> * Stream on 7 unique days
+> * Average 3 concurrent viewers or more
+> * 50 followers
 > You can check your progress here <https://dashboard.twitch.tv/achievements/>. Once you have met these requirements you will receive an email from Twitch explaining how to continue with your application for the affiliate program. This email could take anywhere from a couple of hours to a few days to be received. More information here <https://help.twitch.tv/s/article/joining-the-affiliate-program/>
                 
 ## What should I stream?
@@ -196,10 +196,10 @@ Grab yourself some roles and profile flair from <id:customize>
 
         `## How can I get more viewers and followers?
 > There is no simple answer to this question, but it's going to take time, patience, and an understanding of the platform. Some strategies worth noting are;
-> <:minidot:923683258871472248> Try to go live as often, and for as long as possibly. If you're doing short streams you are limiting the possibility of potential viewers finding you. By doing longer streams you are broadening the time frame of when people are active on Twitch and looking for streams to watch
-> <:minidot:923683258871472248> Ask your friends and family to watch and participate in your streams. Twitch's browse tab is ordered by viewer count, from largest to smallest. Smaller streamers are placed toward the bottom of the list of active streams, and this can often mean potential viewers will have to scroll through multiple pages of other streams before they see yours. By asking your friends and family to watch your streams, you are effectively increasing your view count, raising your position on the browse tab
-> <:minidot:923683258871472248> On top of the previous point, you should try to stream in categories that are getting a good amount of views but aren't overly saturated. Streaming popular titles like Fortnite and Call Of Duty, or in genres like Just Chatting will make it that much harder to find your stream, as these categories often have thousands of active streamers already. So when starting out it is often best to find categories that average a couple of thousand viewers, that also don't have too many people streaming at any one time
-> <:minidot:923683258871472248> Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams
+> * Try to go live as often, and for as long as possibly. If you're doing short streams you are limiting the possibility of potential viewers finding you. By doing longer streams you are broadening the time frame of when people are active on Twitch and looking for streams to watch
+> * Ask your friends and family to watch and participate in your streams. Twitch's browse tab is ordered by viewer count, from largest to smallest. Smaller streamers are placed toward the bottom of the list of active streams, and this can often mean potential viewers will have to scroll through multiple pages of other streams before they see yours. By asking your friends and family to watch your streams, you are effectively increasing your view count, raising your position on the browse tab
+> * On top of the previous point, you should try to stream in categories that are getting a good amount of views but aren't overly saturated. Streaming popular titles like Fortnite and Call Of Duty, or in genres like Just Chatting will make it that much harder to find your stream, as these categories often have thousands of active streamers already. So when starting out it is often best to find categories that average a couple of thousand viewers, that also don't have too many people streaming at any one time
+> * Set yourself a reasonable schedule, list that schedule in the schedules tab on your Twitch channel so your followers can see it as well, and try to stick to it as best as you can. If your followers know when to expect you to go live, they will often set time aside to be able to catch your streams
 ⠀`,
 
         `# USEFUL LINKS

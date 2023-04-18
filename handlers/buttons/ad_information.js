@@ -13,26 +13,26 @@ module.exports = async (interaction) => {
         .addFields(
             {
                 name: `Ad Duration`,
-                value: `<:minidot:923683258871472248> 1 Week - **$5**
-<:minidot:923683258871472248> 1 Month - **$15** *(save $5) **recommended***
-<:minidot:923683258871472248> 3 Month - **$45** *(save $15)*
-<:minidot:923683258871472248> 6 Month - **$80** *(save $40)*
+                value: `* 1 Week - **$5**
+* 1 Month - **$15** *(save $5) **recommended***
+* 3 Month - **$45** *(save $15)*
+* 6 Month - **$80** *(save $40)*
 *..custom durations can be arranged*`,
                 inline: false
             },
             {
                 name: `Role Pings`,
-                value: `<:minidot:923683258871472248> @everyone Role Ping - **$10** **recommended**
-<:minidot:923683258871472248> @here Role Ping - **$7**
-<:minidot:923683258871472248> Specific Role Ping - **$3** per role`,
+                value: `* @everyone Role Ping - **$10** **recommended**
+* @here Role Ping - **$7**
+* Specific Role Ping - **$3** per role`,
                 inline: false
             },
             {
                 name: `Optional Extras`,
-                value: `<:minidot:923683258871472248> Own Custom Channel - **$5**
-<:minidot:923683258871472248> Re-Ping Role - **$3-$10**
-<:minidot:923683258871472248> Bump Ad To Bottom - **$1**
-<:minidot:923683258871472248> Additional Links - **$1**
+                value: `* Own Custom Channel - **$5**
+* Re-Ping Role - **$3-$10**
+* Bump Ad To Bottom - **$1**
+* Additional Links - **$1**
 
 *Prices are USD*
 *One link per ad spot*

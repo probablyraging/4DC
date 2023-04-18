@@ -45,12 +45,18 @@ module.exports = {
         boostReact(message);
 
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
-        if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id))
+        if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id)) {
             newUsers.delete(message?.member.id);
+        }
 
         // Block all "youtu.be" links from being posted in the introduction channel
-        if (message?.channel.id === process.env.INTRO_CHAN && (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')))
-            message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));;
+        if (message?.channel.id === process.env.INTRO_CHAN && !message?.author.bot) {
+            if (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')) {
+                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            } else {
+                message?.react('👋').catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            }
+        }
 
         // Check automod embeds for Discord links and send the user a notification
         if (message?.channel.id === process.env.AUTOMOD_CHAN && message.type === 24) {
