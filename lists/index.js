@@ -28,7 +28,7 @@ By participating in this server, you agree to follow [Server Rules](<https://dis
 > **6.** ${rules[5]}
 > **7.** ${rules[6]}
 
-See something that breaks the rules? Use the </report:1031245457902555213> command to notify staff
+See something that breaks the rules? Use the </report:1098000171171840007> command to notify staff
 
 *last updated: <t:${Math.round(new Date() / 1000)}:R>*`
     ],
@@ -116,7 +116,7 @@ Grab yourself some roles and profile flair from <id:customize>
 ⠀`,
 
         `## How does the rank/XP system work?
-> All new users begin at Rank 0 and unlock higher ranks in increments of five *(e.g. Rank 5, Rank 10, Rank 15)*. By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards, which can be found in the <#1005283113775157349> channel. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1040546996735451176> command in the <#837945839799500850> channel. Please note that you will not receive XP for posting messages in the 'CONTENT SHARE' section
+> All new users begin at Rank 0 and unlock higher ranks in increments of five *(e.g. Rank 5, Rank 10, Rank 15)*. By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards, which can be found in the <#1005283113775157349> channel. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1097681002219974731> command in the <#837945839799500850> channel. Please note that you will not receive XP for posting messages in the 'CONTENT SHARE' section
         
 ## How do I link my channels/socials?
 > Linking your channels/socials to your Discord profile makes it easier for other people to find your content. To link them on PC; in the bottom left of Discord, go to **user settings :gear: > connections**. To link them on iOS and Android; in the bottom right, click on **your avatar > connections > add**. For more help [click here](<https://support.discord.com/hc/en-us/articles/8063233404823-Connections-Community-Members>)
@@ -126,13 +126,13 @@ Grab yourself some roles and profile flair from <id:customize>
 ⠀`,
 
         `## Why do I keep receiving spam and promotional content through DMs?
-> Unfortunately, this is a common occurrence on Discord and we do our best to remove these spam accounts. It is recommended to disable DMs from users who are not on your friends list. This can be done by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members. You can also report these accounts to staff by using the </report:1031245457902555213> command
+> Unfortunately, this is a common occurrence on Discord and we do our best to remove these spam accounts. It is recommended to disable DMs from users who are not on your friends list. This can be done by going to **Settings :gear: > Privacy & Safety** and disabling the option to allow DMs from server members. You can also report these accounts to staff by using the </report:1098000171171840007> command
         
 ## How can I apply for a staff role?
 > We are always accepting new applications for staff members. If you believe you would make a great addition to our team, you can apply by filling out [this form](https://docs.google.com/forms/d/1W7K6WtKes3otlWYiSO_vdZ-dg9f4H0xS-g87gvhGvqY). Applications are accepted and denied privately and we don't provide notification of an application being denied. If your application is successful however, a staff member will contact you to discuss further
 
 ## How can I report someone for breaking the rules?
-> To make a report, you can use the </report:1031245457902555213> command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
+> To make a report, you can use the </report:1098000171171840007> command, or you can **right-click on a message > Apps > Report Message** and one of the staff members will review it. Be sure to include any screenshots in your report. If the matter is more urgent, you can ping a staff member or one of the staff roles
 ⠀`,
 
         `# YOUTUBE FAQ

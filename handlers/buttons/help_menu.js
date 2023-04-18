@@ -81,7 +81,7 @@ Use the buttons below to access information on how to play these games`);
             embed.setTitle('Counting Game');
             embed.setDescription(`Players take turns counting in sequence from the current number. For example, if the current number is 5, the player would type "6", and the next player would type "7", and so on.
 
-If a player submits an incorrect number, the game will "fail" and reset back to the starting number. Players can only submit one number at a time. Each player is allowed up to 2 personal saves, which they can use to prevent the game from failing when they make a mistake. In addition, the server as a whole can have up to 3 guild saves, which are donated by individual players by using the </counting donatesave:1031245457902555208> command and these saves can be used by any player to prevent the game from failing when any player makes a mistake.
+If a player submits an incorrect number, the game will "fail" and reset back to the starting number. Players can only submit one number at a time. Each player is allowed up to 2 personal saves, which they can use to prevent the game from failing when they make a mistake. In addition, each successful count of 50 numbers rewards the server with a game save.
 
 Players can earn game saves by bumping the server by using the </bump:947088344167366698> command in the <#855427926136193054> channel when it is ready to be bumped.
 
