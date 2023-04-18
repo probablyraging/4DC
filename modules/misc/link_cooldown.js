@@ -5,15 +5,11 @@ module.exports = async (message) => {
 
     const { content, member, author } = message;
     const lowerCaseContent = content.toLowerCase();
-    const hasHttpLink = lowerCaseContent.includes('https://') || lowerCaseContent.includes('http://');
-    const hasWWWLink = lowerCaseContent.includes('www.');
-    const hasLink = hasHttpLink || hasWWWLink;
-    const hasManageMessagesPermission = member.permissions.has('ManageMessages');
-    const hasRank5Role = member.roles.cache.has(process.env.RANK5_ROLE);
-    const hasVerifiedRole = member.roles.cache.has(process.env.VERIFIED_ROLE);
-    const hasPermission = hasManageMessagesPermission || hasRank5Role || hasVerifiedRole;
+    const urlRegex = /((?:https?:\/\/)|(?:www\.))[^\s]+/g;
+    const hasLink = lowerCaseContent.match(urlRegex);
+    const isStaff = member.roles.cache.has(process.env.STAFF_ROLE);
 
-    if (hasLink && !hasPermission) {
+    if (hasLink && !isStaff) {
         try {
             if (cooldown.has(author.id)) {
                 message.delete();
@@ -21,7 +17,7 @@ module.exports = async (message) => {
                 cooldown.add(author.id);
                 setTimeout(() => {
                     cooldown.delete(author.id);
-                }, 30000);
+                }, 10000);
             }
         } catch (err) {
             console.error('There was a problem with the link_cooldown module: ', err);

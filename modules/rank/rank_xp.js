@@ -70,7 +70,6 @@ module.exports = async (message, client) => {
                 // Add and/or remove the appropriate rank roles for the user
                 try {
                     // Main guild
-                    const ver = guild.roles.cache.get(process.env.VERIFIED_ROLE);
                     const lv5 = guild.roles.cache.get(process.env.RANK5_ROLE);
                     const lv10 = guild.roles.cache.get(process.env.RANK10_ROLE);
                     const lv15 = guild.roles.cache.get(process.env.RANK15_ROLE);
@@ -86,7 +85,6 @@ module.exports = async (message, client) => {
                     }
                     if (levelMath === 10) {
                         message?.member?.roles.add(lv10);
-                        message?.member?.roles.add(ver);
                         message?.member?.roles.remove(lv5);
                     }
                     if (levelMath === 15) {
