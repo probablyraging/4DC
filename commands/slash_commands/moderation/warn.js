@@ -10,6 +10,7 @@ module.exports = {
     description: `Add, remove or list a user's warnings`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,

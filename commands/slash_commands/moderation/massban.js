@@ -184,6 +184,7 @@ module.exports = {
     description: `Ban a list of users who have been in the server for less than a day.`,
     defaultMemberPermissions: ['ManageRoles'],
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [
         {

@@ -8,6 +8,7 @@ module.exports = {
     description: `Reset a user's XP`,
     defaultMemberPermissions: ['ManageRoles'],
     cooldown: 30,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `reset`,

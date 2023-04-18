@@ -6,6 +6,7 @@ module.exports = {
     name: `help`,
     description: `Help system for 4DC and the server`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

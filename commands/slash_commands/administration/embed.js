@@ -8,6 +8,7 @@ module.exports = {
     description: `Create a new embed or edit an existing one`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `create`,

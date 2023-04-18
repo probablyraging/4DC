@@ -7,6 +7,7 @@ module.exports = {
     description: `Pre-written content for specific channels`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `data`,

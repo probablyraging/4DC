@@ -5,6 +5,7 @@ module.exports = {
     name: `invite`,
     description: `Provides a working invite URL for you to invite friends and family`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

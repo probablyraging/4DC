@@ -7,6 +7,7 @@ module.exports = {
     description: "Create a new resource embed in the resource channel",
     defaultMemberPermissions: ['Administrator'],
     cooldown: 10,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,

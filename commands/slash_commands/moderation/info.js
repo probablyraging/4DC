@@ -7,6 +7,7 @@ module.exports = {
     description: `Information regarding individual topics`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 3,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `topic`,

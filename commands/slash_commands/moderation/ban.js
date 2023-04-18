@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, hyperlink } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
 const { rules } = require('../../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
@@ -9,6 +9,7 @@ module.exports = {
     description: `Ban a user from the server`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 30,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `user`,
@@ -125,7 +126,7 @@ module.exports = {
             .setColor("#E04F5F")
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.tag} *(${target.id})*
-**Reason:** ${reason} ${attachment ? `\n**Attachment:** [${screenshotMessage.id}](${screenshotMessage.url})` : ""}`)
+**Reason:** ${reason} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ""}`)
             .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
 

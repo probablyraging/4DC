@@ -7,6 +7,7 @@ module.exports = {
     description: `Send a channel message as the bot`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `message`,

@@ -6,6 +6,7 @@ module.exports = {
     name: `avatar`,
     description: `Fetch a user's avatar and display it in an embed`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `username`,

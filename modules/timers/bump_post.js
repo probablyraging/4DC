@@ -70,7 +70,7 @@ module.exports = async (message, client) => {
                         .setColor('#32B9FF')
                         .setTitle(`${message?.interaction?.user.username}`)
                         .setURL('https://disboard.org/review/create/820889004055855144')
-                        .setDescription(`Consider leaving an honest review of the server [**HERE**](https://disboard.org/review/create/820889004055855144)
+                        .setDescription(`Consider leaving an honest review of the server **[HERE](https://disboard.org/review/create/820889004055855144)**
 
 ${savesMessage}`)
                         .setImage('https://i.imgur.com/xDAlBKp.png')

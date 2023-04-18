@@ -7,6 +7,7 @@ module.exports = {
     description: `Mark a help and advice thread as solved or closed`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `option`,

@@ -27,6 +27,7 @@ module.exports = {
     description: `Move a message to a specific channel. Move up to 5 messages at a time`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [
         {

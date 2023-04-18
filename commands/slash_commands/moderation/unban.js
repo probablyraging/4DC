@@ -8,6 +8,7 @@ module.exports = {
     description: `Unban a user from the server`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 30,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `user_id`,

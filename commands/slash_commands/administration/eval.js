@@ -7,6 +7,7 @@ module.exports = {
     description: `Evaluate code from within Discord`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `code`,

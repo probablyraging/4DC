@@ -12,6 +12,7 @@ module.exports = {
     description: `Get information and stats about the server`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

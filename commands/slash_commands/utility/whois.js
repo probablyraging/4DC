@@ -6,6 +6,7 @@ module.exports = {
     name: `whois`,
     description: `Get detailed information about a user`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `username`,

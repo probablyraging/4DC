@@ -5,6 +5,7 @@ const path = require('path');
 module.exports = {
     name: `Avatar`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.User,
     /**
      * @param {CommandInteraction} interaction

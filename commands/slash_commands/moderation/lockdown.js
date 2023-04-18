@@ -7,6 +7,7 @@ module.exports = {
     description: `Prevent everyone from sending messages in all channels`,
     defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `option`,

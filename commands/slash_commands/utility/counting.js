@@ -7,6 +7,7 @@ module.exports = {
     name: `counting`,
     description: `Commands for the counting game`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `save`,

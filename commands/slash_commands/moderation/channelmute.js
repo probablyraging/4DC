@@ -10,6 +10,7 @@ module.exports = {
     description: `Mute a user in a specific channel`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,

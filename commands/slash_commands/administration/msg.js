@@ -7,6 +7,7 @@ module.exports = {
     description: `Send a direct message to a user`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `username`,

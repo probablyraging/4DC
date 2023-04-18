@@ -8,6 +8,7 @@ module.exports = {
     description: `Query ChatGPT and receive a helpful response`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `query`,

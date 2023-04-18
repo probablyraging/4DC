@@ -12,6 +12,7 @@ module.exports = {
     name: `rank`,
     description: `Fetch a user's rank`,
     cooldown: 1200,
+    global: true,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{

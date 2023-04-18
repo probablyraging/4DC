@@ -26,6 +26,7 @@ module.exports = {
     description: `Delete a specific number of messages from a channel or user`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
+    dm_permission: false,
     options: [{
         name: `amount`,
         description: `Number of messages to delete`,

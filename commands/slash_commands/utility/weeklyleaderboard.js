@@ -22,6 +22,7 @@ module.exports = {
     name: `weeklyleaderboard`,
     description: `View the weekly leaderboard`,
     cooldown: 60,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

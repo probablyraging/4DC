@@ -9,6 +9,7 @@ module.exports = {
     description: `Modify the YouTube Auto list by adding or removing a user`,
     defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `add`,

@@ -7,6 +7,7 @@ module.exports = {
     description: 'Locks specific channels while the bot is under maintenance',
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: `option`,

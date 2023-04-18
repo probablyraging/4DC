@@ -5,6 +5,7 @@ module.exports = {
     name: `perks`,
     description: `Provides information about the current server subscriber and booster perks`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
      * @param {CommandInteraction} interaction 

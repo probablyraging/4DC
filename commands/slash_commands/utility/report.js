@@ -6,6 +6,7 @@ module.exports = {
     name: "report",
     description: "Report a user to the server staff",
     cooldown: 15,
+    dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
         name: "offender",

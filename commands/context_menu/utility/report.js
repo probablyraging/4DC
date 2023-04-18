@@ -6,6 +6,7 @@ const path = require('path');
 module.exports = {
     name: `Report Message`,
     cooldown: 5,
+    dm_permission: false,
     type: ApplicationCommandType.Message,
     /**
      * @param {CommandInteraction} interaction

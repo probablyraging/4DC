@@ -7,6 +7,7 @@ module.exports = {
     description: `Create a new AutoMod rule`,
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
+    global: true,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
