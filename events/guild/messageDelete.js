@@ -1,8 +1,6 @@
 const { EmbedBuilder, AuditLogEvent, codeBlock } = require('discord.js');
-const { dbUpdateOne } = require('../../utils/utils');
 const { checkDeletedCountingMessage } = require('../../modules/games/counting_game');
 const { checkDeletedLetterMessage } = require('../../modules/games/last_letter');
-const timerSchema = require('../../schemas/misc/timer_schema');
 const { ImgurClient } = require('imgur');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');

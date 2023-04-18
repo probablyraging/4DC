@@ -1,5 +1,6 @@
-const { CommandInteraction, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder, italic } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
+const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 /**
@@ -16,9 +17,11 @@ async function bulkDeleteFilteredMessages(interaction, channel, messages, target
     messages.filter(message => {
         (targetUser ? message.author.id === targetUser.id : !message.system) && amount > i ? (filtered.push(message), i++) : null;
     });
-    channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err)).then(deleted => {
-        sendResponse(interaction, `${targetUser ? `${process.env.BOT_CONF} ${deleted.size} messages from ${targetUser} deleted in ${channel}` : `${process.env.BOT_CONF} ${deleted.size} messages deleted in ${channel}`}`);
-    });
+    const bulkDelete = await channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
+    const responseWithUser = `${process.env.BOT_CONF} ${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`;
+    const responseWithoutUser = `${process.env.BOT_CONF} ${bulkDelete.size} messages deleted in ${channel}`;
+    sendResponse(interaction, `${targetUser ? responseWithUser : responseWithoutUser}`);
+    return bulkDelete.size;
 }
 
 module.exports = {
@@ -47,6 +50,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
+        const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         const amountToDelete = options.getNumber('amount');
         const targetUser = options.getMember('username');
         const fetchedMessages = await channel.messages.fetch();
@@ -66,6 +70,19 @@ module.exports = {
         if (!targetUser && member.id !== process.env.OWNER_ID)
             return sendResponse(interaction, `${process.env.BOT_INFO} You must include a username`);
 
-        await bulkDeleteFilteredMessages(interaction, channel, fetchedMessages, targetUser, amountToDelete);
+        const deletedSize = await bulkDeleteFilteredMessages(interaction, channel, fetchedMessages, targetUser, amountToDelete);
+
+        // Log to channel
+        const log = new EmbedBuilder()
+            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+            .setColor("#E04F5F")
+            .addFields({ name: `Channel`, value: `${channel}`, inline: true },
+                { name: `Reason`, value: `Bulk deleted ${deletedSize} messages`, inline: true })
+            .setFooter({ text: `Bulk Delete • ${uuidv4()}`, iconURL: process.env.LOG_DELETE })
+            .setTimestamp()
+
+        logChan.send({
+            embeds: [log]
+        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
     }
 } 
