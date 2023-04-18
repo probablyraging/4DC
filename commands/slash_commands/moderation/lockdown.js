@@ -35,7 +35,7 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
 
                 noticeChan.send({
-                    content: `:warning: SERVER LOCKDOWN STARTED - all server actions are being temporarily restricted`
+                    content: `# :warning: SERVER LOCKDOWN STARTED - all server actions are being temporarily restricted`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
                 sendResponse(interaction, `${process.env.BOT_CONF} Lockdown started`);

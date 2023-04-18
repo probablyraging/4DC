@@ -42,7 +42,7 @@ module.exports = {
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo-0301",
                     "messages": [
-                        { "role": "system", "content": `Give short meaningful responses` },
+                        { "role": "system", "content": `Give a short meaningful response` },
                         { "role": "user", "content": query }
                     ],
                     "temperature": 0.7,
@@ -55,7 +55,7 @@ module.exports = {
                         sendResponse(interaction, `Unable to generate a response. Try again`);
                     } else {
                         channel.send({
-                            content: `*Information for ${target}:*
+                            content: `## *Information for ${target}:*
 > ${process.env.BOT_DOC} ${data.choices[0].message.content}`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }

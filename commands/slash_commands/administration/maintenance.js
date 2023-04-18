@@ -25,7 +25,7 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const channelIds = ['1038766290246062100', '851584454036029441', '896069772624683018', '1095203236232843374'];
+        const channelIds = ['851584454036029441', '896069772624683018', '1095203236232843374'];
 
         switch (options.getString('option')) {
             case 'start': {
@@ -35,7 +35,7 @@ module.exports = {
                         SendMessages: false,
                     }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
                     channel.send({
-                        content: `:warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly`
+                        content: `# :warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly`
                     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                 }
                 sendResponse(interaction, `Maintenance started`);

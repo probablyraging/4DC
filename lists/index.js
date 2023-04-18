@@ -187,7 +187,6 @@ See something that breaks the rules? Use the </report:1031245457902555213> comma
     servermap: [
         `# CHANNELS
 You can easily hide channels from the channel list via <id:browse>
-
 ## WELCOME
 <#898541066595209248> A list of the server rules. Read them, they're important
 <#820922632227913759> Important updates and changes regarding the server
@@ -195,7 +194,6 @@ You can easily hide channels from the channel list via <id:browse>
 <#843127402435313724> Let us know how we can improve the server
 <#900243955847938078> Stay up to date with trends and platform changes
 <#887642369598570527> Look at all these awesome server boosters
-
 ## CHATTING
 <#820889004055855147> Introduce yourself, hang out, and chat with other server members
 <#845180817281253406> Share memes, images and other non-promotional type media here
@@ -204,7 +202,6 @@ You can easily hide channels from the channel list via <id:browse>
 <#846449072105586708> Current game deals and random game related chat
 <#851584454036029441> It basically explains itself
 <#896069772624683018> Match the first letter of your word, to the last letter of the previous word
-
 ## SUPPORT
 <#978553334854205450> Get assistance or support for specific topics
 <#978691673842389053> Get some constructive feedback on your graphics or videos
@@ -212,16 +209,13 @@ You can easily hide channels from the channel list via <id:browse>
 <#1040530300515647548> Find answers to common questions as well as some useful links
 <#1049118939164188743> Useful resources for content creators
 <#1095203236232843374> Ask ChatGPT questions regarding content creation
-
 ## CONTENT SHARE
 <#907446635435540551> Buy an ad spot that will be seen by thousands of people
-<#859117794779987978> A channel for server supporters to share their content
-⠀`,
+<#859117794779987978> A channel for server supporters to share their content`,
 
         `## COMMISSIONS
 <#1052096719778762822> List your paid services for others to browse
 <#1096198410664689744> List your free services for others to browse
-
 ## BOT
 <#855427926136193054> Bump the server every 2 hours for a cookie
 <#837945839799500850> Check your rank, and get notified when you rank up
@@ -230,16 +224,15 @@ You can easily hide channels from the channel list via <id:browse>
 ⠀`,
 
         `# ROLES
+Grab yourself some roles and profile flair from <id:customize> 
 ## STAFF
 <@&1033563360660291615> A joint staff role for both server admins and mods
 <@&885919072791973898> Server administrators
 <@&931054970327932928> Server moderators
-
 ## MEMBERS
 <@&1061532395314098229> View server subscriber perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 <@&821876910253670442> View server booster perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 <@&839527054465826867> Displays currently live streaming server supporters
-
 ## RANKS AND REWARDS
 <@&1033910783400230953> Access to all server booster perks upon request
 <@&1033910403455012944> Nothing new
@@ -252,7 +245,6 @@ You can easily hide channels from the channel list via <id:browse>
 <@&846417898351362098> Nothing new
 <@&846418078317412403> Permission to post non-promotional links in most channels
 *rank rewards can be unlocked immediately by becoming a server booster*
-
 ## NOTIFICATIONS
 <@&852348066618015744> Get notified when a new server announcement is made
 <@&852348258495627314> Get notified when a free game is posted in #game-deals 
