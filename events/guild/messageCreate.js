@@ -59,25 +59,25 @@ module.exports = {
         }
 
         // Check automod embeds for Discord links and send the user a notification
-        if (message?.channel.id === process.env.AUTOMOD_CHAN && message.type === 24) {
-            if (notifiedUsers.has(message?.author.id)) return;
-            if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
-                message?.author.send({
-                    content: `Discord invite link sharing is only available to FTC++ subscribers \n\nLearn more <https://discord.com/channels/820889004055855144/role-subscriptions>`,
-                    files: ['./res/images/supporter_rewards.png']
-                }).catch(() => { });
-                notifiedUsers.add(message?.author.id);
-            } else {
-                message?.embeds[0].fields.forEach(field => {
-                    if (field.value.toLowerCase() === 'self promotion') {
-                        message?.author.send({
-                            content: `Share your content in the 'CONTENT SHARE' section. Some available channels to share content in are; \n<#856719763187302441> \n<#1075915365105807533> \n<#1075915526833967269>`
-                        }).catch(() => { });
-                        notifiedUsers.add(message?.author.id);
-                    }
-                });
-            }
-        }
+        // if (message?.channel.id === process.env.AUTOMOD_CHAN && message.type === 24) {
+        //     if (notifiedUsers.has(message?.author.id)) return;
+        //     if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
+        //         message?.author.send({
+        //             content: `Discord invite link sharing is only available to FTC++ subscribers \n\nLearn more <https://discord.com/channels/820889004055855144/role-subscriptions>`,
+        //             files: ['./res/images/supporter_rewards.png']
+        //         }).catch(() => { });
+        //         notifiedUsers.add(message?.author.id);
+        //     } else {
+        //         message?.embeds[0].fields.forEach(field => {
+        //             if (field.value.toLowerCase() === 'self promotion') {
+        //                 message?.author.send({
+        //                     content: `Share your content in the 'CONTENT SHARE' section. Some available channels to share content in are; \n<#856719763187302441> \n<#1075915365105807533> \n<#1075915526833967269>`
+        //                 }).catch(() => { });
+        //                 notifiedUsers.add(message?.author.id);
+        //             }
+        //         });
+        //     }
+        // }
 
         // Resend followed server messages, delete the original message and resend it
         if (message.channel.id === process.env.NEWS_CHAN && message.author.id === '900247274792304710') {

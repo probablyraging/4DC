@@ -103,7 +103,7 @@ Grab yourself some roles and profile flair from <id:customize>
     faqs: [
         `# SERVER FAQ
 ## How can I share my content?
-> Content sharing is available for server supporters in the dedicated channels located under the 'CONTENT SHARE' section
+> Content sharing is available for server boosters in the dedicated channels located under the 'CONTENT SHARE' section
 
 ## Can I advertise a paid service?
 > Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services and products are only permitted in <#907446635435540551>
@@ -111,8 +111,8 @@ Grab yourself some roles and profile flair from <id:customize>
 ## Can I advertise my own Discord server?
 > Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active <@&1061554108005355570> subscriber. You can become a subscriber by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 
-## What is server booster and supporter?
-> Subscribing to or boosting the server is a way to support the server. By becoming a server supporter, you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
+## What is a server booster?
+> Boosting the server is a way to support the server. By supporting the server you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks with </perks:1098000171171840004>
 ⠀`,
 
         `## How does the rank/XP system work?
