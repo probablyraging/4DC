@@ -55,7 +55,7 @@ module.exports = {
                         sendResponse(interaction, `Unable to generate a response. Try again`);
                     } else {
                         channel.send({
-                            content: `## *Information for ${target}:*
+                            content: `### *Information for ${target}:*
 > ${process.env.BOT_DOC} ${data.choices[0].message.content}`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
