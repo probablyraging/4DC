@@ -111,7 +111,7 @@ Grab yourself some roles and profile flair from <id:customize>
 ## Can I advertise my own Discord server?
 > Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active <@&1061554108005355570> subscriber. You can become a subscriber by [clicking here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
 
-## What is a server booster?
+## What is server boosting?
 > Boosting the server is a way to support the server. By supporting the server you will gain access to exclusive perks such as bypassing rank requirements for certain channels, double XP, automatic content sharing, and access to the giveaway channel. You can view a full list of perks with </perks:1098000171171840004>
 ⠀`,
 
