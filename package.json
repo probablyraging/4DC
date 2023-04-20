@@ -15,22 +15,17 @@
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.8.0",
     "canvas": "^2.8.0",
-    "cluster": "^0.7.7",
     "console-stamp": "^3.0.4",
     "cron": "^1.8.2",
     "discord-api-types": "^0.25.2",
     "discord.js": "^14.9.0",
     "dotenv": "^9.0.2",
-    "gifencoder": "^2.0.1",
     "glob": "^7.2.0",
     "imgur": "^2.1.0",
     "mongoose": "^6.3.4",
     "nodemon": "^2.0.19",
-    "nudity-filter": "^0.1.2",
-    "os": "^0.1.2",
     "pm2": "^5.1.2",
     "rss-parser": "^3.12.0",
-    "sharp": "^0.31.3",
     "uuid": "^8.3.2"
   }
 }
