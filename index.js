@@ -16,29 +16,7 @@ const client = new Client({
     ],
     partials: [
         Partials.Channel
-    ],
-    makeCache: Options.cacheWithLimits({
-        ...Options.DefaultMakeCacheSettings,
-        AutoModerationRuleManager: 0,
-        ReactionManager: 0,
-        GuildBanManager: 0,
-        GuildStickerManager: 0,
-        ReactionUserManager: 0,
-        StageInstanceManager: 0,
-        ThreadMemberManager: 0,
-        VoiceStateManager: 0,
-    }),
-    sweepers: {
-        ...Options.DefaultSweeperSettings,
-        messages: {
-            interval: 3600,
-            lifetime: 3600,
-        },
-        threads : {
-            interval: 3600,
-            lifetime: 3600
-        }
-    }
+    ]
 });
 
 console.time('Time to online');
