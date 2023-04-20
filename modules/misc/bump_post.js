@@ -73,7 +73,7 @@ module.exports = async (message, client) => {
                         .setDescription(`Consider leaving an honest review of the server **[HERE](https://disboard.org/review/create/820889004055855144)**
 
 ${savesMessage}`)
-                        .setImage('https://i.imgur.com/xDAlBKp.png')
+                        .setImage(process.env.BUMP_IMG)
 
                     // Fetch and delete the previous bump ping message
                     await message?.channel.messages.fetch({ limit: 3 }).then(fetched => {

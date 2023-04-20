@@ -6,6 +6,7 @@ const liveNow = require('../../modules/automation/live_now');
 const youtubeAuto = require('../../modules/misc/youtubeauto');
 const fetchTweets = require('../../modules/automation/fetch_tweets');
 const welcomeCheck = require('../../modules/automation/welcome_message');
+const cronjob = require('cron').CronJob;
 const mongoose = require('mongoose');
 const Canvas = require("canvas");
 const path = require('path');
@@ -17,6 +18,9 @@ module.exports = {
         console.log('Client is online!');
         console.timeEnd('Time to online');
 
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
+
         // Connect to database
         mongoose.set('strictQuery', true); // Remove dep warning
         mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -24,7 +28,6 @@ module.exports = {
             .then(() => console.log('Connected to database'));
 
         // Set client activity
-        const guild = client.guilds.cache.get(process.env.GUILD_ID);
         client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: ActivityType.Watching });
         setInterval(() => {
             client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: ActivityType.Watching });
@@ -33,6 +36,23 @@ module.exports = {
         // Register the font we use for the /rank command
         Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
         Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
+
+        // Booster rewards
+        const boostTimer = new cronjob('0 */10 * * *', function () {
+            generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
+                message = await webhook.send({
+                    content: `Boost the server and unlock these server benefits and more`,
+                    files: ['./res/images/supporter_rewards.png']
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                setTimeout(() => {
+                    webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                }, 10000);
+                setTimeout(async () => {
+                    message.delete();
+                }, 300000);
+            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+        });
+        boostTimer.start();
 
         // Misc intervals
         mutesCheck(message, client, Discord);

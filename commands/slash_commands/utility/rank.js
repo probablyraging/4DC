@@ -50,8 +50,20 @@ module.exports = {
             ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
             // Draw an opaque rectangle ontop of image
-            ctx.fillStyle = "rgba(0,0,0,0.5)";
-            ctx.fillRect(20, 30, canvas.width - 40, canvas.height - 60);
+            const cornerRadius = 10;
+            ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+            ctx.beginPath();
+            ctx.moveTo(20 + cornerRadius, 30);
+            ctx.lineTo(canvas.width - 20 - cornerRadius, 30);
+            ctx.arcTo(canvas.width - 20, 30, canvas.width - 20, 30 + cornerRadius, cornerRadius);
+            ctx.lineTo(canvas.width - 20, canvas.height - 30 - cornerRadius);
+            ctx.arcTo(canvas.width - 20, canvas.height - 30, canvas.width - 20 - cornerRadius, canvas.height - 30, cornerRadius);
+            ctx.lineTo(20 + cornerRadius, canvas.height - 30);
+            ctx.arcTo(20, canvas.height - 30, 20, canvas.height - 30 - cornerRadius, cornerRadius);
+            ctx.lineTo(20, 30 + cornerRadius);
+            ctx.arcTo(20, 30, 20 + cornerRadius, 30, cornerRadius);
+            ctx.closePath();
+            ctx.fill();
 
             // Not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
             ctx.font = "36px grotesk";
