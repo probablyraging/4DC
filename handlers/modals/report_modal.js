@@ -1,7 +1,19 @@
 const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } = require('discord.js');
-const { addCooldown, hasCooldown, removeCooldown } = require("../../modules/misc/report_cooldown");
 const { sendReply, getAttachment } = require('../../utils/utils');
 const { v4: uuidv4 } = require("uuid");
+const cooldownList = new Set();
+
+function addCooldown(userId) {
+    return cooldownList.add(userId);
+}
+
+function removeCooldown(userId) {
+    return cooldownList.delete(userId);
+}
+
+function hasCooldown(userId) {
+    return cooldownList.has(userId);
+}
 
 module.exports = async (interaction) => {
     const { client, user, guild } = interaction;

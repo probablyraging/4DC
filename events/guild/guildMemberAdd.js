@@ -1,7 +1,7 @@
 const { dbUpdateOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const previouslyBannedUsers = require('../../lists/previous_bans');
-const previousMutesCheck = require('../../modules/misc/previous_mutes_check');
+const previousMutesCheck = require('../../modules/moderation/previous_mutes');
 const newUsers = new Set();
 const path = require('path');
 

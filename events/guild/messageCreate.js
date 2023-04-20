@@ -1,17 +1,17 @@
 const { Message } = require('discord.js');
 const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
 const { newUsers } = require('../../events/guild/guildMemberAdd');
-const linkCooldown = require('../../modules/misc/link_cooldown');
-const bumpPost = require('../../modules/timers/bump_post');
-const blSpam = require('../../modules/misc/spam');
+const linkCooldown = require('../../modules/moderation/link_cooldown');
+const bumpPost = require('../../modules/misc/bump_post');
+const blSpam = require('../../modules/moderation/spam_filter');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
-const rankXP = require('../../modules/rank/rank_xp');
+const rankXP = require('../../modules/automation/rank_xp');
 // const suggestionPost = require('../../modules/misc/suggestion_post');
-const stickyMessage = require('../../modules/misc/sticky_message');
+const stickyMessage = require('../../modules/automation/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
-const introductionCheck = require('../../modules/misc/log_introduction');
-const boostReact = require('../../modules/misc//boost_react');
+const introductionCheck = require('../../modules/moderation/log_introduction');
+const boostReact = require('../../modules/automation//boost_react');
 const weeklyLeaderboardSchema = require('../../schemas/misc/weekly_leaderboard_schema');
 const notifiedUsers = new Set();
 const path = require('path');
@@ -44,7 +44,7 @@ module.exports = {
         introductionCheck(message);
         boostReact(message);
 
-        // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_check.js)
+        // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_message.js)
         if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id)) {
             newUsers.delete(message?.member.id);
         }

@@ -15,7 +15,7 @@ module.exports = async (client) => {
             }, 300000);
             newUsers.clear();
         } catch (err) {
-            console.error('There was a problem with the welcome_check module: ', err);
+            console.error('There was a problem with the welcome_message module: ', err);
         }
     }, 180000);
 }
