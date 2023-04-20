@@ -1,21 +1,21 @@
 require("dotenv").config();
 const Discord = require('discord.js');
-const { Client, GatewayIntentBits, Partials, Options, Collection } = require('discord.js');
-const client = new Client({
+
+const client = new Discord.Client({
     intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildModeration,
-        GatewayIntentBits.GuildWebhooks,
-        GatewayIntentBits.GuildInvites,
-        GatewayIntentBits.GuildPresences,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.AutoModerationConfiguration
+        Discord.GatewayIntentBits.Guilds,
+        Discord.GatewayIntentBits.GuildMembers,
+        Discord.GatewayIntentBits.GuildModeration,
+        Discord.GatewayIntentBits.GuildWebhooks,
+        Discord.GatewayIntentBits.GuildInvites,
+        Discord.GatewayIntentBits.GuildPresences,
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.DirectMessages,
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.AutoModerationConfiguration
     ],
     partials: [
-        Partials.Channel
+        Discord.Partials.Channel
     ]
 });
 
@@ -25,8 +25,8 @@ require('console-stamp')(console, {
 });
 
 client.setMaxListeners(0);
-client.commands = new Collection();
-client.events = new Collection();
+client.commands = new Discord.Collection();
+client.events = new Discord.Collection();
 
 ["command_handler", "event_handler"].forEach(handler => {
     require(`./handlers/client/${handler}`)(client, Discord);
