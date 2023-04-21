@@ -12,7 +12,7 @@ module.exports = async (client) => {
             });
             setTimeout(async () => {
                 const exists = await generalChan.messages.fetch(message.id).catch(() => { });
-                if (exists) message.delete();
+                if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }, 300000);
             newUsers.clear();
         } catch (err) {
