@@ -10,8 +10,8 @@ module.exports = async (client) => {
             const message = await generalChan.send({
                 content: `We have ${friendOrFriends}! <:squee:838443107988799498> Welcome to the server <@${Array.from(newUsers).join('>, <@')}>! :wave: Feel free to <#1049263519255777301>, or just join the chat :slight_smile:`
             });
-            setTimeout(() => {
-                const exists = generalChan.messages.fetch(message.id).catch(() => { });
+            setTimeout(async () => {
+                const exists = await generalChan.messages.fetch(message.id).catch(() => { });
                 if (exists) message.delete();
             }, 300000);
             newUsers.clear();
