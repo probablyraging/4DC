@@ -69,11 +69,20 @@ module.exports = {
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
         }, 2000);
 
-        // Delete a thread channel if the starter message is deleted and there are no other messages in the channel
+        // Delete or archive thread channels
         if (message?.channel.isThread()) {
             const starterMessage = await message?.channel.fetchStarterMessage().catch(() => { });
-            if (!starterMessage && message?.channel.messageCount === 0)
+            // Delete the thread if the starter message was deleted and there are no other messages in the thread
+            if (!starterMessage && message?.channel.messageCount === 0) {
                 message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
+            }
+            // Archive and lock the thread if the starter message was deleted but there are messages in the thread
+            if (!starterMessage && message?.channel.messageCount > 0) {
+                message?.channel.edit({
+                    archived: true,
+                    locked: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
+            }
         }
 
         // Game message delete checks

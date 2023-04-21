@@ -40,7 +40,7 @@ module.exports = {
         // Booster rewards
         const boostTimer = new cronjob('0 */10 * * *', function () {
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
-                message = await webhook.send({
+                whMessage = await webhook.send({
                     content: `Boost the server and unlock these server benefits and more`,
                     files: ['./res/images/supporter_rewards.png']
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
@@ -48,7 +48,7 @@ module.exports = {
                     webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                 }, 10000);
                 setTimeout(async () => {
-                    message.delete();
+                    whMessage.delete();
                 }, 300000);
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
         });
