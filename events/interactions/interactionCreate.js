@@ -103,7 +103,7 @@ module.exports = {
             // Get the customId of the button
             const customId = interaction.customId;
             const customIdPrefix = interaction.customId.split('-')[0];
-            
+
             // A map of customIds for the buttons with prefixed custom IDs
             const prefixedButtons = {
                 'report': reportActionButton,
@@ -138,6 +138,21 @@ module.exports = {
                 'report': reportActionButton,
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
+        }
+
+        // Autocomplete handler
+        if (interaction.isAutocomplete()) {
+
+            // If no command with the specified command name was found
+            if (!command) {
+                interaction.reply({
+                    content: `Could not run this command`,
+                    ephemeral: true
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                return client.command.module(interaction.commandName);
+            }
+
+            command.autocomplete(interaction);
         }
     }
 }
