@@ -13,7 +13,7 @@ module.exports = {
         // Delete a welcome message mentioning the newUser who left, if one was sent
         const generalMessages = await generalChan.messages.fetch({ limit: 10 });
         generalMessages.forEach(message => {
-            if (message.mentions.embers.size === 1 && message.mentions.has(member) && message.author.bot) {
+            if (message.mentions.members.size === 1 && message.mentions.has(member) && message.author.bot) {
                 message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
             }
         });
