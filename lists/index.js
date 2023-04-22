@@ -79,9 +79,8 @@ Grab yourself some roles and profile flair from <id:customize>
 <@&885919072791973898> Server administrators
 <@&931054970327932928> Server moderators
 ## MEMBERS
-<@&1061532395314098229> View server subscriber perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
-<@&821876910253670442> View server booster perks [here](<https://discord.com/channels/820889004055855144/role-subscriptions>)
-<@&839527054465826867> Displays currently live streaming server supporters
+<@&821876910253670442> View server booster perks with </perks:1098000171171840004>
+<@&839527054465826867> Displays currently live streaming server boosters
 ## RANKS AND REWARDS
 <@&1033910783400230953> Access to all server booster perks upon request
 <@&1033910403455012944> Nothing new
