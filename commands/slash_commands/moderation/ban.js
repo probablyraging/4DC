@@ -126,7 +126,7 @@ module.exports = {
             .setColor("#E04F5F")
             .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.tag} *(${target.id})*
-**Reason:** ${reason} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ""}`)
+**Reason:** ${reason} \n**Purge Messages:** ${deleteMessages} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ""}`)
             .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
 
