@@ -12,7 +12,6 @@ const stickyMessage = require('../../modules/automation/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
 const introductionCheck = require('../../modules/moderation/log_introduction');
 const boostReact = require('../../modules/automation//boost_react');
-const weeklyLeaderboardSchema = require('../../schemas/misc/weekly_leaderboard_schema');
 const notifiedUsers = new Set();
 const path = require('path');
 
@@ -98,17 +97,6 @@ module.exports = {
                 if (message?.content.includes(promoLinks[i])) {
                     message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
                 }
-            }
-        }
-
-        // Log user's message count for weekly leaderboard
-        if (!message?.author.bot) {
-            try {
-                const userWeeklyMessageCount = await dbFindOne(weeklyLeaderboardSchema, { userId: message?.author.id });
-                const currentUseMessageCount = userWeeklyMessageCount ? userWeeklyMessageCount.msgCount : 0;
-                await dbUpdateOne(weeklyLeaderboardSchema, { userId: message?.author.id }, { msgCount: currentUseMessageCount + 1 });
-            } catch (err) {
-                console.error(`There was a problem updating a user's weekly message count: `, err);
             }
         }
     }
