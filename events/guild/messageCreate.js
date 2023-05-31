@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
 const { newUsers } = require('../../events/guild/guildMemberAdd');
 const linkCooldown = require('../../modules/moderation/link_cooldown');
 const bumpPost = require('../../modules/misc/bump_post');
@@ -7,7 +6,6 @@ const blSpam = require('../../modules/moderation/spam_filter');
 const lastLetter = require('../../modules/games/last_letter');
 const countingGame = require('../../modules/games/counting_game');
 const rankXP = require('../../modules/automation/rank_xp');
-// const suggestionPost = require('../../modules/misc/suggestion_post');
 const stickyMessage = require('../../modules/automation/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
 const introductionCheck = require('../../modules/moderation/log_introduction');

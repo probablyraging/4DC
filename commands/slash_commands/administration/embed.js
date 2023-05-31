@@ -84,6 +84,11 @@ module.exports = {
             description: `Do you want to show who created this embed?`,
             type: ApplicationCommandOptionType.Boolean,
             required: false
+        }, {
+            name: `url`,
+            description: `The url of the embed title`,
+            type: ApplicationCommandOptionType.String,
+            required: false
         }]
     }],
     /**
@@ -133,6 +138,7 @@ module.exports = {
                 const description = options.getString('description');
                 const color = options.getString('color');
                 const author = options.getBoolean('author');
+                const url = options.getString('url');
                 let thumbnail = options.getAttachment('thumbnail');
                 let image = options.getAttachment('image');
 
@@ -195,6 +201,8 @@ module.exports = {
                     .setImage(image)
                 if (author) editEmbed = EmbedBuilder.from(embed)
                     .setFooter({ text: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) });
+                if (url) editEmbed = EmbedBuilder.from(embed)
+                    .setURL(url);
 
                 // Edit the embed
                 await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
