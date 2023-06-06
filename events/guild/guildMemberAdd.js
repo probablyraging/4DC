@@ -23,12 +23,12 @@ If you're a **YouTube creator** looking for easy **likes and views**, then downl
 
 Our extension allows users to submit YouTube videos that 100s of other server members will like and watch. Check <#820922632227913759> for more informatiion
 
-Chrome Web Store: https://chrome.google.com/webstore/detail/forthecontent/kbnghoajbjomkegkhiiafelmmecnajhd
+Chrome Web Store: https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd
 
 Sincerely, 
 ContentCreator Staff Team
 ⠀`
-        }).catch(() => {});
+        }).catch(() => { });
 
         // Add all new user to a set
         newUsers.add(member.id);

@@ -31,8 +31,8 @@ module.exports = {
         choices: [{ name: 'Rule 1 - harmful posts, username, profile, etc..', value: '1' },
         { name: 'Rule 2 - advertising discord servers and paid services', value: '2' },
         { name: 'Rule 3 - breaking another platforms ToS, sub4sub, buying/sellin,g etc..', value: '3' },
-        { name: 'Rule 4 - self-promotion outside of content share section', value: '4' },
-        { name: 'Rule 5 - unsolicited DMs', value: '5' },
+        { name: 'Rule 4 - unsolicited DMs', value: '4' },
+        { name: 'Rule 5 - self-promotion outside of content share section', value: '5' },
         { name: 'Rule 6 - sending repeated or purposeless message', value: '6' },
         { name: 'Rule 7 - messages not in English', value: '7' },
         { name: 'Custom - please provide a custom reason', value: 'custom' }]
