@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -14,7 +14,8 @@ module.exports = {
         description: `Data to send`,
         type: ApplicationCommandOptionType.String,
         required: true,
-        choices: [{ name: 'rules', value: 'rules' },
+        choices: [{ name: 'welcome', value: 'welcome' },
+        { name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' }]
     }],
@@ -34,20 +35,41 @@ module.exports = {
             channel = guild.channels.cache.get(channel.parentId);
         }
 
-        // RULES
         switch (options.getString('data')) {
+            // WELCOME
+            case 'welcome': {
+                channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    webhook.send({
+                        content: `${index.welcome[0]}`,
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    setTimeout(() => {
+                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    }, 10000);
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+
+                break;
+            }
+
+            // RULES
             case 'rules': {
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
-                    for (let i = 0; i < index.welcome.length; i++) {
-                        setTimeout(function () {
-                            webhook.send({
-                                content: `${index.welcome[i]}`,
-                                allowedMentions: {
-                                    parse: []
-                                }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
-                        }, i * 1000);
-                    }
+                    webhook.send({
+                        embeds: [new EmbedBuilder().setTitle('SERVER RULES').setDescription('By participating in this server, you agree to the following').setColor('#2B2D31').setThumbnail('https://i.imgur.com/LRi2593.png')],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    webhook.send({
+                        content: `${index.rules[0]}`,
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 10000);
@@ -62,6 +84,12 @@ module.exports = {
             case 'serverguide': {
                 let initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    webhook.send({
+                        embeds: [new EmbedBuilder().setTitle('CHANNELS & ROLES').setDescription(`A detailed list of all the server's channels and roles`).setColor('#2B2D31').setThumbnail('https://i.imgur.com/nkUXwJK.png')],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                     for (let i = 0; i < index.servermap.length; i++) {
                         setTimeout(async function () {
                             const message = await webhook.send({
@@ -90,6 +118,12 @@ module.exports = {
             case 'faqs': {
                 let initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
+                    webhook.send({
+                        embeds: [new EmbedBuilder().setTitle('FAQ & USEFUL LINKS').setDescription(`A compilation of frequently asked question and useful links`).setColor('#2B2D31').setThumbnail('https://i.imgur.com/2ue2min.png')],
+                        allowedMentions: {
+                            parse: []
+                        }
+                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
                     for (let i = 0; i < index.faqs.length; i++) {
                         setTimeout(async function () {
                             const message = await webhook.send({

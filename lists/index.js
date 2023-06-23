@@ -9,16 +9,14 @@ Welcome to ContentCreator, a community of content creators, developers, musician
 Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to help get you started
 
 ## GETTING STARTED
-> <#1005283113775157349> Information about the server channels and roles
-> <#820889004055855147> Meet and chat with the community
-> <#1049263519255777301> Tell us a little about yourself
+> <id:guide> Server rules, guide, and useful resources
 > <id:customize> Grab yourself some profile flair
-> <#1040530300515647548> Find answers to frequently asked question
-> <#978553334854205450> Get assistance or support for specific topics
-⠀`,
+> <#1049263519255777301> Tell us a little about yourself
+> <#978553334854205450> Get assistance or support for specific topics`
+    ],
 
-        `# RULES
-By participating in this server, you agree to follow [Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
+    rules: [
+        `By participating in this server, you agree to follow [Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
 > **1.** ${rules[0]}
 > **2.** ${rules[1]}
