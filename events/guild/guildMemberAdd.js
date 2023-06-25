@@ -17,17 +17,23 @@ module.exports = {
 
         // Advertise chrome extension
         member?.send({
-            content: `Welcome to ContentCreator,
+            content: `# Hide YouTube Shorts
+Hide YouTube Shorts is a browser extension that allows you to disable, block, and remove Shorts videos from your home, subscriptions, and trending feeds with ease and efficiency.
 
-If you're a **YouTube creator** looking for easy **likes and views**, then download the ForTheContent browser extension.
+**With Hide YouTube Shorts you can;**
+- Disable YouTube Shorts on the Home, Trending, and Subscription feeds
+- Disable YouTube Shorts in the Recommended list, Search results, and Notifications menu
+- Disable the Shorts tab and Shorts videos on Channel pages
+- Disable Lives and Premieres on the Home and Subscription pages
+- Automatically play Shorts videos in a regular video format
+*..and much more*
 
-Our extension allows users to submit YouTube videos that 100s of other server members will like and watch. Check <#820922632227913759> for more informatiion
-
-Chrome Web Store: https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd
+## Chrome Web Store: https://chrome.google.com/webstore/detail/hide-youtube-shorts/aljlkinhomaaahfdojalfmimeidofpih
 
 Sincerely, 
 ContentCreator Staff Team
-⠀`
+⠀`,
+            files: ['./res/images/hys_one.png', './res/images/hys_two.png', './res/images/hys_three.png', './res/images/hys_four.png']
         }).catch(() => { });
 
         // Add all new user to a set
