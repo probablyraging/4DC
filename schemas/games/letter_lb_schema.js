@@ -9,10 +9,6 @@ const letterLBSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    discriminator: {
-        type: String,
-        required: true
-    },
     avatar: {
         type: String,
         required: false

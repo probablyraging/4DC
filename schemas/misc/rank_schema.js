@@ -13,10 +13,6 @@ const rankSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    discrim: {
-        type: String,
-        required: true
-    },
     avatar: {
         type: String,
         required: false

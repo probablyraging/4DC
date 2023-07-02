@@ -326,7 +326,6 @@ module.exports = async (message, client) => {
                 await dbCreate(letterLeaderboard, {
                     userId: message.author.id,
                     username: message.author.username,
-                    discriminator: message.author.discriminator,
                     avatar: message.author.avatar,
                     correctCount: totalPoints,
                     searchFor: 'currentCount'
@@ -338,7 +337,6 @@ module.exports = async (message, client) => {
                     newCorrectCount = correctCount + totalPoints;
                     await dbUpdateOne(letterLeaderboard, { userId: message.author.id }, {
                         username: message.author.username,
-                        discriminator: message.author.discriminator,
                         avatar: message.author.avatar,
                         correctCount: newCorrectCount
                     });

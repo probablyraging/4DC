@@ -34,7 +34,6 @@ module.exports = async (message, client) => {
                 rank: 0,
                 userId: message?.author?.id,
                 username: message?.author.username,
-                discrim: message?.author.discriminator,
                 avatar: message?.author.avatar,
                 level: 0,
                 msgCount: 0,
@@ -55,10 +54,9 @@ module.exports = async (message, client) => {
 
             const xxxpInt = parseInt(xxxp);
             const newUsername = message?.author?.username;
-            const newDiscrim = message?.author?.discriminator;
 
             // Update user's xp and xxp every message, once every 60 seconds
-            await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { username: newUsername, discrim: newDiscrim, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
+            await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { username: newUsername, avatar: message?.author.avatar, xp: xpMath, xxp: xxpMath });
 
             // When a user ranks up, we reset their 'xxp'(level starting xp) to '0' and exponentially increase their 'xxxp'(xp needed until next rank)
             if (xxpMath > xxxpInt) {

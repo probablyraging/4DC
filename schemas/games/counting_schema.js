@@ -9,10 +9,6 @@ const countingSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    discriminator: {
-        type: String,
-        required: false
-    },
     avatar: {
         type: String,
         required: false

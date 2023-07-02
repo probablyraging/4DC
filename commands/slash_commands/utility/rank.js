@@ -40,7 +40,7 @@ module.exports = {
         if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`);
 
         for (const info of results) {
-            let { username, discrim, rank, level, msgCount, xxp, xxxp } = info;
+            let { username, rank, level, msgCount, xxp, xxxp } = info;
 
             const rankPos = parseInt(rank);
             const canvas = Canvas.createCanvas(930, 280);
@@ -70,18 +70,11 @@ module.exports = {
             ctx.fillStyle = "#44eaff";
             ctx.fillText(`Rank ${level}`, 243, 90);
 
-            // Try to compensate for long usernames
-            let userDiscrim = username + "#" + discrim;
-            if (userDiscrim.length > 25) {
-                ctx.font = "30px grotesk";
-                userDiscrim = userDiscrim.slice(0, 25) + "...";
-            } else if (userDiscrim.length > 20) {
-                ctx.font = "30px grotesk";
-            } else {
-                ctx.font = "36px grotesk";
-            }
+            // Trim long usernames
+            if (username.length > 20) username = username.slice(0, 20) + "..";
+            ctx.font = "36px grotesk";
             ctx.fillStyle = "#ffffff";
-            ctx.fillText(userDiscrim, 243, 140);
+            ctx.fillText(username, 243, 140);
 
             // Format numbers greater than 999
             let xp2 = kFormatter(xxxp);

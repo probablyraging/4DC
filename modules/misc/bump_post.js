@@ -68,7 +68,7 @@ module.exports = async (message, client) => {
 
                     const bumpConfirm = new EmbedBuilder()
                         .setColor('#32B9FF')
-                        .setTitle(`${message?.interaction?.user.username}`)
+                        .setTitle(message?.interaction?.user.username)
                         .setURL('https://disboard.org/review/create/820889004055855144')
                         .setDescription(`Consider leaving an honest review of the server **[HERE](https://disboard.org/review/create/820889004055855144)**
 

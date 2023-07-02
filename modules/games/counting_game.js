@@ -167,7 +167,6 @@ module.exports = async (message, client) => {
                     await dbCreate(countingSchema, {
                         userId: message?.author.id,
                         username: message?.author.username,
-                        discriminator: message?.author.discriminator,
                         avatar: message?.author.avatar,
                         counts: 1,
                         saves: 0
@@ -176,7 +175,6 @@ module.exports = async (message, client) => {
                     const { counts, saves } = results;
                     await dbUpdateOne(countingSchema, { userId: message?.author.id }, {
                         username: message?.author.username,
-                        discriminator: message?.author.discriminator,
                         avatar: message?.author.avatar,
                         counts: counts + 1,
                         saves: saves
