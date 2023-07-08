@@ -4,7 +4,6 @@ const mutesCheck = require('../../modules/moderation/expired_mutes');
 const databaseCleanup = require('../../modules/misc/cronjobs');
 const liveNow = require('../../modules/automation/live_now');
 const youtubeAuto = require('../../modules/misc/youtubeauto');
-const fetchTweets = require('../../modules/automation/fetch_tweets');
 const welcomeCheck = require('../../modules/automation/welcome_message');
 const cronjob = require('cron').CronJob;
 const mongoose = require('mongoose');
@@ -60,7 +59,6 @@ module.exports = {
         databaseCleanup(client);
         liveNow(client);
         youtubeAuto(client);
-        fetchTweets(client);
         welcomeCheck(client);
     }
 };
