@@ -53,7 +53,7 @@ module.exports = {
 > ${process.env.BOT_DOC} This server's main focus is providing content creators with help, advice, and useful resources. However, we do offer the following options for sharing your own content;
 > - The <#859117794779987978> channel for __Server Boosters__
 > - The <#907446635435540551> which is a paid method of advertising your services, products, or content
-> - The __ForTheContent__ browser extension which allows our members to support each other's content. Use the </extension:1127659226920132750> command for more information`]
+> - The [ForTheContent browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) browser extension which allows our members to support each other's content. Use the </extension:1127659226920132750> command for more information`]
         ]);
 
         sendResponse(interaction, responses.get(choice));
