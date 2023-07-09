@@ -19,7 +19,7 @@ module.exports = {
 Through this extension, your videos can receive a significant amount of likes, views ,and watch time. Here's how it works:
 
 1. Download the browser extension by [clicking here](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>)
-2. Earn 5 tokens by watching other user's videos for a minimum of 10 minutes each **(1 video = 1 token)** 
+2. Earn 5 tokens by watching other user's videos for a minimum of 10 minutes each *(1 video = 1 token)* 
 3. Use your 5 earned tokens to submit your own video for other users to watch and like
 
 A full guide can be found at: <https://creatordiscord.xyz/extguide>`);
