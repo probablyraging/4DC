@@ -122,7 +122,7 @@ module.exports = {
                 if (title) embed.setTitle(title);
                 if (thumbnail) embed.setThumbnail(thumbnail.url);
                 if (image) embed.setImage(image.url);
-                if (author) embed.setFooter({ text: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) });
+                if (author) embed.setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
                 // Send the embed
                 await channel.send({
                     embeds: [embed]
@@ -200,7 +200,7 @@ module.exports = {
                 if (image) editEmbed = EmbedBuilder.from(embed)
                     .setImage(image)
                 if (author) editEmbed = EmbedBuilder.from(embed)
-                    .setFooter({ text: user.tag, iconURL: user.displayAvatarURL({ dynamic: true }) });
+                    .setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
                 if (url) editEmbed = EmbedBuilder.from(embed)
                     .setURL(url);
 

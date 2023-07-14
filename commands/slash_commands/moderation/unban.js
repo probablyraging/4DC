@@ -45,8 +45,8 @@ module.exports = {
         // Log to channel
         let log = new EmbedBuilder()
             .setColor("#4fe059")
-            .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-            .setDescription(`**Member:** ${fetchTargetBan.user.tag} *(${fetchTargetBan.user.id})*
+            .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+            .setDescription(`**Member:** ${fetchTargetBan.user.username} *(${fetchTargetBan.user.id})*
         **Reason:** ${reason}`)
             .setFooter({ text: `Unban • ${uuidv4()}`, iconURL: process.env.LOG_UNBAN })
             .setTimestamp();
@@ -55,6 +55,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} ${fetchTargetBan.user.tag} was unbanned from the server`);
+        sendResponse(interaction, `${process.env.BOT_CONF} ${fetchTargetBan.user.username} was unbanned from the server`);
     }
 }

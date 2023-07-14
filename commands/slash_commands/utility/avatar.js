@@ -27,7 +27,7 @@ module.exports = {
         // Create an embed with the target user's avatar
         const response = new EmbedBuilder()
             .setColor('#32BEA6')
-            .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${target?.user.username}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setTitle(`AVATAR`)
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`)
 

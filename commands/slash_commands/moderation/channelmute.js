@@ -92,8 +92,8 @@ module.exports = {
                 // Log to channel
                 let log = new EmbedBuilder()
                     .setColor("#E04F5F")
-                    .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
+                    .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`**Member:** ${target?.user.username} *(${target?.user.id})*
 **Channel:** ${targetChan}
 **Duration:** ${duration}
 **Reason:** ${reason}`)
@@ -119,8 +119,8 @@ module.exports = {
                 // Log to channel
                 let log = new EmbedBuilder()
                     .setColor("#4fe059")
-                    .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`**Member:** ${target?.user.tag} *(${target?.user.id})*
+                    .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`**Member:** ${target?.user.username} *(${target?.user.id})*
 **Channel:** ${targetChan}`)
                     .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: process.env.LOG_UNMUTE })
                     .setTimestamp();

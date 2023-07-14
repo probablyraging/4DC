@@ -74,7 +74,7 @@ module.exports = {
 
         // Log to channel
         const log = new EmbedBuilder()
-            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setColor("#E04F5F")
             .addFields({ name: `Channel`, value: `${channel}`, inline: true },
                 { name: `Reason`, value: `Bulk deleted ${deletedSize} messages`, inline: true })

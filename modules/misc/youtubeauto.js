@@ -15,7 +15,7 @@ module.exports = async (client) => {
             const member = guild.members.cache.get(userId);
             if (!member) return dbDeleteOne(ytNotificationSchema, { userId: userId });
 
-            const userTag = member.user?.tag;
+            const userTag = member.user?.username;
             const isStaff = member?.roles?.cache.has(process.env.STAFF_ROLE);
             const isSubscriber = member?.roles?.cache.has(process.env.SUBSCRIBER_ROLE);
             const isBooster = member?.roles?.cache.has(process.env.BOOSTER_ROLE);

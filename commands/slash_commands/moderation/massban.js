@@ -17,13 +17,13 @@ async function banUsers(interaction, users, reason) {
     const oneDay = 24 * 60 * 60 * 1000;
     // Split the users string into an array of user tags
     const userList = users.split(/\r?\n/);
-    let fetchedMemberArrays = await guild.members.fetch().catch(() => {});
+    let fetchedMemberArrays = await guild.members.fetch().catch(() => { });
     let bannedUsers = [];
     let skippedUsers = [];
     for (let fetchedMemberArray of fetchedMemberArrays) {
         // Get the user's tag from the fetched member array
         let fetchedMember = fetchedMemberArray[1];
-        let memberTag = fetchedMember?.user?.tag;
+        let memberTag = fetchedMember?.user?.username;
         // If the member is in the list of users to ban
         if (userList.includes(memberTag)) {
             // Get the timestamp for when the member joined the server
@@ -60,7 +60,7 @@ async function approveMassBan(interaction) {
     // If the request is found and is pending 
     if (result && result.state === "PENDING") {
         let author = result.author;
-        let currentUser = member.user.tag;
+        let currentUser = member.user.username;
         // Check if the current user is the one who requested the mass ban
         if (author === currentUser) {
             sendResponse(interaction, `${process.env.BOT_DENY} The mass ban request with ID '${id}' cannot be approved by the same person who requested it`);
@@ -81,7 +81,7 @@ async function approveMassBan(interaction) {
             let skippedUsers = banResults.skippedUsers.join("\n");
             const staffEmbed = new EmbedBuilder()
                 .setColor('#44ff00')
-                .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+                .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Mass Ban Request Processed`)
                 .addFields({ name: `Request ID`, value: id, inline: false },
                     { name: `Reason`, value: reason, inline: false },
@@ -126,7 +126,7 @@ async function denyMassBan(interaction) {
 
         const staffEmbed = new EmbedBuilder()
             .setColor('#ff8400')
-            .setAuthor({ name: `${member?.user.tag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`Mass Ban Request Denied`)
             .addFields({ name: "Request ID", value: id, inline: false })
 

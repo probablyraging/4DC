@@ -29,8 +29,8 @@ module.exports = async (message, client, Discord) => {
                 // Log to channel
                 let log = new EmbedBuilder()
                     .setColor("#4fe059")
-                    .setAuthor({ name: `${client?.user.tag}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`**Member:** ${target?.tag} *(${target?.id})*
+                    .setAuthor({ name: `${client?.user.username}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`**Member:** ${target?.username} *(${target?.id})*
 **Channel:** ${targetChan}`)
                     .setFooter({ text: `Channel Unmute • ${uuidv4()}`, iconURL: process.env.LOG_UNMUTE })
                     .setTimestamp();

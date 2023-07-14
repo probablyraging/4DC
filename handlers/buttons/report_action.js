@@ -161,8 +161,8 @@ module.exports = async (interaction) => {
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
-                .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`**Member:** ${reportedUser.user.tag} *(${reportedUser.id})*
+                .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${reportedUser.user.username} *(${reportedUser.id})*
 **Reason:** ${reason} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ""}`)
                 .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
                 .setTimestamp();
@@ -176,8 +176,8 @@ module.exports = async (interaction) => {
             const guildId = guild.id;
             const target = reportedUser;
             const userId = target?.id;
-            const username = target?.user.tag;
-            const authorTag = member.user.tag;
+            const username = target?.user.username;
+            const authorTag = member.user.username;
             const warnId = uuidv4();
             const author = member.id;
             const timestamp = new Date().getTime();
@@ -190,8 +190,8 @@ module.exports = async (interaction) => {
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
-                .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`**Member:** ${reportedUser.user.tag} *(${reportedUser.id})* \n**Reason:** ${reason}`)
+                .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${reportedUser.user.username} *(${reportedUser.id})* \n**Reason:** ${reason}`)
                 .setFooter({ text: `Warning Added • ${warnId}`, iconURL: process.env.LOG_WARN })
                 .setTimestamp();
 
@@ -233,7 +233,7 @@ async function closeReport(guild, channel, member) {
     const reportMessage = await channel.messages.fetch(originalMessageId);
     const reportEmbed = reportMessage.embeds[0].data;
     const reporterId = reportEmbed.footer.text.split('-')[0].replace('ID ', '');
-    const reporterUser = await guild.members.fetch(reporterId).catch(() => {});
+    const reporterUser = await guild.members.fetch(reporterId).catch(() => { });
 
     reportEmbed.fields[2] = { name: ``, value: `` };
     const closedEmbed = new EmbedBuilder(reportEmbed)

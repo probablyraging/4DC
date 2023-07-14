@@ -80,8 +80,8 @@ module.exports = {
                 const target = options.getMember('username');
                 const custom = options.getString('custom');
                 const userId = target?.id;
-                const username = target?.user.tag;
-                const authorTag = member.user.tag;
+                const username = target?.user.username;
+                const authorTag = member.user.username;
                 const warnId = uuidv4();
                 const author = member.id;
                 const timestamp = new Date().getTime();
@@ -137,7 +137,7 @@ module.exports = {
                 // Log to channel
                 let log = new EmbedBuilder()
                     .setColor("#4fe059")
-                    .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                    .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${results.username} *(${results.userId})*`)
                     .setFooter({ text: `Warning Removed • ${results.warnId}`, iconURL: process.env.LOG_UNWARN })
                     .setTimestamp();
@@ -159,7 +159,7 @@ module.exports = {
                 // Create an embed to display the user's warnings
                 let warningEmbed = new EmbedBuilder()
                     .setColor('#E04F5F')
-                    .setAuthor({ name: `Warnings for ${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+                    .setAuthor({ name: `Warnings for ${target?.user.username}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                     .setTimestamp()
 
                 let warnCount = `0`;
@@ -170,8 +170,8 @@ module.exports = {
                     // Add the warning data to the embed
                     warningEmbed.addFields({
                         name: `#${warnCount}`,
-                        value: `**Member:** ${target?.user.tag} *(${target?.id})*
-**Warned By:** ${executor.user.tag} *(${executor.id})*
+                        value: `**Member:** ${target?.user.username} *(${target?.id})*
+**Warned By:** ${executor.user.username} *(${executor.id})*
 **Date:** <t:${Math.round(timestamp / 1000)}> (<t:${Math.round(timestamp / 1000)}:R>)
 **Warning ID:** ${warnId}
 **Reason:** ${reason}

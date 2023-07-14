@@ -37,7 +37,7 @@ module.exports = {
 
         const results = await rankSchema.find({ userId: targetId });
         // If there are no results
-        if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} ${target.user.tag} isn't ranked yet. They need to send some messages to earn XP`);
+        if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} ${target.user.username} isn't ranked yet. They need to send some messages to earn XP`);
 
         for (const info of results) {
             let { username, rank, level, msgCount, xxp, xxxp } = info;

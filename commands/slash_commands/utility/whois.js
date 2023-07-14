@@ -40,7 +40,7 @@ module.exports = {
         if (!target?.presence?.status || target?.presence?.status === 'undefined') targetStatus = 'Offline';
         // Create a response embed
         const response = new EmbedBuilder()
-            .setAuthor({ name: `${target?.user.tag}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
+            .setAuthor({ name: `${target?.user.username}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
             .addFields(
                 { name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },

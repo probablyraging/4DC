@@ -46,8 +46,8 @@ Here are a list of perks you now have access, and how you can go about claiming 
             // Log to channel
             let log = new EmbedBuilder()
                 .setColor("#E04F5F")
-                .setAuthor({ name: `${executor?.tag}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`**Member:** ${newMember?.user.tag} *(${newMember?.user.id})*
+                .setAuthor({ name: `${executor?.username}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`**Member:** ${newMember?.user.username} *(${newMember?.user.id})*
 **Expires:** <t:${Math.round(newMember.communicationDisabledUntilTimestamp / 1000)}> (<t:${Math.round(newMember.communicationDisabledUntilTimestamp / 1000)}:R>)
 **Reason:** ${toReason}`)
                 .setFooter({ text: `Timeout • ${uuidv4()}`, iconURL: process.env.LOG_TIMEOUT })

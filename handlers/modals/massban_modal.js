@@ -23,7 +23,7 @@ module.exports = async (interaction) => {
 
     let staffEmbed = new EmbedBuilder()
         .setColor('#ff0000')
-        .setAuthor({ name: member?.user.tag, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
+        .setAuthor({ name: member?.user.username, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
         .setDescription(`Mass Ban Request Needs Approval - use \`\/massban approve [id]\` or \`\/massban deny [id]\``)
         .addFields({ name: `Request ID`, value: uuidv4(), inline: false },
             { name: `Reason`, value: reason, inline: false },
@@ -33,7 +33,7 @@ module.exports = async (interaction) => {
         content: `<@&${process.env.ADMIN_ROLE}>`,
         embeds: [staffEmbed]
     }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-    
+
     // Create a database entry for the new mass ban request
     await dbCreate(massbanSchema, { id: id, author: authorTag, timestamp: new Date().valueOf(), users: trimmedListString, reason: reason });
 

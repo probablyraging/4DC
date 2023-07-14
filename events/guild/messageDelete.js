@@ -34,7 +34,7 @@ module.exports = {
             if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
 
             const log = new EmbedBuilder()
-                .setAuthor({ name: `${message?.author.tag}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
+                .setAuthor({ name: `${message?.author.username}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
                 .setColor("#E04F5F")
                 .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
                     { name: `Channel`, value: `${message?.channel}`, inline: true },
@@ -44,7 +44,7 @@ module.exports = {
 
             if ((new Date() - timestamp) < 10000) {
                 const executor = await guild.members.fetch(entry.executor.id).catch(() => { });
-                log.setAuthor({ name: `${executor?.user.tag}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) })
+                log.setAuthor({ name: `${executor?.user.username}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) })
             }
 
             let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;

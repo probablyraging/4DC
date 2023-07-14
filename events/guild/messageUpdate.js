@@ -16,7 +16,7 @@ module.exports = {
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
             let log = new Discord.EmbedBuilder()
                 .setColor('#FF9E00')
-                .setAuthor({ name: `${oldMessage?.author?.tag}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
+                .setAuthor({ name: `${oldMessage?.author?.username}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
                 .addFields({ name: `Author`, value: `${oldMessage?.author}`, inline: true },
                     { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
