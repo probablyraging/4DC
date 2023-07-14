@@ -1,5 +1,6 @@
 const { dbUpdateOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
+const newUsersSchema = require('../../schemas/misc/new_users');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
 const newUsers = new Set();
@@ -87,6 +88,9 @@ ContentCreator Staff Team
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         });
+
+        // Add new users to a temporary database collection
+        await dbUpdateOne(newUsersSchema, { userId: member.id }, { userId: member.id });
 
         // TEMPORARY: Check a list of previously banned user UDs
         previouslyBannedUsers.ids.forEach(id => {

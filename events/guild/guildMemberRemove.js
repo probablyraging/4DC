@@ -1,4 +1,6 @@
 const { newUsers } = require('../../events/guild/guildMemberAdd');
+const { dbDeleteOne } = require('../../utils/utils');
+const newUsersSchema = require('../../schemas/misc/new_users');
 const path = require('path');
 
 module.exports = {
@@ -23,5 +25,8 @@ module.exports = {
             content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`,
             allowedMentions: { parse: [] }
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+
+        // Remove users from the new users database collection
+        await dbDeleteOne(newUsersSchema, { userId: member.id });
     }
 }
