@@ -1,9 +1,10 @@
-const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
+const { dbUpdateOne, dbDeleteOne, dbDeleteMany } = require('../../utils/utils');
 const rankSchema = require('../../schemas/misc/rank_schema');
 const warnSchema = require('../../schemas/misc/warn_schema');
 const lastLetterSchema = require('../../schemas/games/letter_lb_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
+const newUsersSchema = require('../../schemas/misc/new_users');
 const cronjob = require('cron').CronJob;
 const path = require('path');
 
@@ -99,10 +100,16 @@ module.exports = async (client) => {
         }
     });
 
+    // Clear the new users collection - runs once per day (12:00)
+    const clearNewUsers = new cronjob('0 12 * * *', async function () {
+        await dbDeleteMany(newUsersSchema, {});
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
     countingCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
+    clearNewUsers.start();
 }
