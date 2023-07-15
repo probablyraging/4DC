@@ -102,7 +102,7 @@ module.exports = async (client) => {
 
     // Clear the new users collection - runs once per day (12:00)
     const clearNewUsers = new cronjob('0 12 * * *', async function () {
-        await dbDeleteMany(newUsersSchema, {});
+        await dbDeleteMany(newUsersSchema, { userId: { $exists: true } });
     });
 
     rankSort.start();
