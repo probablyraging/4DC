@@ -1,4 +1,4 @@
-const { dbFindOne, dbUpdateOne } = require('../../utils/utils');
+const { dbFindOne, dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
 const gptHistorySchema = require('../../schemas/misc/gpt_history_schema');
 const fetch = require('node-fetch');
 const path = require('path');
@@ -60,6 +60,7 @@ module.exports = async (message) => {
                         initMessage.edit({
                             content: `Sorry, I was unable to generate an answer. Please try again`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+                        await dbDeleteOne(gptHistorySchema, { userId: message?.author.id });
                     } else {
                         // If there is a response, check if it is longer than 1900
                         const response = data.choices[0].message.content;
