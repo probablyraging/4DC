@@ -3,7 +3,7 @@ const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsersSchema = require('../../schemas/misc/new_users');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
-const newUsers = new Set();
+// const newUsers = new Set();
 const path = require('path');
 
 module.exports = {
@@ -38,7 +38,7 @@ ContentCreator Staff Team
         }).catch(() => { });
 
         // Add all new user to a set
-        newUsers.add(member.id);
+        // newUsers.add(member.id);
 
         // Joins/leaves log channel
         joinLeaveChan.send({
@@ -92,6 +92,50 @@ ContentCreator Staff Team
         // Add new users to a temporary database collection
         await dbUpdateOne(newUsersSchema, { userId: member.id }, { userId: member.id });
 
+        // Get custom welcome message from OpenAi
+        const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
+        try {
+            // if (newUsers.size === 0) return;
+            // Send request to the OpenAI API
+            fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.OAI_KEY}`
+                },
+                body: JSON.stringify({
+                    "model": "gpt-3.5-turbo",
+                    "messages": [
+                        { "role": "system", "content": `You are a rude comedian with awesome banter. You will be given the username and user ID of a Discord user and you will create a funny message about their username and relate it content creation. Your custom message should be no more than 30 words long. I must contain a funny quip about their username. Your custom message must strictly always start with "Welcome <@user_id>" where "user_id" is the unique ID of the user. Use emojies in your message.` },
+                        { "role": "user", "content": `${member.user.username} ${member.id}` }
+                    ],
+                    "temperature": 0.7,
+                    "max_tokens": 2048
+                })
+            })
+                .then(res => res.json())
+                .then(async data => {
+                    // If the response is empty or there are no choices
+                    if (!data || !data.choices) {
+                        return;
+                    } else {
+                        const response = data.choices[0].message.content;
+                        // Send the welcome message
+                        const message = await generalChan.send({
+                            content: `${response}`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                        setTimeout(async () => {
+                            const exists = await generalChan.messages.fetch(message.id).catch(() => { });
+                            if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                        }, 300000);
+                        // newUsers.clear();
+                    }
+                })
+                .catch(err => console.error(err));
+        } catch (err) {
+            console.error('There was a problem with the welcome_message module: ', err);
+        }
+
         // TEMPORARY: Check a list of previously banned user UDs
         previouslyBannedUsers.ids.forEach(id => {
             try {
@@ -106,5 +150,5 @@ ContentCreator Staff Team
         });
     },
     // Export the newUser set
-    newUsers
+    // newUsers
 }

@@ -17,8 +17,7 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
         const formattedUserData = { "role": "user", "content": userData.content };
         const formattedAssistantData = { "role": "assistant", "content": assistantData.content };
         const updatedConversations = [...conversationHistory, formattedUserData, formattedAssistantData];
-        // Only store the previous 30 conversations history
-        // Only keep the last 30 entries
+        // Only keep the last 6 entries
         if (updatedConversations.length > 6) {
             updatedConversations.splice(0, updatedConversations.length - 6);
         }

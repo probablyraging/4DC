@@ -42,9 +42,9 @@ module.exports = {
         boostReact(message);
 
         // If a user in the newUsers set sends a message in general, we can remove them from the set (Extends from welcome_message.js)
-        if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id)) {
-            newUsers.delete(message?.member.id);
-        }
+        // if (message?.channel.id === process.env.GENERAL_CHAN && !message?.author.bot && newUsers.has(message?.member.id)) {
+        //     newUsers.delete(message?.member.id);
+        // }
 
         // Block all youtube video links from being posted in the introduction channel
         if (message?.channel.id === process.env.INTRO_CHAN && !message?.author.bot) {
