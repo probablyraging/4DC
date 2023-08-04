@@ -53,7 +53,7 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         const amountToDelete = options.getNumber('amount');
         const targetUser = options.getMember('username');
-        const fetchedMessages = await channel.messages.fetch();
+        const fetchedMessages = await channel.messages.fetch().catch(() => { });
 
         if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel'))
             return sendResponse(interaction, `${process.env.BOT_DENY} Missing permissions for ${channel}`);
