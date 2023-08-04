@@ -3,6 +3,7 @@ const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsersSchema = require('../../schemas/misc/new_users');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
+const fetch = require('node-fetch');
 // const newUsers = new Set();
 const path = require('path');
 
