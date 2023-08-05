@@ -107,7 +107,7 @@ ContentCreator Staff Team
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo",
                     "messages": [
-                        { "role": "system", "content": `You are a rude comedian with awesome banter. You will be given the username and user ID of a Discord user and you will create a funny message about their username and relate it content creation. Your custom message should be no more than 30 words long. I must contain a funny quip about their username. Your custom message must strictly always start with "Welcome <@user_id>" where "user_id" is the unique ID of the user. Use emojies in your message.` },
+                        { "role": "system", "content": `You will be given the username and user ID of a Discord user and you will create a funny quip about their username. Your quip should be no more than 30 words long. Your quip must strictly always start with "Welcome <@user_id>" where "user_id" is the unique ID of the user. Use emojies in your message.` },
                         { "role": "user", "content": `${member.user.username} ${member.id}` }
                     ],
                     "temperature": 0.7,
