@@ -125,10 +125,10 @@ ContentCreator Staff Team
                         const message = await generalChan.send({
                             content: `${response}`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
-                        setTimeout(async () => {
-                            const exists = await generalChan.messages.fetch(message.id).catch(() => { });
-                            if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        }, 300000);
+                        // setTimeout(async () => {
+                        //     const exists = await generalChan.messages.fetch(message.id).catch(() => { });
+                        //     if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                        // }, 300000);
                         // newUsers.clear();
                     }
                 })
