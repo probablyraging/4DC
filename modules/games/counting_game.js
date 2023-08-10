@@ -221,10 +221,11 @@ module.exports = async (message, client) => {
                 }
             }
 
-            // If number is an increment of 100, add a free guild save
+            // If number is an increment of 50, add a free guild save
             async function isIncrementOf100() {
                 if (parseInt(message.content) % 50 === 0) {
                     const results = await dbFindOne(countingSchema, { userId: guild.id });
+                    if (results.saves >= 15) return;
                     await dbUpdateOne(countingSchema, { userId: guild.id }, { saves: results.saves + 1 });
                     message.react('1061798848890142800')
                         .catch(err => console.error(`${path.basename(__filename)} There was a problem adding a reaction: `, err));
