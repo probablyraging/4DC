@@ -107,7 +107,7 @@ ContentCreator Staff Team
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo",
                     "messages": [
-                        { "role": "system", "content": `You are 4DC, you create funny jokes about people's usernames. Your jokes must be related to content creation` },
+                        { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Create a rude but funny quip about this user's username.` },
                         { "role": "user", "content": `${member.user.username}` }
                     ],
                     "temperature": 1.5,
