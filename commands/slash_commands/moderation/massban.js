@@ -23,20 +23,20 @@ async function banUsers(interaction, users, reason) {
     for (let fetchedMemberArray of fetchedMemberArrays) {
         // Get the user's tag from the fetched member array
         let fetchedMember = fetchedMemberArray[1];
-        let memberTag = fetchedMember?.user?.username;
+        let memberId = fetchedMember?.id;
         // If the member is in the list of users to ban
-        if (userList.includes(memberTag)) {
+        if (userList.includes(memberId)) {
             // Get the timestamp for when the member joined the server
             let joinedAt = fetchedMember.joinedTimestamp;
             // Add users who joined less then 24 hours ago to an array and ban them
             if ((new Date() - joinedAt) > oneDay) {
-                console.log(`${path.basename(__filename)} Member ${memberTag} was not banned as they joined more than 1 day ago.`);
-                skippedUsers.push(memberTag);
+                console.log(`${path.basename(__filename)} Member ${memberId} was not banned as they joined more than 1 day ago.`);
+                skippedUsers.push(memberId);
             } else {
-                console.log(`${path.basename(__filename)} Banning ${memberTag} who joined at ${new Date(joinedAt).toISOString()}.`);
-                bannedUsers.push(memberTag);
+                console.log(`${path.basename(__filename)} Banning ${memberId} who joined at ${new Date(joinedAt).toISOString()}.`);
+                bannedUsers.push(memberId);
                 await fetchedMember.ban({ reason: reason, days: 7 })
-                    .catch(err => console.error(`${path.basename(__filename)} Failed to ban user ${memberTag}: `, err));
+                    .catch(err => console.error(`${path.basename(__filename)} Failed to ban user ${memberId}: `, err));
             }
         }
     }
