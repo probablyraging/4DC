@@ -107,8 +107,8 @@ ContentCreator Staff Team
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo",
                     "messages": [
-                        { "role": "system", "content": `You are 4DC, a terrible comedian. You will be given the username and user ID of a Discord user and you will create a quip about their username. Your quip should be no more than 50 words long and be related to content creation. Your quip must strictly always start with "Welcome <@user_id>" where "user_id" is the unique ID of the user. Use emojies in your message.` },
-                        { "role": "user", "content": `${member.user.username} ${member.id}` }
+                        { "role": "system", "content": `You are 4DC, you create funny jokes about people's usernames. Your jokes must be related to content creation` },
+                        { "role": "user", "content": `${member.user.username}` }
                     ],
                     "temperature": 1.5,
                     "max_tokens": 256
@@ -123,7 +123,7 @@ ContentCreator Staff Team
                         const response = data.choices[0].message.content;
                         // Send the welcome message
                         const message = await generalChan.send({
-                            content: `${response}`
+                            content: `Welcome ${member}. ${response}`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
                         setTimeout(async () => {
                             const exists = await generalChan.messages.fetch(message.id).catch(() => { });
