@@ -1,5 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
+const { sendReplyWithMention } = require('../../../utils/utils');
 const path = require('path');
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
         const choice = options.getString('topic');
         const target = options.getUser('username');
 
-        await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        // await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         const responses = new Map([
             ['connections', `### *Information for ${target}:*
@@ -51,11 +51,12 @@ module.exports = {
 
             [`contentshare`, `### *Information for ${target}:*
 > ${process.env.BOT_DOC} This server's main focus is providing content creators with help, advice, and useful resources. However, we do offer the following options for sharing your own content;
-> - The <#859117794779987978> channel for __Server Boosters__
+> - The <#859117794779987978> channel for <@&821876910253670442>
 > - The <#907446635435540551> which is a paid method of advertising your services, products, or content
-> - The [ForTheContent browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) which allows our members to support each other's content. Use the </extension:1127659226920132750> command for more information`]
+> - Our [browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) which allows members to support each other's content. Use the </extension:1127659226920132750> command for more information
+> - Our [sub-Reddit](<https://www.reddit.com/r/forthecontent>) which is open for everyone to use, including non-server members`]
         ]);
 
-        sendResponse(interaction, responses.get(choice));
+        sendReplyWithMention(interaction, responses.get(choice));
     }
 }

@@ -46,6 +46,29 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
 }
 
 /**
+ * Edit the reply to an interaction
+ * @param {CommandInteraction} interaction The interaction object
+ * @param {string} content The content of the response
+ * @param {Array} embeds An array of embeds
+ * @param {Array} files An array of files
+ * @param {Array} components An array of components
+ */
+async function sendReplyWithMention(interaction, content = '', embeds = [], files = [], components = [], ephemeral = false) {
+    try {
+        return interaction.reply({
+            content: content,
+            embeds: embeds,
+            files: files,
+            components: components,
+            ephemeral: ephemeral,
+            allowedMentions: { parse: ['users'] }
+        });
+    } catch (err) {
+        console.error(`There was a problem editing an interaction: `, err);
+    }
+}
+
+/**
  * Send a follow up to an interaction
  * @param {CommandInteraction} interaction The interaction object
  * @param {string} content The content of the response
@@ -172,6 +195,7 @@ function getAttachment(key) {
 
 module.exports = {
     sendResponse,
+    sendReplyWithMention,
     sendReply,
     sendFollowUp,
     dbFind,
