@@ -53,7 +53,7 @@ module.exports = {
 > ${process.env.BOT_DOC} This server's main focus is providing content creators with help, advice, and useful resources. However, we do offer the following options for sharing your own content;
 > - The <#859117794779987978> channel for <@&821876910253670442>
 > - The <#907446635435540551> channel which is a paid method of advertising your content, services, or products
-> - Our [browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) which allows members to support each other's content. Use the </extension:1127659226920132750> command for more information
+> - Our [browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) which allows server members to support each other's content. Use the </extension:1127659226920132750> command for more information
 > - Our [sub-Reddit](<https://www.reddit.com/r/forthecontent>) which is open for everyone to use, including non-server members`]
         ]);
 
