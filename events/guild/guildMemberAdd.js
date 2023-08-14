@@ -107,7 +107,7 @@ ContentCreator Staff Team
                 body: JSON.stringify({
                     "model": "gpt-3.5-turbo",
                     "messages": [
-                        { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username.` },
+                        { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username. Strictly no longer than 30 words` },
                         { "role": "user", "content": `${member.user.username}` }
                     ],
                     "temperature": 1.5,
