@@ -9,6 +9,7 @@ module.exports = {
     description: `Ban a user from the server`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 30,
+    global: true,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
