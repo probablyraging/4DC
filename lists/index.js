@@ -61,7 +61,7 @@ You can easily hide channels from the channel list via <id:browse>
 <#859117794779987978> A channel for server supporters to share their content`,
 
         `## COMMISSIONS
-<#1052096719778762822> List your paid services for others to browse
+<#1145561195861000252> List your paid services for others to browse
 <#1096198410664689744> List your free services for others to browse
 ## BOT
 <#855427926136193054> Bump the server every 2 hours for a cookie
@@ -104,7 +104,7 @@ Grab yourself some roles and profile flair from <id:customize>
 > Content sharing is available for server boosters in the dedicated channels located under the 'CONTENT SHARE' section
 
 ## Can I advertise a paid service?
-> Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1052096719778762822> channel for free. Other types of paid services and products are only permitted in <#907446635435540551>
+> Yes. Paid services related to content creation *(e.g. video editing and graphic design)* can be posted in the <#1145561195861000252> channel for free. Other types of paid services and products are only permitted in <#907446635435540551>
 
 ## Can I advertise my own Discord server?
 > Yes. To be able to post Discord server invite links in the 'CONTENT SHARE' channels, you must be an active server booster
