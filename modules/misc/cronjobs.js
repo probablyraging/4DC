@@ -5,7 +5,9 @@ const lastLetterSchema = require('../../schemas/games/letter_lb_schema');
 const countingSchema = require('../../schemas/games/counting_schema');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsersSchema = require('../../schemas/misc/new_users');
+const timerSchema = require("../../schemas/misc/timer_schema");
 const cronjob = require('cron').CronJob;
+const axios = require('axios');
 const path = require('path');
 
 module.exports = async (client) => {
@@ -105,6 +107,35 @@ module.exports = async (client) => {
         await dbDeleteMany(newUsersSchema, { userId: { $exists: true } });
     });
 
+    // Pause DMs - runs once per day (08:00)
+    const pauseDMs = new cronjob('0 8 * * *', async function () {
+        const results = await timerSchema.findOne({ timer: 'dms' });
+        if (!results) return;
+        const { timestamp } = results;
+        if (Date.now() > timestamp) {
+            const currentDate = new Date();
+            currentDate.setHours(currentDate.getHours() + 24);
+            const isoTimestamp = currentDate.toISOString();
+            const expireTimestamp = currentDate.valueOf();
+
+            const requestData = {
+                "dms_disabled_until": isoTimestamp
+            };
+
+            const headers = {
+                'Authorization': `Bot ${process.env.BOT_TOKEN}`,
+                'Content-Type': 'application/json',
+            };
+
+            await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
+                .then(async () => {
+                })
+                .catch(() => { })
+
+            await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
+        }
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
@@ -112,4 +143,5 @@ module.exports = async (client) => {
     premiumAdsCheck.start();
     invitesCheck.start();
     clearNewUsers.start();
+    pauseDMs.start();
 }
