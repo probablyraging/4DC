@@ -19,7 +19,7 @@ module.exports = async (message, client, Discord) => {
             };
 
             const headers = {
-                'Authorization': `Bot ODQxNDA5MDg2OTYwNjk3Mzg1.GY33qQ.9n1ULuSmZOI0PjRxmARK656ZVpkg0fCt73kEqM`,
+                'Authorization': `Bot `,
                 'Content-Type': 'application/json',
             };
 
