@@ -19,7 +19,7 @@ module.exports = async (message, client, Discord) => {
             };
 
             const headers = {
-                'Authorization': `Bot `,
+                'Authorization': `Bot ${process.env.BOT_TOKEN}`,
                 'Content-Type': 'application/json',
             };
 
