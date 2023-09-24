@@ -108,27 +108,21 @@ module.exports = async (client) => {
     });
 
     // Pause DMs - runs once per day (08:00)
-    const pauseDMs = new cronjob('0 8 * * *', async function () {
-        const results = await timerSchema.findOne({ timer: 'dms' });
-        if (!results) return;
-        const { timestamp } = results;
-        if (Date.now() > timestamp) {
-            const currentDate = new Date();
-            currentDate.setHours(currentDate.getHours() + 24);
-            const isoTimestamp = currentDate.toISOString();
-            const expireTimestamp = currentDate.valueOf();
-            const requestData = {
-                "dms_disabled_until": isoTimestamp
-            };
-            const headers = {
-                'Authorization': `Bot ${process.env.BOT_TOKEN}`,
-                'Content-Type': 'application/json',
-            };
-            await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem making a PUT request: `, err));
-
-            await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
-        }
+    const pauseDMs = new cronjob('0 9 * * *', async function () {
+        const currentDate = new Date();
+        currentDate.setHours(currentDate.getHours() + 24);
+        const isoTimestamp = currentDate.toISOString();
+        const expireTimestamp = currentDate.valueOf();
+        const requestData = {
+            "dms_disabled_until": isoTimestamp
+        };
+        const headers = {
+            'Authorization': `Bot ${process.env.BOT_TOKEN}`,
+            'Content-Type': 'application/json',
+        };
+        await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem making a PUT request: `, err));
+        await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
     });
 
     rankSort.start();
