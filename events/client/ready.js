@@ -1,6 +1,7 @@
 const { ActivityType } = require('discord.js');
 const bumpCheck = require('../../modules/misc/bump_check');
 const mutesCheck = require('../../modules/moderation/expired_mutes');
+const dmsCheck = require('../../modules/moderation/pause_dms');
 const databaseCleanup = require('../../modules/misc/cronjobs');
 const liveNow = require('../../modules/automation/live_now');
 const youtubeAuto = require('../../modules/misc/youtubeauto');
@@ -56,6 +57,7 @@ module.exports = {
         // Misc intervals
         mutesCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
+        dmsCheck(message, client, Discord);
         databaseCleanup(client);
         liveNow(client);
         youtubeAuto(client);

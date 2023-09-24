@@ -8,10 +8,6 @@ const timerSchema = mongoose.Schema({
     timer: {
         type: String,
         required: true
-    },
-    previouslyFeatured: {
-        type: String,
-        required: false
     }
 });
 

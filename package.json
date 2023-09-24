@@ -14,6 +14,7 @@
     "@discordjs/builders": "^0.9.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.8.0",
+    "axios": "^1.5.0",
     "canvas": "^2.8.0",
     "console-stamp": "^3.0.4",
     "cron": "^1.8.2",
