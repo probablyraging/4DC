@@ -117,20 +117,15 @@ module.exports = async (client) => {
             currentDate.setHours(currentDate.getHours() + 24);
             const isoTimestamp = currentDate.toISOString();
             const expireTimestamp = currentDate.valueOf();
-
             const requestData = {
                 "dms_disabled_until": isoTimestamp
             };
-
             const headers = {
                 'Authorization': `Bot ${process.env.BOT_TOKEN}`,
                 'Content-Type': 'application/json',
             };
-
             await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
-                .then(async () => {
-                })
-                .catch(() => { })
+                .catch(err => console.error(`${path.basename(__filename)} There was a problem making a PUT request: `, err));
 
             await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
         }
