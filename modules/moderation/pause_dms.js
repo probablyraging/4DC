@@ -23,11 +23,12 @@ module.exports = async (message, client, Discord) => {
                 'Content-Type': 'application/json',
             };
 
-            axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
+            await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
                 .then(async () => {
-                    await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
                 })
                 .catch(() => { })
+
+            await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
         }
     }, 300000);
 }
