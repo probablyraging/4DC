@@ -1,10 +1,8 @@
 const { dbUpdateOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
-const newUsersSchema = require('../../schemas/misc/new_users');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
 const fetch = require('node-fetch');
-// const newUsers = new Set();
 const path = require('path');
 
 module.exports = {
@@ -89,9 +87,6 @@ ContentCreator Staff Team
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         });
-
-        // Add new users to a temporary database collection
-        await dbUpdateOne(newUsersSchema, { userId: member.id }, { userId: member.id });
 
         // Get custom welcome message from OpenAi
         const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);

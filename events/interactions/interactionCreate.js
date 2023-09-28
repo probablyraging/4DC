@@ -3,7 +3,6 @@ const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action');
 const helpButton = require('../../handlers/buttons/help_menu');
 const adInformationButton = require('../../handlers/buttons/ad_information');
-const clearNewUsers = require('../../handlers/buttons/clear_newusers');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const path = require('path');
 
@@ -115,7 +114,6 @@ module.exports = {
             // A map of customIds for misc buttons
             const miscButtons = {
                 'ad-info': adInformationButton,
-                'clearnewusers': clearNewUsers
             };
             if (customId in miscButtons) miscButtons[customId](interaction);
         }
