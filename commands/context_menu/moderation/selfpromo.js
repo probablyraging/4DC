@@ -25,6 +25,9 @@ module.exports = {
         // If the target doesn't exist
         if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user is no longer in the server`);
 
+        // Delete the target message
+        fetchMsg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+
         // Update the channel permissions for the target user
         channel.permissionOverwrites.edit(target.id, {
             SendMessages: false,
