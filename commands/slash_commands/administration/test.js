@@ -25,7 +25,7 @@ module.exports = {
         let memberCount = allMembers.size;
 
         allMembers.forEach(async member => {
-            member.roles.add(process.env.UNVERIFIED_ROLE);
+            await member.roles.add(process.env.UNVERIFIED_ROLE);
             memberCount--;
             console.log(`Added role for ${member.id} - ${memberCount} users remaining`);
         });
