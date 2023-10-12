@@ -8,22 +8,17 @@ module.exports = async (interaction) => {
     let repeats = 0;
 
     function randomButtonType() {
-        console.log(`Repeats `, repeats);
-
         if (!buttonType) {
             // If a random button wasn't chosen, force the last button type to be Success
             if (repeats >= 5) return 3;
-
             // Decide if we should randomize this button type or now
             const buttonChooser = Math.floor(Math.random() * 3) + 1;
             if (buttonChooser === 1) {
                 repeats++;
                 return 1
             };
-
             // Get random number between 1 and 6 - 2=Success
             const buttonTypeChooser = Math.floor(Math.random() * 2) + 1;
-            console.log(`Random`, buttonTypeChooser);
             if (buttonTypeChooser === 2) {
                 buttonType = true;
                 return 3;
