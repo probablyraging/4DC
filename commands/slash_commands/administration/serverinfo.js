@@ -1,11 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
-const fetch = require('node-fetch');
+const { default: axios } = require('axios');
 const path = require('path');
-
-function convertTimestamp(timestamp) {
-    return new Date(timestamp).toLocaleString().replace('pm', '').replace('am', '');
-}
 
 module.exports = {
     name: `serverinfo`,
@@ -24,9 +20,9 @@ module.exports = {
 
         const activityTypes = [ActivityType.Streaming, ActivityType.Playing, ActivityType.Listening, ActivityType.Watching, ActivityType.Competing, ActivityType.Custom];
 
-        guild.members.fetch().catch(() => {}).then(async fetchedMembers => {
-            const data = await (await fetch('https://discord.com/api/v9/guilds/820889004055855144?with_counts=true', { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } })).json();
-            const online = data.approximate_presence_count;
+        guild.members.fetch().catch(() => { }).then(async fetchedMembers => {
+            const memberData = await axios.get('https://discord.com/api/v9/guilds/820889004055855144?with_counts=true', { headers: { "Authorization": `Bot ${process.env.BOT_TOKEN}` } })
+            const online = memberData.data.approximate_presence_count;
             const idle = fetchedMembers.filter(member => member.presence?.status === 'idle').size;
             const dnd = fetchedMembers.filter(member => member.presence?.status === 'dnd').size;
 

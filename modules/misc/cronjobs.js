@@ -7,7 +7,7 @@ const inviteSchema = require('../../schemas/misc/invite_schema');
 const newUsersSchema = require('../../schemas/misc/new_users');
 const timerSchema = require("../../schemas/misc/timer_schema");
 const cronjob = require('cron').CronJob;
-const axios = require('axios');
+const { default: axios } = require('axios');
 const path = require('path');
 
 module.exports = async (client) => {

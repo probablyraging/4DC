@@ -2,7 +2,7 @@ const { dbUpdateOne } = require('../../utils/utils');
 const inviteSchema = require('../../schemas/misc/invite_schema');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
-const fetch = require('node-fetch');
+const { default: axios } = require('axios');
 const path = require('path');
 
 module.exports = {
@@ -93,41 +93,38 @@ ContentCreator Staff Team
         try {
             // if (newUsers.size === 0) return;
             // Send request to the OpenAI API
-            fetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OAI_KEY}`
-                },
-                body: JSON.stringify({
-                    "model": "gpt-3.5-turbo",
-                    "messages": [
-                        { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username. Strictly no longer than 30 words` },
-                        { "role": "user", "content": `${member.user.username}` }
-                    ],
-                    "temperature": 1.5,
-                    "max_tokens": 256
-                })
-            })
-                .then(res => res.json())
-                .then(async data => {
-                    // If the response is empty or there are no choices
-                    if (!data || !data.choices) {
-                        return;
-                    } else {
-                        const response = data.choices[0].message.content;
-                        // Send the welcome message
-                        const message = await generalChan.send({
-                            content: `Welcome ${member}. ${response}`
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
-                        setTimeout(async () => {
-                            const exists = await generalChan.messages.fetch(message.id).catch(() => { });
-                            if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                        }, 300000);
-                        // newUsers.clear();
-                    }
-                })
-                .catch(err => console.error(err));
+            const requestData = {
+                "model": "gpt-3.5-turbo",
+                "messages": [
+                    { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username. Strictly no longer than 30 words` },
+                    { "role": "user", "content": `${member.user.username}` }
+                ],
+                "temperature": 1.5,
+                "max_tokens": 256
+            };
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OAI_KEY}`
+            };
+
+            const response = await axios.post('https://api.openai.com/v1/chat/completions', requestData, { headers });
+            const data = response.data;
+
+            // If the response is empty or there are no choices
+            if (!data || !data.choices) {
+                return;
+            } else {
+                const response = data.choices[0].message.content;
+                // Send the welcome message
+                const message = await generalChan.send({
+                    content: `Welcome ${member}. ${response}`
+                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                setTimeout(async () => {
+                    const exists = await generalChan.messages.fetch(message.id).catch(() => { });
+                    if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                }, 300000);
+            }
         } catch (err) {
             console.error('There was a problem with the welcome_message module: ', err);
         }

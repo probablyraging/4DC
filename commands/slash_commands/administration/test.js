@@ -1,8 +1,7 @@
 const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold, ChannelSelectMenuBuilder, ChannelType } = require("discord.js");
 const { sendReply, dbFindOne, dbUpdateOne } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
-const fetch = require('node-fetch');
-const axios = require('axios');
+const { default: axios } = require('axios');
 const path = require("path");
 const schema = require('../../../schemas/misc/rank_schema');
 
