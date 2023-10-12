@@ -128,7 +128,7 @@ module.exports = async (interaction) => {
                 await interaction.deferUpdate();
                 interaction.editReply({ content: `${process.env.BOT_CONF} Verification successful`, components: [] });
                 // Give member role
-                member.roles.add(process.env.MEMBER_ROLE);
+                member.roles.remove(process.env.UNVERIFIED_ROLE);
             } else {
                 await interaction.deferUpdate();
                 interaction.editReply({ content: `${process.env.BOT_DENY} Verification failed. Please try again.`, components: [] });

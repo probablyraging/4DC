@@ -36,8 +36,8 @@ ContentCreator Staff Team
             files: ['./res/images/hys_one.png', './res/images/hys_two.png', './res/images/hys_three.png', './res/images/hys_four.png']
         }).catch(() => { });
 
-        // Add all new user to a set
-        // newUsers.add(member.id);
+        // Add all new user to the unverified role
+        member.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
 
         // Joins/leaves log channel
         joinLeaveChan.send({
@@ -89,45 +89,45 @@ ContentCreator Staff Team
         });
 
         // Get custom welcome message from OpenAi
-        const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
-        try {
-            // if (newUsers.size === 0) return;
-            // Send request to the OpenAI API
-            const requestData = {
-                "model": "gpt-3.5-turbo",
-                "messages": [
-                    { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username. Strictly no longer than 30 words` },
-                    { "role": "user", "content": `${member.user.username}` }
-                ],
-                "temperature": 1.5,
-                "max_tokens": 256
-            };
+        // const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
+        // try {
+        //     // if (newUsers.size === 0) return;
+        //     // Send request to the OpenAI API
+        //     const requestData = {
+        //         "model": "gpt-3.5-turbo",
+        //         "messages": [
+        //             { "role": "system", "content": `You are 4DC, a Discord bot on a server which offers help, advice, and support for content creators. Say something wholesome about this user's username. Strictly no longer than 30 words` },
+        //             { "role": "user", "content": `${member.user.username}` }
+        //         ],
+        //         "temperature": 1.5,
+        //         "max_tokens": 256
+        //     };
 
-            const headers = {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OAI_KEY}`
-            };
+        //     const headers = {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': `Bearer ${process.env.OAI_KEY}`
+        //     };
 
-            const response = await axios.post('https://api.openai.com/v1/chat/completions', requestData, { headers });
-            const data = response.data;
+        //     const response = await axios.post('https://api.openai.com/v1/chat/completions', requestData, { headers });
+        //     const data = response.data;
 
-            // If the response is empty or there are no choices
-            if (!data || !data.choices) {
-                return;
-            } else {
-                const response = data.choices[0].message.content;
-                // Send the welcome message
-                const message = await generalChan.send({
-                    content: `Welcome ${member}. ${response}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
-                setTimeout(async () => {
-                    const exists = await generalChan.messages.fetch(message.id).catch(() => { });
-                    if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
-                }, 300000);
-            }
-        } catch (err) {
-            console.error('There was a problem with the welcome_message module: ', err);
-        }
+        //     // If the response is empty or there are no choices
+        //     if (!data || !data.choices) {
+        //         return;
+        //     } else {
+        //         const response = data.choices[0].message.content;
+        //         // Send the welcome message
+        //         const message = await generalChan.send({
+        //             content: `Welcome ${member}. ${response}`
+        //         }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+        //         setTimeout(async () => {
+        //             const exists = await generalChan.messages.fetch(message.id).catch(() => { });
+        //             if (exists) message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+        //         }, 300000);
+        //     }
+        // } catch (err) {
+        //     console.error('There was a problem with the welcome_message module: ', err);
+        // }
 
         // TEMPORARY: Check a list of previously banned user UDs
         previouslyBannedUsers.ids.forEach(id => {
