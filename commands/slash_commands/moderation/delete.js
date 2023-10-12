@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder, italic } = require('discord.js');
+const { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');

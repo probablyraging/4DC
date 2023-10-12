@@ -2,6 +2,7 @@ const { client, CommandInteraction, PermissionFlagsBits } = require('discord.js'
 const cooldowns = new Map();
 const reportActionButton = require('../../handlers/buttons/report_action');
 const helpButton = require('../../handlers/buttons/help_menu');
+const authButton = require('../../handlers/buttons/auth_actions');
 const adInformationButton = require('../../handlers/buttons/ad_information');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const path = require('path');
@@ -108,6 +109,7 @@ module.exports = {
             const prefixedButtons = {
                 'report': reportActionButton,
                 'help': helpButton,
+                'auth': authButton,
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
 

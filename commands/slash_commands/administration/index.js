@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
+const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const index = require('../../../lists/index');
 const path = require('path');
 
@@ -17,7 +17,8 @@ module.exports = {
         choices: [{ name: 'welcome', value: 'welcome' },
         { name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
-        { name: 'faqs', value: 'faqs' }]
+        { name: 'faqs', value: 'faqs' },
+        { name: 'auth', value: 'auth' }]
     }],
     /**
      * @param {CommandInteraction} interaction 
@@ -142,6 +143,26 @@ module.exports = {
                         webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
                     }, 20000);
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+
+                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+
+                break;
+            }
+
+            // AUTH GUIDE
+            case 'auth': {
+                const button = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('auth-start')
+                            .setLabel('Start Verification')
+                            .setStyle(ButtonStyle.Primary)
+                    );
+
+                channel.send({
+                    content: `## Verification \nIn order to access the content on this server, you must verify that you are human \nPlease click the button below to begin the verification process \n\nIf you have any issues, please contact <@438434841617367080> \n⠀`,
+                    components: [button]
+                });
 
                 interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
 
