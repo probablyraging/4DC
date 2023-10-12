@@ -25,15 +25,9 @@ module.exports = {
         let memberCount = allMembers.size;
 
         allMembers.forEach(async member => {
-            if (member.roles.cache.has(process.env.UNVERIFIED_ROLE)) {
-                await member.roles.remove(process.env.UNVERIFIED_ROLE);
-                memberCount--;
-                console.log(`Removed role for ${member.id} - ${memberCount} users remaining`);
-            } else {
-                await member.roles.add(process.env.UNVERIFIED_ROLE);
-                memberCount--;
-                console.log(`Added role for ${member.id} - ${memberCount} users remaining`);
-            }
+            await member.roles.add(process.env.UNVERIFIED_ROLE);
+            memberCount--;
+            console.log(`Added role for ${member.id} - ${memberCount} users remaining`);
         });
 
         interaction.deleteReply();
