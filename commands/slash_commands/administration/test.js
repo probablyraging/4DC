@@ -20,16 +20,6 @@ module.exports = {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const allMembers = await guild.members.fetch();
-
-        let memberCount = allMembers.size;
-
-        allMembers.forEach(async member => {
-            await member.roles.add(process.env.UNVERIFIED_ROLE);
-            memberCount--;
-            console.log(`Added role for ${member.id} - ${memberCount} users remaining`);
-        });
-
         interaction.deleteReply();
     }
 }
