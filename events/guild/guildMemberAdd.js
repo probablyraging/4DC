@@ -15,27 +15,6 @@ module.exports = {
         // Check if the user was muted, and left the server while a mute was action
         previousMutesCheck(member, client);
 
-        // Advertise chrome extension
-        member?.send({
-            content: `# Hide YouTube Shorts
-Hide YouTube Shorts is a browser extension that allows you to disable, block, and remove Shorts videos from your home, subscriptions, and trending feeds with ease and efficiency.
-
-**With Hide YouTube Shorts you can;**
-- Disable YouTube Shorts on the Home, Trending, and Subscription feeds
-- Disable YouTube Shorts in the Recommended list, Search results, and Notifications menu
-- Disable the Shorts tab and Shorts videos on Channel pages
-- Disable Lives and Premieres on the Home and Subscription pages
-- Automatically play Shorts videos in a regular video format
-*..and much more*
-
-## Chrome Web Store: https://chrome.google.com/webstore/detail/hide-youtube-shorts/aljlkinhomaaahfdojalfmimeidofpih
-
-Sincerely, 
-ContentCreator Staff Team
-⠀`,
-            files: ['./res/images/hys_one.png', './res/images/hys_two.png', './res/images/hys_three.png', './res/images/hys_four.png']
-        }).catch(() => { });
-
         // Add all new user to the unverified role
         member.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
 
