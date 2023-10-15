@@ -89,6 +89,11 @@ module.exports = {
             description: `The url of the embed title`,
             type: ApplicationCommandOptionType.String,
             required: false
+        }, {
+            name: `footer`,
+            description: `The text of the embed footer`,
+            type: ApplicationCommandOptionType.String,
+            required: false
         }]
     }],
     /**
@@ -139,6 +144,7 @@ module.exports = {
                 const color = options.getString('color');
                 const author = options.getBoolean('author');
                 const url = options.getString('url');
+                const footer = options.getString('footer');
                 let thumbnail = options.getAttachment('thumbnail');
                 let image = options.getAttachment('image');
 
@@ -203,6 +209,8 @@ module.exports = {
                     .setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
                 if (url) editEmbed = EmbedBuilder.from(embed)
                     .setURL(url);
+                if (footer) editEmbed = EmbedBuilder.from(embed)
+                    .setFooter({ text: footer });
 
                 // Edit the embed
                 await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));

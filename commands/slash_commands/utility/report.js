@@ -1,6 +1,5 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, codeBlock } = require("discord.js");
 const { sendResponse } = require('../../../utils/utils');
-const { v4: uuidv4 } = require("uuid");
 
 module.exports = {
     name: "report",
@@ -38,7 +37,6 @@ module.exports = {
         const target = options.getUser('offender');
         const reason = options.getString('reason');
         const attachment = options.getAttachment('screenshot');
-        const reportId = uuidv4();
 
         // If attachment content type isn't an image
         if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
@@ -50,8 +48,10 @@ module.exports = {
             .addFields({ name: `Reported User`, value: `${target}`, inline: false },
                 { name: `Reason`, value: codeBlock(reason), inline: false })
             .setTimestamp();
+
         // Get the attachment if one exists and add it to the embed
         if (attachment) reportEmbed.setImage(attachment.url);
+
         // Create a button for closing the report and taking action
         const button = new ActionRowBuilder()
             .addComponents(
@@ -61,11 +61,17 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary)
             );
 
+        // Send the report embed to the staff channel
         const reportMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] })
-            .catch(err => console.error(`Could not send report '${reportId}' to staff channel: `, err));
+            .catch(err => console.error(`Could not send report to staff channel: `, err));
 
+        // Edit the embed to include the reporter's ID as well as the report message's ID
         reportEmbed = new EmbedBuilder(reportEmbed)
-            .setFooter({ text: `ID ${member?.id}-${reportMessage.id}`, iconURL: guild.iconURL({ dynamic: true }) })
+            .setFooter({
+                text: `ID ${member?.id}-${reportMessage.id}`,
+                iconURL: guild.iconURL({ dynamic: true })
+            })
+
         reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
 
         sendResponse(interaction, `${process.env.BOT_CONF} Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
