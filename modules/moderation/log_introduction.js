@@ -7,7 +7,7 @@ module.exports = async (message) => {
         try {
             const result = await dbFindOne(introSchema, { userId: message?.author.id });
             // Create a new entry if no previous post was foound
-            if (!result) await dbCreate(introSchema, { userId: message?.author.id });
+            if (!result) await dbCreate(introSchema, { userId: message?.author.id, messageId: message?.id });
             // Delete the user's message if a previous post was found
             if (result) message?.delete();
         } catch (err) {

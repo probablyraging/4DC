@@ -1,5 +1,4 @@
 const { Message } = require('discord.js');
-const { newUsers } = require('../../events/guild/guildMemberAdd');
 const linkCooldown = require('../../modules/moderation/link_cooldown');
 const bumpPost = require('../../modules/misc/bump_post');
 const blSpam = require('../../modules/moderation/spam_filter');
