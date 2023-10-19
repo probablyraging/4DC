@@ -14,12 +14,12 @@ module.exports = {
         const entry = auditLog.entries.first();
         if (entry.executor.bot || entry.executor.id === process.env.OWNER_ID) return;
 
-        // If a staff member deletes too many roles too suddenly
+        // If a staff member deletes too many threads too suddenly
         const found = protection.get(entry.executor.id);
 
         if (found) {
             if (found >= 3) {
-                const member = await guild.members.fetch(entry.executor.id).catch(() => {});
+                const member = await guild.members.fetch(entry.executor.id).catch(() => { });
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing roles`, err));;
