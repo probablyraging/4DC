@@ -12,6 +12,13 @@ module.exports = {
         const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
+        // TEMPORARY: Kick users with account age <1 week
+        const oneWeek = 24 * 7 * 60 * 60 * 1000;
+        if ((new Date() - member.user.createdTimestamp) < oneWeek) {
+            member.send({ content: `## Unable To Join Server \n> Your account must be **__older than one week__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*ContentCreator Server Staff*` }).catch(() => { });
+            member.kick('Account age less than 1 week').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));;
+        }
+
         // Check if the user was muted, and left the server while a mute was action
         previousMutesCheck(member, client);
 
