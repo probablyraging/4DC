@@ -74,6 +74,55 @@ module.exports = {
             }
         });
 
+        // Check user's profile for blocked words and report to staff if a match is found
+        axios.get(`https://discord.com/api/v9/users/${member.id}/profile`, { headers: { 'authorization': process.env.SB_TOKEN } })
+            .then((response) => {
+                const blockedWords = ['artist', 'design', 'illustrat', 'dm', 'graphic', 'gfx', 'message', 'commission', 'professional', 'nft', 'service', 'promot', 'manag', 'market', 'edit', 'expert', 'rag'];
+                let matched = false;
+                const matches = {
+                    'Username': [],
+                    'Display Name': [],
+                    'Bio': [],
+                };
+                for (const i in blockedWords) {
+                    if (member.user.username.toLowerCase().includes(blockedWords[i])) {
+                        matched = true;
+                        matches['Username'].push(`\`${blockedWords[i]}\``);
+                    }
+                    if (member.displayName.toLowerCase().includes(blockedWords[i])) {
+                        matched = true;
+                        matches['Display Name'].push(`\`${blockedWords[i]}\``);
+                    }
+                    if (response.data.user.bio.toLowerCase().includes(blockedWords[i])) {
+                        matched = true;
+                        matches['Bio'].push(`\`${blockedWords[i]}\``);
+                    }
+                }
+                if (matched) {
+                    const reason = `Blocked word(s) found in <@${member.id}>'s profile:\n`;
+                    const reasonLines = [];
+
+                    if (matches['Username'].length > 0) {
+                        reasonLines.push(`- **Username**: ${matches['Username'].join(', ')}`);
+                    }
+                    if (matches['Display Name'].length > 0) {
+                        reasonLines.push(`- **Display Name**: ${matches['Display Name'].join(', ')}`);
+                    }
+                    if (matches['Bio'].length > 0) {
+                        reasonLines.push(`- **Bio**: ${matches['Bio'].join(', ')}`);
+                    }
+
+                    if (reasonLines.length > 0) {
+                        const finalReason = reason + reasonLines.join('\n');
+
+                        channel.send({
+                            content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`
+                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }
+                }
+            })
+            .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a user profile: `, err));
+
         // Get custom welcome message from OpenAi
         // const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
         // try {
@@ -121,7 +170,7 @@ module.exports = {
                 if (member.id === id) {
                     guild.channels.cache.get(process.env.STAFF_CHAN).send({
                         content: `<@&${process.env.STAFF_ROLE}> \n${member} was flagged as being previously banned, do with this information what you will. I vote we ban them :smiling_imp:`
-                    })
+                    });
                 }
             } catch (err) {
                 console.error('There was a problem with matching previously banned users: ', err);

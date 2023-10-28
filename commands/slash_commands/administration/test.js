@@ -1,4 +1,4 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold, ChannelSelectMenuBuilder, ChannelType } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold, ChannelSelectMenuBuilder, ChannelType, inlineCode } = require("discord.js");
 const { sendReply, dbFindOne, dbUpdateOne } = require('../../../utils/utils');
 const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
