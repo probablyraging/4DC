@@ -115,7 +115,7 @@ module.exports = {
                     if (reasonLines.length > 0) {
                         const finalReason = reason + reasonLines.join('\n');
 
-                        channel.send({
+                        guild.channels.cache.get(process.env.STAFF_CHAN).send({
                             content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`
                         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
                     }
