@@ -152,7 +152,7 @@ module.exports = async (interaction) => {
 
             // Send a notification to the target user
             await reportedUser.send({
-                content: `You have been banned from **ContentCreator**\n> ${reason} \n\nJoin discord.gg/tn3nMu6A2B for ban appeals`
+                content: `## You have been banned from **ContentCreator**\n> ${reason}`
             }).catch(() => { });
 
             // Ban the user
