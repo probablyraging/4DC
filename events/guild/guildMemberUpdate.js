@@ -1,5 +1,6 @@
 const { EmbedBuilder, AuditLogEvent } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
+const { default: axios } = require('axios');
 const path = require('path');
 
 module.exports = {
