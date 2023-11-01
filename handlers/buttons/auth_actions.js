@@ -1,5 +1,4 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const path = require('path');
 
 module.exports = async (interaction) => {
     const { customId, member } = interaction;

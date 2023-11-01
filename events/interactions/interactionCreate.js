@@ -4,6 +4,7 @@ const reportActionButton = require('../../handlers/buttons/report_action');
 const helpButton = require('../../handlers/buttons/help_menu');
 const authButton = require('../../handlers/buttons/auth_actions');
 const adInformationButton = require('../../handlers/buttons/ad_information');
+const solveThreadButton = require('../../handlers/buttons/help_threads');
 const massbanModal = require('../../handlers/modals/massban_modal');
 const path = require('path');
 
@@ -116,6 +117,7 @@ module.exports = {
             // A map of customIds for misc buttons
             const miscButtons = {
                 'ad-info': adInformationButton,
+                'solved-action': solveThreadButton,
             };
             if (customId in miscButtons) miscButtons[customId](interaction);
         }

@@ -1,4 +1,4 @@
-const { ThreadChannel } = require('discord.js');
+const { ThreadChannel, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const path = require('path');
 
 module.exports = {
@@ -20,6 +20,21 @@ module.exports = {
 If you need to edit your title or post, please do so now or it may be deleted`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }, 3000);
+        }
+
+        // Add a 'mark as solved' button to help threads
+        if (newlyCreated && thread.parentId === process.env.HELP_CHAN) {
+            setTimeout(() => {
+                const button = new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('solved-action')
+                            .setLabel('Mark thread as solved')
+                            .setStyle(ButtonStyle.Success)
+                    );
+
+                thread.send({ components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }, 1000);
         }
 
         // Prevent new users from creating a paid service thread
