@@ -125,6 +125,18 @@ module.exports = async (client) => {
         await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
     });
 
+    // Kick unverified users - runs ever 15 minutes
+    const kickUnverifiedUsers = new cronjob('*/15 * * * *', async function () {
+        const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
+        const oneWeek = 7 * 24 * 60 * 60 * 1000;
+        const fiveMinutes = 5 * 60 * 1000;
+        unverifiedRole.members.forEach(member => {
+            if ((new Date() - member.joinedTimestamp) < oneWeek && (new Date() - member.joinedTimestamp) > fiveMinutes) {
+                member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
+            }
+        })
+    });
+
     rankSort.start();
     warnsCheck.start();
     lastLetterCheck.start();
@@ -133,4 +145,5 @@ module.exports = async (client) => {
     invitesCheck.start();
     clearNewUsers.start();
     pauseDMs.start();
+    kickUnverifiedUsers.start();
 }
