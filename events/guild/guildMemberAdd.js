@@ -13,7 +13,7 @@ module.exports = {
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
 
         // Add all new user to the unverified role
-        member.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
+        if (member) await member.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
 
         // Invite tracker
         guild.invites.fetch().then(async invites => {
@@ -67,7 +67,9 @@ module.exports = {
         // TEMPORARY: Kick users with account age <1 month
         const oneMonth = 24 * 30 * 60 * 60 * 1000;
         if ((new Date() - member.user.createdTimestamp) < oneMonth) {
-            member.send({ content: `## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*ContentCreator Server Staff*` }).catch(() => { });
+            member.send({
+                content: `## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*ContentCreator Server Staff*`
+            }).catch(() => { });
             member.kick('Account age less than 1 month').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
             return;
         }
@@ -79,7 +81,7 @@ module.exports = {
         const timeToKick = Math.round((new Date().valueOf() + 300000) / 1000);
         member.send({
             content: `## Please Verify Yourself \nYou can verify yourself by going to <#1162008778061905992> and following the prompts \nYou will be kicked from the server <t:${timeToKick}:R> if you do not verify in time \n\n*ContentCreator Server Staff*`
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a role to a user: `, err));
+        }).catch(() => { });
         setTimeout(() => {
             if (member && member.roles.cache.has(process.env.UNVERIFIED_ROLE)) {
                 member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
