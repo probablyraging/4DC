@@ -10,7 +10,7 @@ module.exports = async (message) => {
             while (usedReactions.size < 3) {
                 const randomIndex = Math.floor(Math.random() * boostReactions.length);
                 if (!usedReactions.has(randomIndex)) {
-                    message.react(boostReactions[randomIndex]).catch(() => { });
+                    message.react(boostReactions[randomIndex]).catch(err => console.error(`${path.basename(__filename)} There was a problem reacting to a boost message: `, err));
                     usedReactions.add(randomIndex);
                 }
             }
