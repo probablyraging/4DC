@@ -56,7 +56,7 @@ module.exports = {
             } else {
                 channel.send({
                     content: `### *Information for ${target}:*
-> ${process.env.BOT_DOC} ${data.choices[0].message.content}`
+> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
         } catch (err) {
