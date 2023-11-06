@@ -33,7 +33,7 @@ module.exports = {
         const target = options.getUser('target');
 
         const requestData = {
-            "model": "gpt-3.5-turbo-0301",
+            "model": "gpt-4-1106-preview",
             "messages": [
                 { "role": "system", "content": `Give a short meaningful response` },
                 { "role": "user", "content": query }
