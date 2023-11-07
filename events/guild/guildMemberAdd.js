@@ -91,7 +91,7 @@ module.exports = {
         // Check user's profile for blocked words and report to staff if a match is found
         axios.get(`https://discord.com/api/v9/users/${member.id}/profile`, { headers: { 'authorization': process.env.SB_TOKEN } })
             .then((response) => {
-                const blockedWords = ['artist', 'design', 'illustrat', 'dm', 'graphic', 'gfx', 'message', 'commission', 'professional', 'nft', 'service', 'promot', 'manag', 'market', 'edit', 'expert'];
+                const blockedWords = ['artist', 'design', 'illustrat', 'dm', 'graphic', 'gfx', 'message', 'commission', 'professional', 'nft', 'service', 'promot', 'manag', 'market', 'edit', 'expert', 'agent', 'agency'];
                 let matched = false;
                 const matches = {
                     'Username': [],
