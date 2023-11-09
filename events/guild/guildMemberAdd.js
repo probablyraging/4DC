@@ -149,7 +149,5 @@ module.exports = {
                 console.error('There was a problem with matching previously banned users: ', err);
             }
         });
-    },
-    // Export the newUser set
-    // newUsers
+    }
 }

@@ -20,10 +20,6 @@ async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
         role.members.map(async member => {
             // Iterate through each member's presence activities
 
-            // activities.some(activity => {
-            //     return activity.type === 'STREAMING' && activity.name.toLowerCase().includes('badhabitsrp');
-            // });
-
             for (let i = 0; i < 7; i++) {
                 const activity = member.presence?.activities[i];
                 if (activity && platforms.includes(activity.name)) {

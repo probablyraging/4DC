@@ -10,8 +10,6 @@ module.exports = {
         const generalChan = client.channels.cache.get(process.env.GENERAL_CHAN);
         const introChan = client.channels.cache.get(process.env.INTRO_CHAN);
 
-        // If a user in the newUsers set leaves the server, we can remove them from the set (Extends from welcome_message.js)
-        // if (newUsers.has(member.id)) newUsers.delete(member.id);
         // Delete a welcome message mentioning the newUser who left, if one was sent
         const generalMessages = await generalChan.messages.fetch({ limit: 10 });
         generalMessages.forEach(message => {
