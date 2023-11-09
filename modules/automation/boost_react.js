@@ -6,7 +6,6 @@ module.exports = async (message) => {
     if (message.channel.id === process.env.BOOST_CHAN) {
         // If message is a guild boost
         if (message.type === 8) {
-            const usedReactions = new Set();
             while (usedReactions.size < 3) {
                 const randomIndex = Math.floor(Math.random() * boostReactions.length);
                 if (!usedReactions.has(randomIndex)) {
