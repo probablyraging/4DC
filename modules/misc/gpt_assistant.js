@@ -114,7 +114,7 @@ module.exports = async (message) => {
             const requestData = {
                 "model": "gpt-4-1106-preview",
                 "messages": [
-                    { "role": "system", "content": `Use Discord markdown for code blocks` },
+                    { "role": "system", "content": `Use Discord markdown for code blocks. Strictly keep responses under 1900 characters.` },
                     ...conversationHistory,
                     { "role": "user", "content": message.content }
                 ],

@@ -10,7 +10,7 @@ module.exports = {
     options: [{
         name: "offender",
         description: "The user you are reporting",
-        type: ApplicationCommandOptionType.User,
+        type: ApplicationCommandOptionType.Mentionable,
         required: true
     },
     {
@@ -37,6 +37,9 @@ module.exports = {
         const target = options.getUser('offender');
         const reason = options.getString('reason');
         const attachment = options.getAttachment('screenshot');
+
+        // If target is not a valid user
+        if (!target?.username) return sendResponse(interaction, `${process.env.BOT_DENY} Please specify a valid user to report`);
 
         // If attachment content type isn't an image
         if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
