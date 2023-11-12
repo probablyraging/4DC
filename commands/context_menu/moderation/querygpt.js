@@ -1,37 +1,26 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
+const { CommandInteraction, ApplicationCommandType } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
 const { default: axios } = require('axios');
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-    name: `querygpt`,
-    description: `Query ChatGPT and receive a helpful response`,
+    name: `Query GPT`,
     defaultMemberPermissions: ['ModerateMembers'],
-    cooldown: 0,
+    cooldown: 5,
     dm_permission: false,
-    type: ApplicationCommandType.ChatInput,
-    options: [{
-        name: `query`,
-        description: `Information to query for`,
-        type: ApplicationCommandOptionType.String,
-        required: true,
-    }, {
-        name: `target`,
-        description: `User to mention`,
-        type: ApplicationCommandOptionType.User,
-        required: true,
-    }],
+    type: ApplicationCommandType.Message,
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
-    async execute(interaction, client) {
-        const { options, channel } = interaction;
+    async execute(interaction) {
+        const { channel, targetId } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
         interaction.deleteReply();
 
-        const query = options.getString('query');
-        const target = options.getUser('target');
+        const fetchMsg = await channel.messages.fetch(targetId);
+        const query = fetchMsg.content;
+        const target = fetchMsg.author;
 
         const requestData = {
             "model": "gpt-4-1106-preview",
@@ -55,7 +44,7 @@ module.exports = {
             if (!data || !data.choices) {
                 sendResponse(interaction, `Unable to generate a response. Try again`);
             } else {
-                channel.send({
+                fetchMsg.reply({
                     content: `### *Information for ${target}:* \n> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
             }
