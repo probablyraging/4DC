@@ -10,9 +10,7 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.GuildInvites,
         Discord.GatewayIntentBits.GuildPresences,
         Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.DirectMessages,
         Discord.GatewayIntentBits.MessageContent,
-        Discord.GatewayIntentBits.AutoModerationConfiguration
     ],
     partials: [
         Discord.Partials.Channel
@@ -24,7 +22,6 @@ require('console-stamp')(console, {
     format: ':date(dd mmmm yyyy HH:MM:ss) :label'
 });
 
-client.setMaxListeners(0);
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 
