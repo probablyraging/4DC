@@ -1,6 +1,6 @@
 const { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
 const { sendResponse } = require('../../../utils/utils');
-const rankSchema = require("../../../schemas/misc/rank_schema");
+const rankSchema = require("../../../schemas/rank_schema");
 const Canvas = require("canvas");
 const path = require("path");
 

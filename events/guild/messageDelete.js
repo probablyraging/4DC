@@ -1,6 +1,4 @@
 const { EmbedBuilder, AuditLogEvent, codeBlock } = require('discord.js');
-const { checkDeletedCountingMessage } = require('../../modules/games/counting_game');
-const { checkDeletedLetterMessage } = require('../../modules/games/last_letter');
 const { ImgurClient } = require('imgur');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
@@ -84,9 +82,5 @@ module.exports = {
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
             }
         }
-
-        // Game message delete checks
-        checkDeletedCountingMessage(message);
-        checkDeletedLetterMessage(message);
     }
 }

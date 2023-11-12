@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
-const ytNotificationSchema = require('../../../schemas/misc/yt_notification_schema');
+const ytNotificationSchema = require('../../../schemas/yt_notification_schema');
 const res = new (require("rss-parser"))();
 const path = require('path');
 

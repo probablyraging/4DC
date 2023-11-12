@@ -1,5 +1,5 @@
 const { dbDeleteOne } = require('../../utils/utils');
-const inviteSchema = require('../../schemas/misc/invite_schema');
+const inviteSchema = require('../../schemas/invite_schema');
 
 module.exports = {
     name: 'inviteDelete',

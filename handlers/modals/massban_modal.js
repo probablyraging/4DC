@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { dbCreate, sendResponse } = require('../../utils/utils');
-const massbanSchema = require('../../schemas/misc/mass_ban_schema');
+const massbanSchema = require('../../schemas/mass_ban_schema');
 const { v4: uuidv4 } = require("uuid");
 const path = require('path');
 

@@ -61,7 +61,7 @@ async function sendReplyWithMention(interaction, content = '', embeds = [], file
             files: files,
             components: components,
             ephemeral: ephemeral,
-            allowedMentions: { parse: ['users'] }
+            allowedMentions: { parse: ['users', 'roles', 'everyone'] }
         });
     } catch (err) {
         console.error(`There was a problem editing an interaction: `, err);

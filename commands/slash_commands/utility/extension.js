@@ -14,9 +14,9 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        sendResponse(interaction, `The ForTheContent browser extension gives users the opportunity to showcase their YouTube videos to a large and engaged audience
+        sendResponse(interaction, `The ForTheContent browser extension gives users the opportunity to showcase their YouTube videos to an engaged audience
 
-Through this extension, your videos can receive a significant amount of likes, views ,and watch time. Here's how it works:
+Through this extension, your videos can receive likes, views, and watch time. Here's how it works:
 
 1. Download the browser extension by [clicking here](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>)
 2. Earn 5 tokens by watching other user's videos for a minimum of 10 minutes each *(1 video = 1 token)* 

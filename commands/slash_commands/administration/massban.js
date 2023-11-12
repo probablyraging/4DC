@@ -1,6 +1,6 @@
 const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, TextInputBuilder, ModalBuilder } = require('discord.js');
 const { sendResponse } = require('../../../utils/utils');
-const massbanSchema = require('../../../schemas/misc/mass_ban_schema');
+const massbanSchema = require('../../../schemas/mass_ban_schema');
 const path = require('path');
 const { EmbedBuilder } = require('discord.js');
 
@@ -182,7 +182,7 @@ async function createMassBanRequest(interaction) {
 module.exports = {
     name: `massban`,
     description: `Ban a list of users who have been in the server for less than a day.`,
-    defaultMemberPermissions: ['ManageRoles'],
+    defaultMemberPermissions: ['Administrator'],
     cooldown: 5,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,

@@ -1,5 +1,5 @@
 const { dbUpdateOne } = require('../../utils/utils');
-const timerSchema = require("../../schemas/misc/timer_schema");
+const timerSchema = require("../../schemas/timer_schema");
 const path = require("path");
 
 module.exports = async (client) => {

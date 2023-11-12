@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const { dbFind, dbCreate, dbUpdateOne } = require('../../utils/utils');
-const rankSchema = require('../../schemas/misc/rank_schema');
+const rankSchema = require('../../schemas/rank_schema');
 const xpLimit = new Set();
 
 /**

@@ -1,5 +1,5 @@
 const { dbFindOne, dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
-const gptHistorySchema = require('../../schemas/misc/gpt_history_schema');
+const gptHistorySchema = require('../../schemas/gpt_history_schema');
 const { default: axios } = require('axios');
 const path = require('path');
 

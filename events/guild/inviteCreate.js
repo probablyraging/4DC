@@ -1,4 +1,4 @@
-const inviteSchema = require('../../schemas/misc/invite_schema');
+const inviteSchema = require('../../schemas/invite_schema');
 const { dbCreate } = require('../../utils/utils');
 
 module.exports = {

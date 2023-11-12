@@ -1,7 +1,6 @@
 const { Message, EmbedBuilder } = require('discord.js');
-const { dbCreate, dbUpdateOne } = require('../../utils/utils');
-const timerSchema = require('../../schemas/misc/timer_schema');
-const countingSchema = require('../../schemas/games/counting_schema');
+const { dbUpdateOne } = require('../../utils/utils');
+const timerSchema = require('../../schemas/timer_schema');
 const path = require('path');
 /**
  * 
@@ -34,37 +33,6 @@ module.exports = async (message, client) => {
                     })
 
                     await dbUpdateOne(timerSchema, { timer: 'bump' }, { timestamp });
-
-                    // add a counting save to the user
-                    const results = await countingSchema.find({ userId: bumpUser });
-                    // if user doesn't have an entry yet
-                    if (results.length === 0) {
-                        await dbCreate(countingSchema, { userId: bumpUser, saves: 0, counts: 0 });
-
-                        const results = await countingSchema.find({ userId: bumpUser });
-
-                        for (const data of results) {
-                            const { saves } = data;
-
-                            if (saves < 2) {
-                                await dbUpdateOne(countingSchema, { userId: bumpUser }, { saves: saves + 1 });
-                                savesMessage = `You earned a save for the counting game and now have \`${saves + 1}/2\` saves`
-                            } else {
-                                savesMessage = `You already have the \`2/2\` saves for the counting game`
-                            }
-                        }
-                    } else {
-                        for (const data of results) {
-                            const { saves } = data;
-
-                            if (saves < 2) {
-                                await dbUpdateOne(countingSchema, { userId: bumpUser }, { saves: saves + 1 });
-                                savesMessage = `You earned a save for the counting game and now have \`${saves + 1}/2\` saves`
-                            } else {
-                                savesMessage = `You already have the \`2/2\` saves for the counting game`
-                            }
-                        }
-                    }
 
                     const bumpConfirm = new EmbedBuilder()
                         .setColor('#32B9FF')

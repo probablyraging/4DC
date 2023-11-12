@@ -1,9 +1,9 @@
 const { ActivityType } = require('discord.js');
 const bumpCheck = require('../../modules/misc/bump_check');
 const mutesCheck = require('../../modules/moderation/expired_mutes');
-const databaseCleanup = require('../../modules/misc/cronjobs');
+const databaseCleanup = require('../../modules/automation/cronjobs');
 const liveNow = require('../../modules/automation/live_now');
-const youtubeAuto = require('../../modules/misc/youtubeauto');
+const youtubeAuto = require('../../modules/automation/youtubeauto');
 const cronjob = require('cron').CronJob;
 const mongoose = require('mongoose');
 const Canvas = require("canvas");
@@ -37,6 +37,7 @@ module.exports = {
 
         // Booster rewards
         const boostTimer = new cronjob('0 */10 * * *', function () {
+            let whMessage;
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                 whMessage = await webhook.send({
                     content: `Boost the server and unlock these server benefits and more`,

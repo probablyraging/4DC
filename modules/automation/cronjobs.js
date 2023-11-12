@@ -1,11 +1,8 @@
-const { dbUpdateOne, dbDeleteOne, dbDeleteMany } = require('../../utils/utils');
-const rankSchema = require('../../schemas/misc/rank_schema');
-const warnSchema = require('../../schemas/misc/warn_schema');
-const lastLetterSchema = require('../../schemas/games/letter_lb_schema');
-const countingSchema = require('../../schemas/games/counting_schema');
-const inviteSchema = require('../../schemas/misc/invite_schema');
-const newUsersSchema = require('../../schemas/misc/new_users');
-const timerSchema = require("../../schemas/misc/timer_schema");
+const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
+const rankSchema = require('../../schemas/rank_schema');
+const warnSchema = require('../../schemas/warn_schema');
+const inviteSchema = require('../../schemas/invite_schema');
+const timerSchema = require("../../schemas/timer_schema");
 const cronjob = require('cron').CronJob;
 const { default: axios } = require('axios');
 const path = require('path');
@@ -40,28 +37,6 @@ module.exports = async (client) => {
             const { userId } = data;
             const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the warning system that no longer exists`));
             if (!exists) await dbDeleteOne(warnSchema, { userId: userId });
-        }
-    });
-
-    // Fetch all last letter entries and remove non-existent users - runs once per week (Tuesday 00:00)
-    const lastLetterCheck = new cronjob('0 0 * * 2', async function () {
-        const results = await lastLetterSchema.find();
-        for (const data of results) {
-            const { userId } = data;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the last letter collection that no longer exists`));
-            if (!exists) await dbDeleteOne(lastLetterSchema, { userId: userId });
-        }
-    });
-
-    // Fetch all counting game entries and remove non-existent users - runs once per week (Wednesday 00:00)
-    const countingCheck = new cronjob('0 0 * * 3', async function () {
-        const results = await countingSchema.find();
-        for (const data of results) {
-            const { userId } = data;
-            // Ignore the entry for the guild saves
-            if (userId === process.env.GUILD_ID) return;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the counting collection that no longer exists`));
-            if (!exists) await dbDeleteOne(countingSchema, { userId: userId });
         }
     });
 
@@ -102,11 +77,6 @@ module.exports = async (client) => {
         }
     });
 
-    // Clear the new users collection - runs once per day (12:00)
-    const clearNewUsers = new cronjob('0 12 * * *', async function () {
-        await dbDeleteMany(newUsersSchema, { userId: { $exists: true } });
-    });
-
     // Pause DMs - runs once per day (08:00)
     const pauseDMs = new cronjob('0 9 * * *', async function () {
         const currentDate = new Date();
@@ -139,11 +109,8 @@ module.exports = async (client) => {
 
     rankSort.start();
     warnsCheck.start();
-    lastLetterCheck.start();
-    countingCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
-    clearNewUsers.start();
     pauseDMs.start();
     kickUnverifiedUsers.start();
 }

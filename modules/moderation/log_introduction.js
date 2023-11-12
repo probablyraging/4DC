@@ -1,5 +1,5 @@
 const { dbFindOne, dbCreate } = require('../../utils/utils');
-const introSchema = require('../../schemas/misc/intro_schema');
+const introSchema = require('../../schemas/intro_schema');
 
 module.exports = async (message) => {
     // Check if a user has already made an introduction post

@@ -1,5 +1,5 @@
 const { dbUpdateOne } = require('../../utils/utils');
-const inviteSchema = require('../../schemas/misc/invite_schema');
+const inviteSchema = require('../../schemas/invite_schema');
 const previouslyBannedUsers = require('../../lists/previous_bans');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
 const { default: axios } = require('axios');

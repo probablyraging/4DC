@@ -1,5 +1,5 @@
 const { dbFind } = require('../../utils/utils');
-const muteSchema = require('../../schemas/misc/mute_schema');
+const muteSchema = require('../../schemas/mute_schema');
 const path = require('path');
 
 module.exports = async (member, client, Discord) => {

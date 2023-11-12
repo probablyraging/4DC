@@ -3,7 +3,7 @@ const { sendReply, sendResponse, dbFindOne, dbUpdateOne } = require('../../../ut
 const { v4: uuidv4 } = require('uuid');
 const { default: axios } = require('axios');
 const path = require("path");
-const schema = require('../../../schemas/misc/rank_schema');
+const schema = require('../../../schemas/rank_schema');
 
 module.exports = {
     name: `test`,

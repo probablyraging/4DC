@@ -1,4 +1,4 @@
-const introSchema = require('../../schemas/misc/intro_schema');
+const introSchema = require('../../schemas/intro_schema');
 const { dbFindOne } = require('../../utils/utils');
 const path = require('path');
 

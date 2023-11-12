@@ -1,6 +1,6 @@
 const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, codeBlock, hyperlink } = require("discord.js");
 const { sendFollowUp, sendResponse, dbCreate } = require('../../utils/utils');
-const warnSchema = require('../../schemas/misc/warn_schema');
+const warnSchema = require('../../schemas/warn_schema');
 const { rules } = require('../../lists/rules');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');

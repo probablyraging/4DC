@@ -1,4 +1,4 @@
-const streamSchema = require('../../schemas/misc/stream_schema');
+const streamSchema = require('../../schemas/stream_schema');
 const { dbCreate, dbDeleteOne } = require('../../utils/utils');
 const cooldown = new Set();
 const path = require('path');

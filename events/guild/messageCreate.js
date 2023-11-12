@@ -2,10 +2,8 @@ const { Message } = require('discord.js');
 const linkCooldown = require('../../modules/moderation/link_cooldown');
 const bumpPost = require('../../modules/misc/bump_post');
 const blSpam = require('../../modules/moderation/spam_filter');
-const lastLetter = require('../../modules/games/last_letter');
-const countingGame = require('../../modules/games/counting_game');
-const rankXP = require('../../modules/automation/rank_xp');
-const stickyMessage = require('../../modules/automation/sticky_message');
+const rankXP = require('../../modules/misc/rank_xp');
+const stickyMessage = require('../../modules/misc/sticky_message');
 const gptAssistant = require('../../modules/misc/gpt_assistant');
 const introductionCheck = require('../../modules/moderation/log_introduction');
 const boostReact = require('../../modules/automation//boost_react');
@@ -27,10 +25,6 @@ module.exports = {
 
         // Bump checks
         bumpPost(message, client);
-
-        // Game checks
-        lastLetter(message, client);
-        countingGame(message, client);
 
         // Misc checks
         rankXP(message, client);
