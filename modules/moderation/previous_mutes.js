@@ -2,7 +2,7 @@ const { dbFind } = require('../../utils/utils');
 const muteSchema = require('../../schemas/mute_schema');
 const path = require('path');
 
-module.exports = async (member, client, Discord) => {
+module.exports = async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     const results = await dbFind(muteSchema, { userId: member?.user.id });

@@ -28,38 +28,38 @@ module.exports = {
             const timestamp = Date.parse(new Date(decimalEpoch));
 
             // Log to channel
-            let content = message?.content || ` `;
-            if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...' || ` `;
-
             const log = new EmbedBuilder()
                 .setAuthor({ name: `${message?.author.username}`, iconURL: message?.author.displayAvatarURL({ dynamic: true }) })
                 .setColor("#E04F5F")
                 .addFields({ name: `Author`, value: `${message?.author}`, inline: true },
-                    { name: `Channel`, value: `${message?.channel}`, inline: true },
-                    { name: `Message`, value: codeBlock(content), inline: false })
+                    { name: `Channel`, value: `${message?.channel}`, inline: true })
                 .setFooter({ text: `Delete • ${uuidv4()}`, iconURL: process.env.LOG_DELETE })
                 .setTimestamp()
+
+            let content = message?.content;
+            if (message?.content.length > 1000) content = message?.content.slice(0, 1000) + '...';
+
+            // If the message contains content, add it to the embed
+            if (content) log.addFields({ name: `Message`, value: codeBlock(content), inline: false });
 
             if ((new Date() - timestamp) < 10000) {
                 const executor = await guild.members.fetch(entry.executor.id).catch(() => { });
                 log.setAuthor({ name: `${executor?.user.username}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) })
             }
 
+            // If the message had an attachment, attach it to the embed
             let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
 
             if (msgAttachment) {
                 // Create a new imgur client
                 const imgur = new ImgurClient({ clientId: process.env.IMGUR_ID, clientSecret: process.env.IMGUR_SECRET });
-
                 // Upload attachment to imgur, get the link and attach it to the embed
                 const response = await imgur.upload({
                     image: msgAttachment,
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
-
-                if (response.length > 0) {
-                    if (response[0].status !== 200) return;
-                    log.setImage(response[0].data.link);
-                }
+                // If there was a problem uploading the image, don't attach it to the embed
+                if (!response || response.status !== 200) return;
+                log.setImage(response.data.link);
             }
 
             logChan.send({

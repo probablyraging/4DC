@@ -56,7 +56,8 @@ module.exports = {
                 message?.embeds[0].fields.forEach(field => {
                     if (field.value.toLowerCase() === 'self promotion') {
                         message?.author.send({
-                            content: `Share your content in the 'CONTENT SHARE' section. Some available channels to share content in are; \n<#856719763187302441> \n<#1075915365105807533> \n<#1075915526833967269>`
+                            content: `Content sharing is only available to server boosters in the <#${process.env.SUPPORTER_CHAN}> channel`,
+                            files: ['./res/images/supporter_rewards.png']
                         }).catch(() => { });
                         notifiedUsers.add(message?.author.id);
                     }
@@ -75,7 +76,7 @@ module.exports = {
             }, 3000);
         }
 
-        // Users must be in the server for 3 days before they can post links in the media channels
+        // Users must be in the server for 3 days before they can post promo links in the media channels
         const promoLinks = ['youtube.com/', 'youtu.be/', 'twitch.tv/', 'facebook.com/', 'instagram.com/', 'spotify.com/', 'tiktok.com/', 'twitter.com/'];
         const oneDay = 24 * 3 * 60 * 60 * 1000;
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
