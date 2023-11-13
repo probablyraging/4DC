@@ -38,7 +38,7 @@ module.exports = async (message) => {
             const conversationHistory = await storeOrFetchConversationHistory(true, message);
 
             const requestData = {
-                "model": "gpt-4-1106-preview",
+                "model": "gpt-3.5-turbo-1106",
                 "messages": [
                     { "role": "system", "content": `You are a specialized assistant dedicated to helping Discord users with questions and advice related to all types of content creation. Your expertise includes, but is not limited to, video production, streaming, graphic design, writing, audio creation, and social media strategy. You should provide up to date accurate, helpful, and detailed responses that facilitate users in enhancing their content creation skills and knowledge. Use Discord markdown in your responses.` },
                     ...conversationHistory,
@@ -112,7 +112,7 @@ module.exports = async (message) => {
             const conversationHistory = await storeOrFetchConversationHistory(true, message);
 
             const requestData = {
-                "model": "gpt-4-1106-preview",
+                "model": "gpt-3.5-turbo-1106",
                 "messages": [
                     { "role": "system", "content": `Use Discord markdown for code blocks. Strictly keep responses under 1900 characters.` },
                     ...conversationHistory,

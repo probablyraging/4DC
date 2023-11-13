@@ -23,7 +23,7 @@ module.exports = {
         const target = fetchMsg.author;
 
         const requestData = {
-            "model": "gpt-4-1106-preview",
+            "model": "gpt-3.5-turbo-1106",
             "messages": [
                 { "role": "system", "content": `Give a short meaningful response` },
                 { "role": "user", "content": query }

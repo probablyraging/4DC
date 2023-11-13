@@ -245,8 +245,3 @@ Grab yourself some roles and profile flair from <id:customize>
 > Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`
     ]
 }
-
-
-
-
-
