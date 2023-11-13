@@ -8,22 +8,6 @@ module.exports = {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        // Premium member subscription
-        if (!oldMember._roles.includes(process.env.SUBSCRIBER_ROLE) && newMember._roles.includes(process.env.SUBSCRIBER_ROLE)) {
-            newMember.send({
-                content: `Thank you for supporting ContentCreator!
-                
-Here are a list of perks you now have access, and how you can go about claiming them;
-* **Share Your Server** - FTC++ only. Share your Discord server invites in the content share section
-* **Premium Ad** - FTC++ only. Claim a free 1-week premium ad spot by contacting a staff member
-* **Automatic Link Sharing** - will share your YouTube and Twitch links when you go upload a new video or go live. Contact a staff member to get access
-* **Live Now Role** - will be automatically applied when you go live on YouTube or Twitch. You will need to use a compatible streaming program such as OBS, Streamlabs OBS, or XSplit. You will also need to link your YouTube and Twitch channel to your Discord account
-* **Link Embeds** - link embeds will be automatically added to your messages when sharing links in the content share channels
-* **Double XP** - will be automatically gained when chatting in the server
-* **Custom Flair** - can be created for you upon request. Contact a staff member to get your custom flair`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
-        }
-
         // Timeouts
         let error = false;
         if (newMember.communicationDisabledUntilTimestamp > new Date().getTime()) {

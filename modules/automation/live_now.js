@@ -5,14 +5,13 @@ const path = require('path');
 
 /**
  * Fetches members that are currently streaming on YouTube or Twitch
- * @param {Guild} guild The guild to search for live members in
  * @param {Object} staffRole The staff role to search for live members in
  * @param {Object} boostRole The booster role to search for live members in
  * @returns {Array} An array of members who are currently live on YouTube or Twitch
  */
-async function getLiveMembers(guild, staffRole, boostRole, subscriberRole) {
+async function getLiveMembers(staffRole, boostRole,) {
     let liveNowMembers = [];
-    const roles = [staffRole, boostRole, subscriberRole];
+    const roles = [staffRole, boostRole];
     const platforms = ['Twitch', 'YouTube'];
 
     // Iterate through each role and fetch its members
@@ -43,13 +42,12 @@ module.exports = async (client) => {
 
     const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);
     const boostRole = guild.roles.cache.get(process.env.BOOSTER_ROLE);
-    const subscriberRole = guild.roles.cache.get(process.env.SUBSCRIBER_ROLE);
     const liveRole = guild.roles.cache.get(process.env.LIVE_ROLE);
     const boostPromoChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
 
     // Fetch live streaming mmbers
     setInterval(async () => {
-        let liveNowMembers = await getLiveMembers(guild, staffRole, boostRole, subscriberRole);
+        let liveNowMembers = await getLiveMembers(staffRole, boostRole);
 
         try {
             await Promise.all(liveNowMembers.map(async (liveMember) => {

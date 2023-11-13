@@ -17,10 +17,9 @@ module.exports = async (client) => {
 
             const userTag = member.user?.username;
             const isStaff = member?.roles?.cache.has(process.env.STAFF_ROLE);
-            const isSubscriber = member?.roles?.cache.has(process.env.SUBSCRIBER_ROLE);
             const isBooster = member?.roles?.cache.has(process.env.BOOSTER_ROLE);
 
-            if (!isBooster && !isStaff && !isSubscriber) return dbDeleteOne(ytNotificationSchema, { userId: userId });
+            if (!isBooster && !isStaff) return dbDeleteOne(ytNotificationSchema, { userId: userId });
 
             res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, (err, resolve) => {
                 if (err) return;
@@ -33,7 +32,7 @@ module.exports = async (client) => {
 
                         await dbUpdateOne(ytNotificationSchema, { userId }, { userId, channelId, videoIds });
 
-                        if (isBooster || isSubscriber || isStaff) {
+                        if (isBooster || isStaff) {
                             supporterChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
                             }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
