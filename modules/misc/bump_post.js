@@ -14,9 +14,6 @@ module.exports = async (message, client) => {
         }
 
         // replace disboard reply with our own embed and do counting save stuff
-        const bumpUser = message?.interaction?.user.id;
-        let savesMessage;
-
         if (message.embeds.length >= 1) {
             message?.channel.messages.fetch(message?.id).then(async fetched => {
                 let embed = fetched?.embeds[0];
@@ -38,9 +35,7 @@ module.exports = async (message, client) => {
                         .setColor('#32B9FF')
                         .setTitle(message?.interaction?.user.username)
                         .setURL('https://disboard.org/review/create/820889004055855144')
-                        .setDescription(`Consider leaving an honest review of the server **[HERE](https://disboard.org/review/create/820889004055855144)**
-
-${savesMessage}`)
+                        .setDescription(`Consider leaving an honest review of the server **[HERE](https://disboard.org/review/create/820889004055855144)**`)
                         .setImage(process.env.BUMP_IMG)
 
                     // Fetch and delete the previous bump ping message
