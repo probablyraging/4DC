@@ -58,12 +58,12 @@ module.exports = {
         const video = options.getString('video');
         const videoId = getYoutubeVideoId(video);
 
-        const response = await axios.post('http://localhost/api/addvideo', { data: video });
+        const response = await axios.post('https://creatordiscord.xyz/api/addvideo_youtube', { data: video });
 
         if (response.data.message) {
             sendResponse(interaction, `${process.env.BOT_CONF} ${response.data.message}`);
             submissionChan.send({
-                content: `New video submission from ${member} - https://youtu.be/${videoId}`
+                content: `**${member} posted a new video on Distubify - https://youtu.be/${videoId}**`
             }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         } else {
             sendResponse(interaction, `${process.env.BOT_DENY} ${response.data.error}`);
