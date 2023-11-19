@@ -50,21 +50,16 @@ module.exports = {
      * @param {CommandInteraction} interaction 
      */
     async execute(interaction) {
-        const { guild, options, member } = interaction;
+        const { options } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
-        const submissionChan = guild.channels.cache.get('1173833323135651850');
         const video = options.getString('video');
-        const videoId = getYoutubeVideoId(video);
 
         const response = await axios.post('https://creatordiscord.xyz/api/addvideo_youtube', { data: video });
 
         if (response.data.message) {
             sendResponse(interaction, `${process.env.BOT_CONF} ${response.data.message}`);
-            submissionChan.send({
-                content: `**${member} posted a new video on Distubify - https://youtu.be/${videoId}**`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
         } else {
             sendResponse(interaction, `${process.env.BOT_DENY} ${response.data.error}`);
         }
