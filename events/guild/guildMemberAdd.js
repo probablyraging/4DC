@@ -27,7 +27,7 @@ module.exports = {
         const oneMonth = 24 * 30 * 60 * 60 * 1000;
         if ((new Date() - member.user.createdTimestamp) < oneMonth) {
             member.send({
-                content: `## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*ContentCreator Server Staff*`
+                content: `## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*Distubify Server Staff*`
             }).catch(() => { });
             member.kick('Account age less than 1 month').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
             return;

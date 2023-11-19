@@ -128,6 +128,9 @@ module.exports = async (interaction) => {
                 interaction.editReply({ content: `${process.env.BOT_CONF} Verification successful`, components: [] });
                 // Give member role
                 member.roles.remove(process.env.UNVERIFIED_ROLE);
+                member.send({
+                    content: `## Share Your Content \nJoin **[Distubify](https://distubify.xyz)** to share your content with other creators. \n\n*Distubify Server Staff*`
+                }).catch(() => { });
             } else {
                 await interaction.deferUpdate();
                 interaction.editReply({ content: `${process.env.BOT_DENY} Verification failed. Please try again.`, components: [] });

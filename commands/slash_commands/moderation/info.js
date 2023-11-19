@@ -50,11 +50,10 @@ module.exports = {
 > ${process.env.BOT_DOC} The <#${process.env.PREM_CHAN}> channel is a paid service where you can promote content that generally isn't allowed to be posted in the rest of the server. Things like Discord server invites, paid services and products and even regular social media, channels and videos. For more information DM ProbablyRaging`],
 
             [`contentshare`, `### *Information for ${target}:*
-> ${process.env.BOT_DOC} This server's main focus is providing content creators with help, advice, and useful resources. However, we do offer the following options for sharing your own content;
+> ${process.env.BOT_DOC} Share your content in the following locations;
+> - On our official site, [Distubify](<https://distubify.xyz>), which is open for everyone to use
 > - The <#859117794779987978> channel for <@&821876910253670442>
-> - The <#907446635435540551> channel which is a paid method of advertising your content, services, or products
-> - Our [browser extension](<https://chrome.google.com/webstore/detail/kbnghoajbjomkegkhiiafelmmecnajhd>) which allows server members to support each other's content. Use the </extension:1127659226920132750> command for more information
-> - Our [sub-Reddit](<https://www.reddit.com/r/forthecontent>) which is open for everyone to use, including non-server members`]
+> - The <#907446635435540551> channel which is a paid method of advertising your content, services, or products`]
         ]);
 
         sendReplyWithMention(interaction, responses.get(choice));
