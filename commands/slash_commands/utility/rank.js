@@ -137,9 +137,9 @@ module.exports = {
             }
             roundedImage(55, 55, 170, 170, 50);
             ctx.clip();
+
             // Get a small res version of the user's avatar and draw it onto the canvas
-            const avatarURL = target?.user.displayAvatarURL() + "?size=128";
-            const avatar = await Canvas.loadImage(avatarURL.replace('webp', 'png'));
+            const avatar = await Canvas.loadImage(target?.user.displayAvatarURL({ extension: 'png', size: 128 }));
             ctx.drawImage(avatar, 55, 55, 170, 170);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer(), "profile-image.png");
