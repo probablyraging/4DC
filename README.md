@@ -1,4 +1,4 @@
-<a href="https://discord.gg/contentcreator"><img width="120" height="120" align="left" style="float: left" src="https://i.imgur.com/Dc7fS2o.png"></a>
+<a href="https://discord.gg/contentcreator"><img width="120" height="120" align="left" style="float: left" src="https://i.imgur.com/DeT34Wr.png"></a>
 # 4DC
 
 [![ContentCreator](https://img.shields.io/discord/820889004055855144?color=5865F2&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/contentcreator)
