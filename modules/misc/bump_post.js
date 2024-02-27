@@ -33,7 +33,7 @@ module.exports = async (message, client) => {
 
                     const bumpConfirm = new EmbedBuilder()
                         .setColor('#32B9FF')
-                        .setDescription(`Thank you for bumping the server ${message?.interaction?.member}`)
+                        .setDescription(`Thank you for bumping the server <@${message?.interaction?.user.id}>`)
                         .setImage(process.env.BUMP_IMG)
 
                     // Fetch and delete the previous bump ping message
