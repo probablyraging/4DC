@@ -129,7 +129,7 @@ module.exports = async (interaction) => {
                 // Give member role
                 member.roles.remove(process.env.UNVERIFIED_ROLE);
                 member.send({
-                    content: `## Share Your Content \nHead over to <@1211880427598385192> to share your content with other creators. \n\n*Distubify Server Staff*`
+                    content: `## Share Your Content \nHead over to <#1211880427598385192> to share your content with other creators. \n\n*Distubify Server Staff*`
                 }).catch(() => { });
             } else {
                 await interaction.deferUpdate();
