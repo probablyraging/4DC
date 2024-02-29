@@ -77,7 +77,7 @@ module.exports = async (client) => {
         }
     });
 
-    // Pause DMs - runs once per day (08:00)
+    // Pause DMs - runs once per day (09:00)
     const pauseDMs = new cronjob('0 9 * * *', async function () {
         const currentDate = new Date();
         currentDate.setHours(currentDate.getHours() + 24);
@@ -107,10 +107,39 @@ module.exports = async (client) => {
         })
     });
 
+    // Delete abandoned service threads
+    const deleteAbandonedServiceThreads = new cronjob('0 1 * * 2', async function () {
+        const threadChan = await guild.channels.fetch('1096198410664689744');
+        const threads = threadChan.threads.cache;
+        threads.forEach(async thread => {
+            const exists = await guild.members.fetch(thread.ownerId).catch(() => { });
+            if (!exists) thread.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an abandoned service thread: `, err));
+        });
+    });
+
+    // Archive abandoned LFS thresds
+    const deleteAbandonedLFSThreads = new cronjob('0 1 * * 2', async function () {
+        const threadChan = await guild.channels.fetch('978694637088804884');
+        const threads = threadChan.threads.cache;
+        threads.forEach(async thread => {
+            const exists = await guild.members.fetch(thread.ownerId).catch(() => { });
+            if (!exists) {
+                try {
+                    await thread.setLocked(true);
+                    await thread.setArchived(true);
+                } catch (err) {
+                    console.error('There was a problem archiving an abandoned lfs thread: ', err);
+                }
+            }
+        });
+    });
+
     rankSort.start();
     warnsCheck.start();
     premiumAdsCheck.start();
     invitesCheck.start();
     pauseDMs.start();
     kickUnverifiedUsers.start();
+    deleteAbandonedServiceThreads.start();
+    deleteAbandonedLFSThreads.start();
 }

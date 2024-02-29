@@ -4,7 +4,7 @@ module.exports = async (interaction) => {
     await interaction.deferReply({ ephemeral: true });
 
     try {
-        if (channel.ownerId === member.id) {
+        if (channel.ownerId === member.id || member.roles.cache.has(process.env.STAFF_ROLE)) {
             interaction.deleteReply();
             const newTags = [...channel.appliedTags, '1033879593775538196'].slice(-5);
             const channelName = channel.name.slice(0, 90);
