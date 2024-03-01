@@ -112,7 +112,7 @@ module.exports = async (client) => {
         const threadChan = await guild.channels.fetch('1096198410664689744');
         const threads = threadChan.threads.cache;
         threads.forEach(async thread => {
-            const exists = await guild.members.fetch(thread.ownerId).catch(() => { });
+            const exists = await guild.members.fetch(thread.ownerId).catch(() => { console.log(`Found and removed an abandoned service thread`) });
             if (!exists) thread.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an abandoned service thread: `, err));
         });
     });
@@ -127,6 +127,7 @@ module.exports = async (client) => {
                 try {
                     await thread.setLocked(true);
                     await thread.setArchived(true);
+                    console.log(`Found and removed an abandoned LFS thread`);
                 } catch (err) {
                     console.error('There was a problem archiving an abandoned lfs thread: ', err);
                 }

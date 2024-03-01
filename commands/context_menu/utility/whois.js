@@ -56,9 +56,6 @@ module.exports = {
             .setFooter({ text: target?.id })
             .setTimestamp()
 
-        // If the target user is a bot, add an additional field to the embed
-        // if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false });
-
         sendResponse(interaction, ``, [response]);
     }
 };
