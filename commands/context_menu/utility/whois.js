@@ -24,7 +24,14 @@ module.exports = {
         const permissions = target.permissions.toArray();
         const sortedPermissionsArray = permissions.sort();
         const formattedPermissions = sortedPermissionsArray.join(', ');
-        const acknowledgements = permissions.includes('Administrator') ? 'Server Owner' : 'None' || permissions.includes('Administrator') ? 'Administrator' : 'None';
+        const acknowledgements = target?.user.bot ? 'Server Bot' :
+            interaction.targetId === guild.ownerId
+                ? 'Server Owner'
+                : (permissions.includes('ManageRoles')
+                    ? 'Server Administrator'
+                    : (permissions.includes('ManageMessages')
+                        ? 'Server Moderator'
+                        : 'None'));
         // Trim the acknowledgements if they exceed the character limit
         if (acknowledgements && acknowledgements.length > 1024) acknowledgements.slice(0, 10);
         if (formattedPermissions && formattedPermissions.length > 1024) formattedPermissions.slice(0, 10);
@@ -50,7 +57,7 @@ module.exports = {
             .setTimestamp()
 
         // If the target user is a bot, add an additional field to the embed
-        if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false });
+        // if (target?.user.bot) response.addFields({ name: 'Additional:', value: `This user is a BOT`, inline: false });
 
         sendResponse(interaction, ``, [response]);
     }
