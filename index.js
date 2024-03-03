@@ -26,12 +26,10 @@ consoleStamp(console, {
     format: ':date(dd mmmm yyyy HH:MM:ss) :label'
 });
 
-client.setMaxListeners(20);
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 
 const handlers = [commandHandler, eventHandler];
-
 handlers.forEach(handler => {
     handler(client, Discord);
 });
