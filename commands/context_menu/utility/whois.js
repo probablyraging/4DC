@@ -18,7 +18,7 @@ module.exports = {
         const target = await guild.members.fetch(interaction.targetId).catch(() => { });
 
         // If no target
-        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
+        if (!target) return sendResponse(interaction, `This user no longer exists`);
 
         // Filter the target's permissions in an array
         const permissions = target.permissions.toArray();

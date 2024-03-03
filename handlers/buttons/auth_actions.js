@@ -125,7 +125,7 @@ module.exports = async (interaction) => {
         try {
             if (interaction.component.data.style === 3) {
                 await interaction.deferUpdate();
-                interaction.editReply({ content: `${process.env.BOT_CONF} Verification successful`, components: [] });
+                interaction.editReply({ content: `Verification successful`, components: [] });
                 // Give member role
                 member.roles.remove(process.env.UNVERIFIED_ROLE);
                 member.send({
@@ -133,7 +133,7 @@ module.exports = async (interaction) => {
                 }).catch(() => { });
             } else {
                 await interaction.deferUpdate();
-                interaction.editReply({ content: `${process.env.BOT_DENY} Verification failed. Please try again.`, components: [] });
+                interaction.editReply({ content: `Verification failed. Please try again.`, components: [] });
             }
         } catch (err) {
             console.log('There was a problem verifying a user: ', err);

@@ -193,7 +193,7 @@ module.exports = async (interaction) => {
             // If the target user cannot be found
             if (!userId || !username) {
                 closeReport(guild, channel, member);
-                return sendResponse(interaction, `${process.env.BOT_DENY} The was an issue finding the user you are trying to warn. This report has been closed`);
+                return sendResponse(interaction, `The was an issue finding the user you are trying to warn. This report has been closed`);
             }
 
             // Log to channel

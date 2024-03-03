@@ -18,8 +18,8 @@ async function bulkDeleteFilteredMessages(interaction, channel, messages, target
         (targetUser ? message.author.id === targetUser.id : !message.system) && amount > i ? (filtered.push(message), i++) : null;
     });
     const bulkDelete = await channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
-    const responseWithUser = `${process.env.BOT_CONF} ${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`;
-    const responseWithoutUser = `${process.env.BOT_CONF} ${bulkDelete.size} messages deleted in ${channel}`;
+    const responseWithUser = `${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`;
+    const responseWithoutUser = `${bulkDelete.size} messages deleted in ${channel}`;
     sendResponse(interaction, `${targetUser ? responseWithUser : responseWithoutUser}`);
     return bulkDelete.size;
 }
@@ -56,7 +56,7 @@ module.exports = {
         const fetchedMessages = await channel.messages.fetch().catch(() => { });
 
         if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel'))
-            return sendResponse(interaction, `${process.env.BOT_DENY} Missing permissions for ${channel}`);
+            return sendResponse(interaction, `Missing permissions for ${channel}`);
 
         if (fetchedMessages.size < 1)
             return sendResponse(interaction, `${process.env.BOT_INFO} I could not find any messages from ${targetUser} in ${channel}`);

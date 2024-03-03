@@ -114,13 +114,13 @@ module.exports = {
                 const author = options.getBoolean('author');
 
                 // Perform character limit checks
-                if (title + description + author > 6000) return sendResponse(interaction, `${process.env.BOT_DENY} The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
-                if (title && title.length > 256) return sendResponse(interaction, `${process.env.BOT_DENY} Embed titles are limited to 256 characters`);
-                if (description && description.length > 4096) return sendResponse(interaction, `${process.env.BOT_DENY} Embed descriptions are limited to 4096 characters`);
+                if (title + description + author > 6000) return sendResponse(interaction, `The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
+                if (title && title.length > 256) return sendResponse(interaction, `Embed titles are limited to 256 characters`);
+                if (description && description.length > 4096) return sendResponse(interaction, `Embed descriptions are limited to 4096 characters`);
                 // Make sure the color provided is a valid HEX code
                 const hexRegex = /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/i;
                 const isHex = hexRegex.test(color);
-                if (color && !isHex) return sendResponse(interaction, `${process.env.BOT_DENY} You must enter a valid #hex color`);
+                if (color && !isHex) return sendResponse(interaction, `You must enter a valid #hex color`);
                 // Create the embed
                 const embed = new EmbedBuilder().setDescription(description).setColor(color);
                 // Add any provided fields to the embed
@@ -179,16 +179,16 @@ module.exports = {
                 // Make sure the message ID is valid
                 const letterRegex = /[a-zA-Z]/g;
                 const hasLetter = letterRegex.test(id);
-                if (hasLetter === true) return sendResponse(interaction, `${process.env.BOT_DENY} You must enter a valid message id`);
+                if (hasLetter === true) return sendResponse(interaction, `You must enter a valid message id`);
 
                 // Perform character limit checks
-                if (title + description + author > 6000) return sendResponse(interaction, `${process.env.BOT_DENY} The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
-                if (title && title.length > 256) return sendResponse(interaction, `${process.env.BOT_DENY} Embed titles are limited to 256 characters`);
-                if (description && description.length > 4096) return sendResponse(interaction, `${process.env.BOT_DENY} Embed descriptions are limited to 4096 characters`);
+                if (title + description + author > 6000) return sendResponse(interaction, `The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
+                if (title && title.length > 256) return sendResponse(interaction, `Embed titles are limited to 256 characters`);
+                if (description && description.length > 4096) return sendResponse(interaction, `Embed descriptions are limited to 4096 characters`);
                 // Make sure the color provided is a valid HEX code
                 const hexRegex = /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/i;
                 const isHex = hexRegex.test(color);
-                if (color && !isHex) return sendResponse(interaction, `${process.env.BOT_DENY} You must enter a valid #hex color`);
+                if (color && !isHex) return sendResponse(interaction, `You must enter a valid #hex color`);
 
                 // Fetch the target message containing the embed
                 const message = await channel.messages.fetch(id);

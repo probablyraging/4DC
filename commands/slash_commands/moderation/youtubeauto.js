@@ -65,10 +65,10 @@ module.exports = {
                     // Add the new user to the database
                     await dbUpdateOne(ytNotificationSchema, { userId: target.id }, { userId: target.id, channelId: channelId, videoIds: videoIdArr });
 
-                    sendResponse(interaction, `${process.env.BOT_CONF} ${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`);
+                    sendResponse(interaction, `${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`);
                 } catch {
                     // If the supplied channel ID is incorrect
-                    sendResponse(interaction, `${process.env.BOT_DENY} An error occurred. This is most likely because the channel ID doesn't exist`);
+                    sendResponse(interaction, `An error occurred. This is most likely because the channel ID doesn't exist`);
                 }
                 break;
             }
@@ -78,7 +78,7 @@ module.exports = {
                 // Find and remove the user from the database
                 await dbDeleteOne(ytNotificationSchema, { userId: target.id });
 
-                sendResponse(interaction, `${process.env.BOT_CONF} ${target} has been removed from the YouTube Auto list`);
+                sendResponse(interaction, `${target} has been removed from the YouTube Auto list`);
                 break;
             }
         }

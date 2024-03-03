@@ -35,13 +35,13 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         let error;
         // Make sure a user ID is provided
-        if (isNaN(target)) return sendResponse(interaction, `${process.env.BOT_DENY} A user ID must contain only numbers`);
+        if (isNaN(target)) return sendResponse(interaction, `A user ID must contain only numbers`);
         // Fetch the target ban
         const fetchTargetBan = await guild.bans.fetch(target).catch(() => { error = true });
         // Remove the target ban
         await guild.bans.remove(target, { reason: reason }).catch(() => { error = true });
         // If an error occurs, notify the user
-        if (error) return sendResponse(interaction, `${process.env.BOT_DENY} ${target} was not found in the ban list`);
+        if (error) return sendResponse(interaction, `${target} was not found in the ban list`);
         // Log to channel
         let log = new EmbedBuilder()
             .setColor("#4fe059")
@@ -55,6 +55,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} ${fetchTargetBan.user.username} was unbanned from the server`);
+        sendResponse(interaction, `${fetchTargetBan.user.username} was unbanned from the server`);
     }
 }

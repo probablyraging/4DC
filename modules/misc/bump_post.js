@@ -57,7 +57,7 @@ module.exports = async (message, client) => {
     // reminder to use the new slash commands
     if (message?.channel.id === process.env.BUMP_CHAN && message?.content.toLowerCase().includes('!d bump')) {
         message?.reply({
-            content: `${process.env.BOT_DENY} That is an old command. Please use /bump now instead`,
+            content: `That is an old command. Please use /bump now instead`,
             allowedMentions: { repliedUser: true },
             failIfNotExists: false
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));

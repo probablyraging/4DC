@@ -44,6 +44,6 @@ module.exports = {
             .setFooter({ text: `ID ${member?.id}-${reportMessage.id}`, iconURL: guild.iconURL({ dynamic: true }) })
         reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
+        sendResponse(interaction, `Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
     },
 };

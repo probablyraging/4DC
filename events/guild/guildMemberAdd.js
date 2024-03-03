@@ -1,4 +1,3 @@
-const previouslyBannedUsers = require('../../lists/previous_bans');
 const inviteTracker = require('../../modules/misc/invite_tracker');
 const previousMutesCheck = require('../../modules/moderation/previous_mutes');
 const verificationTimer = require('../../modules/moderation/verification_timer');
@@ -33,7 +32,7 @@ module.exports = {
             return;
         }
 
-        // Check if the user was muted, and left the server while a mute was action
+        // Check if the user was muted, and left the server while a mute was active
         previousMutesCheck(member, client);
 
         // Give the user 5 minutes to verify themselves, or kick them
@@ -41,18 +40,5 @@ module.exports = {
 
         // Check user's profile for blocked words and report to staff if a match is found
         profileFilter(member, client);
-
-        // TEMPORARY: Check a list of previously banned user UDs
-        previouslyBannedUsers.ids.forEach(id => {
-            try {
-                if (member.id === id) {
-                    guild.channels.cache.get(process.env.STAFF_CHAN).send({
-                        content: `<@&${process.env.STAFF_ROLE}> \n${member} was flagged as being previously banned, do with this information what you will. I vote we ban them :smiling_imp:`
-                    });
-                }
-            } catch (err) {
-                console.error('There was a problem with matching previously banned users: ', err);
-            }
-        });
     }
 }

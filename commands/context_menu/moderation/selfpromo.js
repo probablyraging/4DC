@@ -23,7 +23,7 @@ module.exports = {
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
         // If the target doesn't exist
-        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user is no longer in the server`);
+        if (!target) return sendResponse(interaction, `This user is no longer in the server`);
 
         // Delete the target message
         fetchMsg.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
@@ -51,6 +51,6 @@ module.exports = {
             embeds: [log]
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} ${target} was muted in ${channel}`);
+        sendResponse(interaction, `${target} was muted in ${channel}`);
     }
 }

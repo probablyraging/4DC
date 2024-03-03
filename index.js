@@ -10,7 +10,7 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.GuildInvites,
         Discord.GatewayIntentBits.GuildPresences,
         Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.MessageContent
     ],
     partials: [
         Discord.Partials.Channel

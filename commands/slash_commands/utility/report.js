@@ -39,11 +39,11 @@ module.exports = {
         const attachment = options.getAttachment('screenshot');
 
         // If target is not a valid user
-        if (!target?.username) return sendResponse(interaction, `${process.env.BOT_DENY} Please specify a valid user to report`);
+        if (!target?.username) return sendResponse(interaction, `Please specify a valid user to report`);
 
         // If attachment content type isn't an image
         if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
-            return sendResponse(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
+            return sendResponse(interaction, `Attachment type must be an image file (.png, .jpg, etc..)`);
 
         let reportEmbed = new EmbedBuilder()
             .setColor("#E04F5F")
@@ -77,6 +77,6 @@ module.exports = {
 
         reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
+        sendResponse(interaction, `Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
     }
 };

@@ -96,20 +96,20 @@ module.exports = {
             const currentAttachment = attachments[i];
             if (!currentAttachment || !currentAttachment.contentType) continue;
             if (!currentAttachment.contentType || !currentAttachment.contentType.includes('image')) {
-                return sendResponse(interaction, `${process.env.BOT_DENY} Attachment type must be an image file (.png, .jpg, etc..)`);
+                return sendResponse(interaction, `Attachment type must be an image file (.png, .jpg, etc..)`);
             } else {
                 attachmentArr.push(currentAttachment);
             }
         }
         // If no target
-        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
+        if (!target) return sendResponse(interaction, `This user no longer exists`);
         // If no reason was provided when using the custom reason option
-        if (reason == null) return sendResponse(interaction, `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`);
+        if (reason == null) return sendResponse(interaction, `You must provide custom reason when selecting the 'Custom' option`);
         // Check if a the user is already banned
         const alreadyBanned = await guild.bans.fetch(target.id).catch(() => { });
-        if (alreadyBanned) return sendResponse(interaction, `${process.env.BOT_DENY} This user is already banned`);
+        if (alreadyBanned) return sendResponse(interaction, `This user is already banned`);
         // Send response
-        sendResponse(interaction, `${process.env.BOT_CONF} ${target.username} was banned from the server`);
+        sendResponse(interaction, `${target.username} was banned from the server`);
         // Send a notification to the target user
         await target.send({
             content: `## You have been banned from **ContentCreator**\n> ${reason}`

@@ -17,7 +17,7 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
         // If the target doesn't exist
-        if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} This user no longer exists`);
+        if (!target) return sendResponse(interaction, `This user no longer exists`);
 
         const response = new EmbedBuilder()
             .setColor('#32BEA6')

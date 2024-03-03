@@ -56,7 +56,7 @@ module.exports = async (message, client) => {
                 const member = message.member;
                 if (member) {
                     // Time the user out
-                    const notificationForUser = `${process.env.BOT_DENY} You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`;
+                    const notificationForUser = `You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`;
                     timeoutUser(member, 300000, 'Spam detection', notificationForUser);
                     // Add timedout users to a set so we don't try to time them out again
                     timedOutUsers.add(authorId);

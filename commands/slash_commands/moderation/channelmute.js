@@ -75,9 +75,9 @@ module.exports = {
                 const reason = options.getString('reason');
                 let duration = options.getString('duration') || `0`;
 
-                if (!target) return sendResponse(interaction, `${process.env.BOT_DENY} The user no longer exists`);
+                if (!target) return sendResponse(interaction, `The user no longer exists`);
                 // If the reason exceeds the character limit
-                if (reason && reason.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Reasons are limited to 1024 characters`);
+                if (reason && reason.length > 1024) return sendResponse(interaction, `Reasons are limited to 1024 characters`);
                 // Update the channel permissions for the target user
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: false,
@@ -104,7 +104,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                sendResponse(interaction, `${process.env.BOT_CONF} ${target} was muted in ${targetChan}`);
+                sendResponse(interaction, `${target} was muted in ${targetChan}`);
                 break;
             }
 
@@ -129,7 +129,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
 
-                sendResponse(interaction, `${process.env.BOT_CONF} ${target} was unmuted in ${targetChan}`);
+                sendResponse(interaction, `${target} was unmuted in ${targetChan}`);
                 break;
             }
         }

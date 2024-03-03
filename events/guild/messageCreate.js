@@ -86,10 +86,5 @@ module.exports = {
                 }
             }
         }
-
-        // TEMPORARY: Block URLs in custom ad channel
-        const urlRegex = /^(https?:\/\/|www\.)[^\s/$.?#].[^\s]*$/i;
-        if (message?.channel.id === '1162271885057335398' && message?.author.id !== '1156122594240634900' && urlRegex.test(message?.content))
-            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
     }
 };

@@ -102,7 +102,7 @@ module.exports = async (client) => {
         const fiveMinutes = 5 * 60 * 1000;
         unverifiedRole.members.forEach(member => {
             if ((new Date() - member.joinedTimestamp) < oneWeek && (new Date() - member.joinedTimestamp) > fiveMinutes) {
-                member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
+                if (member.id !== '1081004946872352958') member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
             }
         })
     });

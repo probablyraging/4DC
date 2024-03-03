@@ -1,15 +1,16 @@
 {
     "name": "4dc",
     "version": "1.0.0",
-    "description": "",
+    "description": "4DC is a multi-purpose discord.js v14 bot",
     "main": "index.js",
     "scripts": {
         "lint": "eslint --ignore-path .gitignore .",
         "start": "node index.js",
-        "dev": "nodemon index.js"
+        "dev": "nodemon index.js",
+        "monit": "pm2 start index.js --watch --name 4dc && pm2 monit"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "probablyraging",
+    "license": "GPL-3.0",
     "dependencies": {
         "@discordjs/builders": "^0.9.0",
         "@discordjs/rest": "^0.1.0-canary.0",

@@ -46,6 +46,6 @@ module.exports = {
             files: image ? [image] : []
         }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
 
-        sendResponse(interaction, `${process.env.BOT_CONF} Message sent`);
+        sendResponse(interaction, `Message sent`);
     }
 }

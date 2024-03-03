@@ -88,11 +88,11 @@ module.exports = {
         // Make sure the bot has the correct permissions in both channels
         const channels = [channel, destinationChannel];
         if (!channels.every(c => guild.members.me.permissionsIn(c).has('ManageMessages') && guild.members.me.permissionsIn(c).has('SendMessages') && guild.members.me.permissionsIn(c).has('ViewChannel')))
-            return sendResponse(interaction, `${process.env.BOT_DENY} I do not have the necessary permissions in one or more of the specified channel`);
+            return sendResponse(interaction, `I do not have the necessary permissions in one or more of the specified channel`);
         // Fetch all messages from the target channel
         const fetchedMessages = await channel.messages.fetch();
         // Make sure the destination channel is a text channel
-        if (destinationChannel.type !== 0) return sendResponse(interaction, `${process.env.BOT_DENY} You can't move a message to a ${destinationChannel.type === 2 ? 'voice channel' : 'category'}`);
+        if (destinationChannel.type !== 0) return sendResponse(interaction, `You can't move a message to a ${destinationChannel.type === 2 ? 'voice channel' : 'category'}`);
         // Filter the messages to only include the ones that the user specified and filter if they return null
         const messagesToMove = messageIds.map(id => fetchedMessages.get(id)).filter(Boolean);
         // If there are no messages to move
@@ -104,6 +104,6 @@ module.exports = {
             message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
         }
         // Send a confirmation message in the original channel
-        sendResponse(interaction, `${process.env.BOT_CONF} ${messagesToMove.length} messages moved to ${destinationChannel}`);
+        sendResponse(interaction, `${messagesToMove.length} messages moved to ${destinationChannel}`);
     }
 };

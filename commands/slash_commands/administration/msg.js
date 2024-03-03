@@ -43,9 +43,9 @@ module.exports = {
             content: message ? message : '',
             files: attachment ? [attachment] : []
         }).catch(() => {
-            return sendResponse(interaction, `${process.env.BOT_DENY} I could not send a DM to this user`);
+            return sendResponse(interaction, `I could not send a DM to this user`);
         });
 
-        sendResponse(interaction, `${process.env.BOT_CONF} Message sent`);
+        sendResponse(interaction, `Message sent`);
     }
 }

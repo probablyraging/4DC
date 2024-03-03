@@ -89,11 +89,11 @@ module.exports = {
                 reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
 
                 // If no reason was provided
-                if (reason == null) return sendResponse(interaction, `${process.env.BOT_DENY} You must provide custom reason when selecting the 'Custom' option`);
+                if (reason == null) return sendResponse(interaction, `You must provide custom reason when selecting the 'Custom' option`);
                 // If the provided reason exceeds the character limit
-                if (reason && reason.length > 1024) return sendResponse(interaction, `${process.env.BOT_DENY} Reasons are limited to 1024 characters`);
+                if (reason && reason.length > 1024) return sendResponse(interaction, `Reasons are limited to 1024 characters`);
                 // If the target user cannot be found
-                if (!userId || !username) return sendResponse(interaction, `${process.env.BOT_DENY} The was an issue finding the user you are trying to warn`);
+                if (!userId || !username) return sendResponse(interaction, `The was an issue finding the user you are trying to warn`);
 
                 // Log to channel
                 let log = new EmbedBuilder()
@@ -115,13 +115,13 @@ module.exports = {
                 if (results.length >= 3) {
                     // Ban the user if this is their third warning
                     await target.ban({ days: 0, reason: `Warning threshold` })
-                        .then(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added`))
-                        .catch(() => sendResponse(interaction, `${process.env.BOT_DENY} This is ${target}'s third warning but I could not ban them`));
+                        .then(() => sendResponse(interaction, `Your warning was added`))
+                        .catch(() => sendResponse(interaction, `This is ${target}'s third warning but I could not ban them`));
                 } else {
                     // Notify the user that they received a warning
                     await target.send({ content: `${target} - you received a warning in ${guild.name} \n${codeBlock(reason)}` })
-                        .then(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added`))
-                        .catch(() => sendResponse(interaction, `${process.env.BOT_CONF} Your warning was added \n${process.env.BOT_DENY} I could not send ${target} a notification`));
+                        .then(() => sendResponse(interaction, `Your warning was added`))
+                        .catch(() => sendResponse(interaction, `Your warning was added \nI could not send ${target} a notification`));
                 }
                 break;
             }
@@ -131,7 +131,7 @@ module.exports = {
                 // Fetch warnings for the target user
                 const results = (await warnSchema.find({ warnId: warning }))[0];
                 // If no results were found
-                if (!results) return sendResponse(interaction, `${process.env.BOT_DENY} Warning *'${warning}'* does not exist or has already been deleted`);
+                if (!results) return sendResponse(interaction, `Warning *'${warning}'* does not exist or has already been deleted`);
                 // Find and remove the user's warning
                 await dbDeleteOne(warnSchema, { warnId: warning });
                 // Log to channel
@@ -146,7 +146,7 @@ module.exports = {
                     embeds: [log]
                 }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
                 // Send a follow up response
-                sendResponse(interaction, `${process.env.BOT_CONF} Warning '${warning}' removed`);
+                sendResponse(interaction, `Warning '${warning}' removed`);
                 break;
             }
 
@@ -155,7 +155,7 @@ module.exports = {
                 // Fetch warnings for the target user
                 const results = await warnSchema.find({ userId: target.id });
                 // If no results were found
-                if (results.length === 0) return sendResponse(interaction, `${process.env.BOT_DENY} This user has no warnings`);
+                if (results.length === 0) return sendResponse(interaction, `This user has no warnings`);
                 // Create an embed to display the user's warnings
                 let warningEmbed = new EmbedBuilder()
                     .setColor('#E04F5F')
