@@ -1,8 +1,8 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'maintenance',
     description: 'Locks specific channels while the bot is under maintenance',
     defaultMemberPermissions: ['Administrator'],

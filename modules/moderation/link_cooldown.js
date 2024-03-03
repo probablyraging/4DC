@@ -1,6 +1,6 @@
 const cooldown = new Set();
 
-module.exports = async (message) => {
+export default async (message) => {
     if (message.author.bot) return;
 
     const { content, member, author } = message;

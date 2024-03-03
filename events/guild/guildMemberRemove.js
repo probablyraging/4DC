@@ -1,8 +1,8 @@
-const introSchema = require('../../schemas/intro_schema');
-const { dbFindOne } = require('../../utils/utils');
-const path = require('path');
+import introSchema from '../../schemas/intro_schema.js';
+import { dbFindOne } from '../../utils/utils.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'guildMemberRemove',
     async execute(member, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

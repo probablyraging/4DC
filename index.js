@@ -1,5 +1,9 @@
-require("dotenv").config();
-const Discord = require('discord.js');
+import dotenv from 'dotenv';
+dotenv.config();
+import Discord from 'discord.js';
+import consoleStamp from 'console-stamp';
+import commandHandler from './handlers/client/command_handler.js';
+import eventHandler from './handlers/client/event_handler.js';
 
 const client = new Discord.Client({
     intents: [
@@ -18,15 +22,18 @@ const client = new Discord.Client({
 });
 
 console.time('Time to online');
-require('console-stamp')(console, {
+consoleStamp(console, {
     format: ':date(dd mmmm yyyy HH:MM:ss) :label'
 });
 
+client.setMaxListeners(20);
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 
-["command_handler", "event_handler"].forEach(handler => {
-    require(`./handlers/client/${handler}`)(client, Discord);
+const handlers = [commandHandler, eventHandler];
+
+handlers.forEach(handler => {
+    handler(client, Discord);
 });
 
 client.login(process.env.BOT_TOKEN);

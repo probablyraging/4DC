@@ -1,7 +1,7 @@
-const { CommandInteraction, ApplicationCommandType } = require('discord.js');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType } from 'discord.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `perks`,
     description: `Provides information about the current server subscriber and booster perks`,
     cooldown: 5,

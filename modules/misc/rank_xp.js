@@ -1,6 +1,7 @@
-const { Message } = require('discord.js');
-const { dbFind, dbCreate, dbUpdateOne } = require('../../utils/utils');
-const rankSchema = require('../../schemas/rank_schema');
+import { Message } from 'discord.js';
+import { dbFind, dbCreate, dbUpdateOne } from '../../utils/utils.js';
+import rankSchema from '../../schemas/rank_schema.js';
+
 const xpLimit = new Set();
 
 /**
@@ -17,7 +18,7 @@ function randomNum(message) {
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client) => {
+export default async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const botChan = guild.channels.cache.get(process.env.BOT_CHAN);
     const disableXP = [process.env.BOT_CHAN];

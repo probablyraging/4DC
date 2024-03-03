@@ -1,17 +1,17 @@
-const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
-const rankSchema = require('../../schemas/rank_schema');
-const warnSchema = require('../../schemas/warn_schema');
-const inviteSchema = require('../../schemas/invite_schema');
-const timerSchema = require("../../schemas/timer_schema");
-const cronjob = require('cron').CronJob;
-const { default: axios } = require('axios');
-const path = require('path');
+import { dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
+import rankSchema from '../../schemas/rank_schema.js';
+import warnSchema from '../../schemas/warn_schema.js';
+import inviteSchema from '../../schemas/invite_schema.js';
+import timerSchema from '../../schemas/timer_schema.js';
+import { CronJob } from 'cron';
+import axios from 'axios';
+import path from 'path';
 
-module.exports = async (client) => {
+export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     // Fetch all rank entries sorted in descending order based on their 'xp', remove non-existent users and assign their new rank position - runs once per day (12:00)
-    const rankSort = new cronjob('0 12 * * *', async function () {
+    const rankSort = new CronJob('0 12 * * *', async function () {
         const results = await rankSchema.find().sort({ xp: -1 });
         let currentPosition = 0;
         let newPositionArr = [];
@@ -31,7 +31,7 @@ module.exports = async (client) => {
     });
 
     // Fetch all warnings and remove non-existent users - runs once per month, on the first day of the month (Monday 00:00)
-    const warnsCheck = new cronjob('0 0 1 * *', async function () {
+    const warnsCheck = new CronJob('0 0 1 * *', async function () {
         const results = await warnSchema.find();
         for (const data of results) {
             const { userId } = data;
@@ -41,7 +41,7 @@ module.exports = async (client) => {
     });
 
     // Check for expired premium ads and send a notification
-    const premiumAdsCheck = new cronjob('0 */6 * * *', async function () {
+    const premiumAdsCheck = new CronJob('0 */6 * * *', async function () {
         const testChan = guild.channels.cache.get(process.env.TEST_CHAN);
         const premiumChan = await guild.channels.cache.get(process.env.PREM_CHAN);
         const premiumAds = await premiumChan.messages.fetch();
@@ -64,7 +64,7 @@ module.exports = async (client) => {
     });
 
     // Check for invite codes that no longer exist - runs once per week (Thursday 00:00)
-    const invitesCheck = new cronjob('0 0 * * 4', async function () {
+    const invitesCheck = new CronJob('0 0 * * 4', async function () {
         const invites = await guild.invites.fetch();
         let invitesArr = [];
         invites.forEach(invite => {
@@ -78,7 +78,7 @@ module.exports = async (client) => {
     });
 
     // Pause DMs - runs once per day (09:00)
-    const pauseDMs = new cronjob('0 9 * * *', async function () {
+    const pauseDMs = new CronJob('0 9 * * *', async function () {
         const currentDate = new Date();
         currentDate.setHours(currentDate.getHours() + 24);
         const isoTimestamp = currentDate.toISOString();
@@ -96,7 +96,7 @@ module.exports = async (client) => {
     });
 
     // Kick unverified users - runs ever 15 minutes
-    const kickUnverifiedUsers = new cronjob('*/15 * * * *', async function () {
+    const kickUnverifiedUsers = new CronJob('*/15 * * * *', async function () {
         const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
         const oneWeek = 7 * 24 * 60 * 60 * 1000;
         const fiveMinutes = 5 * 60 * 1000;
@@ -108,7 +108,7 @@ module.exports = async (client) => {
     });
 
     // Delete abandoned service threads
-    const deleteAbandonedServiceThreads = new cronjob('0 1 * * 2', async function () {
+    const deleteAbandonedServiceThreads = new CronJob('0 1 * * 2', async function () {
         const threadChan = await guild.channels.fetch('1096198410664689744');
         const threads = threadChan.threads.cache;
         threads.forEach(async thread => {
@@ -118,7 +118,7 @@ module.exports = async (client) => {
     });
 
     // Archive abandoned LFS thresds
-    const deleteAbandonedLFSThreads = new cronjob('0 1 * * 2', async function () {
+    const deleteAbandonedLFSThreads = new CronJob('0 1 * * 2', async function () {
         const threadChan = await guild.channels.fetch('978694637088804884');
         const threads = threadChan.threads.cache;
         threads.forEach(async thread => {

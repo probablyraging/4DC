@@ -1,8 +1,9 @@
-const { AuditLogEvent } = require('discord.js');
-const protection = new Map();
-const path = require('path');
+import { AuditLogEvent } from 'discord.js';
+import path from 'path';
 
-module.exports = {
+const protection = new Map();
+
+export default {
     name: 'threadDelete',
     async execute(thread, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

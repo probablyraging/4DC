@@ -1,8 +1,8 @@
-const inviteSchema = require('../../schemas/invite_schema');
-const { dbUpdateOne } = require('../../utils/utils');
-const path = require('path');
+import inviteSchema from '../../schemas/invite_schema.js';
+import { dbUpdateOne } from '../../utils/utils.js';
+import path from 'path';
 
-module.exports = async (member, client) => {
+export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const inviteChan = client.channels.cache.get(process.env.INVITE_CHAN);
 

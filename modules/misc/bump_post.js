@@ -1,12 +1,12 @@
-const { Message, EmbedBuilder } = require('discord.js');
-const { dbUpdateOne } = require('../../utils/utils');
-const timerSchema = require('../../schemas/timer_schema');
-const path = require('path');
+import { Message, EmbedBuilder } from 'discord.js';
+import { dbUpdateOne } from '../../utils/utils.js';
+import timerSchema from '../../schemas/timer_schema.js';
+import path from 'path';
 /**
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client) => {
+export default async (message, client) => {
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === '302050872383242240') {
         // delete the warning about regular commands
         if (message?.content.toLowerCase().includes('regular commands are being replaced')) {

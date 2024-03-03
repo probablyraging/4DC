@@ -1,10 +1,14 @@
-const { promisify } = require('util');
-const { glob } = require('glob');
+import { promisify } from 'util';
+import glob from 'glob';
+
 const PG = promisify(glob);
 
-module.exports = async (client, Discord) => {
-    (await PG(`${process.cwd()}/events/*/*.js`)).map(async (file) => {
-        const event = require(file);
+export default async (client, Discord) => {
+    const eventFiles = await PG(`${process.cwd()}/events/*/*.js`);
+
+    eventFiles.map(async (file) => {
+        const { default: event } = await import('file://' + file);
+
         if (event.once) {
             client.once(event.name, (...args) => event.execute(...args, client, Discord));
         } else {

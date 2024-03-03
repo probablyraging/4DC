@@ -1,11 +1,11 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold, ChannelSelectMenuBuilder, ChannelType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, PermissionFlagsBits } = require("discord.js");
-const { sendReply, sendResponse, dbFindOne, dbUpdateOne } = require('../../../utils/utils');
-const { v4: uuidv4 } = require('uuid');
-const { default: axios } = require('axios');
-const path = require("path");
-const schema = require('../../../schemas/rank_schema');
+import { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType, ButtonBuilder, ActionRowBuilder, SelectMenuBuilder, ButtonStyle, TextInputBuilder, ModalBuilder, AttachmentBuilder, ApplicationCommandPermissionsManager, bold, ChannelSelectMenuBuilder, ChannelType, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, PermissionFlagsBits } from "discord.js";
+import { sendReply, sendResponse, dbFindOne, dbUpdateOne } from '../../../utils/utils.js';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import path from "path";
+import schema from '../../../schemas/rank_schema.js';
 
-module.exports = {
+export default {
     name: `test`,
     description: `dummy command`,
     defaultMemberPermissions: ['Administrator'],

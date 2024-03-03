@@ -1,8 +1,8 @@
-const { AuditLogEvent } = require('discord.js');
+import { AuditLogEvent } from 'discord.js';
+import path from 'path';
 const protection = new Map();
-const path = require('path');
 
-module.exports = {
+export default {
     name: 'emojiDelete',
     async execute(emoji, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -19,7 +19,7 @@ module.exports = {
 
         if (found) {
             if (found >= 3) {
-                const member = await guild.members.fetch(entry.executor.id).catch(() => {});
+                const member = await guild.members.fetch(entry.executor.id).catch(() => { });
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
                     .catch(err => console.error(`${path.basename(__filename)} There was a problem removing roles`, err));;

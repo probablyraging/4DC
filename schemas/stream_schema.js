@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const streamSchema = mongoose.Schema({
     userId: {
         type: String,
         required: true
-    } 
+    }
 });
 
-module.exports = mongoose.model('liveNowStreams', streamSchema)
+export default mongoose.model('liveNowStreams', streamSchema)

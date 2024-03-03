@@ -1,16 +1,17 @@
-const { Message } = require('discord.js');
-const linkCooldown = require('../../modules/moderation/link_cooldown');
-const bumpPost = require('../../modules/misc/bump_post');
-const blSpam = require('../../modules/moderation/spam_filter');
-const rankXP = require('../../modules/misc/rank_xp');
-const stickyMessage = require('../../modules/misc/sticky_message');
-const gptAssistant = require('../../modules/misc/gpt_assistant');
-const introductionCheck = require('../../modules/moderation/log_introduction');
-const boostReact = require('../../modules/automation//boost_react');
-const notifiedUsers = new Set();
-const path = require('path');
+import { Message } from 'discord.js';
+import linkCooldown from '../../modules/moderation/link_cooldown.js';
+import bumpPost from '../../modules/misc/bump_post.js';
+import blSpam from '../../modules/moderation/spam_filter.js';
+import rankXP from '../../modules/misc/rank_xp.js';
+import stickyMessage from '../../modules/misc/sticky_message.js';
+import gptAssistant from '../../modules/misc/gpt_assistant.js';
+import introductionCheck from '../../modules/moderation/log_introduction.js';
+import boostReact from '../../modules/automation/boost_react.js';
+import path from 'path';
 
-module.exports = {
+const notifiedUsers = new Set();
+
+export default {
     name: `messageCreate`,
     /**
      * @param {Message} message

@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = async (member, client) => {
+export default async (member, client) => {
     // Give the user 5 minutes to verify themselves, or kick them
     const timeToKick = Math.round((new Date().valueOf() + 300000) / 1000);
     member.send({

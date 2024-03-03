@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ytNotificationSchema = mongoose.Schema({
     userId: {
@@ -19,4 +19,4 @@ const ytNotificationSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('ytnotifications', ytNotificationSchema)
+export default mongoose.model('ytnotifications', ytNotificationSchema)

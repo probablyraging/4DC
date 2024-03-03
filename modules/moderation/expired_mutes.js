@@ -1,10 +1,10 @@
-const { EmbedBuilder } = require('discord.js');
-const { dbDeleteOne } = require('../../utils/utils');
-const muteSchema = require('../../schemas/mute_schema');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { EmbedBuilder } from 'discord.js';
+import { dbDeleteOne } from '../../utils/utils.js';
+import muteSchema from '../../schemas/mute_schema.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = async (message, client, Discord) => {
+export default async (message, client, Discord) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 

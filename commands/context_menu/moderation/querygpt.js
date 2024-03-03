@@ -1,9 +1,9 @@
-const { CommandInteraction, ApplicationCommandType } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { default: axios } = require('axios');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import axios from 'axios';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `Query GPT`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 5,

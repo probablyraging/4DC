@@ -1,6 +1,6 @@
-const { ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import path from 'path';
 
 /**
  * Send a messages to a channel using a webhook. Messages can contain attachments
@@ -22,7 +22,7 @@ async function sendMessageWithWebhook(channel, message, attachments) {
     });
 }
 
-module.exports = {
+export default {
     name: `move`,
     description: `Move a message to a specific channel. Move up to 5 messages at a time`,
     defaultMemberPermissions: ['ModerateMembers'],

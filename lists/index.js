@@ -1,6 +1,6 @@
-const { rules } = require('../lists/rules');
+import rules from '../lists/rules.js';
 
-module.exports = {
+export default {
     welcome: [
         `# WELCOME
 Welcome to ContentCreator, a community of content creators, developers, musicians, gamers, and more. Our aim is to bring together like-minded individuals from all corners of the globe in a welcoming and supportive environment. As a peer-to-peer help and advice server, we provide our members with the resources and support they need to grow their online presence and achieve their goals

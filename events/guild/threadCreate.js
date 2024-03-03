@@ -1,7 +1,7 @@
-const { ThreadChannel, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const path = require('path');
+import { ThreadChannel, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `threadCreate`,
     /**
      * @param {ThreadChannel} thread

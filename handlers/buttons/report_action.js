@@ -1,14 +1,14 @@
-const { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, codeBlock, hyperlink } = require("discord.js");
-const { sendFollowUp, sendResponse, dbCreate } = require('../../utils/utils');
-const warnSchema = require('../../schemas/warn_schema');
-const { rules } = require('../../lists/rules');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, codeBlock, hyperlink } from "discord.js";
+import { sendFollowUp, sendResponse, dbCreate } from '../../utils/utils.js';
+import rules from '../../lists/rules.js';
+import warnSchema from '../../schemas/warn_schema.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
 let status = false;
 let originalMessageId;
 let reportedUser;
-module.exports = async (interaction) => {
+export default async (interaction) => {
     const { client, guild, member, customId } = interaction;
 
     const channel = client.channels.cache.get(interaction.channelId);

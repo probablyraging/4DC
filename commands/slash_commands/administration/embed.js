@@ -1,9 +1,9 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { ImgurClient } = require('imgur');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import { ImgurClient } from 'imgur';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `embed`,
     description: `Create a new embed or edit an existing one`,
     defaultMemberPermissions: ['Administrator'],

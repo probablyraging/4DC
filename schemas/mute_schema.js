@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const muteSchema = mongoose.Schema({
     timestamp: {
@@ -15,4 +15,4 @@ const muteSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('mutes', muteSchema)
+export default mongoose.model('mutes', muteSchema)

@@ -1,7 +1,7 @@
-const { dbFindOne, dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
-const gptHistorySchema = require('../../schemas/gpt_history_schema');
-const { default: axios } = require('axios');
-const path = require('path');
+import { dbFindOne, dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
+import gptHistorySchema from '../../schemas/gpt_history_schema.js';
+import axios from 'axios';
+import path from 'path';
 
 async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
     if (fetch) {
@@ -26,7 +26,7 @@ async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
     }
 }
 
-module.exports = async (message) => {
+export default async (message) => {
     if (message.channel.id === process.env.GPT_CHAN && !message.author.bot) {
         if (message.content.startsWith('>')) return;
         try {

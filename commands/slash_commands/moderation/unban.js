@@ -1,9 +1,9 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `unban`,
     description: `Unban a user from the server`,
     defaultMemberPermissions: ['ModerateMembers'],

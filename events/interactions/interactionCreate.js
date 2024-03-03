@@ -1,16 +1,16 @@
-const { client, CommandInteraction, PermissionFlagsBits } = require('discord.js');
-const cooldowns = new Map();
-const reportActionButton = require('../../handlers/buttons/report_action');
-const authButton = require('../../handlers/buttons/auth_actions');
-const adInformationButton = require('../../handlers/buttons/ad_information');
-const solveThreadButton = require('../../handlers/buttons/help_threads');
-const path = require('path');
+import { CommandInteraction, PermissionFlagsBits } from 'discord.js';
+import reportActionButton from '../../handlers/buttons/report_action.js';
+import authButton from '../../handlers/buttons/auth_actions.js';
+import adInformationButton from '../../handlers/buttons/ad_information.js';
+import solveThreadButton from '../../handlers/buttons/help_threads.js';
+import path from 'path';
 
-module.exports = {
+const cooldowns = new Map();
+
+export default {
     name: 'interactionCreate',
     /**
      * @param {CommandInteraction} interaction 
-     * @param {client} client 
      */
     async execute(interaction, client, Discord) {
         const { member } = interaction;

@@ -1,7 +1,7 @@
-const inviteSchema = require('../../schemas/invite_schema');
-const { dbCreate } = require('../../utils/utils');
+import { dbCreate } from '../../utils/utils.js';
+import inviteSchema from '../../schemas/invite_schema.js';
 
-module.exports = {
+export default {
     name: 'inviteCreate',
     async execute(invite, client, Discord) {
         // Create a new entry in the database

@@ -1,10 +1,10 @@
-const inviteTracker = require('../../modules/misc/invite_tracker');
-const previousMutesCheck = require('../../modules/moderation/previous_mutes');
-const verificationTimer = require('../../modules/moderation/verification_timer');
-const profileFilter = require('../../modules/moderation/profile_filter');
-const path = require('path');
+import inviteTracker from '../../modules/misc/invite_tracker.js';
+import previousMutesCheck from '../../modules/moderation/previous_mutes.js';
+import verificationTimer from '../../modules/moderation/verification_timer.js';
+import profileFilter from '../../modules/moderation/profile_filter.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'guildMemberAdd',
     async execute(member, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../utils/utils');
-const path = require('path');
+import { EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../utils/utils.js';
+import path from 'path';
 
-module.exports = async (interaction) => {
+export default async (interaction) => {
     await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
 
     // Initial embed and buttons

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const warnSchema = mongoose.Schema({
     guildId: {
@@ -39,4 +39,4 @@ const warnSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('warnings', warnSchema)
+export default mongoose.model('warnings', warnSchema)

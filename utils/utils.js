@@ -1,4 +1,4 @@
-const { CommandInteraction } = require('discord.js');
+import { CommandInteraction } from 'discord.js';
 const attachmentMap = new Map();
 
 /**
@@ -193,7 +193,7 @@ function getAttachment(key) {
     return attachment;
 }
 
-module.exports = {
+export {
     sendResponse,
     sendReplyWithMention,
     sendReply,

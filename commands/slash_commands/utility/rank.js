@@ -1,14 +1,14 @@
-const { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require("discord.js");
-const { sendResponse } = require('../../../utils/utils');
-const rankSchema = require("../../../schemas/rank_schema");
-const Canvas = require("canvas");
-const path = require("path");
+import { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } from "discord.js";
+import { sendResponse } from '../../../utils/utils.js';
+import rankSchema from "../../../schemas/rank_schema.js";
+import Canvas from "canvas";
+import path from "path";
 
 function kFormatter(num) {
     return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + "K" : Math.sign(num) * Math.abs(num);
 }
 
-module.exports = {
+export default {
     name: `rank`,
     description: `Fetch a user's rank`,
     cooldown: 1200,

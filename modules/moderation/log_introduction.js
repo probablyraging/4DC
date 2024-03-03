@@ -1,7 +1,7 @@
-const { dbFindOne, dbCreate } = require('../../utils/utils');
-const introSchema = require('../../schemas/intro_schema');
+import { dbFindOne, dbCreate } from '../../utils/utils.js';
+import introSchema from '../../schemas/intro_schema.js';
 
-module.exports = async (message) => {
+export default async (message) => {
     // Check if a user has already made an introduction post
     if (message?.channel.id === process.env.INTRO_CHAN && !message?.member.permissions.has(process.env.STAFF_ROLE) && !message?.author.bot) {
         try {

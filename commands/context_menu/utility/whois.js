@@ -1,8 +1,8 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `Whois`,
     cooldown: 5,
     dm_permission: false,
@@ -38,6 +38,7 @@ module.exports = {
         // If the target has no permissions
         if (formattedPermissions.length == 0) permissions.push("No Key Permissions Found");
         // Get the targets current presence
+        let targetStatus;
         if (target?.presence?.status === 'online') targetStatus = 'Online';
         if (target?.presence?.status === 'idle') targetStatus = 'Idle';
         if (target?.presence?.status === 'dnd') targetStatus = 'Do Not Disturb';

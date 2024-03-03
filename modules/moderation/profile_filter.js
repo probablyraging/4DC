@@ -1,7 +1,7 @@
-const { default: axios } = require('axios');
-const path = require('path');
+import axios from 'axios';
+import path from 'path';
 
-module.exports = async (member, client) => {
+export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     // Check user's profile for blocked words and report to staff if a match is found

@@ -1,7 +1,7 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, codeBlock } = require("discord.js");
-const { sendResponse } = require('../../../utils/utils');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, codeBlock } from "discord.js";
+import { sendResponse } from '../../../utils/utils.js';
 
-module.exports = {
+export default {
     name: "report",
     description: "Report a user to the server staff",
     cooldown: 15,

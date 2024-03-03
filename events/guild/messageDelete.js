@@ -1,7 +1,7 @@
-const { EmbedBuilder, AuditLogEvent, codeBlock } = require('discord.js');
-const { ImgurClient } = require('imgur');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { EmbedBuilder, AuditLogEvent, codeBlock } from 'discord.js';
+import { ImgurClient } from 'imgur';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
 function get64bin(int) {
     if (int >= 0) {
@@ -11,7 +11,7 @@ function get64bin(int) {
     }
 }
 
-module.exports = {
+export default {
     name: 'messageDelete',
     async execute(message, client) {
         if (message?.author.bot || message?.channel.id === process.env.TEST_CHAN) return;

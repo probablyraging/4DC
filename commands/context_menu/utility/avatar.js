@@ -1,8 +1,8 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `Avatar`,
     cooldown: 5,
     dm_permission: false,

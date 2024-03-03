@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const massbanSchema = new mongoose.Schema({
     id: {
@@ -29,4 +29,4 @@ const massbanSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('massbans', massbanSchema);
+export default mongoose.model('massbans', massbanSchema);

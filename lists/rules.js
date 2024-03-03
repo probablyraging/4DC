@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     rules: [
         `Harmful, offensive, or explicit content is not allowed in messages, usernames, avatars, banners, profiles, or linked accounts. This may result in a ban without warning`,
         `Advertising or requesting paid services, products, or promotional content not related to content creation is only permitted in <#${process.env.PREM_CHAN}>`,

@@ -1,8 +1,8 @@
-const { dbUpdateOne } = require('../../utils/utils');
-const timerSchema = require("../../schemas/timer_schema");
-const path = require("path");
+import { dbUpdateOne } from '../../utils/utils.js';
+import timerSchema from "../../schemas/timer_schema.js";
+import path from "path";
 
-module.exports = async (client) => {
+export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const bumpChan = guild.channels.cache.get(process.env.BUMP_CHAN);
 

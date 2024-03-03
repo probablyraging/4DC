@@ -1,9 +1,9 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { default: axios } = require('axios');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import axios from 'axios';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `serverinfo`,
     description: `Get information and stats about the server`,
     defaultMemberPermissions: ['Administrator'],

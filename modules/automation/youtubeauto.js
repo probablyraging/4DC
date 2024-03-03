@@ -1,9 +1,11 @@
-const { dbUpdateOne, dbDeleteOne } = require('../../utils/utils');
-const ytNotificationSchema = require('../../schemas/yt_notification_schema');
-const res = new (require('rss-parser'))();
-const path = require('path');
+import { dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
+import ytNotificationSchema from '../../schemas/yt_notification_schema.js';
+import rssParser from 'rss-parser';
+import path from 'path';
 
-module.exports = async (client) => {
+const res = new rssParser();
+
+export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const supporterChan = guild.channels.cache.get(process.env.SUPPORTER_CHAN);
 

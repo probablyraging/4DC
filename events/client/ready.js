@@ -1,15 +1,15 @@
-const { ActivityType } = require('discord.js');
-const bumpCheck = require('../../modules/misc/bump_check');
-const mutesCheck = require('../../modules/moderation/expired_mutes');
-const databaseCleanup = require('../../modules/automation/cronjobs');
-const liveNow = require('../../modules/automation/live_now');
-const youtubeAuto = require('../../modules/automation/youtubeauto');
-const cronjob = require('cron').CronJob;
-const mongoose = require('mongoose');
-const Canvas = require("canvas");
-const path = require('path');
+import { ActivityType } from 'discord.js';
+import bumpCheck from '../../modules/misc/bump_check.js';
+import mutesCheck from '../../modules/moderation/expired_mutes.js';
+import databaseCleanup from '../../modules/automation/cronjobs.js';
+import liveNow from '../../modules/automation/live_now.js';
+import youtubeAuto from '../../modules/automation/youtubeauto.js';
+import { CronJob } from 'cron';
+import mongoose from 'mongoose';
+import Canvas from 'canvas';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'ready',
     once: true,
     async execute(message, client, Discord) {
@@ -36,7 +36,7 @@ module.exports = {
         Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
 
         // Booster rewards
-        const boostTimer = new cronjob('0 */10 * * *', function () {
+        const boostTimer = new CronJob('0 */10 * * *', function () {
             let whMessage;
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                 whMessage = await webhook.send({

@@ -1,10 +1,10 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, hyperlink } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { rules } = require('../../../lists/rules');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, hyperlink } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import rules from '../../../lists/rules.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `ban`,
     description: `Ban a user from the server`,
     defaultMemberPermissions: ['ModerateMembers'],

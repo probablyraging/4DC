@@ -1,10 +1,10 @@
-const { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
-const path = require('path');
+import { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
+import path from 'path';
 /**
  * 
  * @param {Message} message 
  */
-module.exports = async (message, client) => {
+export default async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
     const premChan = guild.channels.cache.get(process.env.PREM_CHAN);
     const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });

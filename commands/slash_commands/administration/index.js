@@ -1,8 +1,8 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const index = require('../../../lists/index');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import index from '../../../lists/index.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `index`,
     description: `Pre-written content for specific channels`,
     defaultMemberPermissions: ['Administrator'],

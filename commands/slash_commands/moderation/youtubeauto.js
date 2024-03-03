@@ -1,10 +1,10 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
-const ytNotificationSchema = require('../../../schemas/yt_notification_schema');
-const res = new (require("rss-parser"))();
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
+import { dbUpdateOne, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
+import ytNotificationSchema from '../../../schemas/yt_notification_schema.js';
+import res from 'rss-parser';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `youtubeauto`,
     description: `Modify the YouTube Auto list by adding or removing a user`,
     defaultMemberPermissions: ['ManageRoles'],

@@ -1,9 +1,9 @@
-const { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `Report Message`,
     cooldown: 5,
     dm_permission: false,

@@ -1,11 +1,11 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, codeBlock } = require('discord.js');
-const { dbCreate, dbDeleteOne, sendResponse } = require('../../../utils/utils');
-const warnSchema = require('../../../schemas/warn_schema');
-const { rules } = require('../../../lists/rules');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, codeBlock } from 'discord.js';
+import { dbCreate, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
+import warnSchema from '../../../schemas/warn_schema.js';
+import rules from '../../../lists/rules.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `warn`,
     description: `Add, remove or list a user's warnings`,
     defaultMemberPermissions: ['ModerateMembers'],
@@ -86,7 +86,8 @@ module.exports = {
                 const author = member.id;
                 const timestamp = new Date().getTime();
                 let reason = options.getString('reason');
-                reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
+
+                if (isNaN(reason)) reason = custom;
 
                 // If no reason was provided
                 if (reason == null) return sendResponse(interaction, `You must provide custom reason when selecting the 'Custom' option`);

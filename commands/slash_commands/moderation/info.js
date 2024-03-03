@@ -1,8 +1,8 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { sendReplyWithMention } = require('../../../utils/utils');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
+import { sendReplyWithMention } from '../../../utils/utils.js';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `info`,
     description: `Information regarding individual topics`,
     defaultMemberPermissions: ['ModerateMembers'],

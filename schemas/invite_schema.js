@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const inviteSchema = mongoose.Schema({
     code: {
@@ -15,4 +15,4 @@ const inviteSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('invites', inviteSchema)
+export default mongoose.model('invites', inviteSchema)

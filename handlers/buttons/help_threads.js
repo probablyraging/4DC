@@ -1,4 +1,4 @@
-module.exports = async (interaction) => {
+export default async (interaction) => {
     const { member, channel, message } = interaction;
 
     await interaction.deferReply({ ephemeral: true });

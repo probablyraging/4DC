@@ -1,7 +1,8 @@
-const streamSchema = require('../../schemas/stream_schema');
-const { dbCreate, dbDeleteOne } = require('../../utils/utils');
+import streamSchema from '../../schemas/stream_schema.js';
+import { dbCreate, dbDeleteOne } from '../../utils/utils.js';
+import path from 'path';
+
 const cooldown = new Set();
-const path = require('path');
 
 /**
  * Fetches members that are currently streaming on YouTube or Twitch
@@ -37,7 +38,7 @@ async function getLiveMembers(staffRole, boostRole,) {
     return liveNowMembers.filter((obj, index, array) => array.findIndex((t) => t.id === obj.id) === index);
 }
 
-module.exports = async (client) => {
+export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     const staffRole = guild.roles.cache.get(process.env.STAFF_ROLE);

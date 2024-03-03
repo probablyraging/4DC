@@ -1,8 +1,8 @@
-const { EmbedBuilder, AuditLogEvent } = require('discord.js');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { EmbedBuilder, AuditLogEvent } from 'discord.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'guildMemberUpdate',
     async execute(oldMember, newMember, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);

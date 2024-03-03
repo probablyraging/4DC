@@ -1,10 +1,10 @@
-const { CommandInteraction, ApplicationCommandType, EmbedBuilder } = require('discord.js');
-const { sendResponse, dbUpdateOne } = require('../../../utils/utils');
-const muteSchema = require('../../../schemas/mute_schema');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
+import { sendResponse, dbUpdateOne } from '../../../utils/utils.js';
+import muteSchema from '../../../schemas/mute_schema.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: `Self-Promo`,
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 5,

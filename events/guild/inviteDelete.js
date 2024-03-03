@@ -1,7 +1,7 @@
-const { dbDeleteOne } = require('../../utils/utils');
-const inviteSchema = require('../../schemas/invite_schema');
+import { dbDeleteOne } from '../../utils/utils.js';
+import inviteSchema from '../../schemas/invite_schema.js';
 
-module.exports = {
+export default {
     name: 'inviteDelete',
     async execute(invite, client, Discord) {
         // Delete the database entry

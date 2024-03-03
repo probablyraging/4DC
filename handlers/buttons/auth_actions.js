@@ -1,6 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
-module.exports = async (interaction) => {
+export default async (interaction) => {
     const { customId, member } = interaction;
 
     let buttonType = false;

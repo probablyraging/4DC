@@ -1,12 +1,14 @@
-const { promisify } = require('util');
-const { glob } = require('glob');
+import { promisify } from 'util';
+import glob from 'glob';
+
 const PG = promisify(glob);
 
-module.exports = async (client) => {
-    commandsArr = [];
+export default async (client) => {
+    let commandsArr = [];
     // globalCom = [];
     (await PG(`${process.cwd()}/commands/*/*/*.js`)).map(async (file) => {
-        let command = require(file);
+        let commandModule = await import('file://' + file);
+        let command = commandModule.default;
         client.commands.set(command.name, command);
         if (!command.global) commandsArr.push(command);
         // if (command.global) globalCom.push(command);

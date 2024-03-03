@@ -1,11 +1,10 @@
-const { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { dbUpdateOne, dbDeleteOne, sendResponse } = require('../../../utils/utils');
-const muteSchema = require('../../../schemas/mute_schema');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { dbUpdateOne, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
+import muteSchema from '../../../schemas/mute_schema.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-
-module.exports = {
+export default {
     name: `channelmute`,
     description: `Mute a user in a specific channel`,
     defaultMemberPermissions: ['ModerateMembers'],

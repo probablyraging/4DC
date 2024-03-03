@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const gptHistoryschema = mongoose.Schema({
     userId: {
@@ -11,4 +11,4 @@ const gptHistoryschema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('gpthistory', gptHistoryschema)
+export default mongoose.model('gpthistory', gptHistoryschema)

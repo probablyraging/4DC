@@ -1,7 +1,8 @@
-const { Message } = require('discord.js');
+import { Message } from 'discord.js';
+import path from 'path';
+
 const repeatedMessages = new Map();
 const timedOutUsers = new Set();
-const path = require('path');
 
 /**
  * Check if a user has sent the same message multiple times in a short period of time.
@@ -38,7 +39,7 @@ async function timeoutUser(member, duration, reason, message) {
     await member.send(message).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 }
 
-module.exports = async (message, client) => {
+export default async (message, client) => {
     if (!message?.member?.roles.cache.has(process.env.STAFF_ROLE) && !message.author.bot) {
         const authorId = message.author.id;
         const content = message.content;

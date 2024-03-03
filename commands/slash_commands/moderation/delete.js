@@ -1,7 +1,7 @@
-const { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
-const { sendResponse } = require('../../../utils/utils');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
+import { sendResponse } from '../../../utils/utils.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
 /**
  * Filter and bulk delete messages based on a target user or all non-system messages
@@ -24,7 +24,7 @@ async function bulkDeleteFilteredMessages(interaction, channel, messages, target
     return bulkDelete.size;
 }
 
-module.exports = {
+export default {
     name: `delete`,
     description: `Delete a specific number of messages from a channel or user`,
     defaultMemberPermissions: ['ModerateMembers'],

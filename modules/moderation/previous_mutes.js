@@ -1,8 +1,8 @@
-const { dbFind } = require('../../utils/utils');
-const muteSchema = require('../../schemas/mute_schema');
-const path = require('path');
+import { dbFind } from '../../utils/utils.js';
+import muteSchema from '../../schemas/mute_schema.js';
+import path from 'path';
 
-module.exports = async (member, client) => {
+export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
 
     const results = await dbFind(muteSchema, { userId: member?.user.id });

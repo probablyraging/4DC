@@ -1,8 +1,8 @@
-const { codeBlock } = require('discord.js');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
+import { codeBlock } from 'discord.js';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
 
-module.exports = {
+export default {
     name: 'messageUpdate',
     async execute(oldMessage, newMessage, client, Discord) {
         if (oldMessage?.author?.bot || oldMessage?.author.id === process.env.OWNER_ID) return;
