@@ -94,18 +94,6 @@ export default async (client) => {
         await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
     });
 
-    // Kick unverified users - runs ever 15 minutes
-    const kickUnverifiedUsers = new CronJob('*/15 * * * *', async function () {
-        const unverifiedRole = guild.roles.cache.get(process.env.UNVERIFIED_ROLE);
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        const fiveMinutes = 5 * 60 * 1000;
-        unverifiedRole.members.forEach(member => {
-            if ((new Date() - member.joinedTimestamp) < oneWeek && (new Date() - member.joinedTimestamp) > fiveMinutes) {
-                if (member.id !== '1081004946872352958') member.kick('Did not verify in time').catch(err => console.error(`There was a problem kicking a user from the server: `, err));
-            }
-        })
-    });
-
     // Delete abandoned service threads
     const deleteAbandonedServiceThreads = new CronJob('0 1 * * 2', async function () {
         const threadChan = await guild.channels.fetch('1096198410664689744');

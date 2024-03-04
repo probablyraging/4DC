@@ -1,6 +1,5 @@
 import inviteTracker from '../../modules/misc/invite_tracker.js';
 import previousMutesCheck from '../../modules/moderation/previous_mutes.js';
-import verificationTimer from '../../modules/moderation/verification_timer.js';
 import profileFilter from '../../modules/moderation/profile_filter.js';
 
 export default {
@@ -8,9 +7,6 @@ export default {
     async execute(member, client, Discord) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
-
-        // Add all new user to the unverified role
-        if (member) await member.roles.add(process.env.UNVERIFIED_ROLE).catch(err => console.error(`There was a problem adding a role to a user: `, err));
 
         // Invite tracker
         inviteTracker(member, client);
@@ -33,9 +29,6 @@ export default {
 
         // Check if the user was muted, and left the server while a mute was active
         previousMutesCheck(member, client);
-
-        // Give the user 5 minutes to verify themselves, or kick them
-        verificationTimer(member, client);
 
         // Check user's profile for blocked words and report to staff if a match is found
         profileFilter(member, client);

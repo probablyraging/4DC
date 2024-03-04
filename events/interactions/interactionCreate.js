@@ -1,6 +1,5 @@
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js';
 import reportActionButton from '../../handlers/buttons/report_action.js';
-import authButton from '../../handlers/buttons/auth_actions.js';
 import adInformationButton from '../../handlers/buttons/ad_information.js';
 import solveThreadButton from '../../handlers/buttons/help_threads.js';
 
@@ -105,7 +104,6 @@ export default {
             // A map of customIds for the buttons with prefixed custom IDs
             const prefixedButtons = {
                 'report': reportActionButton,
-                'auth': authButton,
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
 
