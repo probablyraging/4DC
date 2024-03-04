@@ -2,8 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import Discord from 'discord.js';
 import consoleStamp from 'console-stamp';
-import commandHandler from './handlers/client/command_handler.js';
-import eventHandler from './handlers/client/event_handler.js';
 
 const client = new Discord.Client({
     intents: [
@@ -29,9 +27,9 @@ consoleStamp(console, {
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 
-const handlers = [commandHandler, eventHandler];
-handlers.forEach(handler => {
-    handler(client, Discord);
+['command_handler', 'event_handler'].forEach(async (handler) => {
+    await import(`./handlers/client/${handler}.js`)
+        .then(module => { module.default(client, Discord) });
 });
 
 client.login(process.env.BOT_TOKEN);
