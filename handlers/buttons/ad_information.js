@@ -31,14 +31,15 @@ export default async (interaction) => {
                 value: `* Own Custom Channel - **$5**
 * Re-Ping Role - **$3-$10**
 * Bump Ad To Bottom - **$1**
-* Additional Links - **$1**
-
-*Prices are USD*
-*One link per ad spot*
-*PayPal & Strip accepted*
-
-**Contact <@438434841617367080> to purchase an ad spot**`,
+* Additional Links - **$1**`,
                 inline: false
+            },
+            {
+                name: `Payment Methods (USD)`,
+                value: `* PayPal
+* Stripe
+
+**Contact <@438434841617367080> to purchase an ad spot**`
             })
 
     sendResponse(interaction, ``, [embed]);
