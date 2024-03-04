@@ -127,7 +127,6 @@ export default async (client) => {
     premiumAdsCheck.start();
     invitesCheck.start();
     pauseDMs.start();
-    kickUnverifiedUsers.start();
     deleteAbandonedServiceThreads.start();
     deleteAbandonedLFSThreads.start();
 }
