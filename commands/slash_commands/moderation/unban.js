@@ -1,7 +1,6 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: `unban`,
@@ -28,7 +27,7 @@ export default {
     async execute(interaction) {
         const { member, guild, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const target = options.getString('user_id');
         const reason = options.getString('reason');
@@ -53,7 +52,7 @@ export default {
 
         logChan.send({
             embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+        }).catch(err => console.error(`There was a problem sending an embed: `, err));
 
         sendResponse(interaction, `${fetchTargetBan.user.username} was unbanned from the server`);
     }

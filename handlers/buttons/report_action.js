@@ -3,7 +3,6 @@ import { sendFollowUp, sendResponse, dbCreate } from '../../utils/utils.js';
 import rules from '../../lists/rules.js';
 import warnSchema from '../../schemas/warn_schema.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 let status = false;
 let originalMessageId;
@@ -19,7 +18,7 @@ export default async (interaction) => {
         if (status) return;
         status = true;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const reportMessage = await channel.messages.fetch(interaction.message.id);
         const reportEmbed = reportMessage.embeds[0].data;
@@ -73,7 +72,7 @@ export default async (interaction) => {
             );
 
         // Send the embed with the status and reply with the action buttons
-        reportMessage.edit({ embeds: [statusUpdate], components: [disabled] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+        reportMessage.edit({ embeds: [statusUpdate], components: [disabled] }).catch(err => console.error(`There was a problem editing a message `, err));
         await sendFollowUp(interaction, ``, [], [], [actions]);
 
         // Wait 30 seconds, if not action was taken, clear the status
@@ -85,7 +84,7 @@ export default async (interaction) => {
                 const embed = new EmbedBuilder(reportEmbed)
                     .setColor("#E04F5F")
 
-                reportMessage.edit({ embeds: [embed], components: [enabled] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+                reportMessage.edit({ embeds: [embed], components: [enabled] }).catch(err => console.error(`There was a problem editing a message `, err));
                 sendResponse(interaction, `Action expired. Action must be taken within 60 seconds of clicking the **Action** button`);
                 status = false;
             }
@@ -93,7 +92,7 @@ export default async (interaction) => {
     }
 
     if (customId.split('-')[1] === 'ban' || customId.split('-')[1] === 'warn') {
-        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferUpdate().catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const type = customId.split('-')[1];
 
@@ -136,7 +135,7 @@ export default async (interaction) => {
     }
 
     if (customId.split('-')[1] === 'reasons') {
-        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferUpdate().catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         if (customId.split('-')[2] === 'ban') {
             const reportMessage = await channel.messages.fetch(originalMessageId);
@@ -146,7 +145,7 @@ export default async (interaction) => {
             const reason = rules[value];
             const logId = uuidv4();
 
-            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+            interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
             // Close report
             closeReport(guild, channel, member);
 
@@ -158,11 +157,11 @@ export default async (interaction) => {
             // Ban the user
             await guild.bans.create(reportedUser.user, {
                 reason: reason
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+            }).catch(err => console.error(`There was a problem banning a user: `, err));
 
             // Send screenshot to channel
             if (attachment) screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] })
-                .catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                .catch(err => console.error(`There was a problem sending a message: `, err));
 
             // Log to channel
             let log = new EmbedBuilder()
@@ -175,7 +174,7 @@ export default async (interaction) => {
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+            }).catch(err => console.error(`There was a problem sending an embed: `, err));
         }
 
         if (customId.split('-')[2] === 'warn') {
@@ -206,7 +205,7 @@ export default async (interaction) => {
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+            }).catch(err => console.error(`There was a problem sending an embed: `, err));
 
             // Log to database
             await dbCreate(warnSchema, { guildId, userId, username, warnId, author, authorTag, timestamp, reason });
@@ -217,22 +216,22 @@ export default async (interaction) => {
                 // Ban the user if this is their third warning
                 await guild.bans.create(reportedUser.user, {
                     reason: `Warning threshold`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+                }).catch(err => console.error(`There was a problem banning a user: `, err));
             } else {
                 // Notify the user that they received a warning
                 await target.send({ content: `${target} - you received a warning in ${guild.name} \n${codeBlock(reason)}` })
                     .catch(err => console.error('There was a problem sending a user a warning DM: ', err));
             }
 
-            interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+            interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
             // Close report
             closeReport(guild, channel, member);
         }
     }
 
     if (customId.split('-')[1] === 'close') {
-        await interaction.deferUpdate().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
-        interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+        await interaction.deferUpdate().catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
         // Close report
         closeReport(guild, channel, member);
     }
@@ -249,13 +248,13 @@ async function closeReport(guild, channel, member) {
         .setColor("#32BEA6")
         .addFields({ name: `Closed By`, value: `${member}`, inline: false })
 
-    reportMessage.edit({ embeds: [closedEmbed], components: [] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+    reportMessage.edit({ embeds: [closedEmbed], components: [] }).catch(err => console.error(`There was a problem editing a message `, err));
 
     const replyEmbed = new EmbedBuilder(reportEmbed)
         .setColor("#32BEA6")
         .setTitle(`Server Report`)
         .setDescription(`Your report's status has been updated to \`CLOSED\``)
 
-    if (reporterUser) reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message `, err));
+    if (reporterUser) reporterUser.send({ embeds: [replyEmbed] }).catch(err => console.error(`There was a problem sending a message `, err));
     status = false
 }

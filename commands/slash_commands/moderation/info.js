@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendReplyWithMention } from '../../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: `info`,
@@ -34,7 +33,7 @@ export default {
         const choice = options.getString('topic');
         const target = options.getUser('username');
 
-        // await interaction.deferReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        // await interaction.deferReply().catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const responses = new Map([
             ['connections', `### *Information for ${target}:*

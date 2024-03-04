@@ -2,7 +2,6 @@ import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionTyp
 import { dbUpdateOne, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
 import muteSchema from '../../../schemas/mute_schema.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: `channelmute`,
@@ -63,7 +62,7 @@ export default {
     async execute(interaction) {
         const { member, guild, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
@@ -80,7 +79,7 @@ export default {
                 // Update the channel permissions for the target user
                 targetChan.permissionOverwrites.edit(target.id, {
                     SendMessages: false,
-                }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                }).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
                 // If a duration was provided, get a timestamp for when the mute should expire and update the database
                 const myDate = new Date();
                 const timestamp = !duration || duration === '0' ? 'null' : myDate.getTime() + (duration * 60 * 60 * 1000);
@@ -101,7 +100,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                }).catch(err => console.error(`There was a problem sending an embed: `, err));
 
                 sendResponse(interaction, `${target} was muted in ${targetChan}`);
                 break;
@@ -112,7 +111,7 @@ export default {
                 const targetChan = options.getChannel('channel');
 
                 // Update the channel permissions for the target user
-                targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                targetChan.permissionOverwrites.delete(target.id).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
                 await dbDeleteOne(muteSchema, { userId: target?.id, channelId: targetChan.id });
 
                 // Log to channel
@@ -126,7 +125,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                }).catch(err => console.error(`There was a problem sending an embed: `, err));
 
                 sendResponse(interaction, `${target} was unmuted in ${targetChan}`);
                 break;

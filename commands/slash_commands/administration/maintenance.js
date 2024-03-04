@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: 'maintenance',
@@ -23,7 +22,7 @@ export default {
     async execute(interaction) {
         const { guild, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const channelIds = ['851584454036029441', '896069772624683018', '1095203236232843374'];
 
@@ -33,10 +32,10 @@ export default {
                     const channel = guild.channels.cache.get(channelIds[i]);
                     channel.permissionOverwrites.edit(guild.id, {
                         SendMessages: false,
-                    }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                    }).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
                     channel.send({
                         content: `# :warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a message: `, err));
                 }
                 sendResponse(interaction, `Maintenance started`);
                 break;
@@ -49,10 +48,10 @@ export default {
                     const channel = guild.channels.cache.get(channelIds[i]);
                     channel.permissionOverwrites.edit(guild.id, {
                         SendMessages: null,
-                    }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+                    }).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
                     (await channel.messages.fetch({ limit: 10 })).forEach(message => {
                         if (message.author.bot && message.content.includes('maintenance')) {
-                            message.delete().catch(err => { return console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err) });
+                            message.delete().catch(err => { return console.error(`There was a problem deleting a message: `, err) });
                         }
                     });
                 }

@@ -2,7 +2,6 @@ import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionTyp
 import { dbUpdateOne, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
 import ytNotificationSchema from '../../../schemas/yt_notification_schema.js';
 import res from 'rss-parser';
-import path from 'path';
 
 export default {
     name: `youtubeauto`,
@@ -45,7 +44,7 @@ export default {
     async execute(interaction) {
         const { options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'add': {

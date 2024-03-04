@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import path from 'path';
 
 /**
  * Send a messages to a channel using a webhook. Messages can contain attachments
@@ -16,8 +15,8 @@ async function sendMessageWithWebhook(channel, message, attachments) {
     };
     if (attachments.length > 0) webhookContent.files = attachments;
     channel.createWebhook({ name: authorUsername, avatar: message.author.displayAvatarURL({ format: 'png', size: 256 }) }).then(webhook => {
-        webhook.send(webhookContent).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err)).then(() => {
-            webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+        webhook.send(webhookContent).catch(err => console.error(`There was a problem sending a webhook: `, err)).then(() => {
+            webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
         });
     });
 }
@@ -73,7 +72,7 @@ export default {
     async execute(interaction) {
         const { guild, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const destinationChannel = options.getChannel('channel');
         // Get the message IDs of all options
@@ -101,7 +100,7 @@ export default {
         for (const [i, message] of messagesToMove.entries()) {
             const attachments = message.attachments.map(attachment => attachment.url);
             await sendMessageWithWebhook(destinationChannel, message, attachments);
-            message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            message.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
         }
         // Send a confirmation message in the original channel
         sendResponse(interaction, `${messagesToMove.length} messages moved to ${destinationChannel}`);

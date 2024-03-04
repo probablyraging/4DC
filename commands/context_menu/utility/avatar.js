@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: `Avatar`,
@@ -14,7 +13,7 @@ export default {
         const { guild } = interaction;
         const target = await guild.members.fetch(interaction.targetId).catch(() => { });
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         // If the target doesn't exist
         if (!target) return sendResponse(interaction, `This user no longer exists`);

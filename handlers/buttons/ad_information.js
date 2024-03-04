@@ -1,9 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../utils/utils.js';
-import path from 'path';
 
 export default async (interaction) => {
-    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+    await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
     // Initial embed and buttons
     const embed = new EmbedBuilder()

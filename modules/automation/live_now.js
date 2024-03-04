@@ -1,6 +1,5 @@
 import streamSchema from '../../schemas/stream_schema.js';
 import { dbCreate, dbDeleteOne } from '../../utils/utils.js';
-import path from 'path';
 
 const cooldown = new Set();
 
@@ -84,7 +83,7 @@ export default async (client) => {
                 }
             }));
         } catch (error) {
-            console.error(`${path.basename(__filename)} There was a problem with the live_now module: `, error);
+            console.error(`There was a problem with the live_now module: `, error);
         }
     }, 300000);
 
@@ -93,7 +92,7 @@ export default async (client) => {
         liveRole?.members?.forEach(async member => {
             const activity = member.presence?.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
             if (!activity) {
-                guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`${path.basename(__filename)} There was a problem removing a role: `, err));
+                guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error(`There was a problem removing a role: `, err));
                 await dbDeleteOne(streamSchema, { userId: member.id });
             }
         });

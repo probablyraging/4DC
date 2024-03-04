@@ -1,7 +1,6 @@
 import { EmbedBuilder, CommandInteraction, ApplicationCommandType, ButtonBuilder, ActionRowBuilder, ButtonStyle, codeBlock } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: `Report Message`,
@@ -14,7 +13,7 @@ export default {
     async execute(interaction) {
         const { client, member, guild, channel } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const fetchMsg = await channel.messages.fetch(interaction.targetId);
         const target = fetchMsg.author;
@@ -42,7 +41,7 @@ export default {
 
         reportEmbed = new EmbedBuilder(reportEmbed)
             .setFooter({ text: `ID ${member?.id}-${reportMessage.id}`, iconURL: guild.iconURL({ dynamic: true }) })
-        reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+        reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`There was a problem editing a message `, err));
 
         sendResponse(interaction, `Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
     },

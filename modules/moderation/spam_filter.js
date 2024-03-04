@@ -1,5 +1,4 @@
 import { Message } from 'discord.js';
-import path from 'path';
 
 const repeatedMessages = new Map();
 const timedOutUsers = new Set();
@@ -35,8 +34,8 @@ function isSpam(message) {
  * @param {String} message The message to send to the user
  */
 async function timeoutUser(member, duration, reason, message) {
-    await member.timeout(duration, reason).catch(err => console.error(`${path.basename(__filename)} There was a problem adding a timeout: `, err));
-    await member.send(message).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
+    await member.timeout(duration, reason).catch(err => console.error(`There was a problem adding a timeout: `, err));
+    await member.send(message).catch(err => console.error(`There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
 }
 
 export default async (message, client) => {

@@ -31,7 +31,7 @@ export default {
     async execute(interaction) {
         const { guild, options, member } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const staffChannel = guild.channels.cache.get(process.env.STAFF_CHAN);
         const target = options.getUser('offender');
@@ -75,7 +75,7 @@ export default {
                 iconURL: guild.iconURL({ dynamic: true })
             })
 
-        reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message `, err));
+        reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error(`There was a problem editing a message `, err));
 
         sendResponse(interaction, `Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly`);
     }

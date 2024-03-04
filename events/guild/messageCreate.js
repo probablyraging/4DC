@@ -7,7 +7,6 @@ import stickyMessage from '../../modules/misc/sticky_message.js';
 import gptAssistant from '../../modules/misc/gpt_assistant.js';
 import introductionCheck from '../../modules/moderation/log_introduction.js';
 import boostReact from '../../modules/automation/boost_react.js';
-import path from 'path';
 
 const notifiedUsers = new Set();
 
@@ -38,9 +37,9 @@ export default {
         // Block all youtube video links from being posted in the introduction channel
         if (message?.channel.id === process.env.INTRO_CHAN && !message?.author.bot) {
             if (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')) {
-                message?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                message?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
             } else {
-                message?.react('👋').catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                message?.react('👋').catch(err => console.error(`There was a problem deleting a message: `, err));
             }
         }
 
@@ -69,11 +68,11 @@ export default {
         // Resend followed server messages, delete the original message and resend it
         if (message?.channel.id === process.env.NEWS_CHAN && message.author.id === '900247274792304710') {
             setTimeout(async () => {
-                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a message: `, err));
-                fetchedMessage.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`There was a problem fetching a message: `, err));
+                fetchedMessage.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
                 message.channel.send({
                     content: fetchedMessage.embeds[0]?.url
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`There was a problem sending a message: `, err));
             }, 3000);
         }
 
@@ -83,7 +82,7 @@ export default {
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
             for (const i in promoLinks) {
                 if (message?.content.includes(promoLinks[i])) {
-                    message.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+                    message.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
                 }
             }
         }

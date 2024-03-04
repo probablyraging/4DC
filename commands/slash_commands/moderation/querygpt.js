@@ -27,7 +27,7 @@ export default {
     async execute(interaction, client) {
         const { options, channel } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
         interaction.deleteReply();
 
         const query = options.getString('query');
@@ -57,7 +57,7 @@ export default {
             } else {
                 channel.send({
                     content: `### *Information for ${target}:* \n> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`There was a problem sending a message: `, err));
             }
         } catch (err) {
             console.error('There was a problem: ', err);

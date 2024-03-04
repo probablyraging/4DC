@@ -1,6 +1,5 @@
 import { dbFind } from '../../utils/utils.js';
 import muteSchema from '../../schemas/mute_schema.js';
-import path from 'path';
 
 export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -13,6 +12,6 @@ export default async (member, client) => {
         // Update the channel permissions for the target user
         channel.permissionOverwrites.edit(data.userId, {
             SendMessages: false,
-        }).catch(err => { return console.error(`${path.basename(__filename)} There was a problem editing a channel's permissions: `, err) });
+        }).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
     }
 }

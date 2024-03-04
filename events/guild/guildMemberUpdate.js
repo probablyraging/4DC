@@ -1,6 +1,5 @@
 import { EmbedBuilder, AuditLogEvent } from 'discord.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: 'guildMemberUpdate',
@@ -14,7 +13,7 @@ export default {
             // Fetch auditlogs for MemberUpdate events
             const fetchedLogs = await guild.fetchAuditLogs({ limit: 1, action: AuditLogEvent.MemberUpdate, })
                 .catch(err => {
-                    console.error(`${path.basename(__filename)} There was a problem fetching audit logs: `, err);
+                    console.error(`There was a problem fetching audit logs: `, err);
                     error = true;
                 });
 
@@ -39,7 +38,7 @@ export default {
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+            }).catch(err => console.error(`There was a problem sending an embed: `, err));
         }
     }
 }

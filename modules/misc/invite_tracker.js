@@ -1,6 +1,5 @@
 import inviteSchema from '../../schemas/invite_schema.js';
 import { dbUpdateOne } from '../../utils/utils.js';
-import path from 'path';
 
 export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -10,7 +9,7 @@ export default async (member, client) => {
     guild.invites.fetch().then(async invites => {
         let vanity = true;
         // Find all invites in the database with at least 1 use
-        const results = await inviteSchema.find({ uses: { $gt: 0 } }).catch(err => console.error(`${path.basename(__filename)} There was a problem finding a database entry: `, err));
+        const results = await inviteSchema.find({ uses: { $gt: 0 } }).catch(err => console.error(`There was a problem finding a database entry: `, err));
         for (const data of results) {
             const { code, userId, uses } = data;
 
@@ -28,14 +27,14 @@ export default async (member, client) => {
                             content: `${member.user.username} was invited by ${inviter.username} who now has **${9347 + parseInt(i.uses)}** invites`,
                             allowedMentions: { parse: [] },
                             failIfNotExists: false
-                        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                        }).catch(err => console.error(`There was a problem sending a message: `, err));
                     }
                     // Log to the invite channel
                     inviteChan.send({
                         content: `${member.user.username} was invited by ${inviter.username} who now has **${i.uses}** invites`,
                         allowedMentions: { parse: [] },
                         failIfNotExists: false
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a message: `, err));
                 }
             });
         }
@@ -45,7 +44,7 @@ export default async (member, client) => {
                 content: `${member.user.username} joined using a vanity invite`,
                 allowedMentions: { parse: [] },
                 failIfNotExists: false
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+            }).catch(err => console.error(`There was a problem sending a message: `, err));
         }
     });
 }

@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import index from '../../../lists/index.js';
-import path from 'path';
 
 export default {
     name: `index`,
@@ -26,7 +25,7 @@ export default {
     async execute(interaction) {
         let { client, guild, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const avatarURL = client.user.avatarURL({ format: 'png', size: 256 });
 
@@ -45,13 +44,13 @@ export default {
                         allowedMentions: {
                             parse: []
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                     setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                     }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                }).catch(err => console.error(`There was a problem sending a webhook: `, err));
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -64,19 +63,19 @@ export default {
                         allowedMentions: {
                             parse: []
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                     webhook.send({
                         content: `${index.rules[0]}`,
                         allowedMentions: {
                             parse: []
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                     setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                     }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                }).catch(err => console.error(`There was a problem sending a webhook: `, err));
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -90,7 +89,7 @@ export default {
                         allowedMentions: {
                             parse: []
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                     for (let i = 0; i < index.servermap.length; i++) {
                         setTimeout(async function () {
                             const message = await webhook.send({
@@ -98,19 +97,19 @@ export default {
                                 allowedMentions: {
                                     parse: []
                                 }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                             initMessage.push(message.url);
                             if (i === index.servermap.length - 1) webhook.send({
                                 content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                         }, i * 1000);
                     }
                     setTimeout(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                     }, 10000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                }).catch(err => console.error(`There was a problem sending a webhook: `, err));
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -124,7 +123,7 @@ export default {
                         allowedMentions: {
                             parse: []
                         }
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                     for (let i = 0; i < index.faqs.length; i++) {
                         setTimeout(async function () {
                             const message = await webhook.send({
@@ -132,19 +131,19 @@ export default {
                                 allowedMentions: {
                                     parse: []
                                 }
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                             initMessage.push(message.url);
                             if (i === index.faqs.length - 1) webhook.send({
                                 content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
-                            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                            }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                         }, i * 1000);
                     }
                     setTimeout(async () => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                     }, 20000);
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+                }).catch(err => console.error(`There was a problem sending a webhook: `, err));
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
 
                 break;
             }
@@ -167,7 +166,7 @@ export default {
                     }
                 });
 
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
 
                 break;
             }

@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: `say`,
@@ -33,7 +32,7 @@ export default {
     async execute(interaction) {
         const { channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const toChannel = options.getChannel('channel');
         const message = options.getString('message');
@@ -44,7 +43,7 @@ export default {
         sendToChannel.send({
             content: message ? message : '',
             files: image ? [image] : []
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }).catch(err => console.error(`There was a problem sending a message: `, err));
 
         sendResponse(interaction, `Message sent`);
     }

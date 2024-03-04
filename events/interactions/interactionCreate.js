@@ -3,7 +3,6 @@ import reportActionButton from '../../handlers/buttons/report_action.js';
 import authButton from '../../handlers/buttons/auth_actions.js';
 import adInformationButton from '../../handlers/buttons/ad_information.js';
 import solveThreadButton from '../../handlers/buttons/help_threads.js';
-import path from 'path';
 
 const cooldowns = new Map();
 
@@ -54,7 +53,7 @@ export default {
                 interaction.reply({
                     content: `Could not run this command`,
                     ephemeral: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+                }).catch(err => console.error(`There was a problem sending an interaction: `, err));
                 return client.command.module(interaction.commandName);
             }
             // Execure the command and log it's usage

@@ -7,7 +7,6 @@ import youtubeAuto from '../../modules/automation/youtubeauto.js';
 import { CronJob } from 'cron';
 import mongoose from 'mongoose';
 import Canvas from 'canvas';
-import path from 'path';
 
 export default {
     name: 'ready',
@@ -22,7 +21,7 @@ export default {
         // Connect to database
         mongoose.set('strictQuery', true); // Remove dep warning
         mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true, useUnifiedTopology: true })
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem connecting to the database: `, err))
+            .catch(err => console.error(`There was a problem connecting to the database: `, err))
             .then(() => console.log('Connected to database'));
 
         // Set client activity
@@ -42,14 +41,14 @@ export default {
                 whMessage = await webhook.send({
                     content: `Boost the server and unlock these server benefits and more`,
                     files: ['./res/images/supporter_rewards.png']
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err));
+                }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
                 setTimeout(() => {
-                    webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                    webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                 }, 10000);
                 setTimeout(async () => {
                     whMessage.delete();
                 }, 300000);
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+            }).catch(err => console.error(`There was a problem sending a webhook: `, err));
         });
         boostTimer.start();
 

@@ -18,7 +18,7 @@ export default {
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
         interaction.deleteReply();
     }
 }

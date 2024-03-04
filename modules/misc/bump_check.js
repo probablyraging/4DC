@@ -20,7 +20,7 @@ export default async (client) => {
             }).then(async () => {
                 // Log the current timestamp
                 await dbUpdateOne(timerSchema, { timer: 'bump' }, { timestamp: 'null' });
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem updating the bump channel: `, err));
+            }).catch(err => console.error(`There was a problem updating the bump channel: `, err));
         }
     }, 300000);
 }

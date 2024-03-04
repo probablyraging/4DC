@@ -1,6 +1,5 @@
 import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: `Whois`,
@@ -13,7 +12,7 @@ export default {
     async execute(interaction) {
         const { guild } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const target = await guild.members.fetch(interaction.targetId).catch(() => { });
 

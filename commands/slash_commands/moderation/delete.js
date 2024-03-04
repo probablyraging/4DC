@@ -1,7 +1,6 @@
 import { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 /**
  * Filter and bulk delete messages based on a target user or all non-system messages
@@ -17,7 +16,7 @@ async function bulkDeleteFilteredMessages(interaction, channel, messages, target
     messages.filter(message => {
         (targetUser ? message.author.id === targetUser.id : !message.system) && amount > i ? (filtered.push(message), i++) : null;
     });
-    const bulkDelete = await channel.bulkDelete(filtered, true).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err))
+    const bulkDelete = await channel.bulkDelete(filtered, true).catch(err => console.error(`There was a problem deleting a message: `, err))
     const responseWithUser = `${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`;
     const responseWithoutUser = `${bulkDelete.size} messages deleted in ${channel}`;
     sendResponse(interaction, `${targetUser ? responseWithUser : responseWithoutUser}`);
@@ -48,7 +47,7 @@ export default {
     async execute(interaction) {
         const { guild, member, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         const amountToDelete = options.getNumber('amount');
@@ -83,6 +82,6 @@ export default {
 
         logChan.send({
             embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+        }).catch(err => console.error(`There was a problem sending an embed: `, err));
     }
 } 

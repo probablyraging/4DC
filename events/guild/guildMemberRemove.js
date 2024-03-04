@@ -1,6 +1,5 @@
 import introSchema from '../../schemas/intro_schema.js';
 import { dbFindOne } from '../../utils/utils.js';
-import path from 'path';
 
 export default {
     name: 'guildMemberRemove',
@@ -20,6 +19,6 @@ export default {
         joinLeaveChan.send({
             content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`,
             allowedMentions: { parse: [] }
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        }).catch(err => console.error(`There was a problem sending a message: `, err));
     }
 }

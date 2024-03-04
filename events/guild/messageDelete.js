@@ -1,7 +1,6 @@
 import { EmbedBuilder, AuditLogEvent, codeBlock } from 'discord.js';
 import { ImgurClient } from 'imgur';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 function get64bin(int) {
     if (int >= 0) {
@@ -56,7 +55,7 @@ export default {
                 // Upload attachment to imgur, get the link and attach it to the embed
                 const response = await imgur.upload({
                     image: msgAttachment,
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+                }).catch(err => console.error(`There was a problem uploading an image to imgur: `, err));
                 // If there was a problem uploading the image, don't attach it to the embed
                 if (!response || response.status !== 200) return;
                 log.setImage(response.data.link);
@@ -64,7 +63,7 @@ export default {
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+            }).catch(err => console.error(`There was a problem sending an embed: `, err));
         }, 2000);
 
         // Delete or archive thread channels
@@ -72,14 +71,14 @@ export default {
             const starterMessage = await message?.channel.fetchStarterMessage().catch(() => { });
             // Delete the thread if the starter message was deleted and there are no other messages in the thread
             if (!starterMessage && message?.channel.messageCount === 0) {
-                message?.channel.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
+                message?.channel.delete().catch(err => console.error(`There was a problem deleting a thread channel: `, err));
             }
             // Archive and lock the thread if the starter message was deleted but there are messages in the thread
             if (!starterMessage && message?.channel.messageCount > 0) {
                 message?.channel.edit({
                     archived: true,
                     locked: true
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a thread channel: `, err));
+                }).catch(err => console.error(`There was a problem deleting a thread channel: `, err));
             }
         }
     }

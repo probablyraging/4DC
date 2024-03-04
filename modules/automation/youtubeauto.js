@@ -1,7 +1,6 @@
 import { dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
 import ytNotificationSchema from '../../schemas/yt_notification_schema.js';
 import rssParser from 'rss-parser';
-import path from 'path';
 
 const res = new rssParser();
 
@@ -37,7 +36,7 @@ export default async (client) => {
                         if (isBooster || isStaff) {
                             supporterChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
-                            }).catch((err) => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                            }).catch((err) => console.error(`There was a problem sending a message: `, err));
                         }
                     }
                 });

@@ -1,4 +1,3 @@
-import path from 'path';
 
 export default async (member, client) => {
     // Give the user 5 minutes to verify themselves, or kick them
@@ -8,7 +7,7 @@ export default async (member, client) => {
     }).catch(() => { });
     setTimeout(() => {
         if (member && member.roles.cache.has(process.env.UNVERIFIED_ROLE)) {
-            member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
+            member.kick('Did not verify in time').catch(err => console.error(`There was a problem kicking a user from the server: `, err));
         }
     }, 300000);
 }

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import path from 'path';
 
 export default async (member, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -47,9 +46,9 @@ export default async (member, client) => {
 
                     guild.channels.cache.get(process.env.STAFF_CHAN).send({
                         content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a message: `, err));
                 }
             }
         })
-        .catch(err => console.error(`${path.basename(__filename)} There was a problem fetching a user profile: `, err));
+        .catch(err => console.error(`There was a problem fetching a user profile: `, err));
 }

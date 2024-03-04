@@ -1,6 +1,5 @@
 import { codeBlock } from 'discord.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: 'messageUpdate',
@@ -27,7 +26,7 @@ export default {
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+            }).catch(err => console.error(`There was a problem sending an embed: `, err));
         }
 
         // If a user edits their message in the counting game, delete their message and send the current number
@@ -37,13 +36,13 @@ export default {
             // We only care about message that are numbers only
             const containsNumbers = /^\d+$/.test(newMessage?.content);
             if (!containsNumbers) return;
-            newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            newMessage?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
         }
 
         // If a user edits their message in the counting game, delete their message and send the current number
         if (newMessage?.channel.id === process.env.LL_CHAN && !newMessage?.author.bot) {
             if (newMessage?.content.startsWith('>')) return;
-            newMessage?.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a message: `, err));
+            newMessage?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
         }
     }
 }

@@ -1,5 +1,4 @@
 import { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
-import path from 'path';
 /**
  * 
  * @param {Message} message 
@@ -29,11 +28,11 @@ export default async (message, client) => {
                 webhook.send({
                     content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Click for more information`,
                     components: [button]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook message: `, err))
+                }).catch(err => console.error(`There was a problem sending a webhook message: `, err))
                     .then(() => {
-                        webhook.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
                     });
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+            }).catch(err => console.error(`There was a problem sending a webhook: `, err));
         } catch (err) {
             console.error(`There was a problem fetching messages in the premium ad channel: `, err);
         }

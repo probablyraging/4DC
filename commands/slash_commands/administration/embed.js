@@ -1,7 +1,6 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { ImgurClient } from 'imgur';
-import path from 'path';
 
 export default {
     name: `embed`,
@@ -102,7 +101,7 @@ export default {
     async execute(interaction) {
         const { user, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'create': {
@@ -131,9 +130,9 @@ export default {
                 // Send the embed
                 await channel.send({
                     embeds: [embed]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`There was a problem sending a message: `, err));
                 // Delete the initial interaction
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
                 break;
             }
 
@@ -155,7 +154,7 @@ export default {
                     // Upload attachment to imgur, get the link and attach it to the embed
                     const response = await imgur.upload({
                         image: thumbnail.url,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+                    }).catch(err => console.error(`There was a problem uploading an image to imgur: `, err));
                     // Update the variable with the returned imgur URL
                     if (response.length > 0) {
                         if (response[0].status !== 200) return;
@@ -168,7 +167,7 @@ export default {
                     // Upload attachment to imgur, get the link and attach it to the embed
                     const response = await imgur.upload({
                         image: image.url,
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem uploading an image to imgur: `, err));
+                    }).catch(err => console.error(`There was a problem uploading an image to imgur: `, err));
                     // Update the variable with the returned imgur URL
                     if (response.length > 0) {
                         if (response[0].status !== 200) return;
@@ -213,9 +212,9 @@ export default {
                     .setFooter({ text: footer });
 
                 // Edit the embed
-                await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing an embed: `, err));
+                await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`There was a problem editing an embed: `, err));
                 // Delete the initial interaction
-                interaction.deleteReply().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
                 break;
             }
         }

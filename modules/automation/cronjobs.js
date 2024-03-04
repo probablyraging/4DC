@@ -5,7 +5,6 @@ import inviteSchema from '../../schemas/invite_schema.js';
 import timerSchema from '../../schemas/timer_schema.js';
 import { CronJob } from 'cron';
 import axios from 'axios';
-import path from 'path';
 
 export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -57,7 +56,7 @@ export default async (client) => {
                 if ((new Date() - message.createdTimestamp) > adLength) {
                     testChan.send({
                         content: `<@${process.env.OWNER_ID}> A premium ad has expired - ${message.url}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                    }).catch(err => console.error(`There was a problem sending a message: `, err));
                 }
             }
         });
@@ -91,7 +90,7 @@ export default async (client) => {
             'Content-Type': 'application/json',
         };
         await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
-            .catch(err => console.error(`${path.basename(__filename)} There was a problem making a PUT request: `, err));
+            .catch(err => console.error(`There was a problem making a PUT request: `, err));
         await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
     });
 
@@ -102,7 +101,7 @@ export default async (client) => {
         const fiveMinutes = 5 * 60 * 1000;
         unverifiedRole.members.forEach(member => {
             if ((new Date() - member.joinedTimestamp) < oneWeek && (new Date() - member.joinedTimestamp) > fiveMinutes) {
-                if (member.id !== '1081004946872352958') member.kick('Did not verify in time').catch(err => console.error(`${path.basename(__filename)} There was a problem kicking a user from the server: `, err));
+                if (member.id !== '1081004946872352958') member.kick('Did not verify in time').catch(err => console.error(`There was a problem kicking a user from the server: `, err));
             }
         })
     });
@@ -113,7 +112,7 @@ export default async (client) => {
         const threads = threadChan.threads.cache;
         threads.forEach(async thread => {
             const exists = await guild.members.fetch(thread.ownerId).catch(() => { console.log(`Found and removed an abandoned service thread`) });
-            if (!exists) thread.delete().catch(err => console.error(`${path.basename(__filename)} There was a problem deleting an abandoned service thread: `, err));
+            if (!exists) thread.delete().catch(err => console.error(`There was a problem deleting an abandoned service thread: `, err));
         });
     });
 

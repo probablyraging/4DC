@@ -1,7 +1,6 @@
 import { dbFindOne, dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
 import gptHistorySchema from '../../schemas/gpt_history_schema.js';
 import axios from 'axios';
-import path from 'path';
 
 async function storeOrFetchConversationHistory(fetch, userData, assistantData) {
     if (fetch) {
@@ -32,7 +31,7 @@ export default async (message) => {
         try {
             const initMessage = await message.reply({
                 content: `Let me think..`
-            }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a webhook: `, err));
+            }).catch(err => console.error(`There was a problem sending a webhook: `, err));
 
             // Get previous conversation history from database
             const conversationHistory = await storeOrFetchConversationHistory(true, message);
@@ -61,7 +60,7 @@ export default async (message) => {
             if (!data || !data.choices) {
                 initMessage.edit({
                     content: `Sorry, I was unable to generate an answer. Please try again`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+                }).catch(err => console.error(`There was a problem editing a message: `, err));
                 await dbDeleteOne(gptHistorySchema, { userId: message?.author.id });
             } else {
                 // If there is a response, check if it is longer than 1900
@@ -78,12 +77,12 @@ export default async (message) => {
                                 // Edit the initial message with the first part of the response
                                 initMessage.edit({
                                     content: `${responseParts[i]}.. \n**${i + 1}/${responseParts.length}**`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a message: `, err));
+                                }).catch(err => console.error(`There was a problem editing a message: `, err));
                             } else {
                                 // Send a reply to the channel with the next part of the response
                                 message.reply({
                                     content: `..${responseParts[i]} \n**${i + 1}/${responseParts.length}**`
-                                }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing a messagee: `, err));
+                                }).catch(err => console.error(`There was a problem editing a messagee: `, err));
                             }
                         }, i * 1000);
                     }
@@ -91,7 +90,7 @@ export default async (message) => {
                     // Edit the initial message with the full response if it can fit in one message
                     initMessage.edit({
                         content: `${response}`
-                    }).catch(err => console.error(`${path.basename(__filename)} There was a problem editing the webhook message: `, err));
+                    }).catch(err => console.error(`There was a problem editing the webhook message: `, err));
                 }
                 // Store previous conversation history
                 storeOrFetchConversationHistory(false, message, data.choices[0].message);

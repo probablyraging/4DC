@@ -3,7 +3,6 @@ import { dbCreate, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
 import warnSchema from '../../../schemas/warn_schema.js';
 import rules from '../../../lists/rules.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: `warn`,
@@ -72,7 +71,7 @@ export default {
         const { member, guild, options } = interaction;
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         switch (options.getSubcommand()) {
             case 'add': {
@@ -106,7 +105,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                }).catch(err => console.error(`There was a problem sending an embed: `, err));
 
                 // Log to database
                 await dbCreate(warnSchema, { guildId, userId, username, warnId, author, authorTag, timestamp, reason });
@@ -145,7 +144,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+                }).catch(err => console.error(`There was a problem sending an embed: `, err));
                 // Send a follow up response
                 sendResponse(interaction, `Warning '${warning}' removed`);
                 break;

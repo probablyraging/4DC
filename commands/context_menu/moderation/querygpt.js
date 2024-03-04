@@ -1,7 +1,6 @@
 import { CommandInteraction, ApplicationCommandType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import axios from 'axios';
-import path from 'path';
 
 export default {
     name: `Query GPT`,
@@ -15,7 +14,7 @@ export default {
     async execute(interaction) {
         const { channel, targetId } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
         interaction.deleteReply();
 
         const fetchMsg = await channel.messages.fetch(targetId);
@@ -46,7 +45,7 @@ export default {
             } else {
                 fetchMsg.reply({
                     content: `### *Information for ${target}:* \n> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`
-                }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+                }).catch(err => console.error(`There was a problem sending a message: `, err));
             }
         } catch (err) {
             console.error('There was a problem: ', err);

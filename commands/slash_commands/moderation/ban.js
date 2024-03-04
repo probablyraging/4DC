@@ -2,7 +2,6 @@ import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionTyp
 import { sendResponse } from '../../../utils/utils.js';
 import rules from '../../../lists/rules.js';
 import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
 
 export default {
     name: `ban`,
@@ -74,7 +73,7 @@ export default {
     async execute(interaction) {
         const { member, guild, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`${path.basename(__filename)} There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const screenshotChan = guild.channels.cache.get(process.env.SCREENSHOT_CHAN);
@@ -118,9 +117,9 @@ export default {
         await guild.bans.create(target, {
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem banning a user: `, err));
+        }).catch(err => console.error(`There was a problem banning a user: `, err));
         // Send screenshot to channel
-        const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending a message: `, err));
+        const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error(`There was a problem sending a message: `, err));
 
         // Log to channel
         let log = new EmbedBuilder()
@@ -133,6 +132,6 @@ export default {
 
         logChan.send({
             embeds: [log]
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an embed: `, err));
+        }).catch(err => console.error(`There was a problem sending an embed: `, err));
     }
 }

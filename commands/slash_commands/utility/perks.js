@@ -1,5 +1,4 @@
 import { CommandInteraction, ApplicationCommandType } from 'discord.js';
-import path from 'path';
 
 export default {
     name: `perks`,
@@ -15,6 +14,6 @@ export default {
         interaction.reply({
             files: [img],
             ephemeral: true
-        }).catch(err => console.error(`${path.basename(__filename)} There was a problem sending an interaction: `, err));
+        }).catch(err => console.error(`There was a problem sending an interaction: `, err));
     }
 }
