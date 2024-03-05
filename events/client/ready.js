@@ -25,9 +25,9 @@ export default {
             .then(() => console.log('Connected to database'));
 
         // Set client activity
-        client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: ActivityType.Watching });
+        client.user.setActivity({ type: ActivityType.Custom, name: 'custom', state: `Moderating ${new Intl.NumberFormat().format(guild.memberCount)} users` });
         setInterval(() => {
-            client.user.setActivity(`${new Intl.NumberFormat().format(guild.memberCount)} users`, { type: ActivityType.Watching });
+            client.user.setActivity({ type: ActivityType.Custom, name: 'custom', state: `Moderating ${new Intl.NumberFormat().format(guild.memberCount)} users` });
         }, 900000);
 
         // Register the font we use for the /rank command
