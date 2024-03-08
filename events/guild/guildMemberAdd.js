@@ -27,10 +27,6 @@ export default {
             return;
         }
 
-        // Mention user is test channel
-        const testChan = client.channels.cache.get(process.env.TEST_CHAN);
-        testChan.send({ content: `${member}` }).catch(err => console.error(`There was a problem sending a message: `, err));
-
         // Check if the user was muted, and left the server while a mute was active
         previousMutesCheck(member, client);
 
