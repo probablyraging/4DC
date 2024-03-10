@@ -1,7 +1,6 @@
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from "discord.js";
 import { sendResponse } from "../../../utils/utils.js";
 import axios from 'axios';
-import path from "path";
 
 export default {
     name: `querygpt`,

@@ -2,7 +2,6 @@ import { CommandInteraction, ApplicationCommandType, EmbedBuilder, ApplicationCo
 import { sendReply, sendResponse, dbFindOne, dbUpdateOne } from '../../../utils/utils.js';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import path from "path";
 import schema from '../../../schemas/rank_schema.js';
 
 export default {

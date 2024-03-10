@@ -1,6 +1,5 @@
 import { dbUpdateOne } from '../../utils/utils.js';
 import timerSchema from "../../schemas/timer_schema.js";
-import path from "path";
 
 export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
