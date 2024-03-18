@@ -6,7 +6,7 @@ export default async (member, client) => {
     // Check user's profile for blocked words and report to staff if a match is found
     axios.get(`https://discord.com/api/v9/users/${member.id}/profile`, { headers: { 'authorization': process.env.SB_TOKEN } })
         .then((response) => {
-            const blockedWords = ['artist', 'design', 'illustrat', 'dm', 'graphic', 'gfx', 'message', 'commission', 'professional', 'nft', 'service', 'promot', 'manag', 'market', 'edit', 'expert', 'agent', 'agency'];
+            const blockedWords = ['artist', 'design', 'illustrat', 'dm', 'graphic', 'gfx', 'message', 'commission', 'professional', 'nft', 'service', 'promot', 'manag', 'market', 'edit', 'expert', 'agent', 'agency', 'freelance', 'smma'];
             let matched = false;
             const matches = {
                 'Username': [],
@@ -31,6 +31,18 @@ export default async (member, client) => {
                 const reason = `Blocked word(s) found in <@${member.id}>'s profile:\n`;
                 const reasonLines = [];
 
+                // Auto moderate strong matches
+                if (matches['Username'].length >= 3) {
+                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                }
+                if (matches['Display Name'].length >= 3) {
+                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                }
+                if (matches['Bio'].length >= 3) {
+                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                }
+
+                // Send alert for manual review
                 if (matches['Username'].length > 0) {
                     reasonLines.push(`- **Username**: ${matches['Username'].join(', ')}`);
                 }
