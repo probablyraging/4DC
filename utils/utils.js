@@ -46,12 +46,13 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
 }
 
 /**
- * Edit the reply to an interaction
+ * Send a reply to an interaction
  * @param {CommandInteraction} interaction The interaction object
  * @param {string} content The content of the response
  * @param {Array} embeds An array of embeds
  * @param {Array} files An array of files
  * @param {Array} components An array of components
+ * @param {Ephemeral} Boolean If the message should be ephemeral or not
  */
 async function sendReplyWithMention(interaction, content = '', embeds = [], files = [], components = [], ephemeral = false) {
     try {
