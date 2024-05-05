@@ -160,6 +160,7 @@ export default async (interaction) => {
             }).catch(err => console.error(`There was a problem banning a user: `, err));
 
             // Send screenshot to channel
+            let screenshotMessage;
             if (attachment) screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] })
                 .catch(err => console.error(`There was a problem sending a message: `, err));
 
