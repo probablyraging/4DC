@@ -1,11 +1,12 @@
+// eslint-disable-next-line no-unused-vars
 import { ThreadChannel, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 
 export default {
-    name: `threadCreate`,
+    name: 'threadCreate',
     /**
      * @param {ThreadChannel} thread
      */
-    async execute(thread, newlyCreated, client) {
+    async execute(thread, newlyCreated) {
         // Information for video/gfx review threads
         if (newlyCreated && thread.parentId === process.env.REVIEW_CHAN) {
             setTimeout(() => {
@@ -17,7 +18,7 @@ export default {
 * Example of a good title: "How can I mix my audio better at 3:20?"
 * Example of a bad title: "Does this look good?"
 If you need to edit your title or post, please do so now or it may be deleted`
-                }).catch(err => console.error(`There was a problem sending a message: `, err));
+                }).catch(err => console.error('There was a problem sending a message: ', err));
             }, 3000);
         }
 
@@ -32,7 +33,7 @@ If you need to edit your title or post, please do so now or it may be deleted`
                             .setStyle(ButtonStyle.Success)
                     );
 
-                thread.send({ components: [button] }).catch(err => console.error(`There was a problem sending a message: `, err));
+                thread.send({ components: [button] }).catch(err => console.error('There was a problem sending a message: ', err));
             }, 1000);
         }
 
@@ -43,8 +44,8 @@ If you need to edit your title or post, please do so now or it may be deleted`
             const threadOwner = await thread.guild.members.fetch(threadOwnerId);
             const joinedAt = threadOwner.joinedTimestamp;
             if ((new Date() - joinedAt) < oneWeek) {
-                thread.delete().catch(err => { return console.error(`There was a problem deleting a thread: `, err) });
+                thread.delete().catch(err => { return console.error('There was a problem deleting a thread: ', err); });
             }
         }
     }
-}
+};

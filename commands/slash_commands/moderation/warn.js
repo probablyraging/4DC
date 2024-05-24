@@ -1,29 +1,29 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, codeBlock } from 'discord.js';
 import { dbCreate, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
 import warnSchema from '../../../schemas/warn_schema.js';
-import rules from '../../../lists/rules.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
-    name: `warn`,
-    description: `Add, remove or list a user's warnings`,
+    name: 'warn',
+    description: 'Add, remove or list a user\'s warnings',
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `add`,
-        description: `Add a warning to a specific user`,
+        name: 'add',
+        description: 'Add a warning to a specific user',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `username`,
-            description: `The user you want to add a warning to`,
+            name: 'username',
+            description: 'The user you want to add a warning to',
             type: ApplicationCommandOptionType.User,
             required: true
         },
         {
-            name: `reason`,
-            description: `Supply a reason for warning the user`,
+            name: 'reason',
+            description: 'Supply a reason for warning the user',
             type: ApplicationCommandOptionType.String,
             required: true,
             choices: [{ name: 'Rule 1 - harmful posts, username, profile, etc..', value: '1' },
@@ -36,30 +36,30 @@ export default {
             { name: 'Custom - please provide a custom reason', value: 'custom' }]
         },
         {
-            name: `custom`,
-            description: `Provide a reason for warning the user when selecting custom`,
+            name: 'custom',
+            description: 'Provide a reason for warning the user when selecting custom',
             type: ApplicationCommandOptionType.String,
             required: false
         }]
     },
     {
-        name: `remove`,
-        description: `Remove a warning from a specific user`,
+        name: 'remove',
+        description: 'Remove a warning from a specific user',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `warning`,
-            description: `The warning ID you want to remove`,
+            name: 'warning',
+            description: 'The warning ID you want to remove',
             type: ApplicationCommandOptionType.String,
             required: true
         }],
     },
     {
-        name: `list`,
-        description: `List warnings warning IDs for a specific user`,
+        name: 'list',
+        description: 'List warnings warning IDs for a specific user',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `username`,
-            description: `The user whos warnings you want to list`,
+            name: 'username',
+            description: 'The user whos warnings you want to list',
             type: ApplicationCommandOptionType.User,
             required: true
         }],
@@ -71,7 +71,7 @@ export default {
         const { member, guild, options } = interaction;
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         switch (options.getSubcommand()) {
             case 'add': {
@@ -89,15 +89,15 @@ export default {
                 if (isNaN(reason)) reason = custom;
 
                 // If no reason was provided
-                if (reason == null) return sendResponse(interaction, `You must provide custom reason when selecting the 'Custom' option`);
+                if (reason == null) return sendResponse(interaction, 'You must provide custom reason when selecting the \'Custom\' option');
                 // If the provided reason exceeds the character limit
-                if (reason && reason.length > 1024) return sendResponse(interaction, `Reasons are limited to 1024 characters`);
+                if (reason && reason.length > 1024) return sendResponse(interaction, 'Reasons are limited to 1024 characters');
                 // If the target user cannot be found
-                if (!userId || !username) return sendResponse(interaction, `The was an issue finding the user you are trying to warn`);
+                if (!userId || !username) return sendResponse(interaction, 'The was an issue finding the user you are trying to warn');
 
                 // Log to channel
                 let log = new EmbedBuilder()
-                    .setColor("#E04F5F")
+                    .setColor('#E04F5F')
                     .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${username} *(${userId})* \n**Reason:** ${reason}`)
                     .setFooter({ text: `Warning Added • ${warnId}`, iconURL: process.env.LOG_WARN })
@@ -105,7 +105,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`There was a problem sending an embed: `, err));
+                }).catch(err => console.error('There was a problem sending an embed: ', err));
 
                 // Log to database
                 await dbCreate(warnSchema, { guildId, userId, username, warnId, author, authorTag, timestamp, reason });
@@ -114,13 +114,13 @@ export default {
 
                 if (results.length >= 3) {
                     // Ban the user if this is their third warning
-                    await target.ban({ days: 0, reason: `Warning threshold` })
-                        .then(() => sendResponse(interaction, `Your warning was added`))
+                    await target.ban({ days: 0, reason: 'Warning threshold' })
+                        .then(() => sendResponse(interaction, 'Your warning was added'))
                         .catch(() => sendResponse(interaction, `This is ${target}'s third warning but I could not ban them`));
                 } else {
                     // Notify the user that they received a warning
                     await target.send({ content: `${target} - you received a warning in ${guild.name} \n${codeBlock(reason)}` })
-                        .then(() => sendResponse(interaction, `Your warning was added`))
+                        .then(() => sendResponse(interaction, 'Your warning was added'))
                         .catch(() => sendResponse(interaction, `Your warning was added \nI could not send ${target} a notification`));
                 }
                 break;
@@ -136,7 +136,7 @@ export default {
                 await dbDeleteOne(warnSchema, { warnId: warning });
                 // Log to channel
                 let log = new EmbedBuilder()
-                    .setColor("#4fe059")
+                    .setColor('#4fe059')
                     .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${results.username} *(${results.userId})*`)
                     .setFooter({ text: `Warning Removed • ${results.warnId}`, iconURL: process.env.LOG_UNWARN })
@@ -144,7 +144,7 @@ export default {
 
                 logChan.send({
                     embeds: [log]
-                }).catch(err => console.error(`There was a problem sending an embed: `, err));
+                }).catch(err => console.error('There was a problem sending an embed: ', err));
                 // Send a follow up response
                 sendResponse(interaction, `Warning '${warning}' removed`);
                 break;
@@ -155,16 +155,16 @@ export default {
                 // Fetch warnings for the target user
                 const results = await warnSchema.find({ userId: target.id });
                 // If no results were found
-                if (results.length === 0) return sendResponse(interaction, `This user has no warnings`);
+                if (results.length === 0) return sendResponse(interaction, 'This user has no warnings');
                 // Create an embed to display the user's warnings
                 let warningEmbed = new EmbedBuilder()
                     .setColor('#E04F5F')
                     .setAuthor({ name: `Warnings for ${target?.user.username}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
-                    .setTimestamp()
+                    .setTimestamp();
 
-                let warnCount = `0`;
+                let warnCount = '0';
                 for (const warning of results) {
-                    const { warnId, author, timestamp, reason } = warning
+                    const { warnId, author, timestamp, reason } = warning;
                     // Get the user who added the warning
                     const executor = guild.members.cache.get(author);
                     // Add the warning data to the embed
@@ -178,12 +178,12 @@ export default {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
                     });
                     // Increment the warning count
-                    warnCount++
+                    warnCount++;
                 }
                 // Send a follow up response
-                sendResponse(interaction, ``, [warningEmbed]);
+                sendResponse(interaction, '', [warningEmbed]);
                 break;
             }
         }
     }
-}
+};

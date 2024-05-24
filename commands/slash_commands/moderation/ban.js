@@ -1,31 +1,32 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder, hyperlink } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import rules from '../../../lists/rules.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
-    name: `ban`,
-    description: `Ban a user from the server`,
+    name: 'ban',
+    description: 'Ban a user from the server',
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 30,
     global: true,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `user`,
-        description: `The user you want to ban`,
+        name: 'user',
+        description: 'The user you want to ban',
         type: ApplicationCommandOptionType.User,
         required: true
     },
     {
-        name: `delete_messages`,
-        description: `Delete this users recent messages`,
+        name: 'delete_messages',
+        description: 'Delete this users recent messages',
         type: ApplicationCommandOptionType.Boolean,
         required: true
     },
     {
-        name: `reason`,
-        description: `The reason for banning the user`,
+        name: 'reason',
+        description: 'The reason for banning the user',
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'Rule 1 - harmful posts, username, profile, etc..', value: '1' },
@@ -38,32 +39,32 @@ export default {
         { name: 'Custom - please provide a custom reason', value: 'custom' }]
     },
     {
-        name: `screenshot`,
-        description: `A screenshot of the reason why the user was banned`,
+        name: 'screenshot',
+        description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
         required: true
     },
     {
-        name: `screenshot2`,
-        description: `A screenshot of the reason why the user was banned`,
+        name: 'screenshot2',
+        description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
         required: false
     },
     {
-        name: `screenshot3`,
-        description: `A screenshot of the reason why the user was banned`,
+        name: 'screenshot3',
+        description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
         required: false
     },
     {
-        name: `screenshot4`,
-        description: `A screenshot of the reason why the user was banned`,
+        name: 'screenshot4',
+        description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
         required: false
     },
     {
-        name: `custom`,
-        description: `Provide a reason for banning the user when selecting custom`,
+        name: 'custom',
+        description: 'Provide a reason for banning the user when selecting custom',
         type: ApplicationCommandOptionType.String,
         required: false
     }],
@@ -73,7 +74,7 @@ export default {
     async execute(interaction) {
         const { member, guild, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         const logChan = guild.channels.cache.get(process.env.LOG_CHAN);
         const screenshotChan = guild.channels.cache.get(process.env.SCREENSHOT_CHAN);
@@ -95,18 +96,18 @@ export default {
             const currentAttachment = attachments[i];
             if (!currentAttachment || !currentAttachment.contentType) continue;
             if (!currentAttachment.contentType || !currentAttachment.contentType.includes('image')) {
-                return sendResponse(interaction, `Attachment type must be an image file (.png, .jpg, etc..)`);
+                return sendResponse(interaction, 'Attachment type must be an image file (.png, .jpg, etc..)');
             } else {
                 attachmentArr.push(currentAttachment);
             }
         }
         // If no target
-        if (!target) return sendResponse(interaction, `This user no longer exists`);
+        if (!target) return sendResponse(interaction, 'This user no longer exists');
         // If no reason was provided when using the custom reason option
-        if (reason == null) return sendResponse(interaction, `You must provide custom reason when selecting the 'Custom' option`);
+        if (reason == null) return sendResponse(interaction, 'You must provide custom reason when selecting the \'Custom\' option');
         // Check if a the user is already banned
         const alreadyBanned = await guild.bans.fetch(target.id).catch(() => { });
-        if (alreadyBanned) return sendResponse(interaction, `This user is already banned`);
+        if (alreadyBanned) return sendResponse(interaction, 'This user is already banned');
         // Send response
         sendResponse(interaction, `${target.username} was banned from the server`);
         // Send a notification to the target user
@@ -117,21 +118,21 @@ export default {
         await guild.bans.create(target, {
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
             reason: reason
-        }).catch(err => console.error(`There was a problem banning a user: `, err));
+        }).catch(err => console.error('There was a problem banning a user: ', err));
         // Send screenshot to channel
-        const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error(`There was a problem sending a message: `, err));
+        const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error('There was a problem sending a message: ', err));
 
         // Log to channel
         let log = new EmbedBuilder()
-            .setColor("#E04F5F")
+            .setColor('#E04F5F')
             .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.username} *(${target.id})*
-**Reason:** ${reason} \n**Purge Messages:** ${deleteMessages.toString().charAt(0).toUpperCase() + deleteMessages.toString().slice(1)} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ""}`)
+**Reason:** ${reason} \n**Purge Messages:** ${deleteMessages.toString().charAt(0).toUpperCase() + deleteMessages.toString().slice(1)} ${attachment ? `\n**Attachment:** ${hyperlink(screenshotMessage.id, screenshotMessage.url)}` : ''}`)
             .setFooter({ text: `Ban • ${logId}`, iconURL: process.env.LOG_BAN })
             .setTimestamp();
 
         logChan.send({
             embeds: [log]
-        }).catch(err => console.error(`There was a problem sending an embed: `, err));
+        }).catch(err => console.error('There was a problem sending an embed: ', err));
     }
-}
+};

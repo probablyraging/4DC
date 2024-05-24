@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction } from 'discord.js';
 const attachmentMap = new Map();
 
@@ -19,7 +20,7 @@ async function sendResponse(interaction, content = '', embeds = [], files = [], 
             ephemeral: ephemeral
         });
     } catch (err) {
-        console.error(`There was a problem editing an interaction: `, err);
+        console.error('There was a problem editing an interaction: ', err);
     }
 }
 
@@ -41,7 +42,7 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
             ephemeral: ephemeral
         });
     } catch (err) {
-        console.error(`There was a problem replying to an interaction: `, err);
+        console.error('There was a problem replying to an interaction: ', err);
     }
 }
 
@@ -65,7 +66,7 @@ async function sendReplyWithMention(interaction, content = '', embeds = [], file
             allowedMentions: { parse: ['users'] }
         });
     } catch (err) {
-        console.error(`There was a problem editing an interaction: `, err);
+        console.error('There was a problem editing an interaction: ', err);
     }
 }
 
@@ -87,7 +88,7 @@ async function sendFollowUp(interaction, content = '', embeds = [], files = [], 
             ephemeral: ephemeral
         });
     } catch (err) {
-        console.error(`There was a problem replying to an interaction: `, err);
+        console.error('There was a problem replying to an interaction: ', err);
     }
 }
 
@@ -102,7 +103,7 @@ async function dbFind(model, filter = {}) {
         const result = await model.find(filter);
         return result;
     } catch (err) {
-        return console.error(`There was a problem finding a database entry: `, err);
+        return console.error('There was a problem finding a database entry: ', err);
     }
 }
 
@@ -117,7 +118,7 @@ async function dbFindOne(model, filter) {
         const result = await model.findOne(filter);
         return result;
     } catch (err) {
-        return console.error(`There was a problem finding one database entry: `, err);
+        return console.error('There was a problem finding one database entry: ', err);
     }
 }
 
@@ -130,7 +131,7 @@ async function dbCreate(model, update) {
     try {
         await model.create(update);
     } catch (err) {
-        return console.error(`There was a problem creating a database entry: `, err);
+        return console.error('There was a problem creating a database entry: ', err);
     }
 }
 
@@ -144,7 +145,7 @@ async function dbUpdateOne(model, filter, update) {
     try {
         await model.updateOne(filter, update, { upsert: true });
     } catch (err) {
-        return console.error(`There was a problem updating one database entry: `, err);
+        return console.error('There was a problem updating one database entry: ', err);
     }
 }
 
@@ -157,7 +158,7 @@ async function dbDeleteOne(model, filter) {
     try {
         await model.deleteOne(filter);
     } catch (err) {
-        return console.error(`There was a problem deleting a database entry: `, err);
+        return console.error('There was a problem deleting a database entry: ', err);
     }
 }
 
@@ -170,7 +171,7 @@ async function dbDeleteMany(model, filter) {
     try {
         await model.deleteMany(filter);
     } catch (err) {
-        return console.error(`There was a problem deleting a database entry: `, err);
+        return console.error('There was a problem deleting a database entry: ', err);
     }
 }
 
@@ -207,4 +208,4 @@ export {
     dbDeleteMany,
     addAttachment,
     getAttachment
-}
+};

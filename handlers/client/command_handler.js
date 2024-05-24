@@ -18,4 +18,4 @@ export default async (client) => {
         guild.commands.set(commandsArr);
         // client.application.commands.set(globalCom);
     });
-}
+};

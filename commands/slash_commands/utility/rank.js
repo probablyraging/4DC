@@ -1,22 +1,22 @@
-import { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } from "discord.js";
+import { AttachmentBuilder, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
-import rankSchema from "../../../schemas/rank_schema.js";
-import Canvas from "canvas";
+import rankSchema from '../../../schemas/rank_schema.js';
+import Canvas from 'canvas';
 
 function kFormatter(num) {
     return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(num);
 }
 
 export default {
-    name: `rank`,
-    description: `Fetch a user's rank`,
+    name: 'rank',
+    description: 'Fetch a user\'s rank',
     cooldown: 1200,
     global: true,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `username`,
-        description: `The user whos rank you want to fetch. Leave blank to fetch your own`,
+        name: 'username',
+        description: 'The user whos rank you want to fetch. Leave blank to fetch your own',
         type: ApplicationCommandOptionType.User,
         required: false,
     }],
@@ -26,13 +26,13 @@ export default {
     async execute(interaction) {
         const { member, options } = interaction;
 
-        await interaction.deferReply().catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply().catch(err => console.error('There was a problem deferring an interaction: ', err));
 
-        const target = options.getMember("username") || member;
+        const target = options.getMember('username') || member;
         const targetId = target?.user?.id || member?.id;
 
         // Load default images
-        const background = await Canvas.loadImage("./res/images/rankbg.png");
+        const background = await Canvas.loadImage('./res/images/rankbg.png');
 
         const results = await rankSchema.find({ userId: targetId });
         // If there are no results
@@ -43,14 +43,14 @@ export default {
 
             const rankPos = parseInt(rank);
             const canvas = Canvas.createCanvas(930, 280);
-            const ctx = canvas.getContext("2d");
+            const ctx = canvas.getContext('2d');
 
             // Stretch background to the size of the canvas
             ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
             // Draw an opaque rectangle ontop of image
             const cornerRadius = 10;
-            ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
             ctx.beginPath();
             ctx.moveTo(20 + cornerRadius, 30);
             ctx.lineTo(canvas.width - 20 - cornerRadius, 30);
@@ -65,14 +65,14 @@ export default {
             ctx.fill();
 
             // Not the same as rankPos, this is technically 'level' but we call it 'rank' as it coincides with our rank roles
-            ctx.font = "36px grotesk";
-            ctx.fillStyle = "#44eaff";
+            ctx.font = '36px grotesk';
+            ctx.fillStyle = '#44eaff';
             ctx.fillText(`Rank ${level}`, 243, 90);
 
             // Trim long usernames
-            if (username.length > 20) username = username.slice(0, 20) + "..";
-            ctx.font = "36px grotesk";
-            ctx.fillStyle = "#ffffff";
+            if (username.length > 20) username = username.slice(0, 20) + '..';
+            ctx.font = '36px grotesk';
+            ctx.fillStyle = '#ffffff';
             ctx.fillText(username, 243, 140);
 
             // Format numbers greater than 999
@@ -81,23 +81,23 @@ export default {
             let count = kFormatter(msgCount);
 
             // Message count
-            ctx.font = "22px grotesk";
-            ctx.fillStyle = "#ffffff";
+            ctx.font = '22px grotesk';
+            ctx.fillStyle = '#ffffff';
             ctx.fillText(`Message Count: ${count}`, 243, 220);
 
             // Current xp and xp needed
-            ctx.font = "16px grotesk";
-            ctx.fillStyle = "#ffffff";
+            ctx.font = '16px grotesk';
+            ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.fillText(`${xp3} / ${xp2}`, 798, 149);
 
             // Position in the leaderboard
             if (rankPos.length >= 5) {
-                ctx.font = "45px grotesk";
+                ctx.font = '45px grotesk';
             } else if (rankPos.length >= 3) {
-                ctx.font = "50px grotesk";
+                ctx.font = '50px grotesk';
             } else {
-                ctx.font = "60px grotesk";
+                ctx.font = '60px grotesk';
             }
 
             // Flip the canvas so the XP bar fills counter-clockwise
@@ -107,13 +107,13 @@ export default {
             // Outter XP bar
             ctx.beginPath();
             ctx.lineWidth = 30;
-            ctx.strokeStyle = "#484B4E";
+            ctx.strokeStyle = '#484B4E';
             ctx.arc(130, 142, 75, 0, 2 * Math.PI, true);
             ctx.stroke();
             // Inner XP bar
             ctx.beginPath();
             ctx.lineWidth = 20;
-            ctx.strokeStyle = "#44eaff";
+            ctx.strokeStyle = '#44eaff';
             ctx.arc(130, 142, 75, 1.5 * Math.PI, (Math.PI * 2) / (100 / percentage) - (Math.PI / 2), false);
             ctx.stroke();
 
@@ -141,9 +141,9 @@ export default {
             const avatar = await Canvas.loadImage(target?.user.displayAvatarURL({ extension: 'png', size: 128 }));
             ctx.drawImage(avatar, 55, 55, 170, 170);
 
-            const attachment = new AttachmentBuilder(canvas.toBuffer(), "profile-image.png");
+            const attachment = new AttachmentBuilder(canvas.toBuffer(), 'profile-image.png');
 
-            sendResponse(interaction, ``, [], [attachment]);
+            sendResponse(interaction, '', [], [attachment]);
         }
     }
 };

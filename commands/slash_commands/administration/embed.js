@@ -1,96 +1,97 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { ImgurClient } from 'imgur';
 
 export default {
-    name: `embed`,
-    description: `Create a new embed or edit an existing one`,
+    name: 'embed',
+    description: 'Create a new embed or edit an existing one',
     defaultMemberPermissions: ['Administrator'],
     cooldown: 0,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `create`,
-        description: `Create a new embed`,
+        name: 'create',
+        description: 'Create a new embed',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `description`,
-            description: `The description for the embed`,
+            name: 'description',
+            description: 'The description for the embed',
             type: ApplicationCommandOptionType.String,
             required: true
         }, {
-            name: `title`,
-            description: `The title for the embed`,
+            name: 'title',
+            description: 'The title for the embed',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `color`,
-            description: `The color for the embed. Must be a valid #hex color`,
+            name: 'color',
+            description: 'The color for the embed. Must be a valid #hex color',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `thumbnail`,
-            description: `The thumbnail image URL for the embed`,
+            name: 'thumbnail',
+            description: 'The thumbnail image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
             required: false
         }, {
-            name: `image`,
-            description: `The image URL for the embed`,
+            name: 'image',
+            description: 'The image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
             required: false
         }, {
-            name: `author`,
-            description: `Do you want to show who created this embed?`,
+            name: 'author',
+            description: 'Do you want to show who created this embed?',
             type: ApplicationCommandOptionType.Boolean,
             required: false
         }]
     }, {
-        name: `edit`,
-        description: `Edit an existing embed`,
+        name: 'edit',
+        description: 'Edit an existing embed',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `message_id`,
-            description: `The id of the message containing the embed you want to edit`,
+            name: 'message_id',
+            description: 'The id of the message containing the embed you want to edit',
             type: ApplicationCommandOptionType.String,
             required: true
         }, {
-            name: `description`,
-            description: `The description for the embed`,
+            name: 'description',
+            description: 'The description for the embed',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `title`,
-            description: `The title for the embed`,
+            name: 'title',
+            description: 'The title for the embed',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `color`,
-            description: `The color for the embed. Must be a valid #hex color`,
+            name: 'color',
+            description: 'The color for the embed. Must be a valid #hex color',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `thumbnail`,
-            description: `The thumbnail image URL for the embed`,
+            name: 'thumbnail',
+            description: 'The thumbnail image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
             required: false
         }, {
-            name: `image`,
-            description: `The image URL for the embed`,
+            name: 'image',
+            description: 'The image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
             required: false
         }, {
-            name: `author`,
-            description: `Do you want to show who created this embed?`,
+            name: 'author',
+            description: 'Do you want to show who created this embed?',
             type: ApplicationCommandOptionType.Boolean,
             required: false
         }, {
-            name: `url`,
-            description: `The url of the embed title`,
+            name: 'url',
+            description: 'The url of the embed title',
             type: ApplicationCommandOptionType.String,
             required: false
         }, {
-            name: `footer`,
-            description: `The text of the embed footer`,
+            name: 'footer',
+            description: 'The text of the embed footer',
             type: ApplicationCommandOptionType.String,
             required: false
         }]
@@ -101,7 +102,7 @@ export default {
     async execute(interaction) {
         const { user, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         switch (options.getSubcommand()) {
             case 'create': {
@@ -113,13 +114,13 @@ export default {
                 const author = options.getBoolean('author');
 
                 // Perform character limit checks
-                if (title + description + author > 6000) return sendResponse(interaction, `The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
-                if (title && title.length > 256) return sendResponse(interaction, `Embed titles are limited to 256 characters`);
-                if (description && description.length > 4096) return sendResponse(interaction, `Embed descriptions are limited to 4096 characters`);
+                if (title + description + author > 6000) return sendResponse(interaction, 'The sum of all characters from all embed structures in a message must not exceed 6000 characters');
+                if (title && title.length > 256) return sendResponse(interaction, 'Embed titles are limited to 256 characters');
+                if (description && description.length > 4096) return sendResponse(interaction, 'Embed descriptions are limited to 4096 characters');
                 // Make sure the color provided is a valid HEX code
                 const hexRegex = /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/i;
                 const isHex = hexRegex.test(color);
-                if (color && !isHex) return sendResponse(interaction, `You must enter a valid #hex color`);
+                if (color && !isHex) return sendResponse(interaction, 'You must enter a valid #hex color');
                 // Create the embed
                 const embed = new EmbedBuilder().setDescription(description).setColor(color);
                 // Add any provided fields to the embed
@@ -130,9 +131,9 @@ export default {
                 // Send the embed
                 await channel.send({
                     embeds: [embed]
-                }).catch(err => console.error(`There was a problem sending a message: `, err));
+                }).catch(err => console.error('There was a problem sending a message: ', err));
                 // Delete the initial interaction
-                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error('There was a problem deleting an interaction: ', err));
                 break;
             }
 
@@ -154,7 +155,7 @@ export default {
                     // Upload attachment to imgur, get the link and attach it to the embed
                     const response = await imgur.upload({
                         image: thumbnail.url,
-                    }).catch(err => console.error(`There was a problem uploading an image to imgur: `, err));
+                    }).catch(err => console.error('There was a problem uploading an image to imgur: ', err));
                     // Update the variable with the returned imgur URL
                     if (response.length > 0) {
                         if (response[0].status !== 200) return;
@@ -167,7 +168,7 @@ export default {
                     // Upload attachment to imgur, get the link and attach it to the embed
                     const response = await imgur.upload({
                         image: image.url,
-                    }).catch(err => console.error(`There was a problem uploading an image to imgur: `, err));
+                    }).catch(err => console.error('There was a problem uploading an image to imgur: ', err));
                     // Update the variable with the returned imgur URL
                     if (response.length > 0) {
                         if (response[0].status !== 200) return;
@@ -178,32 +179,33 @@ export default {
                 // Make sure the message ID is valid
                 const letterRegex = /[a-zA-Z]/g;
                 const hasLetter = letterRegex.test(id);
-                if (hasLetter === true) return sendResponse(interaction, `You must enter a valid message id`);
+                if (hasLetter === true) return sendResponse(interaction, 'You must enter a valid message id');
 
                 // Perform character limit checks
-                if (title + description + author > 6000) return sendResponse(interaction, `The sum of all characters from all embed structures in a message must not exceed 6000 characters`);
-                if (title && title.length > 256) return sendResponse(interaction, `Embed titles are limited to 256 characters`);
-                if (description && description.length > 4096) return sendResponse(interaction, `Embed descriptions are limited to 4096 characters`);
+                if (title + description + author > 6000) return sendResponse(interaction, 'The sum of all characters from all embed structures in a message must not exceed 6000 characters');
+                if (title && title.length > 256) return sendResponse(interaction, 'Embed titles are limited to 256 characters');
+                if (description && description.length > 4096) return sendResponse(interaction, 'Embed descriptions are limited to 4096 characters');
                 // Make sure the color provided is a valid HEX code
                 const hexRegex = /^#?([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/i;
                 const isHex = hexRegex.test(color);
-                if (color && !isHex) return sendResponse(interaction, `You must enter a valid #hex color`);
+                if (color && !isHex) return sendResponse(interaction, 'You must enter a valid #hex color');
 
                 // Fetch the target message containing the embed
                 const message = await channel.messages.fetch(id);
                 const embed = message?.embeds[0];
 
                 // Edit any provided fields
+                let editEmbed;
                 if (title) editEmbed = EmbedBuilder.from(embed)
-                    .setTitle(title)
+                    .setTitle(title);
                 if (description) editEmbed = EmbedBuilder.from(embed)
-                    .setDescription(description)
+                    .setDescription(description);
                 if (color) editEmbed = EmbedBuilder.from(embed)
-                    .setColor(color)
+                    .setColor(color);
                 if (thumbnail) editEmbed = EmbedBuilder.from(embed)
-                    .setThumbnail(thumbnail)
+                    .setThumbnail(thumbnail);
                 if (image) editEmbed = EmbedBuilder.from(embed)
-                    .setImage(image)
+                    .setImage(image);
                 if (author) editEmbed = EmbedBuilder.from(embed)
                     .setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
                 if (url) editEmbed = EmbedBuilder.from(embed)
@@ -212,9 +214,9 @@ export default {
                     .setFooter({ text: footer });
 
                 // Edit the embed
-                await message.edit({ embeds: [editEmbed] }).catch(err => console.error(`There was a problem editing an embed: `, err));
+                await message.edit({ embeds: [editEmbed] }).catch(err => console.error('There was a problem editing an embed: ', err));
                 // Delete the initial interaction
-                interaction.deleteReply().catch(err => console.error(`There was a problem deleting an interaction: `, err));
+                interaction.deleteReply().catch(err => console.error('There was a problem deleting an interaction: ', err));
                 break;
             }
         }

@@ -17,16 +17,16 @@ export default {
                 .setColor('#FF9E00')
                 .setAuthor({ name: `${oldMessage?.author?.username}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
-                .addFields({ name: `Author`, value: `${oldMessage?.author}`, inline: true },
-                    { name: `Channel`, value: `${oldMessage?.channel}`, inline: true },
-                    { name: `Old Message`, value: codeBlock(original), inline: false },
-                    { name: `New Message`, value: codeBlock(edited), inline: false })
+                .addFields({ name: 'Author', value: `${oldMessage?.author}`, inline: true },
+                    { name: 'Channel', value: `${oldMessage?.channel}`, inline: true },
+                    { name: 'Old Message', value: codeBlock(original), inline: false },
+                    { name: 'New Message', value: codeBlock(edited), inline: false })
                 .setFooter({ text: `Edit • ${uuidv4()}`, iconURL: process.env.LOG_EDIT })
-                .setTimestamp()
+                .setTimestamp();
 
             logChan.send({
                 embeds: [log]
-            }).catch(err => console.error(`There was a problem sending an embed: `, err));
+            }).catch(err => console.error('There was a problem sending an embed: ', err));
         }
 
         // If a user edits their message in the counting game, delete their message and send the current number
@@ -36,13 +36,13 @@ export default {
             // We only care about message that are numbers only
             const containsNumbers = /^\d+$/.test(newMessage?.content);
             if (!containsNumbers) return;
-            newMessage?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+            newMessage?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
         }
 
         // If a user edits their message in the counting game, delete their message and send the current number
         if (newMessage?.channel.id === process.env.LL_CHAN && !newMessage?.author.bot) {
             if (newMessage?.content.startsWith('>')) return;
-            newMessage?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+            newMessage?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
         }
     }
-}
+};

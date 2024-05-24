@@ -1,15 +1,16 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { sendReplyWithMention } from '../../../utils/utils.js';
 
 export default {
-    name: `info`,
-    description: `Information regarding individual topics`,
+    name: 'info',
+    description: 'Information regarding individual topics',
     cooldown: 3,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `topic`,
-        description: `Select the topic you want to reference`,
+        name: 'topic',
+        description: 'Select the topic you want to reference',
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'connections', value: 'connections' },
@@ -19,8 +20,8 @@ export default {
         { name: 'contentshare', value: 'contentshare' }]
     },
     {
-        name: `username`,
-        description: `The user you want to direct the information at`,
+        name: 'username',
+        description: 'The user you want to direct the information at',
         type: ApplicationCommandOptionType.User,
     }],
     /**
@@ -41,10 +42,10 @@ export default {
             ['xp', `### *Information for ${target}:*
 > ${process.env.BOT_DOC} By sending messages in the server, you will earn between 15 and 25 XP towards your rank. Unlocking new ranks grants access to various rewards. To prevent spamming, earning XP is limited to once a minute per user. You can view your current rank by using the </rank:1097681002219974731> command in the <#837945839799500850> channel`],
 
-            [`premium`, `### *Information for ${target}:*
+            ['premium', `### *Information for ${target}:*
 > ${process.env.BOT_DOC} The <#${process.env.PREM_CHAN}> channel is a paid service where you can promote content that generally isn't allowed to be posted in the rest of the server. Things like Discord server invites, paid services and products and even regular social media, channels and videos. For more information DM ProbablyRaging`],
 
-            [`contentshare`, `### *Information for ${target}:*
+            ['contentshare', `### *Information for ${target}:*
 > ${process.env.BOT_DOC} Share your content in the following locations;
 > - On our official site, [Distubify](<https://distubify.xyz>), which is open for everyone to use
 > - The <#859117794779987978> channel for <@&821876910253670442>
@@ -57,4 +58,4 @@ export default {
             sendReplyWithMention(interaction, responses.get(choice), [], [], [], true);
         }
     }
-}
+};

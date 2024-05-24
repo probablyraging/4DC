@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,33 +12,39 @@ import { v4 as uuidv4 } from 'uuid';
  * @param {number} amount The maximum number of messages to delete
  */
 async function bulkDeleteFilteredMessages(interaction, channel, messages, targetUser, amount) {
-    let i = 0;
-    const filtered = [];
-    messages.filter(message => {
-        (targetUser ? message.author.id === targetUser.id : !message.system) && amount > i ? (filtered.push(message), i++) : null;
+    const filteredMessages = messages.filter(message => {
+        const isTargetUser = targetUser ? message.author.id === targetUser.id : true;
+        const isNotSystemMessage = !message.system;
+        return isTargetUser && isNotSystemMessage && amount > filteredMessages.length;
     });
-    const bulkDelete = await channel.bulkDelete(filtered, true).catch(err => console.error(`There was a problem deleting a message: `, err))
-    const responseWithUser = `${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`;
-    const responseWithoutUser = `${bulkDelete.size} messages deleted in ${channel}`;
-    sendResponse(interaction, `${targetUser ? responseWithUser : responseWithoutUser}`);
-    return bulkDelete.size;
+
+    try {
+        const bulkDelete = await channel.bulkDelete(filteredMessages, true);
+        const response = targetUser
+            ? `${bulkDelete.size} messages from ${targetUser} deleted in ${channel}`
+            : `${bulkDelete.size} messages deleted in ${channel}`;
+        sendResponse(interaction, response);
+        return bulkDelete.size;
+    } catch (err) {
+        console.error('There was a problem deleting a message: ', err);
+    }
 }
 
 export default {
-    name: `delete`,
-    description: `Delete a specific number of messages from a channel or user`,
+    name: 'delete',
+    description: 'Delete a specific number of messages from a channel or user',
     defaultMemberPermissions: ['ModerateMembers'],
     cooldown: 10,
     dm_permission: false,
     options: [{
-        name: `amount`,
-        description: `Number of messages to delete`,
+        name: 'amount',
+        description: 'Number of messages to delete',
         type: ApplicationCommandOptionType.Number,
         required: true
     },
     {
-        name: `username`,
-        description: `Delete a specific user's messages`,
+        name: 'username',
+        description: 'Delete a specific user\'s messages',
         type: ApplicationCommandOptionType.User,
         required: false
     }],
@@ -47,7 +54,7 @@ export default {
     async execute(interaction) {
         const { guild, member, channel, options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         const amountToDelete = options.getNumber('amount');
@@ -74,14 +81,14 @@ export default {
         // Log to channel
         const log = new EmbedBuilder()
             .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
-            .setColor("#E04F5F")
-            .addFields({ name: `Channel`, value: `${channel}`, inline: true },
-                { name: `Reason`, value: `Bulk deleted ${deletedSize} messages`, inline: true })
+            .setColor('#E04F5F')
+            .addFields({ name: 'Channel', value: `${channel}`, inline: true },
+                { name: 'Reason', value: `Bulk deleted ${deletedSize} messages`, inline: true })
             .setFooter({ text: `Bulk Delete • ${uuidv4()}`, iconURL: process.env.LOG_DELETE })
-            .setTimestamp()
+            .setTimestamp();
 
         logChan.send({
             embeds: [log]
-        }).catch(err => console.error(`There was a problem sending an embed: `, err));
+        }).catch(err => console.error('There was a problem sending an embed: ', err));
     }
-} 
+}; 

@@ -15,4 +15,4 @@ const inviteSchema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('invites', inviteSchema)
+export default mongoose.model('invites', inviteSchema);

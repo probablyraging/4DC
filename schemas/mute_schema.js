@@ -15,4 +15,4 @@ const muteSchema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('mutes', muteSchema)
+export default mongoose.model('mutes', muteSchema);

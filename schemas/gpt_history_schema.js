@@ -11,4 +11,4 @@ const gptHistoryschema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('gpthistory', gptHistoryschema)
+export default mongoose.model('gpthistory', gptHistoryschema);

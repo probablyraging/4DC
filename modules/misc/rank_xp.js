@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Message } from 'discord.js';
 import { dbFind, dbCreate, dbUpdateOne } from '../../utils/utils.js';
 import rankSchema from '../../schemas/rank_schema.js';
@@ -140,4 +141,4 @@ export default async (message, client) => {
         let msgMath = parseInt(msgCount) + 1;
         await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { msgCount: msgMath });
     }
-}
+};

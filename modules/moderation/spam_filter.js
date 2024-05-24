@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Message } from 'discord.js';
 
 const repeatedMessages = new Map();
@@ -34,8 +35,8 @@ function isSpam(message) {
  * @param {String} message The message to send to the user
  */
 async function timeoutUser(member, duration, reason, message) {
-    await member.timeout(duration, reason).catch(err => console.error(`There was a problem adding a timeout: `, err));
-    await member.send(message).catch(err => console.error(`There was a problem sending a message to a user. This usually happens when the target has DMs disabled: `, err));
+    await member.timeout(duration, reason).catch(err => console.error('There was a problem adding a timeout: ', err));
+    await member.send(message).catch(err => console.error('There was a problem sending a message to a user. This usually happens when the target has DMs disabled: ', err));
 }
 
 export default async (message, client) => {
@@ -56,7 +57,7 @@ export default async (message, client) => {
                 const member = message.member;
                 if (member) {
                     // Time the user out
-                    const notificationForUser = `You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member`;
+                    const notificationForUser = 'You have been timed out for 5 minutes for spamming. If this is a mistake, please contact a staff member';
                     timeoutUser(member, 300000, 'Spam detection', notificationForUser);
                     // Add timedout users to a set so we don't try to time them out again
                     timedOutUsers.add(authorId);
@@ -69,4 +70,4 @@ export default async (message, client) => {
             console.error('There was a problem with the spam module: ', err);
         }
     }
-}
+};

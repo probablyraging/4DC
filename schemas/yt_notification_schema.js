@@ -19,4 +19,4 @@ const ytNotificationSchema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('ytnotifications', ytNotificationSchema)
+export default mongoose.model('ytnotifications', ytNotificationSchema);

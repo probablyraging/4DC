@@ -21,7 +21,7 @@ export default {
         // Connect to database
         mongoose.set('strictQuery', true); // Remove dep warning
         mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true, useUnifiedTopology: true })
-            .catch(err => console.error(`There was a problem connecting to the database: `, err))
+            .catch(err => console.error('There was a problem connecting to the database: ', err))
             .then(() => console.log('Connected to database'));
 
         // Set client activity
@@ -31,24 +31,24 @@ export default {
         }, 900000);
 
         // Register the font we use for the /rank command
-        Canvas.registerFont("./res/fonts/ulm_grotesk.ttf", { family: "grotesk" });
-        Canvas.registerFont("./res/fonts/redhatdisplay_black.otf", { family: "redhatdisplay" });
+        Canvas.registerFont('./res/fonts/ulm_grotesk.ttf', { family: 'grotesk' });
+        Canvas.registerFont('./res/fonts/redhatdisplay_black.otf', { family: 'redhatdisplay' });
 
         // Booster rewards
         const boostTimer = new CronJob('0 */10 * * *', function () {
             let whMessage;
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                 whMessage = await webhook.send({
-                    content: `Boost the server and unlock these server benefits and more`,
+                    content: 'Boost the server and unlock these server benefits and more',
                     files: ['./res/images/supporter_rewards.png']
-                }).catch(err => console.error(`There was a problem sending a webhook message: `, err));
+                }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                 setTimeout(() => {
-                    webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
+                    webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));
                 }, 10000);
                 setTimeout(async () => {
                     whMessage.delete();
                 }, 300000);
-            }).catch(err => console.error(`There was a problem sending a webhook: `, err));
+            }).catch(err => console.error('There was a problem sending a webhook: ', err));
         });
         boostTimer.start();
 

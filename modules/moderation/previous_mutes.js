@@ -12,6 +12,6 @@ export default async (member, client) => {
         // Update the channel permissions for the target user
         channel.permissionOverwrites.edit(data.userId, {
             SendMessages: false,
-        }).catch(err => { return console.error(`There was a problem editing a channel's permissions: `, err) });
+        }).catch(err => { return console.error('There was a problem editing a channel\'s permissions: ', err); });
     }
-}
+};

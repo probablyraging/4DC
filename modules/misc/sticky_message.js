@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
 /**
  * 
@@ -23,18 +24,18 @@ export default async (message, client) => {
             const messages = await premChan.messages.fetch({ limit: 5 });
             const messageFound = messages.find(m => m.content.includes('purchase an ad spot'));
             // Delete the previous reminder and resend it as a webhook
-            if (messageFound) await messageFound.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+            if (messageFound) await messageFound.delete().catch(err => console.error('There was a problem deleting a message: ', err));
             await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
                     content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Click for more information`,
                     components: [button]
-                }).catch(err => console.error(`There was a problem sending a webhook message: `, err))
+                }).catch(err => console.error('There was a problem sending a webhook message: ', err))
                     .then(() => {
-                        webhook.delete().catch(err => console.error(`There was a problem deleting a webhook: `, err));
+                        webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));
                     });
-            }).catch(err => console.error(`There was a problem sending a webhook: `, err));
+            }).catch(err => console.error('There was a problem sending a webhook: ', err));
         } catch (err) {
-            console.error(`There was a problem fetching messages in the premium ad channel: `, err);
+            console.error('There was a problem fetching messages in the premium ad channel: ', err);
         }
     }
-}
+};

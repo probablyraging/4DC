@@ -29,7 +29,7 @@ client.events = new Discord.Collection();
 
 ['command_handler', 'event_handler'].forEach(async (handler) => {
     await import(`./handlers/client/${handler}.js`)
-        .then(module => { module.default(client, Discord) });
+        .then(module => { module.default(client, Discord); });
 });
 
 client.login(process.env.BOT_TOKEN);

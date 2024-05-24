@@ -36,11 +36,11 @@ export default async (client) => {
                         if (isBooster || isStaff) {
                             supporterChan.send({
                                 content: `**${userTag}** just uploaded a new video - ${item.link}`,
-                            }).catch((err) => console.error(`There was a problem sending a message: `, err));
+                            }).catch((err) => console.error('There was a problem sending a message: ', err));
                         }
                     }
                 });
             });
         }
     }, 300000);
-}
+};

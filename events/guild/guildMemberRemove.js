@@ -3,7 +3,7 @@ import { dbFindOne } from '../../utils/utils.js';
 
 export default {
     name: 'guildMemberRemove',
-    async execute(member, client, Discord) {
+    async execute(member, client) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const joinLeaveChan = client.channels.cache.get(process.env.JOINLEAVE_CHAN);
         const introChan = client.channels.cache.get(process.env.INTRO_CHAN);
@@ -19,6 +19,6 @@ export default {
         joinLeaveChan.send({
             content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`,
             allowedMentions: { parse: [] }
-        }).catch(err => console.error(`There was a problem sending a message: `, err));
+        }).catch(err => console.error('There was a problem sending a message: ', err));
     }
-}
+};

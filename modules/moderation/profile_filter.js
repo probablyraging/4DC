@@ -33,13 +33,13 @@ export default async (member, client) => {
 
                 // Auto moderate strong matches
                 if (matches['Username'].length >= 3) {
-                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                    return member.kick('Profile filter flag').catch(err => console.error('There was a problem kicking a member: ', err));
                 }
                 if (matches['Display Name'].length >= 3) {
-                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                    return member.kick('Profile filter flag').catch(err => console.error('There was a problem kicking a member: ', err));
                 }
                 if (matches['Bio'].length >= 3) {
-                    return member.kick('Profile filter flag').catch(err => console.error(`There was a problem kicking a member: `, err));
+                    return member.kick('Profile filter flag').catch(err => console.error('There was a problem kicking a member: ', err));
                 }
 
                 // Send alert for manual review
@@ -58,9 +58,9 @@ export default async (member, client) => {
 
                     guild.channels.cache.get(process.env.STAFF_CHAN).send({
                         content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`
-                    }).catch(err => console.error(`There was a problem sending a message: `, err));
+                    }).catch(err => console.error('There was a problem sending a message: ', err));
                 }
             }
         })
-        .catch(err => console.error(`There was a problem fetching a user profile: `, err));
-}
+        .catch(err => console.error('There was a problem fetching a user profile: ', err));
+};

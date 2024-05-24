@@ -1,5 +1,5 @@
 import { dbUpdateOne } from '../../utils/utils.js';
-import timerSchema from "../../schemas/timer_schema.js";
+import timerSchema from '../../schemas/timer_schema.js';
 
 export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -19,7 +19,7 @@ export default async (client) => {
             }).then(async () => {
                 // Log the current timestamp
                 await dbUpdateOne(timerSchema, { timer: 'bump' }, { timestamp: 'null' });
-            }).catch(err => console.error(`There was a problem updating the bump channel: `, err));
+            }).catch(err => console.error('There was a problem updating the bump channel: ', err));
         }
     }, 300000);
-}
+};

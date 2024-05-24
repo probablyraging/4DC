@@ -1,39 +1,40 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, ApplicationCommandOptionType } from 'discord.js';
 import { dbUpdateOne, dbDeleteOne, sendResponse } from '../../../utils/utils.js';
 import ytNotificationSchema from '../../../schemas/yt_notification_schema.js';
 import res from 'rss-parser';
 
 export default {
-    name: `youtubeauto`,
-    description: `Modify the YouTube Auto list by adding or removing a user`,
+    name: 'youtubeauto',
+    description: 'Modify the YouTube Auto list by adding or removing a user',
     defaultMemberPermissions: ['ManageRoles'],
     cooldown: 3,
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     options: [{
-        name: `add`,
-        description: `Add a user to the YouTube Auto list`,
+        name: 'add',
+        description: 'Add a user to the YouTube Auto list',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `username`,
-            description: `The user who you would like to add`,
+            name: 'username',
+            description: 'The user who you would like to add',
             type: ApplicationCommandOptionType.User,
             required: true
         },
         {
-            name: `channelid`,
-            description: `The ID of the user's YouTube channel`,
+            name: 'channelid',
+            description: 'The ID of the user\'s YouTube channel',
             type: ApplicationCommandOptionType.String,
             required: true
         }],
     },
     {
-        name: `remove`,
-        description: `Remove a user from the YouTube Auto list`,
+        name: 'remove',
+        description: 'Remove a user from the YouTube Auto list',
         type: ApplicationCommandOptionType.Subcommand,
         options: [{
-            name: `username`,
-            description: `The user who you would like to remove`,
+            name: 'username',
+            description: 'The user who you would like to remove',
             type: ApplicationCommandOptionType.User,
             required: true
         }],
@@ -44,7 +45,7 @@ export default {
     async execute(interaction) {
         const { options } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         switch (options.getSubcommand()) {
             case 'add': {
@@ -53,7 +54,7 @@ export default {
 
                 try {
                     // Store a list of the user's current video IDs
-                    const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`)
+                    const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
                     const items = resolve.items;
                     // Remove the XML markup from video IDs
                     let videoIdArr = [];
@@ -67,7 +68,7 @@ export default {
                     sendResponse(interaction, `${target}, with YouTube channel ID '${channelId}', has been added to the YouTube Auto list`);
                 } catch {
                     // If the supplied channel ID is incorrect
-                    sendResponse(interaction, `An error occurred. This is most likely because the channel ID doesn't exist`);
+                    sendResponse(interaction, 'An error occurred. This is most likely because the channel ID doesn\'t exist');
                 }
                 break;
             }
@@ -82,4 +83,4 @@ export default {
             }
         }
     }
-}
+};

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js';
 import reportActionButton from '../../handlers/buttons/report_action.js';
 import adInformationButton from '../../handlers/buttons/ad_information.js';
@@ -50,14 +51,14 @@ export default {
             // If no command with the specified command name was found
             if (!command) {
                 interaction.reply({
-                    content: `Could not run this command`,
+                    content: 'Could not run this command',
                     ephemeral: true
-                }).catch(err => console.error(`There was a problem sending an interaction: `, err));
+                }).catch(err => console.error('There was a problem sending an interaction: ', err));
                 return client.command.module(interaction.commandName);
             }
             // Execure the command and log it's usage
             command.execute(interaction, client);
-            console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
+            console.log('\x1b[36m%s\x1b[0m', `${interaction.member.displayName}`, `used /${command.name}`);
         }
 
         // Context menu command handler
@@ -93,7 +94,7 @@ export default {
             }
             // Execure the command and log it's usage
             command.execute(interaction, client);
-            console.log(`\x1b[36m%s\x1b[0m`, `${interaction.member.displayName}`, `used /${command.name}`);
+            console.log('\x1b[36m%s\x1b[0m', `${interaction.member.displayName}`, `used /${command.name}`);
         }
 
         // Button submit handler
@@ -126,4 +127,4 @@ export default {
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
         }
     }
-}
+};

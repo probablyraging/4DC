@@ -11,7 +11,7 @@ export default async (message) => {
             // Delete the user's message if a previous post was found
             if (result) message?.delete();
         } catch (err) {
-            console.error(`There was a problem logging an introduction: `, err);
+            console.error('There was a problem logging an introduction: ', err);
         }
     }
-}
+};

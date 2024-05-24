@@ -11,4 +11,4 @@ const introSchema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('introductions', introSchema)
+export default mongoose.model('introductions', introSchema);

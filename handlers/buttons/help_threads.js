@@ -14,9 +14,9 @@ export default async (interaction) => {
             await channel.setLocked(true);
             await channel.setArchived(true);
         } else {
-            interaction.followUp({ content: `Only the original poster or staff can mark a post as resolved!` });
+            interaction.followUp({ content: 'Only the original poster or staff can mark a post as resolved!' });
         }
     } catch (err) {
         console.log('There was a problem marking a thread as solved: ', err);
     }
-}
+};

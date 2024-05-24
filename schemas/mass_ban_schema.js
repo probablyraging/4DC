@@ -25,7 +25,7 @@ const massbanSchema = new mongoose.Schema({
     state: {
         type: String,
         required: true,
-        default: "PENDING"
+        default: 'PENDING'
     }
 });
 

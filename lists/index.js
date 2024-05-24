@@ -18,13 +18,13 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
     rules: [
         `By participating in this server, you agree to follow [Server Rules](<https://discord.com/channels/820889004055855144/898541066595209248>), [Discord's ToS](<https://discord.com/terms>) and [Discord's Community Guidelines](<https://discord.com/guidelines>)
                 
-> **1.** ${rules[0]}
-> **2.** ${rules[1]}
-> **3.** ${rules[2]}
-> **4.** ${rules[3]}
-> **5.** ${rules[4]}
-> **6.** ${rules[5]}
-> **7.** ${rules[6]}
+> **1.** ${rules.rules[0]}
+> **2.** ${rules.rules[1]}
+> **3.** ${rules.rules[2]}
+> **4.** ${rules.rules[3]}
+> **5.** ${rules.rules[4]}
+> **6.** ${rules.rules[5]}
+> **7.** ${rules.rules[6]}
 
 See something that breaks the rules? Use the </report:1098000171171840007> command to notify staff
 
@@ -244,4 +244,4 @@ Grab yourself some roles and profile flair from <id:customize>
 > Setting up Two-Factor Authentication: <https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication>
 > Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`
     ]
-}
+};

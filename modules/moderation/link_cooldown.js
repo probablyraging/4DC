@@ -23,4 +23,4 @@ export default async (message) => {
             console.error('There was a problem with the link_cooldown module: ', err);
         }
     }
-}
+};

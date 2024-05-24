@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import { CommandInteraction, ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 
 export default {
-    name: `Whois`,
+    name: 'Whois',
     cooldown: 5,
     dm_permission: false,
     type: ApplicationCommandType.User,
@@ -12,12 +13,12 @@ export default {
     async execute(interaction) {
         const { guild } = interaction;
 
-        await interaction.deferReply({ ephemeral: true }).catch(err => console.error(`There was a problem deferring an interaction: `, err));
+        await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
         const target = await guild.members.fetch(interaction.targetId).catch(() => { });
 
         // If no target
-        if (!target) return sendResponse(interaction, `This user no longer exists`);
+        if (!target) return sendResponse(interaction, 'This user no longer exists');
 
         // Filter the target's permissions in an array
         const permissions = target.permissions.toArray();
@@ -35,7 +36,7 @@ export default {
         if (acknowledgements && acknowledgements.length > 1024) acknowledgements.slice(0, 10);
         if (formattedPermissions && formattedPermissions.length > 1024) formattedPermissions.slice(0, 10);
         // If the target has no permissions
-        if (formattedPermissions.length == 0) permissions.push("No Key Permissions Found");
+        if (formattedPermissions.length == 0) permissions.push('No Key Permissions Found');
         // Get the targets current presence
         let targetStatus;
         if (target?.presence?.status === 'online') targetStatus = 'Online';
@@ -48,14 +49,14 @@ export default {
             .setColor('Random')
             .setThumbnail(`${target?.user.displayAvatarURL({ dynamic: true })}`)
             .addFields(
-                { name: `Registered`, value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
-                { name: `Joined`, value: `<t:${parseInt(target?.joinedTimestamp / 1000)}> \n*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
-                { name: `Status`, value: `${targetStatus}`, inline: false },
-                { name: `Acknowledgements`, value: `${acknowledgements}`, inline: false },
-                { name: `Permissions`, value: `${formattedPermissions}`, inline: false })
+                { name: 'Registered', value: `<t:${parseInt(target?.user.createdTimestamp / 1000)}> \n*(<t:${parseInt(target?.user.createdTimestamp / 1000)}:R>)*`, inline: true },
+                { name: 'Joined', value: `<t:${parseInt(target?.joinedTimestamp / 1000)}> \n*(<t:${parseInt(target?.joinedTimestamp / 1000)}:R>)*`, inline: true },
+                { name: 'Status', value: `${targetStatus}`, inline: false },
+                { name: 'Acknowledgements', value: `${acknowledgements}`, inline: false },
+                { name: 'Permissions', value: `${formattedPermissions}`, inline: false })
             .setFooter({ text: target?.id })
-            .setTimestamp()
+            .setTimestamp();
 
-        sendResponse(interaction, ``, [response]);
+        sendResponse(interaction, '', [response]);
     }
 };

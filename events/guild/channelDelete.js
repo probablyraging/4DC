@@ -3,7 +3,7 @@ const protection = new Map();
 
 export default {
     name: 'channelDelete',
-    async execute(channel, client, Discord) {
+    async execute(channel, client) {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const staffChan = guild.channels.cache.get(process.env.STAFF_CHAN);
 
@@ -21,13 +21,13 @@ export default {
                 const member = await guild.members.fetch(entry.executor.id).catch(() => { });
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
-                    .catch(err => console.error(`There was a problem removing roles`, err));;
+                    .catch(err => console.error('There was a problem removing roles', err));;
                 // Send a notification
                 staffChan.send({
                     content: `<@&${process.env.STAFF_ROLE}>
 **Mass Channel Deletion Protection**
 ${member} was removed from the staff role to prevent a potential mass event`
-                }).catch(err => console.error(`There was a problem sending a message: `, err));
+                }).catch(err => console.error('There was a problem sending a message: ', err));
             } else {
                 // Incrememnt counter
                 protection.set(entry.executor.id, found + 1);
@@ -39,4 +39,4 @@ ${member} was removed from the staff role to prevent a potential mass event`
             }, 60000);
         }
     }
-}
+};

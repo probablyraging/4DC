@@ -18,7 +18,7 @@ export default async (client) => {
             const { userId } = data;
             // Remove non-existent users from the database
             currentPosition++;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the rank system that no longer exists`));
+            const exists = await guild.members.fetch(userId).catch(() => console.log('Found and removed a user in the rank system that no longer exists'));
             if (!exists) await dbDeleteOne(rankSchema, { userId: userId });
             // Set each user's current rank position
             newPositionArr.push({ pos: currentPosition, userId: userId });
@@ -34,7 +34,7 @@ export default async (client) => {
         const results = await warnSchema.find();
         for (const data of results) {
             const { userId } = data;
-            const exists = await guild.members.fetch(userId).catch(() => console.log(`Found and removed a user in the warning system that no longer exists`));
+            const exists = await guild.members.fetch(userId).catch(() => console.log('Found and removed a user in the warning system that no longer exists'));
             if (!exists) await dbDeleteOne(warnSchema, { userId: userId });
         }
     });
@@ -56,7 +56,7 @@ export default async (client) => {
                 if ((new Date() - message.createdTimestamp) > adLength) {
                     testChan.send({
                         content: `<@${process.env.OWNER_ID}> A premium ad has expired - ${message.url}`
-                    }).catch(err => console.error(`There was a problem sending a message: `, err));
+                    }).catch(err => console.error('There was a problem sending a message: ', err));
                 }
             }
         });
@@ -83,14 +83,14 @@ export default async (client) => {
         const isoTimestamp = currentDate.toISOString();
         const expireTimestamp = currentDate.valueOf();
         const requestData = {
-            "dms_disabled_until": isoTimestamp
+            'dms_disabled_until': isoTimestamp
         };
         const headers = {
             'Authorization': `Bot ${process.env.BOT_TOKEN}`,
             'Content-Type': 'application/json',
         };
         await axios.put('https://canary.discord.com/api/v9/guilds/820889004055855144/incident-actions', requestData, { headers })
-            .catch(err => console.error(`There was a problem making a PUT request: `, err));
+            .catch(err => console.error('There was a problem making a PUT request: ', err));
         await dbUpdateOne(timerSchema, { timer: 'dms' }, { timestamp: expireTimestamp });
     });
 
@@ -99,8 +99,8 @@ export default async (client) => {
         const threadChan = await guild.channels.fetch('1096198410664689744');
         const threads = threadChan.threads.cache;
         threads.forEach(async thread => {
-            const exists = await guild.members.fetch(thread.ownerId).catch(() => { console.log(`Found and removed an abandoned service thread`) });
-            if (!exists) thread.delete().catch(err => console.error(`There was a problem deleting an abandoned service thread: `, err));
+            const exists = await guild.members.fetch(thread.ownerId).catch(() => { console.log('Found and removed an abandoned service thread'); });
+            if (!exists) thread.delete().catch(err => console.error('There was a problem deleting an abandoned service thread: ', err));
         });
     });
 
@@ -114,7 +114,7 @@ export default async (client) => {
                 try {
                     await thread.setLocked(true);
                     await thread.setArchived(true);
-                    console.log(`Found and removed an abandoned LFS thread`);
+                    console.log('Found and removed an abandoned LFS thread');
                 } catch (err) {
                     console.error('There was a problem archiving an abandoned lfs thread: ', err);
                 }
@@ -129,4 +129,4 @@ export default async (client) => {
     pauseDMs.start();
     deleteAbandonedServiceThreads.start();
     deleteAbandonedLFSThreads.start();
-}
+};

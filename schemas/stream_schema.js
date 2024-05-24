@@ -7,4 +7,4 @@ const streamSchema = mongoose.Schema({
     }
 });
 
-export default mongoose.model('liveNowStreams', streamSchema)
+export default mongoose.model('liveNowStreams', streamSchema);

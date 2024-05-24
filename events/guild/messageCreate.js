@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Message } from 'discord.js';
 import linkCooldown from '../../modules/moderation/link_cooldown.js';
 import bumpPost from '../../modules/misc/bump_post.js';
@@ -11,7 +12,7 @@ import boostReact from '../../modules/automation/boost_react.js';
 const notifiedUsers = new Set();
 
 export default {
-    name: `messageCreate`,
+    name: 'messageCreate',
     /**
      * @param {Message} message
      */
@@ -37,9 +38,9 @@ export default {
         // Block all youtube video links from being posted in the introduction channel
         if (message?.channel.id === process.env.INTRO_CHAN && !message?.author.bot) {
             if (message?.content.includes('youtu.be/') || message?.content.includes('youtube.com/watch')) {
-                message?.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+                message?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
             } else {
-                message?.react('👋').catch(err => console.error(`There was a problem deleting a message: `, err));
+                message?.react('👋').catch(err => console.error('There was a problem deleting a message: ', err));
             }
         }
 
@@ -48,7 +49,7 @@ export default {
             if (notifiedUsers.has(message?.author.id)) return;
             if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
                 message?.author.send({
-                    content: `Discord invite link sharing is only available to server boosters`,
+                    content: 'Discord invite link sharing is only available to server boosters',
                     files: ['./res/images/supporter_rewards.png']
                 }).catch(() => { });
                 notifiedUsers.add(message?.author.id);
@@ -68,11 +69,11 @@ export default {
         // Resend followed server messages, delete the original message and resend it
         if (message?.channel.id === process.env.NEWS_CHAN && message.author.id === '900247274792304710') {
             setTimeout(async () => {
-                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error(`There was a problem fetching a message: `, err));
-                fetchedMessage.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+                const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error('There was a problem fetching a message: ', err));
+                fetchedMessage.delete().catch(err => console.error('There was a problem deleting a message: ', err));
                 message.channel.send({
                     content: fetchedMessage.embeds[0]?.url
-                }).catch(err => console.error(`There was a problem sending a message: `, err));
+                }).catch(err => console.error('There was a problem sending a message: ', err));
             }, 3000);
         }
 
@@ -82,7 +83,7 @@ export default {
         if (message?.channel.id === process.env.MEDIA_CHAN && !message?.author.bot && (new Date() - message?.member.joinedTimestamp) < oneDay) {
             for (const i in promoLinks) {
                 if (message?.content.includes(promoLinks[i])) {
-                    message.delete().catch(err => console.error(`There was a problem deleting a message: `, err));
+                    message.delete().catch(err => console.error('There was a problem deleting a message: ', err));
                 }
             }
         }
