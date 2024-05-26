@@ -16,8 +16,8 @@ function randomNum(message) {
 }
 
 /**
- * 
- * @param {Message} message 
+ *
+ * @param {Message} message
  */
 export default async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -41,7 +41,7 @@ export default async (message, client) => {
                 msgCount: 0,
                 xp: 0,
                 xxp: 0,
-                xxxp: 100
+                xxxp: 100,
             });
             // Fetch the new created database entry for the user
             userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
@@ -121,7 +121,7 @@ export default async (message, client) => {
                     }
                     // Send the user a notification
                     botChan.send({
-                        content: `${message?.author}, you just advanced to **Rank ${levelMath}**`
+                        content: `${message?.author}, you just advanced to **Rank ${levelMath}**`,
                     });
                 } catch (err) {
                     console.error('There was a problem updating roles in the rank_xp module: ', err);
@@ -137,8 +137,8 @@ export default async (message, client) => {
     // Count all new messages towards msgCount
     if (!userRankData) userRankData = await dbFind(rankSchema, { userId: message?.author?.id });
     for (const data of userRankData) {
-        let { msgCount } = data;
-        let msgMath = parseInt(msgCount) + 1;
+        const { msgCount } = data;
+        const msgMath = parseInt(msgCount) + 1;
         await dbUpdateOne(rankSchema, { userId: message?.author?.id }, { msgCount: msgMath });
     }
 };

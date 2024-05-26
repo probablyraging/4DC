@@ -15,7 +15,7 @@ export default {
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
-        const target = await guild.members.fetch(interaction.targetId).catch(() => { });
+        const target = await guild.members.fetch(interaction.targetId).catch(err => console.error('There was a problem fetching a guild member: ', err));
 
         // If no target
         if (!target) return sendResponse(interaction, 'This user no longer exists');
@@ -58,5 +58,5 @@ export default {
             .setTimestamp();
 
         sendResponse(interaction, '', [response]);
-    }
+    },
 };

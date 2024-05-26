@@ -11,14 +11,14 @@ export default {
         // Remove user's introduction message if one exists
         const result = await dbFindOne(introSchema, { userId: member.id });
         if (result && result.messageId) {
-            const introMessage = await introChan.messages.fetch(result.messageId).catch(() => { });
+            const introMessage = await introChan.messages.fetch(result.messageId).catch(err => console.error('There was a problem fetching channel messages: ', err));
             if (introMessage) introMessage.delete();
         }
 
         // Log to channel
         joinLeaveChan.send({
             content: `${process.env.BOT_LEAVE} ${member} left. There are now **${guild.memberCount}** members in the server`,
-            allowedMentions: { parse: [] }
+            allowedMentions: { parse: [] },
         }).catch(err => console.error('There was a problem sending a message: ', err));
-    }
+    },
 };

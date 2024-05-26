@@ -6,5 +6,5 @@ export default {
     async execute(invite) {
         // Delete the database entry
         await dbDeleteOne(inviteSchema, { code: invite.code });
-    }
+    },
 };

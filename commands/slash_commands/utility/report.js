@@ -12,22 +12,22 @@ export default {
         name: 'offender',
         description: 'The user you are reporting',
         type: ApplicationCommandOptionType.Mentionable,
-        required: true
+        required: true,
     },
     {
         name: 'reason',
         description: 'The reason for your report',
         type: ApplicationCommandOptionType.String,
-        required: true
+        required: true,
     },
     {
         name: 'screenshot',
         description: 'Provide a screenshot of the incident you are reporting',
         type: ApplicationCommandOptionType.Attachment,
-        required: true
+        required: true,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { guild, options, member } = interaction;
@@ -44,7 +44,7 @@ export default {
 
         // If attachment content type isn't an image
         if (attachment && (attachment.contentType === null || !attachment.contentType.includes('image')))
-            return sendResponse(interaction, 'Attachment type must be an image file (.png, .jpg, etc..)');
+            {return sendResponse(interaction, 'Attachment type must be an image file (.png, .jpg, etc..)');}
 
         let reportEmbed = new EmbedBuilder()
             .setColor('#E04F5F')
@@ -62,7 +62,7 @@ export default {
                 new ButtonBuilder()
                     .setCustomId('report-action')
                     .setLabel('Action')
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Primary),
             );
 
         // Send the report embed to the staff channel
@@ -73,11 +73,11 @@ export default {
         reportEmbed = new EmbedBuilder(reportEmbed)
             .setFooter({
                 text: `ID ${member?.id}-${reportMessage.id}`,
-                iconURL: guild.iconURL({ dynamic: true })
+                iconURL: guild.iconURL({ dynamic: true }),
             });
 
         reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error('There was a problem editing a message ', err));
 
         sendResponse(interaction, 'Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly');
-    }
+    },
 };

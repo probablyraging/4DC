@@ -22,7 +22,7 @@ export default {
         required: true,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { options, channel } = interaction;
@@ -37,15 +37,15 @@ export default {
             'model': 'gpt-3.5-turbo-1106',
             'messages': [
                 { 'role': 'system', 'content': 'Give a short meaningful response' },
-                { 'role': 'user', 'content': query }
+                { 'role': 'user', 'content': query },
             ],
             'temperature': 0.7,
-            'max_tokens': 512
+            'max_tokens': 512,
         };
 
         const headers = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.OAI_KEY}`
+            'Authorization': `Bearer ${process.env.OAI_KEY}`,
         };
 
         try {
@@ -56,11 +56,11 @@ export default {
                 sendResponse(interaction, 'Unable to generate a response. Try again');
             } else {
                 channel.send({
-                    content: `### *Information for ${target}:* \n> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`
+                    content: `### *Information for ${target}:* \n> ${process.env.BOT_DOC} ${data.choices[0].message.content.slice(0, 1900)}`,
                 }).catch(err => console.error('There was a problem sending a message: ', err));
             }
         } catch (err) {
             console.error('There was a problem: ', err);
         }
-    }
+    },
 };

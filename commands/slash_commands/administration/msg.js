@@ -13,22 +13,22 @@ export default {
         name: 'username',
         description: 'The user to send the message to',
         type: ApplicationCommandOptionType.User,
-        required: true
+        required: true,
     },
     {
         name: 'message',
         description: 'The message you want to send',
         type: ApplicationCommandOptionType.String,
-        required: false
+        required: false,
     },
     {
         name: 'image',
         description: 'If you want to send an image as well',
         type: ApplicationCommandOptionType.Attachment,
-        required: false
+        required: false,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { options } = interaction;
@@ -41,11 +41,11 @@ export default {
 
         target.send({
             content: message ? message : '',
-            files: attachment ? [attachment] : []
+            files: attachment ? [attachment] : [],
         }).catch(() => {
             return sendResponse(interaction, 'I could not send a DM to this user');
         });
 
         sendResponse(interaction, 'Message sent');
-    }
+    },
 };

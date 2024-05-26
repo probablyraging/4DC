@@ -26,7 +26,7 @@ export default async (message, client) => {
                 }).catch(err => { return console.error('There was a problem editing a channel\'s permissions: ', err); });
 
                 // Log to channel
-                let log = new EmbedBuilder()
+                const log = new EmbedBuilder()
                     .setColor('#4fe059')
                     .setAuthor({ name: `${client?.user.username}`, iconURL: client?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.username} *(${target?.id})*
@@ -35,7 +35,7 @@ export default async (message, client) => {
                     .setTimestamp();
 
                 logChan.send({
-                    embeds: [log]
+                    embeds: [log],
                 }).catch(err => console.error('There was a problem sending an embed: ', err));
             }
         }

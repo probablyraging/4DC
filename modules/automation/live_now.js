@@ -9,8 +9,8 @@ const cooldown = new Set();
  * @param {Object} boostRole The booster role to search for live members in
  * @returns {Array} An array of members who are currently live on YouTube or Twitch
  */
-async function getLiveMembers(staffRole, boostRole,) {
-    let liveNowMembers = [];
+async function getLiveMembers(staffRole, boostRole) {
+    const liveNowMembers = [];
     const roles = [staffRole, boostRole];
     const platforms = ['Twitch', 'YouTube'];
 
@@ -27,7 +27,7 @@ async function getLiveMembers(staffRole, boostRole,) {
                         id: member.user.id,
                         platform: activity.name,
                         url: activity.url,
-                        booster: member.premiumSinceTimestamp != null || member?.roles.cache.has(process.env.STAFF_ROLE) ? true : false
+                        booster: member.premiumSinceTimestamp != null || member?.roles.cache.has(process.env.STAFF_ROLE) ? true : false,
                     });
                 }
             }
@@ -47,7 +47,7 @@ export default async (client) => {
 
     // Fetch live streaming mmbers
     setInterval(async () => {
-        let liveNowMembers = await getLiveMembers(staffRole, boostRole);
+        const liveNowMembers = await getLiveMembers(staffRole, boostRole);
 
         try {
             await Promise.all(liveNowMembers.map(async (liveMember) => {
@@ -71,9 +71,11 @@ export default async (client) => {
                         // If no URL was found, return
                         if (liveMember.url == null) return;
                         // Send the URL to the appropriate channels
-                        if (!boostAlreadyPosted && liveMember.booster) boostPromoChan.send({
-                            content: `**${liveMember.username}** just went live - ${liveMember.url}`
-                        });
+                        if (!boostAlreadyPosted && liveMember.booster) {
+                            boostPromoChan.send({
+                                content: `**${liveMember.username}** just went live - ${liveMember.url}`,
+                            });
+                        }
                         // Add the user to a cooldown for 6 hours so we only send one live notice
                         cooldown.add(id);
                         setTimeout(() => {
@@ -90,7 +92,7 @@ export default async (client) => {
     // Check live now role members to see if someone stopped streaming
     setInterval(async () => {
         liveRole?.members?.forEach(async member => {
-            const activity = member.presence?.activities.find(activity => (activity.name === 'Twitch' || activity.name === 'YouTube'));
+            const activity = member.presence?.activities.find(a => (a.name === 'Twitch' || a.name === 'YouTube'));
             if (!activity) {
                 guild.members.cache.get(member.id).roles.remove(liveRole).catch(err => console.error('There was a problem removing a role: ', err));
                 await dbDeleteOne(streamSchema, { userId: member.id });

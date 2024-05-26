@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 const warnSchema = mongoose.Schema({
     guildId: {
         type: String,
-        required: true
+        required: true,
     },
     userId: {
         type: String,
-        required: true
+        required: true,
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     warnId: {
         type: String,
@@ -19,24 +19,24 @@ const warnSchema = mongoose.Schema({
     },
     author: {
         type: String,
-        required: true
+        required: true,
     },
     authorTag: {
         type: String,
-        required: true
+        required: true,
     },
     timestamp: {
         type: Date,
-        required: true
+        required: true,
     },
     reason: {
         type: String,
-        required: true
+        required: true,
     },
     warnCount: {
         type: String,
-        required: false
-    }
+        required: false,
+    },
 });
 
 export default mongoose.model('warnings', warnSchema);

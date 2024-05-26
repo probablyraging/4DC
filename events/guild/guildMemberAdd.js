@@ -14,15 +14,15 @@ export default {
         // Log to channel
         joinLeaveChan.send({
             content: `${process.env.BOT_JOIN} ${member} joined. There are now **${guild.memberCount}** members in the server`,
-            allowedMentions: { parse: [] }
+            allowedMentions: { parse: [] },
         }).catch(err => console.error('There was a problem sending a message: ', err));
 
         // TEMPORARY: Kick users with account age <1 month
         const oneMonth = 24 * 30 * 60 * 60 * 1000;
         if ((new Date() - member.user.createdTimestamp) < oneMonth) {
             member.send({
-                content: '## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*Distubify Server Staff*'
-            }).catch(() => { });
+                content: '## Unable To Join Server \n> Your account must be **__older than one month__** before you can join ContentCreator. \n> Feel free to join again once your account meets these requirements. \n\n*Distubify Server Staff*',
+            }).catch(err => console.error('There was a problem sending a message: ', err));
             member.kick('Account age less than 1 month').catch(err => console.error('There was a problem kicking a user from the server: ', err));
             return;
         }
@@ -32,5 +32,5 @@ export default {
 
         // Check user's profile for blocked words and report to staff if a match is found
         profileFilter(member, client);
-    }
+    },
 };

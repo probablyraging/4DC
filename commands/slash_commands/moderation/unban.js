@@ -14,16 +14,16 @@ export default {
         name: 'user_id',
         description: 'The ID of the user you want to unban',
         type: ApplicationCommandOptionType.String,
-        required: true
+        required: true,
     },
     {
         name: 'reason',
         description: 'The reason for unbanning the user',
         type: ApplicationCommandOptionType.String,
-        required: true
+        required: true,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { member, guild, options } = interaction;
@@ -43,7 +43,7 @@ export default {
         // If an error occurs, notify the user
         if (error) return sendResponse(interaction, `${target} was not found in the ban list`);
         // Log to channel
-        let log = new EmbedBuilder()
+        const log = new EmbedBuilder()
             .setColor('#4fe059')
             .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${fetchTargetBan.user.username} *(${fetchTargetBan.user.id})*
@@ -52,9 +52,9 @@ export default {
             .setTimestamp();
 
         logChan.send({
-            embeds: [log]
+            embeds: [log],
         }).catch(err => console.error('There was a problem sending an embed: ', err));
 
         sendResponse(interaction, `${fetchTargetBan.user.username} was unbanned from the server`);
-    }
+    },
 };

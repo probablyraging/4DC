@@ -12,7 +12,7 @@ export default {
      */
     async execute(interaction) {
         const { guild } = interaction;
-        const target = await guild.members.fetch(interaction.targetId).catch(() => { });
+        const target = await guild.members.fetch(interaction.targetId).catch(err => console.error('There was a problem fetching a guild member: ', err));
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
@@ -26,5 +26,5 @@ export default {
             .setImage(`${target.user.displayAvatarURL({ dynamic: true })}?size=256`);
 
         sendResponse(interaction, '', [response]);
-    }
+    },
 };

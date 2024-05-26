@@ -17,7 +17,7 @@ export default {
         { name: 'report', value: 'report' },
         { name: 'xp', value: 'xp' },
         { name: 'premium', value: 'premium' },
-        { name: 'contentshare', value: 'contentshare' }]
+        { name: 'contentshare', value: 'contentshare' }],
     },
     {
         name: 'username',
@@ -25,7 +25,7 @@ export default {
         type: ApplicationCommandOptionType.User,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { options } = interaction;
@@ -49,7 +49,7 @@ export default {
 > ${process.env.BOT_DOC} Share your content in the following locations;
 > - On our official site, [Distubify](<https://distubify.xyz>), which is open for everyone to use
 > - The <#859117794779987978> channel for <@&821876910253670442>
-> - The <#907446635435540551> channel which is a paid method of advertising your content, services, or products`]
+> - The <#907446635435540551> channel which is a paid method of advertising your content, services, or products`],
         ]);
 
         if (interaction.member.roles.cache.has(process.env.STAFF_ROLE)) {
@@ -57,5 +57,5 @@ export default {
         } else {
             sendReplyWithMention(interaction, responses.get(choice), [], [], [], true);
         }
-    }
+    },
 };

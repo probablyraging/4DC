@@ -19,13 +19,13 @@ export default {
             name: 'username',
             description: 'The user who you would like to add',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         },
         {
             name: 'channelid',
             description: 'The ID of the user\'s YouTube channel',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         }],
     },
     {
@@ -36,11 +36,11 @@ export default {
             name: 'username',
             description: 'The user who you would like to remove',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         }],
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { options } = interaction;
@@ -57,7 +57,7 @@ export default {
                     const resolve = await res.parseURL(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
                     const items = resolve.items;
                     // Remove the XML markup from video IDs
-                    let videoIdArr = [];
+                    const videoIdArr = [];
                     items.forEach(item => {
                         const regex = item.id.replace('yt:video:', '');
                         videoIdArr.push(regex);
@@ -82,5 +82,5 @@ export default {
                 break;
             }
         }
-    }
+    },
 };

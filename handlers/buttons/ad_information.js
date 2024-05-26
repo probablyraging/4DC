@@ -17,14 +17,14 @@ export default async (interaction) => {
 * 3 Month - **$45** *(save $15)*
 * 6 Month - **$80** *(save $40)*
 *..custom durations can be arranged*`,
-                inline: false
+                inline: false,
             },
             {
                 name: 'Role Pings',
                 value: `* @everyone Role Ping - **$10** **recommended**
 * @here Role Ping - **$7**
 * Specific Role Ping - **$3** per role`,
-                inline: false
+                inline: false,
             },
             {
                 name: 'Optional Extras',
@@ -32,14 +32,14 @@ export default async (interaction) => {
 * Re-Ping Role - **$3-$10**
 * Bump Ad To Bottom - **$1**
 * Additional Links - **$1**`,
-                inline: false
+                inline: false,
             },
             {
                 name: 'Payment Methods (USD)',
                 value: `* PayPal
 * Stripe
 
-**Contact <@438434841617367080> to purchase an ad spot**`
+**Contact <@438434841617367080> to purchase an ad spot**`,
             });
 
     sendResponse(interaction, '', [embed]);

@@ -8,13 +8,13 @@ export default {
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     execute(interaction) {
         const { guild } = interaction;
         interaction.reply({
             content: `:busts_in_silhouette: Invite friends to the server with this link - https://discord.gg/${guild.vanityURLCode}`,
-            ephemeral: true
+            ephemeral: true,
         }).catch(err => console.error('There was a problem sending an interaction: ', err));
-    }
+    },
 };

@@ -40,13 +40,13 @@ export default {
         name: 'amount',
         description: 'Number of messages to delete',
         type: ApplicationCommandOptionType.Number,
-        required: true
+        required: true,
     },
     {
         name: 'username',
         description: 'Delete a specific user\'s messages',
         type: ApplicationCommandOptionType.User,
-        required: false
+        required: false,
     }],
     /**
      * @param {CommandInteraction} interaction
@@ -59,22 +59,17 @@ export default {
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         const amountToDelete = options.getNumber('amount');
         const targetUser = options.getMember('username');
-        const fetchedMessages = await channel.messages.fetch().catch(() => { });
+        const fetchedMessages = await channel.messages.fetch().catch(err => console.error('There was a problem fetching channel messages: ', err));
 
-        if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel'))
-            return sendResponse(interaction, `Missing permissions for ${channel}`);
+        if (!guild.members.me.permissionsIn(channel).has('ManageMessages') || !guild.members.me.permissionsIn(channel).has('SendMessages') || !guild.members.me.permissionsIn(channel).has('ViewChannel')) { return sendResponse(interaction, `Missing permissions for ${channel}`); }
 
-        if (fetchedMessages.size < 1)
-            return sendResponse(interaction, `${process.env.BOT_INFO} I could not find any messages from ${targetUser} in ${channel}`);
+        if (fetchedMessages.size < 1) { return sendResponse(interaction, `${process.env.BOT_INFO} I could not find any messages from ${targetUser} in ${channel}`); }
 
-        if (amountToDelete < 1 && member.id === process.env.OWNER_ID || amountToDelete > 100 && member.id === process.env.OWNER_ID)
-            return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 100`);
+        if (amountToDelete < 1 && member.id === process.env.OWNER_ID || amountToDelete > 100 && member.id === process.env.OWNER_ID) { return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 100`); }
 
-        if (amountToDelete < 1 || amountToDelete > 5 && member.id !== process.env.OWNER_ID)
-            return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 5`);
+        if (amountToDelete < 1 || amountToDelete > 5 && member.id !== process.env.OWNER_ID) { return sendResponse(interaction, `${process.env.BOT_INFO} Amount must be between 1 and 5`); }
 
-        if (!targetUser && member.id !== process.env.OWNER_ID)
-            return sendResponse(interaction, `${process.env.BOT_INFO} You must include a username`);
+        if (!targetUser && member.id !== process.env.OWNER_ID) { return sendResponse(interaction, `${process.env.BOT_INFO} You must include a username`); }
 
         const deletedSize = await bulkDeleteFilteredMessages(interaction, channel, fetchedMessages, targetUser, amountToDelete);
 
@@ -88,7 +83,7 @@ export default {
             .setTimestamp();
 
         logChan.send({
-            embeds: [log]
+            embeds: [log],
         }).catch(err => console.error('There was a problem sending an embed: ', err));
-    }
-}; 
+    },
+};

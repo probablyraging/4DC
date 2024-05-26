@@ -28,7 +28,7 @@ export default {
         required: false,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { channel, options } = interaction;
@@ -43,9 +43,9 @@ export default {
 
         sendToChannel.send({
             content: message ? message : '',
-            files: image ? [image] : []
+            files: image ? [image] : [],
         }).catch(err => console.error('There was a problem sending a message: ', err));
 
         sendResponse(interaction, 'Message sent');
-    }
+    },
 };

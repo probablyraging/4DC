@@ -8,13 +8,13 @@ export default {
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     execute(interaction) {
         const img = './res/images/supporter_rewards.png';
         interaction.reply({
             files: [img],
-            ephemeral: true
+            ephemeral: true,
         }).catch(err => console.error('There was a problem sending an interaction: ', err));
-    }
+    },
 };

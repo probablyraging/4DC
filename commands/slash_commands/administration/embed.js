@@ -18,33 +18,33 @@ export default {
             name: 'description',
             description: 'The description for the embed',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         }, {
             name: 'title',
             description: 'The title for the embed',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'color',
             description: 'The color for the embed. Must be a valid #hex color',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'thumbnail',
             description: 'The thumbnail image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
-            required: false
+            required: false,
         }, {
             name: 'image',
             description: 'The image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
-            required: false
+            required: false,
         }, {
             name: 'author',
             description: 'Do you want to show who created this embed?',
             type: ApplicationCommandOptionType.Boolean,
-            required: false
-        }]
+            required: false,
+        }],
     }, {
         name: 'edit',
         description: 'Edit an existing embed',
@@ -53,48 +53,48 @@ export default {
             name: 'message_id',
             description: 'The id of the message containing the embed you want to edit',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         }, {
             name: 'description',
             description: 'The description for the embed',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'title',
             description: 'The title for the embed',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'color',
             description: 'The color for the embed. Must be a valid #hex color',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'thumbnail',
             description: 'The thumbnail image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
-            required: false
+            required: false,
         }, {
             name: 'image',
             description: 'The image URL for the embed',
             type: ApplicationCommandOptionType.Attachment,
-            required: false
+            required: false,
         }, {
             name: 'author',
             description: 'Do you want to show who created this embed?',
             type: ApplicationCommandOptionType.Boolean,
-            required: false
+            required: false,
         }, {
             name: 'url',
             description: 'The url of the embed title',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }, {
             name: 'footer',
             description: 'The text of the embed footer',
             type: ApplicationCommandOptionType.String,
-            required: false
-        }]
+            required: false,
+        }],
     }],
     /**
      * @param {CommandInteraction} interaction
@@ -130,7 +130,7 @@ export default {
                 if (author) embed.setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
                 // Send the embed
                 await channel.send({
-                    embeds: [embed]
+                    embeds: [embed],
                 }).catch(err => console.error('There was a problem sending a message: ', err));
                 // Delete the initial interaction
                 interaction.deleteReply().catch(err => console.error('There was a problem deleting an interaction: ', err));
@@ -196,22 +196,22 @@ export default {
 
                 // Edit any provided fields
                 let editEmbed;
-                if (title) editEmbed = EmbedBuilder.from(embed)
-                    .setTitle(title);
-                if (description) editEmbed = EmbedBuilder.from(embed)
-                    .setDescription(description);
-                if (color) editEmbed = EmbedBuilder.from(embed)
-                    .setColor(color);
-                if (thumbnail) editEmbed = EmbedBuilder.from(embed)
-                    .setThumbnail(thumbnail);
-                if (image) editEmbed = EmbedBuilder.from(embed)
-                    .setImage(image);
-                if (author) editEmbed = EmbedBuilder.from(embed)
-                    .setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });
-                if (url) editEmbed = EmbedBuilder.from(embed)
-                    .setURL(url);
-                if (footer) editEmbed = EmbedBuilder.from(embed)
-                    .setFooter({ text: footer });
+                if (title) {editEmbed = EmbedBuilder.from(embed)
+                    .setTitle(title);}
+                if (description) {editEmbed = EmbedBuilder.from(embed)
+                    .setDescription(description);}
+                if (color) {editEmbed = EmbedBuilder.from(embed)
+                    .setColor(color);}
+                if (thumbnail) {editEmbed = EmbedBuilder.from(embed)
+                    .setThumbnail(thumbnail);}
+                if (image) {editEmbed = EmbedBuilder.from(embed)
+                    .setImage(image);}
+                if (author) {editEmbed = EmbedBuilder.from(embed)
+                    .setFooter({ text: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) });}
+                if (url) {editEmbed = EmbedBuilder.from(embed)
+                    .setURL(url);}
+                if (footer) {editEmbed = EmbedBuilder.from(embed)
+                    .setFooter({ text: footer });}
 
                 // Edit the embed
                 await message.edit({ embeds: [editEmbed] }).catch(err => console.error('There was a problem editing an embed: ', err));
@@ -220,5 +220,5 @@ export default {
                 break;
             }
         }
-    }
+    },
 };

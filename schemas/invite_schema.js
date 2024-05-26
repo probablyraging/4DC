@@ -3,16 +3,16 @@ import mongoose from 'mongoose';
 const inviteSchema = mongoose.Schema({
     code: {
         type: String,
-        required: true
+        required: true,
     },
     userId: {
         type: String,
-        required: true
+        required: true,
     },
     uses: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 });
 
 export default mongoose.model('invites', inviteSchema);

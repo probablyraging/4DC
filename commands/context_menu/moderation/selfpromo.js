@@ -37,7 +37,7 @@ export default {
         await dbUpdateOne(muteSchema, { userId: target.id, channelId: channel.id }, { userId: target.id, channelId: channel.id, timestamp: 'null' });
 
         // Log to channel
-        let log = new EmbedBuilder()
+        const log = new EmbedBuilder()
             .setColor('#E04F5F')
             .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target?.user.username} *(${target?.user.id})*
@@ -48,9 +48,9 @@ export default {
             .setTimestamp();
 
         logChan.send({
-            embeds: [log]
+            embeds: [log],
         }).catch(err => console.error('There was a problem sending an embed: ', err));
 
         sendResponse(interaction, `${target} was muted in ${channel}`);
-    }
+    },
 };

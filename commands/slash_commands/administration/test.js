@@ -13,12 +13,12 @@ export default {
     dm_permission: false,
     type: ApplicationCommandType.ChatInput,
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction, client) {
         const { options, member, guild, channel, user } = interaction;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
         interaction.deleteReply();
-    }
+    },
 };

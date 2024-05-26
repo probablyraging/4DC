@@ -12,7 +12,7 @@ async function sendMessageWithWebhook(channel, message, attachments) {
     const authorUsername = message.member ? message.member.displayName : message.author.username;
     const webhookContent = {
         content: message.content,
-        allowedMentions: { parse: ['users'] }
+        allowedMentions: { parse: ['users'] },
     };
     if (attachments.length > 0) webhookContent.files = attachments;
     channel.createWebhook({ name: authorUsername, avatar: message.author.displayAvatarURL({ format: 'png', size: 256 }) }).then(webhook => {
@@ -34,38 +34,38 @@ export default {
             name: 'channel',
             description: 'The channel you want to move a message to',
             type: ApplicationCommandOptionType.Channel,
-            required: true
+            required: true,
         },
         {
             name: 'message',
             description: 'The ID of the message you want to move',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         },
         {
             name: 'message2',
             description: 'The ID of the message you want to move',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         },
         {
             name: 'message3',
             description: 'The ID of the message you want to move',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         },
         {
             name: 'message4',
             description: 'The ID of the message you want to move',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         },
         {
             name: 'message5',
             description: 'The ID of the message you want to move',
             type: ApplicationCommandOptionType.String,
-            required: false
-        }
+            required: false,
+        },
     ],
     /**
      * @param {CommandInteraction} interaction
@@ -82,13 +82,13 @@ export default {
             options.getString('message2'),
             options.getString('message3'),
             options.getString('message4'),
-            options.getString('message5')
+            options.getString('message5'),
         ].filter(Boolean);
 
         // Make sure the bot has the correct permissions in both channels
         const channels = [channel, destinationChannel];
         if (!channels.every(c => guild.members.me.permissionsIn(c).has('ManageMessages') && guild.members.me.permissionsIn(c).has('SendMessages') && guild.members.me.permissionsIn(c).has('ViewChannel')))
-            return sendResponse(interaction, 'I do not have the necessary permissions in one or more of the specified channel');
+            {return sendResponse(interaction, 'I do not have the necessary permissions in one or more of the specified channel');}
         // Fetch all messages from the target channel
         const fetchedMessages = await channel.messages.fetch();
         // Make sure the destination channel is a text channel
@@ -105,5 +105,5 @@ export default {
         }
         // Send a confirmation message in the original channel
         sendResponse(interaction, `${messagesToMove.length} messages moved to ${destinationChannel}`);
-    }
+    },
 };

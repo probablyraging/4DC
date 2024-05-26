@@ -9,13 +9,13 @@ const cooldowns = new Map();
 export default {
     name: 'interactionCreate',
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction, client, Discord) {
         const { member } = interaction;
 
         // Get the interaction by name
-        let command = client.commands.get(interaction.commandName);
+        const command = client.commands.get(interaction.commandName);
 
         // Slash command handler
         if (interaction.isChatInputCommand()) {
@@ -39,7 +39,7 @@ export default {
                         // Notify the user
                         return interaction.reply({
                             content: `Cooldown: ${cooldownMessage}`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -52,7 +52,7 @@ export default {
             if (!command) {
                 interaction.reply({
                     content: 'Could not run this command',
-                    ephemeral: true
+                    ephemeral: true,
                 }).catch(err => console.error('There was a problem sending an interaction: ', err));
                 return client.command.module(interaction.commandName);
             }
@@ -83,7 +83,7 @@ export default {
                         // Notify the user
                         return interaction.reply({
                             content: `Cooldown: ${cooldownMessage}`,
-                            ephemeral: true
+                            ephemeral: true,
                         });
                     }
                 }
@@ -126,5 +126,5 @@ export default {
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
         }
-    }
+    },
 };

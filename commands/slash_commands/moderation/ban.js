@@ -16,13 +16,13 @@ export default {
         name: 'user',
         description: 'The user you want to ban',
         type: ApplicationCommandOptionType.User,
-        required: true
+        required: true,
     },
     {
         name: 'delete_messages',
         description: 'Delete this users recent messages',
         type: ApplicationCommandOptionType.Boolean,
-        required: true
+        required: true,
     },
     {
         name: 'reason',
@@ -36,40 +36,40 @@ export default {
         { name: 'Rule 5 - self-promotion outside of content share section', value: '5' },
         { name: 'Rule 6 - sending repeated or purposeless message', value: '6' },
         { name: 'Rule 7 - messages not in English', value: '7' },
-        { name: 'Custom - please provide a custom reason', value: 'custom' }]
+        { name: 'Custom - please provide a custom reason', value: 'custom' }],
     },
     {
         name: 'screenshot',
         description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
-        required: true
+        required: true,
     },
     {
         name: 'screenshot2',
         description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
-        required: false
+        required: false,
     },
     {
         name: 'screenshot3',
         description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
-        required: false
+        required: false,
     },
     {
         name: 'screenshot4',
         description: 'A screenshot of the reason why the user was banned',
         type: ApplicationCommandOptionType.Attachment,
-        required: false
+        required: false,
     },
     {
         name: 'custom',
         description: 'Provide a reason for banning the user when selecting custom',
         type: ApplicationCommandOptionType.String,
-        required: false
+        required: false,
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { member, guild, options } = interaction;
@@ -88,7 +88,7 @@ export default {
         const logId = uuidv4();
         let reason = options.getString('reason');
         reason = (reason === 'custom') ? custom : rules[Number(reason) - 1];
-        let attachmentArr = [];
+        const attachmentArr = [];
 
         // Check all attachment's content type to see if they're a valie image
         const attachments = [attachment, attachment2, attachment3, attachment4];
@@ -106,24 +106,24 @@ export default {
         // If no reason was provided when using the custom reason option
         if (reason == null) return sendResponse(interaction, 'You must provide custom reason when selecting the \'Custom\' option');
         // Check if a the user is already banned
-        const alreadyBanned = await guild.bans.fetch(target.id).catch(() => { });
+        const alreadyBanned = await guild.bans.fetch(target.id).catch(err => console.error('There was a problem fetching guild bans: ', err));
         if (alreadyBanned) return sendResponse(interaction, 'This user is already banned');
         // Send response
         sendResponse(interaction, `${target.username} was banned from the server`);
         // Send a notification to the target user
         await target.send({
-            content: `## You have been banned from **ContentCreator**\n> ${reason}`
-        }).catch(() => { });
+            content: `## You have been banned from **ContentCreator**\n> ${reason}`,
+        }).catch(err => console.error('There was a problem sending a message: ', err));
         // Ban the target user, taking into account if their messages should be deleted
         await guild.bans.create(target, {
             deleteMessageSeconds: deleteMessages ? 604800 : 0,
-            reason: reason
+            reason: reason,
         }).catch(err => console.error('There was a problem banning a user: ', err));
         // Send screenshot to channel
         const screenshotMessage = await screenshotChan.send({ content: logId, files: attachmentArr }).catch(err => console.error('There was a problem sending a message: ', err));
 
         // Log to channel
-        let log = new EmbedBuilder()
+        const log = new EmbedBuilder()
             .setColor('#E04F5F')
             .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
             .setDescription(`**Member:** ${target.username} *(${target.id})*
@@ -132,7 +132,7 @@ export default {
             .setTimestamp();
 
         logChan.send({
-            embeds: [log]
+            embeds: [log],
         }).catch(err => console.error('There was a problem sending an embed: ', err));
-    }
+    },
 };

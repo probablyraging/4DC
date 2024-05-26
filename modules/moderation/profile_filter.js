@@ -57,7 +57,7 @@ export default async (member, client) => {
                     const finalReason = reason + reasonLines.join('\n');
 
                     guild.channels.cache.get(process.env.STAFF_CHAN).send({
-                        content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`
+                        content: `<@&${process.env.STAFF_ROLE}>\n${finalReason}`,
                     }).catch(err => console.error('There was a problem sending a message: ', err));
                 }
             }

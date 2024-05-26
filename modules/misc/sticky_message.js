@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import { Message, ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js';
 /**
- * 
- * @param {Message} message 
+ *
+ * @param {Message} message
  */
 export default async (message, client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -15,7 +15,7 @@ export default async (message, client) => {
             new ButtonBuilder()
                 .setCustomId('ad-info')
                 .setLabel('Information')
-                .setStyle(ButtonStyle.Primary)
+                .setStyle(ButtonStyle.Primary),
         );
 
     if (message?.channel.id === process.env.PREM_CHAN && !message?.author.bot) {
@@ -28,7 +28,7 @@ export default async (message, client) => {
             await premChan.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                 webhook.send({
                     content: `${process.env.BOT_INFO} Looking to purchase an ad spot? Click for more information`,
-                    components: [button]
+                    components: [button],
                 }).catch(err => console.error('There was a problem sending a webhook message: ', err))
                     .then(() => {
                         webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));

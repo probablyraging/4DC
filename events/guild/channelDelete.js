@@ -18,7 +18,7 @@ export default {
 
         if (found) {
             if (found >= 2) {
-                const member = await guild.members.fetch(entry.executor.id).catch(() => { });
+                const member = await guild.members.fetch(entry.executor.id).catch(err => console.error('There was a problem fetching a guild member: ', err));
                 // Remove staff roles
                 member.roles.remove([process.env.ADMIN_ROLE, process.env.MOD_ROLE, process.env.STAFF_ROLE])
                     .catch(err => console.error('There was a problem removing roles', err));;
@@ -26,7 +26,7 @@ export default {
                 staffChan.send({
                     content: `<@&${process.env.STAFF_ROLE}>
 **Mass Channel Deletion Protection**
-${member} was removed from the staff role to prevent a potential mass event`
+${member} was removed from the staff role to prevent a potential mass event`,
                 }).catch(err => console.error('There was a problem sending a message: ', err));
             } else {
                 // Incrememnt counter
@@ -38,5 +38,5 @@ ${member} was removed from the staff role to prevent a potential mass event`
                 protection.delete(entry.executor.id);
             }, 60000);
         }
-    }
+    },
 };

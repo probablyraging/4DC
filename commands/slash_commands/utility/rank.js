@@ -39,7 +39,8 @@ export default {
         if (results.length === 0) return sendResponse(interaction, `${target.user.username} isn't ranked yet. They need to send some messages to earn XP`);
 
         for (const info of results) {
-            let { username, rank, level, msgCount, xxp, xxxp } = info;
+            const { rank, level, msgCount, xxp, xxxp } = info;
+            let username = info.username;
 
             const rankPos = parseInt(rank);
             const canvas = Canvas.createCanvas(930, 280);
@@ -76,9 +77,9 @@ export default {
             ctx.fillText(username, 243, 140);
 
             // Format numbers greater than 999
-            let xp2 = kFormatter(xxxp);
-            let xp3 = kFormatter(xxp);
-            let count = kFormatter(msgCount);
+            const xp2 = kFormatter(xxxp);
+            const xp3 = kFormatter(xxp);
+            const count = kFormatter(msgCount);
 
             // Message count
             ctx.font = '22px grotesk';
@@ -145,5 +146,5 @@ export default {
 
             sendResponse(interaction, '', [], [attachment]);
         }
-    }
+    },
 };

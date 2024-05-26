@@ -7,5 +7,5 @@ export default {
         // Create a new entry in the database
         if (!invite.inviterId) return;
         await dbCreate(inviteSchema, { code: invite.code, userId: invite.inviterId, uses: invite.uses });
-    }
+    },
 };

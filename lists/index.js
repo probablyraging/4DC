@@ -12,7 +12,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 > <id:guide> Server rules, guide, and useful resources
 > <id:customize> Grab yourself some profile flair
 > <#1049263519255777301> Tell us a little about yourself
-> <#978553334854205450> Get assistance or support for specific topics`
+> <#978553334854205450> Get assistance or support for specific topics`,
     ],
 
     rules: [
@@ -28,7 +28,7 @@ Check out the [Discord Beginner's Guide](<https://dis.gd/beginnersguide>) to hel
 
 See something that breaks the rules? Use the </report:1098000171171840007> command to notify staff
 
-*last updated: <t:${Math.round(new Date() / 1000)}:R>*`
+*last updated: <t:${Math.round(new Date() / 1000)}:R>*`,
     ],
 
     servermap: [
@@ -242,6 +242,6 @@ Grab yourself some roles and profile flair from <id:customize>
 > Community Guidelines: <https://discord.com/guidelines>
 > Safety Center: <https://discord.com/safety>
 > Setting up Two-Factor Authentication: <https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication>
-> Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`
-    ]
+> Secure Your Account: <https://discord.com/safety/360043857751-Four-steps-to-a-super-safe-account>`,
+    ],
 };

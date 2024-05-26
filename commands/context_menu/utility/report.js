@@ -35,13 +35,14 @@ export default {
                 new ButtonBuilder()
                     .setCustomId('report-action')
                     .setLabel('Action')
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Primary),
             );
 
         const reportMessage = await staffChannel.send({ content: `<@&${process.env.STAFF_ROLE}>`, embeds: [reportEmbed] }).catch((err) => console.error(`Could not send report '${reportId}' to staff channel: `, err));
 
         reportEmbed = new EmbedBuilder(reportEmbed)
             .setFooter({ text: `ID ${member?.id}-${reportMessage.id}`, iconURL: guild.iconURL({ dynamic: true }) });
+
         reportMessage.edit({ embeds: [reportEmbed], components: [button] }).catch(err => console.error('There was a problem editing a message ', err));
 
         sendResponse(interaction, 'Thank you for helping to keep the server safe! Your report has been submitted and staff will review it shortly');

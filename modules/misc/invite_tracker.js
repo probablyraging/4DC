@@ -26,14 +26,14 @@ export default async (member, client) => {
                         return inviteChan.send({
                             content: `${member.user.username} was invited by ${inviter.username} who now has **${9347 + parseInt(i.uses)}** invites`,
                             allowedMentions: { parse: [] },
-                            failIfNotExists: false
+                            failIfNotExists: false,
                         }).catch(err => console.error('There was a problem sending a message: ', err));
                     }
                     // Log to the invite channel
                     inviteChan.send({
                         content: `${member.user.username} was invited by ${inviter.username} who now has **${i.uses}** invites`,
                         allowedMentions: { parse: [] },
-                        failIfNotExists: false
+                        failIfNotExists: false,
                     }).catch(err => console.error('There was a problem sending a message: ', err));
                 }
             });
@@ -43,7 +43,7 @@ export default async (member, client) => {
             return inviteChan.send({
                 content: `${member.user.username} joined using a vanity invite`,
                 allowedMentions: { parse: [] },
-                failIfNotExists: false
+                failIfNotExists: false,
             }).catch(err => console.error('There was a problem sending a message: ', err));
         }
     });

@@ -14,7 +14,7 @@ export default async (client) => {
                 SendMessages: true,
             }).then(() => {
                 return bumpChan.send({
-                    content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the </bump:947088344167366698> command!`
+                    content: `:mega: <@&${process.env.BUMP_ROLE}> The server can be bumped again by using the </bump:947088344167366698> command!`,
                 });
             }).then(async () => {
                 // Log the current timestamp

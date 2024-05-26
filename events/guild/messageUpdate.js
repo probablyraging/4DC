@@ -9,11 +9,11 @@ export default {
         const guild = client.guilds.cache.get(process.env.GUILD_ID);
         const logChan = guild.channels.cache.get(process.env.MSGLOG_CHAN);
         // Trim the content if they exceed the character limit
-        let original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
-        let edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
+        const original = oldMessage?.content?.slice(0, 1000) + (oldMessage?.content?.length > 1000 ? '...' : '');
+        const edited = newMessage?.content?.slice(0, 1000) + (newMessage?.content?.length > 1000 ? '...' : '');
 
         if (oldMessage?.cleanContent !== newMessage?.cleanContent) {
-            let log = new Discord.EmbedBuilder()
+            const log = new Discord.EmbedBuilder()
                 .setColor('#FF9E00')
                 .setAuthor({ name: `${oldMessage?.author?.username}`, iconURL: oldMessage?.author?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`[View Message](${newMessage?.url})`)
@@ -25,7 +25,7 @@ export default {
                 .setTimestamp();
 
             logChan.send({
-                embeds: [log]
+                embeds: [log],
             }).catch(err => console.error('There was a problem sending an embed: ', err));
         }
 
@@ -44,5 +44,5 @@ export default {
             if (newMessage?.content.startsWith('>')) return;
             newMessage?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
         }
-    }
+    },
 };

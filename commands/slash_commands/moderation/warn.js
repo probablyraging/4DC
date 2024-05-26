@@ -19,7 +19,7 @@ export default {
             name: 'username',
             description: 'The user you want to add a warning to',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         },
         {
             name: 'reason',
@@ -33,14 +33,14 @@ export default {
             { name: 'Rule 5 - self-promotion outside of content share section', value: '5' },
             { name: 'Rule 6 - sending repeated or purposeless message', value: '6' },
             { name: 'Rule 7 - messages not in English', value: '7' },
-            { name: 'Custom - please provide a custom reason', value: 'custom' }]
+            { name: 'Custom - please provide a custom reason', value: 'custom' }],
         },
         {
             name: 'custom',
             description: 'Provide a reason for warning the user when selecting custom',
             type: ApplicationCommandOptionType.String,
-            required: false
-        }]
+            required: false,
+        }],
     },
     {
         name: 'remove',
@@ -50,7 +50,7 @@ export default {
             name: 'warning',
             description: 'The warning ID you want to remove',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         }],
     },
     {
@@ -61,11 +61,11 @@ export default {
             name: 'username',
             description: 'The user whos warnings you want to list',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         }],
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { member, guild, options } = interaction;
@@ -96,7 +96,7 @@ export default {
                 if (!userId || !username) return sendResponse(interaction, 'The was an issue finding the user you are trying to warn');
 
                 // Log to channel
-                let log = new EmbedBuilder()
+                const log = new EmbedBuilder()
                     .setColor('#E04F5F')
                     .setAuthor({ name: `${authorTag}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${username} *(${userId})* \n**Reason:** ${reason}`)
@@ -104,7 +104,7 @@ export default {
                     .setTimestamp();
 
                 logChan.send({
-                    embeds: [log]
+                    embeds: [log],
                 }).catch(err => console.error('There was a problem sending an embed: ', err));
 
                 // Log to database
@@ -135,7 +135,7 @@ export default {
                 // Find and remove the user's warning
                 await dbDeleteOne(warnSchema, { warnId: warning });
                 // Log to channel
-                let log = new EmbedBuilder()
+                const log = new EmbedBuilder()
                     .setColor('#4fe059')
                     .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${results.username} *(${results.userId})*`)
@@ -143,7 +143,7 @@ export default {
                     .setTimestamp();
 
                 logChan.send({
-                    embeds: [log]
+                    embeds: [log],
                 }).catch(err => console.error('There was a problem sending an embed: ', err));
                 // Send a follow up response
                 sendResponse(interaction, `Warning '${warning}' removed`);
@@ -157,7 +157,7 @@ export default {
                 // If no results were found
                 if (results.length === 0) return sendResponse(interaction, 'This user has no warnings');
                 // Create an embed to display the user's warnings
-                let warningEmbed = new EmbedBuilder()
+                const warningEmbed = new EmbedBuilder()
                     .setColor('#E04F5F')
                     .setAuthor({ name: `Warnings for ${target?.user.username}`, iconURL: target?.user.displayAvatarURL({ dynamic: true }) })
                     .setTimestamp();
@@ -175,7 +175,7 @@ export default {
 **Date:** <t:${Math.round(timestamp / 1000)}> (<t:${Math.round(timestamp / 1000)}:R>)
 **Warning ID:** ${warnId}
 **Reason:** ${reason}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`, inline: false,
                     });
                     // Increment the warning count
                     warnCount++;
@@ -185,5 +185,5 @@ export default {
                 break;
             }
         }
-    }
+    },
 };

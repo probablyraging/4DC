@@ -15,7 +15,7 @@ export default {
         type: ApplicationCommandOptionType.String,
         required: true,
         choices: [{ name: 'Start', value: 'start' },
-        { name: 'End', value: 'end' }]
+        { name: 'End', value: 'end' }],
     }],
     /**
     * @param {CommandInteraction} interaction
@@ -35,7 +35,7 @@ export default {
                         SendMessages: false,
                     }).catch(err => { return console.error('There was a problem editing a channel\'s permissions: ', err); });
                     channel.send({
-                        content: '# :warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly'
+                        content: '# :warning: This channel is temporarily locked while the bot is under maintenance and will be back shortly',
                     }).catch(err => console.error('There was a problem sending a message: ', err));
                 }
                 sendResponse(interaction, 'Maintenance started');
@@ -60,5 +60,5 @@ export default {
                 break;
             }
         }
-    }
+    },
 };

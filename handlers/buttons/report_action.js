@@ -23,7 +23,7 @@ export default async (interaction) => {
         const reportMessage = await channel.messages.fetch(interaction.message.id);
         const reportEmbed = reportMessage.embeds[0].data;
         const reportedUserId = reportEmbed.fields[0].value.split(/[@>]/)[1];
-        reportedUser = await guild.members.fetch(reportedUserId).catch(() => { });
+        reportedUser = await guild.members.fetch(reportedUserId).catch(err => console.error('There was a problem fetching a guild member: ', err));
         originalMessageId = reportEmbed.footer.text.split('-')[1];
 
         // If the reported user is new longer in the server
@@ -43,7 +43,7 @@ export default async (interaction) => {
                 new ButtonBuilder()
                     .setCustomId('report-action')
                     .setLabel('Action')
-                    .setStyle(ButtonStyle.Primary)
+                    .setStyle(ButtonStyle.Primary),
             );
         // Disable button
         const disabled = new ActionRowBuilder()
@@ -52,7 +52,7 @@ export default async (interaction) => {
                     .setCustomId('report-action')
                     .setLabel('Action')
                     .setStyle(ButtonStyle.Primary)
-                    .setDisabled(true)
+                    .setDisabled(true),
             );
         // Action buttons
         const actions = new ActionRowBuilder()
@@ -68,7 +68,7 @@ export default async (interaction) => {
                 new ButtonBuilder()
                     .setCustomId('report-close')
                     .setLabel('Close Report')
-                    .setStyle(ButtonStyle.Danger)
+                    .setStyle(ButtonStyle.Danger),
             );
 
         // Send the embed with the status and reply with the action buttons
@@ -151,21 +151,23 @@ export default async (interaction) => {
 
             // Send a notification to the target user
             await reportedUser.send({
-                content: `## You have been banned from **ContentCreator**\n> ${reason}`
-            }).catch(() => { });
+                content: `## You have been banned from **ContentCreator**\n> ${reason}`,
+            }).catch(err => console.error('There was a problem sending a message: ', err));
 
             // Ban the user
             await guild.bans.create(reportedUser.user, {
-                reason: reason
+                reason: reason,
             }).catch(err => console.error('There was a problem banning a user: ', err));
 
             // Send screenshot to channel
             let screenshotMessage;
-            if (attachment) screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] })
-                .catch(err => console.error('There was a problem sending a message: ', err));
+            if (attachment) {
+                screenshotMessage = await screenshotChan.send({ content: logId, files: [attachment] })
+                    .catch(err => console.error('There was a problem sending a message: ', err));
+            }
 
             // Log to channel
-            let log = new EmbedBuilder()
+            const log = new EmbedBuilder()
                 .setColor('#E04F5F')
                 .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${reportedUser.user.username} *(${reportedUser.id})*
@@ -174,7 +176,7 @@ export default async (interaction) => {
                 .setTimestamp();
 
             logChan.send({
-                embeds: [log]
+                embeds: [log],
             }).catch(err => console.error('There was a problem sending an embed: ', err));
         }
 
@@ -197,7 +199,7 @@ export default async (interaction) => {
             }
 
             // Log to channel
-            let log = new EmbedBuilder()
+            const log = new EmbedBuilder()
                 .setColor('#E04F5F')
                 .setAuthor({ name: `${member.user.username}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${reportedUser.user.username} *(${reportedUser.id})* \n**Reason:** ${reason}`)
@@ -205,7 +207,7 @@ export default async (interaction) => {
                 .setTimestamp();
 
             logChan.send({
-                embeds: [log]
+                embeds: [log],
             }).catch(err => console.error('There was a problem sending an embed: ', err));
 
             // Log to database
@@ -216,7 +218,7 @@ export default async (interaction) => {
             if (results.length >= 3) {
                 // Ban the user if this is their third warning
                 await guild.bans.create(reportedUser.user, {
-                    reason: 'Warning threshold'
+                    reason: 'Warning threshold',
                 }).catch(err => console.error('There was a problem banning a user: ', err));
             } else {
                 // Notify the user that they received a warning
@@ -242,7 +244,7 @@ async function closeReport(guild, channel, member) {
     const reportMessage = await channel.messages.fetch(originalMessageId);
     const reportEmbed = reportMessage.embeds[0].data;
     const reporterId = reportEmbed.footer.text.split('-')[0].replace('ID ', '');
-    const reporterUser = await guild.members.fetch(reporterId).catch(() => { });
+    const reporterUser = await guild.members.fetch(reporterId).catch(err => console.error('There was a problem fetching a guild member: ', err));
 
     reportEmbed.fields[2] = { name: '', value: '' };
     const closedEmbed = new EmbedBuilder(reportEmbed)

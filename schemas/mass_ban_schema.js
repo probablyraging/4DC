@@ -4,29 +4,29 @@ const massbanSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     author: {
         type: String,
-        required: true
+        required: true,
     },
     reason: {
         type: String,
-        required: true
+        required: true,
     },
     timestamp: {
         type: Number,
-        required: true
+        required: true,
     },
     users: {
         type: String,
-        required: true
+        required: true,
     },
     state: {
         type: String,
         required: true,
-        default: 'PENDING'
-    }
+        default: 'PENDING',
+    },
 });
 
 export default mongoose.model('massbans', massbanSchema);

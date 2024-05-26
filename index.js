@@ -12,16 +12,16 @@ const client = new Discord.Client({
         Discord.GatewayIntentBits.GuildInvites,
         Discord.GatewayIntentBits.GuildPresences,
         Discord.GatewayIntentBits.GuildMessages,
-        Discord.GatewayIntentBits.MessageContent
+        Discord.GatewayIntentBits.MessageContent,
     ],
     partials: [
-        Discord.Partials.Channel
-    ]
+        Discord.Partials.Channel,
+    ],
 });
 
 console.time('Time to online');
 consoleStamp(console, {
-    format: ':date(dd mmmm yyyy HH:MM:ss) :label'
+    format: ':date(dd mmmm yyyy HH:MM:ss) :label',
 });
 
 client.commands = new Discord.Collection();

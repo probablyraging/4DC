@@ -42,12 +42,12 @@ export default {
             if (content) log.addFields({ name: 'Message', value: codeBlock(content), inline: false });
 
             if ((new Date() - timestamp) < 10000) {
-                const executor = await guild.members.fetch(entry.executor.id).catch(() => { });
+                const executor = await guild.members.fetch(entry.executor.id).catch(err => console.error('There was a problem fetching a guild member: ', err));
                 log.setAuthor({ name: `${executor?.user.username}`, iconURL: executor?.user.displayAvatarURL({ dynamic: true }) });
             }
 
             // If the message had an attachment, attach it to the embed
-            let msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
+            const msgAttachment = message?.attachments.size > 0 ? message?.attachments.first().url : null;
 
             if (msgAttachment) {
                 // Create a new imgur client
@@ -62,13 +62,13 @@ export default {
             }
 
             logChan.send({
-                embeds: [log]
+                embeds: [log],
             }).catch(err => console.error('There was a problem sending an embed: ', err));
         }, 2000);
 
         // Delete or archive thread channels
         if (message?.channel.isThread()) {
-            const starterMessage = await message?.channel.fetchStarterMessage().catch(() => { });
+            const starterMessage = await message?.channel.fetchStarterMessage().catch(err => console.error('There was a problem fetching a starter message: ', err));
             // Delete the thread if the starter message was deleted and there are no other messages in the thread
             if (!starterMessage && message?.channel.messageCount === 0) {
                 message?.channel.delete().catch(err => console.error('There was a problem deleting a thread channel: ', err));
@@ -77,9 +77,9 @@ export default {
             if (!starterMessage && message?.channel.messageCount > 0) {
                 message?.channel.edit({
                     archived: true,
-                    locked: true
+                    locked: true,
                 }).catch(err => console.error('There was a problem deleting a thread channel: ', err));
             }
         }
-    }
+    },
 };

@@ -18,13 +18,14 @@ export default {
         { name: 'rules', value: 'rules' },
         { name: 'serverguide', value: 'serverguide' },
         { name: 'faqs', value: 'faqs' },
-        { name: 'auth', value: 'auth' }]
+        { name: 'auth', value: 'auth' }],
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
-        let { client, guild, channel, options } = interaction;
+        const { client, guild, options } = interaction;
+        let channel = interaction.channel;
 
         await interaction.deferReply({ ephemeral: true }).catch(err => console.error('There was a problem deferring an interaction: ', err));
 
@@ -42,8 +43,8 @@ export default {
                     webhook.send({
                         content: `${index.welcome[0]}`,
                         allowedMentions: {
-                            parse: []
-                        }
+                            parse: [],
+                        },
                     }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));
@@ -65,14 +66,14 @@ export default {
                             .setColor('#2B2D31')
                             .setThumbnail('https://i.imgur.com/LRi2593.png')],
                         allowedMentions: {
-                            parse: []
-                        }
+                            parse: [],
+                        },
                     }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                     webhook.send({
                         content: `${index.rules[0]}`,
                         allowedMentions: {
-                            parse: []
-                        }
+                            parse: [],
+                        },
                     }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                     setTimeout(() => {
                         webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));
@@ -86,7 +87,7 @@ export default {
 
             // SERVER GUIDE
             case 'serverguide': {
-                let initMessage = [];
+                const initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     webhook.send({
                         embeds: [new EmbedBuilder()
@@ -95,21 +96,23 @@ export default {
                             .setColor('#2B2D31')
                             .setThumbnail('https://i.imgur.com/nkUXwJK.png')],
                         allowedMentions: {
-                            parse: []
-                        }
+                            parse: [],
+                        },
                     }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                     for (let i = 0; i < index.servermap.length; i++) {
-                        setTimeout(async function () {
+                        setTimeout(async () => {
                             const message = await webhook.send({
                                 content: `${index.servermap[i]}`,
                                 allowedMentions: {
-                                    parse: []
-                                }
+                                    parse: [],
+                                },
                             }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                             initMessage.push(message.url);
-                            if (i === index.servermap.length - 1) webhook.send({
-                                content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
-                            }).catch(err => console.error('There was a problem sending a webhook message: ', err));
+                            if (i === index.servermap.length - 1) {
+                                webhook.send({
+                                    content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`,
+                                }).catch(err => console.error('There was a problem sending a webhook message: ', err));
+                            }
                         }, i * 1000);
                     }
                     setTimeout(() => {
@@ -124,7 +127,7 @@ export default {
 
             // FAQ SERVER
             case 'faqs': {
-                let initMessage = [];
+                const initMessage = [];
                 channel.createWebhook({ name: client.user.username, avatar: `${avatarURL}` }).then(webhook => {
                     webhook.send({
                         embeds: [new EmbedBuilder()
@@ -133,21 +136,23 @@ export default {
                             .setColor('#2B2D31')
                             .setThumbnail('https://i.imgur.com/2ue2min.png')],
                         allowedMentions: {
-                            parse: []
-                        }
+                            parse: [],
+                        },
                     }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                     for (let i = 0; i < index.faqs.length; i++) {
-                        setTimeout(async function () {
+                        setTimeout(async () => {
                             const message = await webhook.send({
                                 content: `${index.faqs[i]}`,
                                 allowedMentions: {
-                                    parse: []
-                                }
+                                    parse: [],
+                                },
                             }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                             initMessage.push(message.url);
-                            if (i === index.faqs.length - 1) webhook.send({
-                                content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`
-                            }).catch(err => console.error('There was a problem sending a webhook message: ', err));
+                            if (i === index.faqs.length - 1) {
+                                webhook.send({
+                                    content: `⠀\n<:uparrow:1096217298076958785> [Jump to top](${initMessage[0]})`,
+                                }).catch(err => console.error('There was a problem sending a webhook message: ', err));
+                            }
                         }, i * 1000);
                     }
                     setTimeout(async () => {
@@ -167,15 +172,15 @@ export default {
                         new ButtonBuilder()
                             .setCustomId('auth-start')
                             .setLabel('Start Verification')
-                            .setStyle(ButtonStyle.Primary)
+                            .setStyle(ButtonStyle.Primary),
                     );
 
                 channel.send({
                     content: '## Verification \nIn order to access the content on this server, you must verify that you are human \nPlease click the button below to begin the verification process \n\nIf you have any issues, please contact <@438434841617367080> \n⠀',
                     components: [button],
                     allowedMentions: {
-                        parse: []
-                    }
+                        parse: [],
+                    },
                 });
 
                 interaction.deleteReply().catch(err => console.error('There was a problem deleting an interaction: ', err));
@@ -183,5 +188,5 @@ export default {
                 break;
             }
         }
-    }
+    },
 };

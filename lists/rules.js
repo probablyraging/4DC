@@ -6,6 +6,6 @@ export default {
         'Do not send other server members unsolicited DMs for any reason',
         'Keep self-promotional content to the \'CONTENT SHARE\' section',
         'Do not send repeated or purposeless messages',
-        'For moderating purposes, please keep your messages in English'
-    ]
+        'For moderating purposes, please keep your messages in English',
+    ],
 };

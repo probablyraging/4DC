@@ -3,40 +3,40 @@ import mongoose from 'mongoose';
 const rankSchema = mongoose.Schema({
     rank: {
         type: Number,
-        required: false
+        required: false,
     },
     userId: {
         type: String,
-        required: true
+        required: true,
     },
     username: {
         type: String,
-        required: true
+        required: true,
     },
     avatar: {
         type: String,
-        required: false
+        required: false,
     },
     level: {
         type: Number,
-        required: true
+        required: true,
     },
     msgCount: {
         type: String,
-        required: true
+        required: true,
     },
     xp: {
         type: Number,
-        required: true
+        required: true,
     },
     xxp: {
         type: Number,
-        required: true
+        required: true,
     },
     xxxp: {
         type: Number,
-        required: true
-    }
+        required: true,
+    },
 });
 
 export default mongoose.model('ranks', rankSchema);

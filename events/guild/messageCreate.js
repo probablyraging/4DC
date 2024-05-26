@@ -50,16 +50,16 @@ export default {
             if (message?.embeds[0].description.toLowerCase().includes('discord.com/invite') || message?.embeds[0].description.toLowerCase().includes('discord.gg/')) {
                 message?.author.send({
                     content: 'Discord invite link sharing is only available to server boosters',
-                    files: ['./res/images/supporter_rewards.png']
-                }).catch(() => { });
+                    files: ['./res/images/supporter_rewards.png'],
+                }).catch(err => console.error('There was a problem sending a message: ', err));
                 notifiedUsers.add(message?.author.id);
             } else {
                 message?.embeds[0].fields.forEach(field => {
                     if (field.value.toLowerCase() === 'self promotion') {
                         message?.author.send({
                             content: `Content sharing is only available to server boosters in the <#${process.env.SUPPORTER_CHAN}> channel`,
-                            files: ['./res/images/supporter_rewards.png']
-                        }).catch(() => { });
+                            files: ['./res/images/supporter_rewards.png'],
+                        }).catch(err => console.error('There was a problem sending a message: ', err));
                         notifiedUsers.add(message?.author.id);
                     }
                 });
@@ -72,7 +72,7 @@ export default {
                 const fetchedMessage = await message.channel.messages.fetch(message.id).catch(err => console.error('There was a problem fetching a message: ', err));
                 fetchedMessage.delete().catch(err => console.error('There was a problem deleting a message: ', err));
                 message.channel.send({
-                    content: fetchedMessage.embeds[0]?.url
+                    content: fetchedMessage.embeds[0]?.url,
                 }).catch(err => console.error('There was a problem sending a message: ', err));
             }, 3000);
         }
@@ -87,5 +87,5 @@ export default {
                 }
             }
         }
-    }
+    },
 };

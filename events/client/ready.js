@@ -35,12 +35,12 @@ export default {
         Canvas.registerFont('./res/fonts/redhatdisplay_black.otf', { family: 'redhatdisplay' });
 
         // Booster rewards
-        const boostTimer = new CronJob('0 */10 * * *', function () {
+        const boostTimer = new CronJob('0 */10 * * *', function() {
             let whMessage;
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                 whMessage = await webhook.send({
                     content: 'Boost the server and unlock these server benefits and more',
-                    files: ['./res/images/supporter_rewards.png']
+                    files: ['./res/images/supporter_rewards.png'],
                 }).catch(err => console.error('There was a problem sending a webhook message: ', err));
                 setTimeout(() => {
                     webhook.delete().catch(err => console.error('There was a problem deleting a webhook: ', err));
@@ -58,5 +58,5 @@ export default {
         databaseCleanup(client);
         liveNow(client);
         youtubeAuto(client);
-    }
+    },
 };

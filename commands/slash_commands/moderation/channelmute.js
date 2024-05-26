@@ -19,25 +19,25 @@ export default {
             name: 'username',
             description: 'The user you want to mute',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         },
         {
             name: 'channel',
             description: 'The channel you want to mute the user in',
             type: ApplicationCommandOptionType.Channel,
-            required: true
+            required: true,
         },
         {
             name: 'reason',
             description: 'The reason for muting the user',
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
         },
         {
             name: 'duration',
             description: 'Set a duration (IN HOURS) for when the channel mute should expire',
             type: ApplicationCommandOptionType.String,
-            required: false
+            required: false,
         }],
     },
     {
@@ -48,17 +48,17 @@ export default {
             name: 'username',
             description: 'The user you want to mute',
             type: ApplicationCommandOptionType.User,
-            required: true
+            required: true,
         },
         {
             name: 'channel',
             description: 'The channel you want to mute the user in',
             type: ApplicationCommandOptionType.Channel,
-            required: true
+            required: true,
         }],
     }],
     /**
-     * @param {CommandInteraction} interaction 
+     * @param {CommandInteraction} interaction
      */
     async execute(interaction) {
         const { member, guild, options } = interaction;
@@ -89,7 +89,7 @@ export default {
                 duration = !duration || duration === '0' ? 'Permanent' : `${duration} ${duration > 1 ? 'hours' : 'hour'}`;
 
                 // Log to channel
-                let log = new EmbedBuilder()
+                const log = new EmbedBuilder()
                     .setColor('#E04F5F')
                     .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.user.username} *(${target?.user.id})*
@@ -100,7 +100,7 @@ export default {
                     .setTimestamp();
 
                 logChan.send({
-                    embeds: [log]
+                    embeds: [log],
                 }).catch(err => console.error('There was a problem sending an embed: ', err));
 
                 sendResponse(interaction, `${target} was muted in ${targetChan}`);
@@ -116,7 +116,7 @@ export default {
                 await dbDeleteOne(muteSchema, { userId: target?.id, channelId: targetChan.id });
 
                 // Log to channel
-                let log = new EmbedBuilder()
+                const log = new EmbedBuilder()
                     .setColor('#4fe059')
                     .setAuthor({ name: `${member?.user.username}`, iconURL: member?.user.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`**Member:** ${target?.user.username} *(${target?.user.id})*
@@ -125,12 +125,12 @@ export default {
                     .setTimestamp();
 
                 logChan.send({
-                    embeds: [log]
+                    embeds: [log],
                 }).catch(err => console.error('There was a problem sending an embed: ', err));
 
                 sendResponse(interaction, `${target} was unmuted in ${targetChan}`);
                 break;
             }
         }
-    }
+    },
 };

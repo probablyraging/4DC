@@ -17,7 +17,7 @@ async function sendResponse(interaction, content = '', embeds = [], files = [], 
             embeds: embeds,
             files: files,
             components: components,
-            ephemeral: ephemeral
+            ephemeral: ephemeral,
         });
     } catch (err) {
         console.error('There was a problem editing an interaction: ', err);
@@ -39,7 +39,7 @@ async function sendReply(interaction, content = '', embeds = [], files = [], com
             embeds: embeds,
             files: files,
             components: components,
-            ephemeral: ephemeral
+            ephemeral: ephemeral,
         });
     } catch (err) {
         console.error('There was a problem replying to an interaction: ', err);
@@ -63,7 +63,7 @@ async function sendReplyWithMention(interaction, content = '', embeds = [], file
             files: files,
             components: components,
             ephemeral: ephemeral,
-            allowedMentions: { parse: ['users'] }
+            allowedMentions: { parse: ['users'] },
         });
     } catch (err) {
         console.error('There was a problem editing an interaction: ', err);
@@ -85,7 +85,7 @@ async function sendFollowUp(interaction, content = '', embeds = [], files = [], 
             embeds: embeds,
             files: files,
             components: components,
-            ephemeral: ephemeral
+            ephemeral: ephemeral,
         });
     } catch (err) {
         console.error('There was a problem replying to an interaction: ', err);
@@ -93,7 +93,7 @@ async function sendFollowUp(interaction, content = '', embeds = [], files = [], 
 }
 
 /**
- * Creates a single document in a MongoDB collection 
+ * Creates a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
@@ -108,7 +108,7 @@ async function dbFind(model, filter = {}) {
 }
 
 /**
- * Creates a single document in a MongoDB collection 
+ * Creates a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} filter The update object to specify the changes to be made to the document
  * @returns {Object|Error} The result of the query or an error
@@ -123,7 +123,7 @@ async function dbFindOne(model, filter) {
 }
 
 /**
- * Creates a single document in a MongoDB collection 
+ * Creates a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} update The update object to specify the changes to be made to the document
  */
@@ -136,7 +136,7 @@ async function dbCreate(model, update) {
 }
 
 /**
- * Updates a single document in a MongoDB collection 
+ * Updates a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} filter The filter object to identify the document to update
  * @param {Object} update The update object to specify the changes to be made to the document
@@ -150,7 +150,7 @@ async function dbUpdateOne(model, filter, update) {
 }
 
 /**
- * Deletes a single document in a MongoDB collection 
+ * Deletes a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} filter The filter object to identify the document to delete
  */
@@ -163,7 +163,7 @@ async function dbDeleteOne(model, filter) {
 }
 
 /**
- * Deletes a single document in a MongoDB collection 
+ * Deletes a single document in a MongoDB collection
  * @param {Object} model The Mongoose model
  * @param {Object} filter The filter object to identify the document to delete
  */
@@ -190,7 +190,7 @@ function addAttachment(key, url) {
  * @returns {string} The URL stored at the given key
  */
 function getAttachment(key) {
-    let attachment = attachmentMap.get(key);
+    const attachment = attachmentMap.get(key);
     attachmentMap.delete(key);
     return attachment;
 }
@@ -207,5 +207,5 @@ export {
     dbDeleteOne,
     dbDeleteMany,
     addAttachment,
-    getAttachment
+    getAttachment,
 };

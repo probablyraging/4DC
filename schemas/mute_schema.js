@@ -3,16 +3,16 @@ import mongoose from 'mongoose';
 const muteSchema = mongoose.Schema({
     timestamp: {
         type: String,
-        required: true
+        required: true,
     },
     userId: {
         type: String,
-        required: true
+        required: true,
     },
     channelId: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 });
 
 export default mongoose.model('mutes', muteSchema);

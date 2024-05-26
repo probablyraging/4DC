@@ -30,7 +30,7 @@ export default async (message) => {
         if (message.content.startsWith('>')) return;
         try {
             const initMessage = await message.reply({
-                content: 'Let me think..'
+                content: 'Let me think..',
             }).catch(err => console.error('There was a problem sending a webhook: ', err));
 
             // Get previous conversation history from database
@@ -41,15 +41,15 @@ export default async (message) => {
                 'messages': [
                     { 'role': 'system', 'content': 'You are a specialized assistant dedicated to helping Discord users with questions and advice related to all types of content creation. Your expertise includes, but is not limited to, video production, streaming, graphic design, writing, audio creation, and social media strategy. You should provide up to date accurate, helpful, and detailed responses that facilitate users in enhancing their content creation skills and knowledge. Use Discord markdown in your responses.' },
                     ...conversationHistory,
-                    { 'role': 'user', 'content': message.content }
+                    { 'role': 'user', 'content': message.content },
                 ],
                 'temperature': 0.7,
-                'max_tokens': 750
+                'max_tokens': 750,
             };
 
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${process.env.OAI_KEY}`
+                'Authorization': `Bearer ${process.env.OAI_KEY}`,
             };
 
             // Send request to the open AI API
@@ -59,29 +59,29 @@ export default async (message) => {
             // If the response is empty or there are no choices, edit the initial message to show an error message
             if (!data || !data.choices) {
                 initMessage.edit({
-                    content: 'Sorry, I was unable to generate an answer. Please try again'
+                    content: 'Sorry, I was unable to generate an answer. Please try again',
                 }).catch(err => console.error('There was a problem editing a message: ', err));
                 await dbDeleteOne(gptHistorySchema, { userId: message?.author.id });
             } else {
                 // If there is a response, check if it is longer than 1900
-                const response = data.choices[0].message.content;
-                if (response.length > 1900) {
+                const res = data.choices[0].message.content;
+                if (res.length > 1900) {
                     // If the response is longer than 1900 characters, split it into separate messages and send them one by one
-                    let responseParts = [];
-                    for (let i = 0; i < response.length; i += 1900) {
-                        responseParts.push(response.slice(i, i + 1900));
+                    const responseParts = [];
+                    for (let i = 0; i < res.length; i += 1900) {
+                        responseParts.push(res.slice(i, i + 1900));
                     }
                     for (let i = 0; i < responseParts.length; i++) {
                         setTimeout(() => {
                             if (i === 0) {
                                 // Edit the initial message with the first part of the response
                                 initMessage.edit({
-                                    content: `${responseParts[i]}.. \n**${i + 1}/${responseParts.length}**`
+                                    content: `${responseParts[i]}.. \n**${i + 1}/${responseParts.length}**`,
                                 }).catch(err => console.error('There was a problem editing a message: ', err));
                             } else {
                                 // Send a reply to the channel with the next part of the response
                                 message.reply({
-                                    content: `..${responseParts[i]} \n**${i + 1}/${responseParts.length}**`
+                                    content: `..${responseParts[i]} \n**${i + 1}/${responseParts.length}**`,
                                 }).catch(err => console.error('There was a problem editing a messagee: ', err));
                             }
                         }, i * 1000);
@@ -89,7 +89,7 @@ export default async (message) => {
                 } else {
                     // Edit the initial message with the full response if it can fit in one message
                     initMessage.edit({
-                        content: `${response}`
+                        content: `${res}`,
                     }).catch(err => console.error('There was a problem editing the webhook message: ', err));
                 }
                 // Store previous conversation history

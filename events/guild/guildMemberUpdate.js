@@ -11,7 +11,7 @@ export default {
         let error = false;
         if (newMember.communicationDisabledUntilTimestamp > new Date().getTime()) {
             // Fetch auditlogs for MemberUpdate events
-            const fetchedLogs = await guild.fetchAuditLogs({ limit: 1, action: AuditLogEvent.MemberUpdate, })
+            const fetchedLogs = await guild.fetchAuditLogs({ limit: 1, action: AuditLogEvent.MemberUpdate })
                 .catch(err => {
                     console.error('There was a problem fetching audit logs: ', err);
                     error = true;
@@ -27,7 +27,7 @@ export default {
             if (newMember?.id === executor?.id) return;
 
             // Log to channel
-            let log = new EmbedBuilder()
+            const log = new EmbedBuilder()
                 .setColor('#E04F5F')
                 .setAuthor({ name: `${executor?.username}`, iconURL: executor?.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`**Member:** ${newMember?.user.username} *(${newMember?.user.id})*
@@ -37,8 +37,8 @@ export default {
                 .setTimestamp();
 
             logChan.send({
-                embeds: [log]
+                embeds: [log],
             }).catch(err => console.error('There was a problem sending an embed: ', err));
         }
-    }
+    },
 };

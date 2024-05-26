@@ -17,7 +17,7 @@ export default {
 * Can you share references to what you would like to achieve?
 * Example of a good title: "How can I mix my audio better at 3:20?"
 * Example of a bad title: "Does this look good?"
-If you need to edit your title or post, please do so now or it may be deleted`
+If you need to edit your title or post, please do so now or it may be deleted`,
                 }).catch(err => console.error('There was a problem sending a message: ', err));
             }, 3000);
         }
@@ -30,7 +30,7 @@ If you need to edit your title or post, please do so now or it may be deleted`
                         new ButtonBuilder()
                             .setCustomId('solved-action')
                             .setLabel('Mark thread as solved')
-                            .setStyle(ButtonStyle.Success)
+                            .setStyle(ButtonStyle.Success),
                     );
 
                 thread.send({ components: [button] }).catch(err => console.error('There was a problem sending a message: ', err));
@@ -47,5 +47,5 @@ If you need to edit your title or post, please do so now or it may be deleted`
                 thread.delete().catch(err => { return console.error('There was a problem deleting a thread: ', err); });
             }
         }
-    }
+    },
 };

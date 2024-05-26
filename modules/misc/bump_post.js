@@ -3,8 +3,8 @@ import { Message, EmbedBuilder } from 'discord.js';
 import { dbUpdateOne } from '../../utils/utils.js';
 import timerSchema from '../../schemas/timer_schema.js';
 /**
- * 
- * @param {Message} message 
+ *
+ * @param {Message} message
  */
 export default async (message) => {
     if (message?.channel.id === process.env.BUMP_CHAN && message?.author.id === '302050872383242240') {
@@ -16,7 +16,7 @@ export default async (message) => {
         // replace disboard reply with our own embed and do counting save stuff
         if (message.embeds.length >= 1) {
             message?.channel.messages.fetch(message?.id).then(async fetched => {
-                let embed = fetched?.embeds[0];
+                const embed = fetched?.embeds[0];
 
                 if (embed.description.toLowerCase().includes('bump done!')) {
                     message?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
@@ -37,17 +37,17 @@ export default async (message) => {
                         .setImage(process.env.BUMP_IMG);
 
                     // Fetch and delete the previous bump ping message
-                    await message?.channel.messages.fetch({ limit: 3 }).then(fetched => {
-                        fetched.forEach(message => {
-                            if (message?.content.toLowerCase().includes('the server can be bumped again')) {
-                                message?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
+                    await message?.channel.messages.fetch({ limit: 3 }).then(fetch => {
+                        fetch.forEach(msg => {
+                            if (msg?.content.toLowerCase().includes('the server can be bumped again')) {
+                                msg?.delete().catch(err => console.error('There was a problem deleting a message: ', err));
                             }
                         });
                     }).catch(err => console.error('There was a problem fetching a message: ', err));
 
                     // Send the confirmed bump embed
                     message?.channel.send({
-                        embeds: [bumpConfirm]
+                        embeds: [bumpConfirm],
                     }).catch(err => console.error('There was a problem sending an embed: ', err));
                 }
             });
@@ -59,7 +59,7 @@ export default async (message) => {
         message?.reply({
             content: 'That is an old command. Please use /bump now instead',
             allowedMentions: { repliedUser: true },
-            failIfNotExists: false
+            failIfNotExists: false,
         }).catch(err => console.error('There was a problem sending a message: ', err));
 
         setTimeout(() => {
