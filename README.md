@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="400" src="./res/images/4dc_icon.png">
+  <img width="100" src="./res/images/4dc_icon.png">
   <h1 align="center">4DC</h1>
   <p align="center">4DC is a multipurpose discord.js v14 bot created for the <a href="https://discord.gg/contentcreator">ContentCreator</a> Discord server.</p>
 <p align="center">
