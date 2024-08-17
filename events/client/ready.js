@@ -2,7 +2,6 @@ import { ActivityType } from 'discord.js';
 import bumpCheck from '../../modules/misc/bump_check.js';
 import mutesCheck from '../../modules/moderation/expired_mutes.js';
 import databaseCleanup from '../../modules/automation/cronjobs.js';
-import liveNow from '../../modules/automation/live_now.js';
 import youtubeAuto from '../../modules/automation/youtubeauto.js';
 import { CronJob } from 'cron';
 import mongoose from 'mongoose';
@@ -35,7 +34,7 @@ export default {
         Canvas.registerFont('./res/fonts/redhatdisplay_black.otf', { family: 'redhatdisplay' });
 
         // Booster rewards
-        const boostTimer = new CronJob('0 */10 * * *', function() {
+        const boostTimer = new CronJob('0 */10 * * *', function () {
             let whMessage;
             generalChan.createWebhook({ name: client.user.username, avatar: client.user.avatarURL({ format: 'png', size: 256 }) }).then(async webhook => {
                 whMessage = await webhook.send({
@@ -56,7 +55,6 @@ export default {
         mutesCheck(message, client, Discord);
         bumpCheck(message, client, Discord);
         databaseCleanup(client);
-        liveNow(client);
         youtubeAuto(client);
     },
 };

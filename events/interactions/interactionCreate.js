@@ -1,8 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { CommandInteraction, PermissionFlagsBits } from 'discord.js';
-import reportActionButton from '../../handlers/buttons/report_action.js';
 import adInformationButton from '../../handlers/buttons/ad_information.js';
-import solveThreadButton from '../../handlers/buttons/help_threads.js';
 
 const cooldowns = new Map();
 
@@ -104,27 +102,14 @@ export default {
             const customIdPrefix = interaction.customId.split('-')[0];
             // A map of customIds for the buttons with prefixed custom IDs
             const prefixedButtons = {
-                'report': reportActionButton,
             };
             if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
 
             // A map of customIds for misc buttons
             const miscButtons = {
                 'ad-info': adInformationButton,
-                'solved-action': solveThreadButton,
             };
             if (customId in miscButtons) miscButtons[customId](interaction);
-        }
-
-        // Select menu handler
-        if (interaction.isStringSelectMenu()) {
-            // Get the customId of the button
-            const customIdPrefix = interaction.customId.split('-')[0];
-            // A map of customIds for the buttons with prefixed custom IDs
-            const prefixedButtons = {
-                'report': reportActionButton,
-            };
-            if (customIdPrefix in prefixedButtons) prefixedButtons[customIdPrefix](interaction);
         }
     },
 };

@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { CommandInteraction, ApplicationCommandType, EmbedBuilder, ActivityType } from 'discord.js';
+import { CommandInteraction, ApplicationCommandType, ActivityType } from 'discord.js';
 import { sendResponse } from '../../../utils/utils.js';
 import axios from 'axios';
 
@@ -47,39 +47,9 @@ export default {
                     }
                 });
 
-                const vanityURL = guild.vanityURLCode ? `https://discord.gg/${guild.vanityURLCode}` : 'None';
-                const description = guild.description || 'None';
-                const premiumTier = guild.premiumTier;
+                const response = `Created On: <t:${parseInt(guild.createdTimestamp / 1000)}> *(<t:${parseInt(guild.createdTimestamp / 1000)}:R>)*\n Online: ${online}\n Idle: ${idle}\n DND: ${dnd}\n Playing: ${activities[1]}\n Streaming: ${activities[2]}\n Listening: ${activities[3]}\n Watching: ${activities[4]}\n Custom: ${activities[5]}\n Competing: ${activities[6]}\n Total: ${guild.memberCount}`;
 
-                const response = new EmbedBuilder()
-                    .setColor('#32BEA6')
-                    .setTitle(`${guild.name}'s Server Information`)
-                    .setThumbnail(`${guild.iconURL({ dynamic: true })}`)
-                    .setImage()
-                    .addFields({ name: 'Name', value: `${guild.name}`, inline: true },
-                        { name: 'Owner', value: `<@${guild.ownerId}>`, inline: true },
-                        { name: 'Region', value: 'Australia', inline: true },
-                        { name: 'Description', value: `${description}`, inline: false },
-                        { name: 'Server Boosts', value: `${guild.premiumSubscriptionCount}`, inline: true },
-                        { name: 'Boost Tier', value: `${premiumTier}`, inline: true },
-                        { name: 'Created On', value: `<t:${parseInt(guild.createdTimestamp / 1000)}> \n*(<t:${parseInt(guild.createdTimestamp / 1000)}:R>)*`, inline: true },
-                        { name: 'Vanity URL', value: `${vanityURL}`, inline: false });
-
-                const response2 = new EmbedBuilder()
-                    .setColor('#32BEA6')
-                    .setTitle(`${guild.name}'s Server Stats`)
-                    .addFields({ name: 'Online', value: `${online}`, inline: true },
-                        { name: 'Idle', value: `${idle}`, inline: true },
-                        { name: 'DND', value: `${dnd}`, inline: true },
-                        { name: 'Playing', value: `${activities[1]}`, inline: true },
-                        { name: 'Streaming', value: `${activities[2]}`, inline: true },
-                        { name: 'Listening', value: `${activities[3]}`, inline: true },
-                        { name: 'Watching', value: `${activities[4]}`, inline: true },
-                        { name: 'Custom', value: `${activities[5]}`, inline: true },
-                        { name: 'Competing', value: `${activities[6]}`, inline: true },
-                        { name: 'Total Members', value: `${guild.memberCount}`, inline: false });
-
-                sendResponse(interaction, '', [response, response2]);
+                sendResponse(interaction, response);
             });
     },
 };
