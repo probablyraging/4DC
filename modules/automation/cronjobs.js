@@ -1,10 +1,12 @@
-import { dbUpdateOne, dbDeleteOne } from '../../utils/utils.js';
+import { dbUpdateOne, dbDeleteOne, dbFind } from '../../utils/utils.js';
 import rankSchema from '../../schemas/rank_schema.js';
 import warnSchema from '../../schemas/warn_schema.js';
 import inviteSchema from '../../schemas/invite_schema.js';
 import timerSchema from '../../schemas/timer_schema.js';
 import { CronJob } from 'cron';
 import axios from 'axios';
+import remindersSchema from '../../schemas/reminders.js';
+import moment from 'moment';
 
 export default async (client) => {
     const guild = client.guilds.cache.get(process.env.GUILD_ID);
@@ -122,6 +124,20 @@ export default async (client) => {
         });
     });
 
+    // Check reminders and send ping if needed
+    const checkReminders = new CronJob('*/10 * * * *', async () => {
+        const reminders = await dbFind(remindersSchema);
+        const testChan = guild.channels.cache.get(process.env.TEST_CHAN);
+        for (const reminder of reminders) {
+            if (moment().unix() >= reminder.timestamp) {
+                testChan.send({
+                    content: `<@${process.env.OWNER_ID}> **Here is your reminder** \n> ${reminder.message}`,
+                }).catch(err => console.error('There was a problem sending a message: ', err));
+                dbDeleteOne(remindersSchema, { timestamp: reminder.timestamp });
+            }
+        }
+    });
+
     rankSort.start();
     warnsCheck.start();
     premiumAdsCheck.start();
@@ -129,4 +145,5 @@ export default async (client) => {
     pauseDMs.start();
     deleteAbandonedServiceThreads.start();
     deleteAbandonedLFSThreads.start();
+    checkReminders.start();
 };
