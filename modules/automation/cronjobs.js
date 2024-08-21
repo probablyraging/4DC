@@ -125,7 +125,7 @@ export default async (client) => {
     });
 
     // Check reminders and send ping if needed
-    const checkReminders = new CronJob('*/10 * * * *', async () => {
+    const checkReminders = new CronJob('0 * * * *', async () => {
         const reminders = await dbFind(remindersSchema);
         const testChan = guild.channels.cache.get(process.env.TEST_CHAN);
         for (const reminder of reminders) {
