@@ -52,6 +52,6 @@ export default {
         // Save to db
         await dbCreate(remindersSchema, { timestamp: reminderTimestamp, userId: user.id, message: message });
 
-        sendResponse(interaction, 'Reminder created');
+        sendResponse(interaction, `**Your reminder has been set** \n> <t:${reminderTimestamp}> \n> ${message}`);
     },
 };
